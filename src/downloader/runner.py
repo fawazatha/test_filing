@@ -5,8 +5,8 @@ from typing import List, Any, Optional
 
 from downloader.utils.logger import get_logger
 from downloader.utils.helper import safe_filename_from_url, timestamp_jakarta
-from downloader.classifier import classify_format
-from downloader.http_client import init_http, get_pdf_bytes_minimal, seed_and_retry_minimal
+from downloader.utils.classifier import classify_format
+from downloader.client import init_http, get_pdf_bytes_minimal, seed_and_retry_minimal
 from models.announcement import Announcement
 
 def _attachment_to_url(att: Any) -> Optional[str]:
