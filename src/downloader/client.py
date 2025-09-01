@@ -13,18 +13,11 @@ REFERER = "https://www.idx.co.id/en/news-announcements/announcement-summary"
 
 
 def init_http(insecure: bool = True, silence_warnings: bool = True, load_env: bool = True) -> None:
-    """
-    Initialize HTTP behavior:
-      - Optionally load `.env`
-      - If PROXY is present, propagate it to HTTP(S)_PROXY so `requests` uses it
-      - Optionally silence SSL warnings (we use verify=False on purpose)
-    """
     if load_env:
         load_dotenv(override=True)
 
     proxy = os.getenv("PROXY")
     if proxy:
-        # populate both upper/lower so requests picks them up
         for k in ("HTTP_PROXY", "HTTPS_PROXY", "http_proxy", "https_proxy"):
             os.environ.setdefault(k, proxy)
 
@@ -64,7 +57,6 @@ def seed_and_retry_minimal(url: str, timeout: int = 60) -> bytes:
         try:
             s.get(REFERER, headers=_headers(seed=True), timeout=timeout, verify=False)
         except Exception:
-            # Seeding failure is not fatal; continue to the target URL.
             pass
         r = s.get(url, headers=_headers(seed=True), timeout=timeout, verify=False, allow_redirects=True)
         r.raise_for_status()

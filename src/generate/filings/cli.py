@@ -1,36 +1,28 @@
-from __future__ import annotations
-
 import argparse
-from pathlib import Path
-from .runner import main
+import logging
+from .config import LOG_LEVEL
+from .runner import run
 
+def main():
+    parser = argparse.ArgumentParser(description="Generate filings from parsed IDX/non-IDX + downloads map")
+    parser.add_argument("--idx", default="data/parsed_idx_output.json")
+    parser.add_argument("--non-idx", default="data/parsed_non_idx_output.json")
+    parser.add_argument("--downloads", default="data/downloaded_pdfs.json")
+    parser.add_argument("--out", default="data/filings_data.json")
+    parser.add_argument("--alerts", default="alerts/inconsistent_alerts.json")
+    parser.add_argument("-v", "--verbose", action="store_true")
+    args = parser.parse_args()
 
-def _build_parser() -> argparse.ArgumentParser:
-    p = argparse.ArgumentParser(
-        description="Generate filings_data.json from parsed IDX & NON-IDX inputs (with UID scenarios)",
+    level = logging.DEBUG if args.verbose else getattr(logging, LOG_LEVEL, logging.INFO)
+    logging.basicConfig(level=level, format="%(asctime)s [%(levelname)s] %(message)s")
+
+    count = run(
+        parsed_files=[args.non_idx, args.idx],
+        downloads_file=args.downloads,
+        output_file=args.out,
+        alerts_file=args.alerts,
     )
-    p.add_argument("--idx-json", type=Path, required=False, help="Path to parsed_idx_output.json")
-    p.add_argument("--non-idx-json", type=Path, required=False, help="Path to parsed_non_idx_output.json")
-    p.add_argument("--downloads-json", type=Path, required=False, help="Optional: downloaded_pdfs.json (not mandatory)")
-    p.add_argument("--company-map", type=Path, required=False, help="Optional: company_map.json for symbol->company_name lookup")
-    p.add_argument("--out", type=Path, required=True, help="Output path for filings_data.json")
-    p.add_argument("--verbose", action="store_true", help="Enable verbose logging")
-    return p
-
-
-def entrypoint() -> None:
-    p = _build_parser()
-    args = p.parse_args()
-
-    main(
-        idx_path=args.idx_json,
-        non_idx_path=args.non_idx_json,
-        downloads_path=args.downloads_json,
-        company_map_path=args.company_map,
-        out_path=args.out,
-        verbose=args.verbose,
-    )
-
+    print(f"[SUCCESS] Generated {count} filings -> {args.out}")
 
 if __name__ == "__main__":
-    entrypoint()
+    main()

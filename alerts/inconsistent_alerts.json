@@ -1,0 +1,375 @@
+[
+  {
+    "reason": "Inconsistent share and holding direction",
+    "holder_name": "PT Gaia Artha Dinamic",
+    "transaction_type": "sell",
+    "holding_before": 369316400,
+    "holding_after": 395393100,
+    "share_percentage_before": 6.98,
+    "share_percentage_after": 7.47,
+    "UID": null,
+    "source": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_EREP/202507/92ed0eea78_7c7eadd995.pdf",
+    "timestamp": "2025-07-01 17:05:12",
+    "company": "PT Sumber Sinergi Makmur Tbk"
+  },
+  {
+    "reason": "Suspicious price deviation (>50%) from latest market price",
+    "holder_name": "Umar Alfaruqi Abdurrahman",
+    "transaction_type": "sell",
+    "holding_before": 44507,
+    "holding_after": 7,
+    "share_percentage_before": 0.001,
+    "share_percentage_after": 0.0,
+    "UID": null,
+    "source": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_EREP/202507/bf81c78f5d_4d68ffad2b.pdf",
+    "timestamp": "2025-07-07 16:13:36",
+    "company": "PT Nanotech Indonesia Global Tbk",
+    "inferred_price": 21.9,
+    "latest_price": 57.0,
+    "deviation": "61.58%",
+    "amount_transacted": 44500,
+    "transaction_value": 974500.0,
+    "price_transaction": {
+      "prices": [
+        21,
+        23
+      ],
+      "amount_transacted": [
+        24500,
+        20000
+      ]
+    }
+  },
+  {
+    "reason": "Suspicious price deviation (>50%) from latest market price",
+    "holder_name": "Vientje Harijanto",
+    "transaction_type": "buy",
+    "holding_before": 124441296,
+    "holding_after": 146082496,
+    "share_percentage_before": 4.26,
+    "share_percentage_after": 4.99,
+    "UID": null,
+    "source": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_EREP/202507/3c5b88d439_b8a6bd3f53.pdf",
+    "timestamp": "2025-07-03 15:51:41",
+    "company": "PT Malacca Trust Wuwungan Insurance Tbk.",
+    "inferred_price": 100.0,
+    "latest_price": 378.0,
+    "deviation": "73.54%",
+    "amount_transacted": 21641200,
+    "transaction_value": 2164120000.0,
+    "price_transaction": {
+      "prices": [
+        100
+      ],
+      "amount_transacted": [
+        21641200
+      ]
+    }
+  },
+  {
+    "reason": "Inconsistent share and holding direction",
+    "holder_name": "PT Gaia Artha Dinamic",
+    "transaction_type": "sell",
+    "holding_before": 0,
+    "holding_after": 278516400,
+    "share_percentage_before": 0.0,
+    "share_percentage_after": 5.26,
+    "UID": null,
+    "source": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_EREP/202507/dec4769d5e_a8025c3c2c.pdf",
+    "timestamp": "2025-07-01 17:05:26",
+    "company": "PT Sumber Sinergi Makmur Tbk"
+  },
+  {
+    "reason": "Suspicious price deviation (>50%) from latest market price",
+    "holder_name": "PT Gaia Artha Dinamic",
+    "transaction_type": "sell",
+    "holding_before": 0,
+    "holding_after": 278516400,
+    "share_percentage_before": 0.0,
+    "share_percentage_after": 5.26,
+    "UID": null,
+    "source": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_EREP/202507/dec4769d5e_a8025c3c2c.pdf",
+    "timestamp": "2025-07-01 17:05:26",
+    "company": "PT Sumber Sinergi Makmur Tbk",
+    "inferred_price": 191.8,
+    "latest_price": 100.0,
+    "deviation": "91.80%",
+    "amount_transacted": 278516400,
+    "transaction_value": 53419445520.0,
+    "price_transaction": {
+      "prices": [
+        191.8
+      ],
+      "amount_transacted": [
+        278516400
+      ]
+    }
+  },
+  {
+    "reason": "Suspicious price deviation (>50%) from latest market price",
+    "holder_name": "Elang Mahkota Teknologi Tbk",
+    "transaction_type": "buy",
+    "holding_before": 48022335640,
+    "holding_after": 48106335640,
+    "share_percentage_before": 64.92,
+    "share_percentage_after": 65.03,
+    "UID": null,
+    "source": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_EREP/202507/59ef3a120a_f7e1b1ba8c.pdf",
+    "timestamp": "2025-07-07 16:41:54",
+    "company": "Surya Citra Media Tbk",
+    "inferred_price": 149.07,
+    "latest_price": 322.0,
+    "deviation": "53.70%",
+    "amount_transacted": 84000000,
+    "transaction_value": 12522000000.0,
+    "price_transaction": {
+      "prices": [
+        148,
+        150,
+        149,
+        150
+      ],
+      "amount_transacted": [
+        37000000,
+        27000000,
+        4000000,
+        16000000
+      ]
+    }
+  },
+  {
+    "reason": "Suspicious price deviation (>50%) from latest market price",
+    "holder_name": "PT Tunggal Jaya Investama",
+    "transaction_type": "buy",
+    "holding_before": 23279426194,
+    "holding_after": 23929426194,
+    "share_percentage_before": 42.9,
+    "share_percentage_after": 44.09,
+    "UID": null,
+    "source": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_EREP/202507/749314bfcd_84f3c49c23.pdf",
+    "timestamp": "2025-07-02 17:06:07",
+    "company": "PT Impack Pratama Industri Tbk",
+    "inferred_price": 260.0,
+    "latest_price": 1310.0,
+    "deviation": "80.15%",
+    "amount_transacted": 650000000,
+    "transaction_value": 169000000000.0,
+    "price_transaction": {
+      "prices": [
+        260
+      ],
+      "amount_transacted": [
+        650000000
+      ]
+    }
+  },
+  {
+    "reason": "Suspicious price deviation (>50%) from latest market price",
+    "holder_name": "Pramana Budihardjo",
+    "transaction_type": "sell",
+    "holding_before": 40000,
+    "holding_after": 0,
+    "share_percentage_before": 0.0,
+    "share_percentage_after": 0.0,
+    "UID": null,
+    "source": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_EREP/202507/adf580d92c_e0b3d28226.pdf",
+    "timestamp": "2025-07-04 09:57:29",
+    "company": "PT Bangun Karya Perkasa Jaya Tbk",
+    "inferred_price": 29.0,
+    "latest_price": 208.0,
+    "deviation": "86.06%",
+    "amount_transacted": 40000,
+    "transaction_value": 1160000.0,
+    "price_transaction": {
+      "prices": [
+        29
+      ],
+      "amount_transacted": [
+        40000
+      ]
+    }
+  },
+  {
+    "reason": "Suspicious price deviation (>50%) from latest market price",
+    "holder_name": "Star Pacific Tbk",
+    "transaction_type": "sell",
+    "holding_before": 1006170721,
+    "holding_after": 621621621,
+    "share_percentage_before": 13.45,
+    "share_percentage_after": 8.31,
+    "UID": null,
+    "source": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_EREP/202507/507ad9487d_22aeba57b9.pdf",
+    "timestamp": "2025-07-02 10:47:17",
+    "company": "Star Pacific Tbk",
+    "inferred_price": 1110.0,
+    "latest_price": 318.0,
+    "deviation": "249.06%",
+    "amount_transacted": 384549100,
+    "transaction_value": 426849501000.0,
+    "price_transaction": {
+      "prices": [
+        1110
+      ],
+      "amount_transacted": [
+        384549100
+      ]
+    }
+  },
+  {
+    "reason": "Inconsistent share and holding direction",
+    "holder_name": "PT Wir Global Kreatif",
+    "transaction_type": "sell",
+    "holding_before": 956289210,
+    "holding_after": 1262816410,
+    "share_percentage_before": 8.01,
+    "share_percentage_after": 10.578,
+    "UID": null,
+    "source": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_EREP/202507/8b75c0b4da_156e3f5c7b.pdf",
+    "timestamp": "2025-07-07 16:17:55",
+    "company": "PT Wir Asia Tbk"
+  },
+  {
+    "reason": "Suspicious price deviation (>50%) from latest market price",
+    "holder_name": "PT Wir Global Kreatif",
+    "transaction_type": "sell",
+    "holding_before": 956289210,
+    "holding_after": 1262816410,
+    "share_percentage_before": 8.01,
+    "share_percentage_after": 10.578,
+    "UID": null,
+    "source": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_EREP/202507/8b75c0b4da_156e3f5c7b.pdf",
+    "timestamp": "2025-07-07 16:17:55",
+    "company": "PT Wir Asia Tbk",
+    "inferred_price": 80.45,
+    "latest_price": 172.0,
+    "deviation": "53.23%",
+    "amount_transacted": 97000000,
+    "transaction_value": 7803363200.0,
+    "price_transaction": {
+      "prices": [
+        83,
+        81,
+        82,
+        78,
+        79,
+        78,
+        79,
+        80
+      ],
+      "amount_transacted": [
+        35814000,
+        13686000,
+        1339500,
+        31240000,
+        3450400,
+        3343300,
+        7826800,
+        300000
+      ]
+    }
+  },
+  {
+    "reason": "Suspicious price deviation (>50%) from latest market price",
+    "holder_name": "Brigitta Notoatmodjo",
+    "transaction_type": "sell",
+    "holding_before": 230848100,
+    "holding_after": 97773100,
+    "share_percentage_before": 13.874,
+    "share_percentage_after": 5.876,
+    "UID": null,
+    "source": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_EREP/202507/1aa3398ed8_b846f3fdbd.pdf",
+    "timestamp": "2025-07-04 09:22:52",
+    "company": "PT Bangun Karya Perkasa Jaya Tbk",
+    "inferred_price": 29.0,
+    "latest_price": 208.0,
+    "deviation": "86.06%",
+    "amount_transacted": 133075000,
+    "transaction_value": 3859175000.0,
+    "price_transaction": {
+      "prices": [
+        29
+      ],
+      "amount_transacted": [
+        133075000
+      ]
+    }
+  },
+  {
+    "reason": "Suspicious price deviation (>50%) from latest market price",
+    "holder_name": "PT Hillcon Equity Management",
+    "transaction_type": "sell",
+    "holding_before": 8107305500,
+    "holding_after": 8022020500,
+    "share_percentage_before": 55.0,
+    "share_percentage_after": 54.42,
+    "UID": null,
+    "source": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_EREP/202507/7de4657c77_e6d5927c7e.pdf",
+    "timestamp": "2025-07-04 11:05:19",
+    "company": "PT Hillcon Tbk",
+    "inferred_price": 320.0,
+    "latest_price": 208.0,
+    "deviation": "53.85%",
+    "amount_transacted": 85285000,
+    "transaction_value": 27291200000.0,
+    "price_transaction": {
+      "prices": [
+        320
+      ],
+      "amount_transacted": [
+        85285000
+      ]
+    }
+  },
+  {
+    "reason": "Inconsistent share and holding direction",
+    "holder_name": "PT Gaia Artha Dinamic",
+    "transaction_type": "sell",
+    "holding_before": 278516400,
+    "holding_after": 369316400,
+    "share_percentage_before": 5.26,
+    "share_percentage_after": 6.98,
+    "UID": null,
+    "source": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_EREP/202507/dd44652157_23d9eb9c7d.pdf",
+    "timestamp": "2025-07-01 17:05:47",
+    "company": "PT Sumber Sinergi Makmur Tbk"
+  },
+  {
+    "reason": "Inconsistent share and holding direction",
+    "holder_name": "PT Gaia Artha Dinamic",
+    "transaction_type": "sell",
+    "holding_before": 395393100,
+    "holding_after": 435493100,
+    "share_percentage_before": 7.47,
+    "share_percentage_after": 8.23,
+    "UID": null,
+    "source": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_EREP/202507/c6732c5c7b_91b1fc1e9c.pdf",
+    "timestamp": "2025-07-03 08:13:10",
+    "company": "PT Sumber Sinergi Makmur Tbk"
+  },
+  {
+    "reason": "Suspicious price deviation (>50%) from latest market price",
+    "holder_name": "Vientje Harijanto",
+    "transaction_type": "buy",
+    "holding_before": 124441296,
+    "holding_after": 146082496,
+    "share_percentage_before": 4.26,
+    "share_percentage_after": 5.0,
+    "UID": null,
+    "source": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_EREP/202507/34cbf01013_167fce1b1e.pdf",
+    "timestamp": "2025-07-02 10:34:33",
+    "company": "PT Malacca Trust Wuwungan Insurance Tbk.",
+    "inferred_price": 100.0,
+    "latest_price": 378.0,
+    "deviation": "73.54%",
+    "amount_transacted": 21641200,
+    "transaction_value": 2164120000.0,
+    "price_transaction": {
+      "prices": [
+        100
+      ],
+      "amount_transacted": [
+        21641200
+      ]
+    }
+  }
+]

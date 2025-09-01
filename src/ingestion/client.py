@@ -10,10 +10,9 @@ def make_session() -> requests.Session:
     Create a requests.Session configured with proxies and with SSL warnings silenced.
     We keep verify=False at call sites to mirror legacy behavior.
     """
-    # Silence SSL-related warnings (macOS/LibreSSL commonly emits these)
     warnings.filterwarnings("ignore", category=urllib3.exceptions.InsecureRequestWarning)
     try:
-        from urllib3.exceptions import NotOpenSSLWarning  # type: ignore
+        from urllib3.exceptions import NotOpenSSLWarning 
         warnings.filterwarnings("ignore", category=NotOpenSSLWarning)
     except Exception:
         pass

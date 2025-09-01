@@ -1,0 +1,3821 @@
+{
+  "updated_at": "2025-09-01T14:59:50.322271Z",
+  "prices": {
+    "BRIS.JK": {
+      "close": 2690.0,
+      "date": "2025-09-01"
+    },
+    "CMRY.JK": {
+      "close": 4860.0,
+      "date": "2025-09-01"
+    },
+    "ECII.JK": {
+      "close": 185.0,
+      "date": "2025-09-01"
+    },
+    "FILM.JK": {
+      "close": 3150.0,
+      "date": "2025-09-01"
+    },
+    "PUDP.JK": {
+      "close": 222.0,
+      "date": "2025-09-01"
+    },
+    "SCCO.JK": {
+      "close": 2260.0,
+      "date": "2025-09-01"
+    },
+    "SGRO.JK": {
+      "close": 4300.0,
+      "date": "2025-09-01"
+    },
+    "PANI.JK": {
+      "close": 15425.0,
+      "date": "2025-09-01"
+    },
+    "IBOS.JK": {
+      "close": 41.0,
+      "date": "2025-09-01"
+    },
+    "RDTX.JK": {
+      "close": 12200.0,
+      "date": "2025-09-01"
+    },
+    "SOUL.JK": {
+      "close": 67.0,
+      "date": "2025-09-01"
+    },
+    "BBNI.JK": {
+      "close": 4320.0,
+      "date": "2025-09-01"
+    },
+    "NASA.JK": {
+      "close": 32.0,
+      "date": "2025-09-01"
+    },
+    "MEGA.JK": {
+      "close": 3310.0,
+      "date": "2025-09-01"
+    },
+    "NELY.JK": {
+      "close": 338.0,
+      "date": "2025-09-01"
+    },
+    "LFLO.JK": {
+      "close": 248.0,
+      "date": "2025-09-01"
+    },
+    "KLAS.JK": {
+      "close": 132.0,
+      "date": "2025-09-01"
+    },
+    "VISI.JK": {
+      "close": 138.0,
+      "date": "2025-09-01"
+    },
+    "BANK.JK": {
+      "close": 800.0,
+      "date": "2025-09-01"
+    },
+    "BLTA.JK": {
+      "close": 37.0,
+      "date": "2025-09-01"
+    },
+    "ENZO.JK": {
+      "close": 38.0,
+      "date": "2025-09-01"
+    },
+    "WEGE.JK": {
+      "close": 61.0,
+      "date": "2025-09-01"
+    },
+    "SUGI.JK": {
+      "close": 50.0,
+      "date": "2025-08-29"
+    },
+    "CITY.JK": {
+      "close": 100.0,
+      "date": "2025-09-01"
+    },
+    "BNBA.JK": {
+      "close": 810.0,
+      "date": "2025-09-01"
+    },
+    "DNET.JK": {
+      "close": 9425.0,
+      "date": "2025-09-01"
+    },
+    "BUVA.JK": {
+      "close": 342.0,
+      "date": "2025-09-01"
+    },
+    "GOLL.JK": {
+      "close": 50.0,
+      "date": "2025-08-29"
+    },
+    "PWON.JK": {
+      "close": 354.0,
+      "date": "2025-09-01"
+    },
+    "DYAN.JK": {
+      "close": 85.0,
+      "date": "2025-09-01"
+    },
+    "TDPM.JK": {
+      "close": 119.0,
+      "date": "2025-08-29"
+    },
+    "BIKE.JK": {
+      "close": 865.0,
+      "date": "2025-09-01"
+    },
+    "BELI.JK": {
+      "close": 366.0,
+      "date": "2025-09-01"
+    },
+    "BNBR.JK": {
+      "close": 35.0,
+      "date": "2025-09-01"
+    },
+    "MBSS.JK": {
+      "close": 1450.0,
+      "date": "2025-09-01"
+    },
+    "PDES.JK": {
+      "close": 480.0,
+      "date": "2025-09-01"
+    },
+    "KLBF.JK": {
+      "close": 1175.0,
+      "date": "2025-09-01"
+    },
+    "VERN.JK": {
+      "close": 117.0,
+      "date": "2025-09-01"
+    },
+    "PSAB.JK": {
+      "close": 595.0,
+      "date": "2025-09-01"
+    },
+    "RAAM.JK": {
+      "close": 268.0,
+      "date": "2025-09-01"
+    },
+    "GTRA.JK": {
+      "close": 138.0,
+      "date": "2025-09-01"
+    },
+    "ASPI.JK": {
+      "close": 430.0,
+      "date": "2025-09-01"
+    },
+    "MBAP.JK": {
+      "close": 1615.0,
+      "date": "2025-09-01"
+    },
+    "ALII.JK": {
+      "close": 535.0,
+      "date": "2025-09-01"
+    },
+    "TBMS.JK": {
+      "close": 1015.0,
+      "date": "2025-09-01"
+    },
+    "FISH.JK": {
+      "close": 10350.0,
+      "date": "2025-08-29"
+    },
+    "BBLD.JK": {
+      "close": 915.0,
+      "date": "2025-09-01"
+    },
+    "SMRU.JK": {
+      "close": 50.0,
+      "date": "2025-08-29"
+    },
+    "DADA.JK": {
+      "close": 33.0,
+      "date": "2025-09-01"
+    },
+    "PPRI.JK": {
+      "close": 256.0,
+      "date": "2025-09-01"
+    },
+    "BYAN.JK": {
+      "close": 17925.0,
+      "date": "2025-09-01"
+    },
+    "BBCA.JK": {
+      "close": 8000.0,
+      "date": "2025-09-01"
+    },
+    "KEEN.JK": {
+      "close": 805.0,
+      "date": "2025-09-01"
+    },
+    "CCSI.JK": {
+      "close": 378.0,
+      "date": "2025-09-01"
+    },
+    "SOLA.JK": {
+      "close": 149.0,
+      "date": "2025-09-01"
+    },
+    "AEGS.JK": {
+      "close": 51.0,
+      "date": "2025-09-01"
+    },
+    "GJTL.JK": {
+      "close": 1005.0,
+      "date": "2025-09-01"
+    },
+    "BSML.JK": {
+      "close": 103.0,
+      "date": "2025-09-01"
+    },
+    "CITA.JK": {
+      "close": 4040.0,
+      "date": "2025-09-01"
+    },
+    "RUIS.JK": {
+      "close": 214.0,
+      "date": "2025-09-01"
+    },
+    "OILS.JK": {
+      "close": 130.0,
+      "date": "2025-09-01"
+    },
+    "BUDI.JK": {
+      "close": 218.0,
+      "date": "2025-09-01"
+    },
+    "UNVR.JK": {
+      "close": 1700.0,
+      "date": "2025-09-01"
+    },
+    "MAPI.JK": {
+      "close": 1190.0,
+      "date": "2025-09-01"
+    },
+    "MICE.JK": {
+      "close": 484.0,
+      "date": "2025-09-01"
+    },
+    "MTLA.JK": {
+      "close": 434.0,
+      "date": "2025-09-01"
+    },
+    "RATU.JK": {
+      "close": 5850.0,
+      "date": "2025-09-01"
+    },
+    "LMAS.JK": {
+      "close": 50.0,
+      "date": "2025-08-29"
+    },
+    "FASW.JK": {
+      "close": 5312.0,
+      "date": "2025-08-29"
+    },
+    "SRTG.JK": {
+      "close": 1815.0,
+      "date": "2025-09-01"
+    },
+    "MDRN.JK": {
+      "close": 26.0,
+      "date": "2025-09-01"
+    },
+    "SILO.JK": {
+      "close": 2180.0,
+      "date": "2025-09-01"
+    },
+    "TRUE.JK": {
+      "close": 49.0,
+      "date": "2025-09-01"
+    },
+    "PADA.JK": {
+      "close": 41.0,
+      "date": "2025-09-01"
+    },
+    "DVLA.JK": {
+      "close": 1665.0,
+      "date": "2025-09-01"
+    },
+    "KMDS.JK": {
+      "close": 630.0,
+      "date": "2025-09-01"
+    },
+    "TPMA.JK": {
+      "close": 575.0,
+      "date": "2025-09-01"
+    },
+    "AKSI.JK": {
+      "close": 242.0,
+      "date": "2025-09-01"
+    },
+    "BTPS.JK": {
+      "close": 1460.0,
+      "date": "2025-09-01"
+    },
+    "DMND.JK": {
+      "close": 570.0,
+      "date": "2025-09-01"
+    },
+    "MTEL.JK": {
+      "close": 580.0,
+      "date": "2025-09-01"
+    },
+    "SSIA.JK": {
+      "close": 2250.0,
+      "date": "2025-09-01"
+    },
+    "FUJI.JK": {
+      "close": 442.0,
+      "date": "2025-09-01"
+    },
+    "TGRA.JK": {
+      "close": 27.0,
+      "date": "2025-08-29"
+    },
+    "VOKS.JK": {
+      "close": 276.0,
+      "date": "2025-09-01"
+    },
+    "AISA.JK": {
+      "close": 119.0,
+      "date": "2025-09-01"
+    },
+    "IDPR.JK": {
+      "close": 246.0,
+      "date": "2025-09-01"
+    },
+    "MPMX.JK": {
+      "close": 955.0,
+      "date": "2025-09-01"
+    },
+    "ARTA.JK": {
+      "close": 3140.0,
+      "date": "2025-09-01"
+    },
+    "TFAS.JK": {
+      "close": 132.0,
+      "date": "2025-09-01"
+    },
+    "ANJT.JK": {
+      "close": 1795.0,
+      "date": "2025-09-01"
+    },
+    "NCKL.JK": {
+      "close": 1000.0,
+      "date": "2025-09-01"
+    },
+    "LPLI.JK": {
+      "close": 318.0,
+      "date": "2025-09-01"
+    },
+    "BRPT.JK": {
+      "close": 2130.0,
+      "date": "2025-09-01"
+    },
+    "ENVY.JK": {
+      "close": 50.0,
+      "date": "2025-08-29"
+    },
+    "KEJU.JK": {
+      "close": 605.0,
+      "date": "2025-09-01"
+    },
+    "DSFI.JK": {
+      "close": 76.0,
+      "date": "2025-09-01"
+    },
+    "VTNY.JK": {
+      "close": 102.0,
+      "date": "2025-09-01"
+    },
+    "MFMI.JK": {
+      "close": 1300.0,
+      "date": "2025-08-29"
+    },
+    "NZIA.JK": {
+      "close": 93.0,
+      "date": "2025-09-01"
+    },
+    "SUNI.JK": {
+      "close": 775.0,
+      "date": "2025-09-01"
+    },
+    "ABMM.JK": {
+      "close": 2940.0,
+      "date": "2025-09-01"
+    },
+    "HKMU.JK": {
+      "close": 50.0,
+      "date": "2025-08-29"
+    },
+    "NPGF.JK": {
+      "close": 58.0,
+      "date": "2025-09-01"
+    },
+    "POLA.JK": {
+      "close": 26.0,
+      "date": "2025-09-01"
+    },
+    "ESTA.JK": {
+      "close": 62.0,
+      "date": "2025-09-01"
+    },
+    "BBYB.JK": {
+      "close": 326.0,
+      "date": "2025-09-01"
+    },
+    "KONI.JK": {
+      "close": 2430.0,
+      "date": "2025-08-29"
+    },
+    "JSPT.JK": {
+      "close": 4040.0,
+      "date": "2025-09-01"
+    },
+    "RALS.JK": {
+      "close": 384.0,
+      "date": "2025-09-01"
+    },
+    "UDNG.JK": {
+      "close": 2330.0,
+      "date": "2025-08-29"
+    },
+    "CMNP.JK": {
+      "close": 1370.0,
+      "date": "2025-09-01"
+    },
+    "BTEK.JK": {
+      "close": 15.0,
+      "date": "2025-09-01"
+    },
+    "FOOD.JK": {
+      "close": 121.0,
+      "date": "2025-09-01"
+    },
+    "SAPX.JK": {
+      "close": 290.0,
+      "date": "2025-09-01"
+    },
+    "DEWI.JK": {
+      "close": 107.0,
+      "date": "2025-09-01"
+    },
+    "PYFA.JK": {
+      "close": 595.0,
+      "date": "2025-09-01"
+    },
+    "OKAS.JK": {
+      "close": 274.0,
+      "date": "2025-09-01"
+    },
+    "ERAL.JK": {
+      "close": 322.0,
+      "date": "2025-09-01"
+    },
+    "NAYZ.JK": {
+      "close": 84.0,
+      "date": "2025-09-01"
+    },
+    "ZONE.JK": {
+      "close": 740.0,
+      "date": "2025-09-01"
+    },
+    "GIAA.JK": {
+      "close": 67.0,
+      "date": "2025-09-01"
+    },
+    "SHID.JK": {
+      "close": 905.0,
+      "date": "2025-09-01"
+    },
+    "BAPA.JK": {
+      "close": 54.0,
+      "date": "2025-09-01"
+    },
+    "MUTU.JK": {
+      "close": 88.0,
+      "date": "2025-09-01"
+    },
+    "CNKO.JK": {
+      "close": 98.0,
+      "date": "2025-09-01"
+    },
+    "OASA.JK": {
+      "close": 244.0,
+      "date": "2025-09-01"
+    },
+    "PADI.JK": {
+      "close": 72.0,
+      "date": "2025-09-01"
+    },
+    "RBMS.JK": {
+      "close": 37.0,
+      "date": "2025-09-01"
+    },
+    "KIJA.JK": {
+      "close": 204.0,
+      "date": "2025-09-01"
+    },
+    "ACES.JK": {
+      "close": 444.0,
+      "date": "2025-09-01"
+    },
+    "CSRA.JK": {
+      "close": 820.0,
+      "date": "2025-09-01"
+    },
+    "LPCK.JK": {
+      "close": 600.0,
+      "date": "2025-09-01"
+    },
+    "GEMS.JK": {
+      "close": 9200.0,
+      "date": "2025-09-01"
+    },
+    "VKTR.JK": {
+      "close": 112.0,
+      "date": "2025-09-01"
+    },
+    "PTRO.JK": {
+      "close": 3700.0,
+      "date": "2025-09-01"
+    },
+    "BNII.JK": {
+      "close": 210.0,
+      "date": "2025-09-01"
+    },
+    "MABA.JK": {
+      "close": 50.0,
+      "date": "2025-08-29"
+    },
+    "SGER.JK": {
+      "close": 314.0,
+      "date": "2025-09-01"
+    },
+    "AKPI.JK": {
+      "close": 555.0,
+      "date": "2025-09-01"
+    },
+    "TRIM.JK": {
+      "close": 370.0,
+      "date": "2025-09-01"
+    },
+    "PEGE.JK": {
+      "close": 112.0,
+      "date": "2025-09-01"
+    },
+    "HOME.JK": {
+      "close": 50.0,
+      "date": "2025-08-29"
+    },
+    "SDMU.JK": {
+      "close": 49.0,
+      "date": "2025-09-01"
+    },
+    "KING.JK": {
+      "close": 202.0,
+      "date": "2025-09-01"
+    },
+    "NEST.JK": {
+      "close": 258.0,
+      "date": "2025-09-01"
+    },
+    "SINI.JK": {
+      "close": 3600.0,
+      "date": "2025-09-01"
+    },
+    "BCIP.JK": {
+      "close": 88.0,
+      "date": "2025-09-01"
+    },
+    "IPCC.JK": {
+      "close": 1070.0,
+      "date": "2025-09-01"
+    },
+    "FUTR.JK": {
+      "close": 220.0,
+      "date": "2025-09-01"
+    },
+    "HILL.JK": {
+      "close": 208.0,
+      "date": "2025-09-01"
+    },
+    "ARGO.JK": {
+      "close": 1275.0,
+      "date": "2025-09-01"
+    },
+    "GSMF.JK": {
+      "close": 117.0,
+      "date": "2025-09-01"
+    },
+    "BCAP.JK": {
+      "close": 67.0,
+      "date": "2025-09-01"
+    },
+    "JECC.JK": {
+      "close": 1270.0,
+      "date": "2025-09-01"
+    },
+    "CAKK.JK": {
+      "close": 135.0,
+      "date": "2025-09-01"
+    },
+    "POLU.JK": {
+      "close": 6250.0,
+      "date": "2025-09-01"
+    },
+    "TOWR.JK": {
+      "close": 605.0,
+      "date": "2025-09-01"
+    },
+    "SWAT.JK": {
+      "close": 16.0,
+      "date": "2025-08-29"
+    },
+    "MDIY.JK": {
+      "close": 1140.0,
+      "date": "2025-09-01"
+    },
+    "BLOG.JK": {
+      "close": 535.0,
+      "date": "2025-09-01"
+    },
+    "KREN.JK": {
+      "close": 18.0,
+      "date": "2025-09-01"
+    },
+    "BESS.JK": {
+      "close": 1030.0,
+      "date": "2025-09-01"
+    },
+    "KBLM.JK": {
+      "close": 374.0,
+      "date": "2025-09-01"
+    },
+    "RELF.JK": {
+      "close": 43.0,
+      "date": "2025-09-01"
+    },
+    "ASBI.JK": {
+      "close": 432.0,
+      "date": "2025-09-01"
+    },
+    "BJBR.JK": {
+      "close": 780.0,
+      "date": "2025-09-01"
+    },
+    "MTRA.JK": {
+      "close": 244.0,
+      "date": "2025-08-29"
+    },
+    "MSIN.JK": {
+      "close": 510.0,
+      "date": "2025-09-01"
+    },
+    "ASRM.JK": {
+      "close": 278.0,
+      "date": "2025-09-01"
+    },
+    "SMBR.JK": {
+      "close": 276.0,
+      "date": "2025-09-01"
+    },
+    "CNTX.JK": {
+      "close": 142.0,
+      "date": "2025-08-29"
+    },
+    "LAND.JK": {
+      "close": 40.0,
+      "date": "2025-09-01"
+    },
+    "MAIN.JK": {
+      "close": 645.0,
+      "date": "2025-09-01"
+    },
+    "EDGE.JK": {
+      "close": 4220.0,
+      "date": "2025-09-01"
+    },
+    "ASDM.JK": {
+      "close": 535.0,
+      "date": "2025-09-01"
+    },
+    "CPRI.JK": {
+      "close": 50.0,
+      "date": "2025-08-29"
+    },
+    "DMAS.JK": {
+      "close": 137.0,
+      "date": "2025-09-01"
+    },
+    "CSAP.JK": {
+      "close": 282.0,
+      "date": "2025-09-01"
+    },
+    "PNLF.JK": {
+      "close": 256.0,
+      "date": "2025-09-01"
+    },
+    "INTP.JK": {
+      "close": 6775.0,
+      "date": "2025-09-01"
+    },
+    "SKYB.JK": {
+      "close": 51.0,
+      "date": "2025-08-29"
+    },
+    "SCMA.JK": {
+      "close": 322.0,
+      "date": "2025-09-01"
+    },
+    "NIKL.JK": {
+      "close": 230.0,
+      "date": "2025-09-01"
+    },
+    "RUNS.JK": {
+      "close": 100.0,
+      "date": "2025-09-01"
+    },
+    "GRPH.JK": {
+      "close": 67.0,
+      "date": "2025-09-01"
+    },
+    "INPS.JK": {
+      "close": 108.0,
+      "date": "2025-09-01"
+    },
+    "LINK.JK": {
+      "close": 3400.0,
+      "date": "2025-09-01"
+    },
+    "BAJA.JK": {
+      "close": 120.0,
+      "date": "2025-09-01"
+    },
+    "HMSP.JK": {
+      "close": 525.0,
+      "date": "2025-09-01"
+    },
+    "SMCB.JK": {
+      "close": 775.0,
+      "date": "2025-08-29"
+    },
+    "WICO.JK": {
+      "close": 123.0,
+      "date": "2025-08-29"
+    },
+    "GEMA.JK": {
+      "close": 115.0,
+      "date": "2025-09-01"
+    },
+    "COCO.JK": {
+      "close": 575.0,
+      "date": "2025-09-01"
+    },
+    "MCOR.JK": {
+      "close": 73.0,
+      "date": "2025-09-01"
+    },
+    "UNIQ.JK": {
+      "close": 382.0,
+      "date": "2025-09-01"
+    },
+    "PTSP.JK": {
+      "close": 985.0,
+      "date": "2025-09-01"
+    },
+    "OBAT.JK": {
+      "close": 446.0,
+      "date": "2025-09-01"
+    },
+    "AUTO.JK": {
+      "close": 2370.0,
+      "date": "2025-09-01"
+    },
+    "BOLT.JK": {
+      "close": 1070.0,
+      "date": "2025-09-01"
+    },
+    "BBSI.JK": {
+      "close": 3990.0,
+      "date": "2025-09-01"
+    },
+    "DKFT.JK": {
+      "close": 700.0,
+      "date": "2025-09-01"
+    },
+    "ADRO.JK": {
+      "close": 1720.0,
+      "date": "2025-09-01"
+    },
+    "ARTO.JK": {
+      "close": 2170.0,
+      "date": "2025-09-01"
+    },
+    "MKNT.JK": {
+      "close": 1.0,
+      "date": "2025-08-29"
+    },
+    "SAGE.JK": {
+      "close": 38.0,
+      "date": "2025-09-01"
+    },
+    "AVIA.JK": {
+      "close": 426.0,
+      "date": "2025-09-01"
+    },
+    "BPFI.JK": {
+      "close": 340.0,
+      "date": "2025-09-01"
+    },
+    "AGAR.JK": {
+      "close": 254.0,
+      "date": "2025-09-01"
+    },
+    "BVIC.JK": {
+      "close": 112.0,
+      "date": "2025-09-01"
+    },
+    "DART.JK": {
+      "close": 164.0,
+      "date": "2025-09-01"
+    },
+    "ISSP.JK": {
+      "close": 408.0,
+      "date": "2025-09-01"
+    },
+    "KKGI.JK": {
+      "close": 326.0,
+      "date": "2025-09-01"
+    },
+    "PJAA.JK": {
+      "close": 494.0,
+      "date": "2025-09-01"
+    },
+    "BINA.JK": {
+      "close": 4400.0,
+      "date": "2025-09-01"
+    },
+    "MYOR.JK": {
+      "close": 2100.0,
+      "date": "2025-09-01"
+    },
+    "JAWA.JK": {
+      "close": 148.0,
+      "date": "2025-09-01"
+    },
+    "MDLA.JK": {
+      "close": 240.0,
+      "date": "2025-09-01"
+    },
+    "SCPI.JK": {
+      "close": 29000.0,
+      "date": "2025-08-29"
+    },
+    "PGLI.JK": {
+      "close": 175.0,
+      "date": "2025-09-01"
+    },
+    "ASSA.JK": {
+      "close": 815.0,
+      "date": "2025-09-01"
+    },
+    "KINO.JK": {
+      "close": 1120.0,
+      "date": "2025-09-01"
+    },
+    "LCKM.JK": {
+      "close": 206.0,
+      "date": "2025-09-01"
+    },
+    "CBDK.JK": {
+      "close": 6250.0,
+      "date": "2025-09-01"
+    },
+    "BEST.JK": {
+      "close": 122.0,
+      "date": "2025-09-01"
+    },
+    "MARI.JK": {
+      "close": 30.0,
+      "date": "2025-09-01"
+    },
+    "RANC.JK": {
+      "close": 416.0,
+      "date": "2025-09-01"
+    },
+    "CNMA.JK": {
+      "close": 131.0,
+      "date": "2025-09-01"
+    },
+    "BREN.JK": {
+      "close": 8950.0,
+      "date": "2025-09-01"
+    },
+    "BATA.JK": {
+      "close": 51.0,
+      "date": "2025-09-01"
+    },
+    "CHIP.JK": {
+      "close": 1370.0,
+      "date": "2025-09-01"
+    },
+    "IMPC.JK": {
+      "close": 1310.0,
+      "date": "2025-09-01"
+    },
+    "KKES.JK": {
+      "close": 40.0,
+      "date": "2025-09-01"
+    },
+    "AXIO.JK": {
+      "close": 125.0,
+      "date": "2025-09-01"
+    },
+    "INPP.JK": {
+      "close": 775.0,
+      "date": "2025-09-01"
+    },
+    "ASJT.JK": {
+      "close": 110.0,
+      "date": "2025-09-01"
+    },
+    "BCIC.JK": {
+      "close": 170.0,
+      "date": "2025-08-29"
+    },
+    "ARTI.JK": {
+      "close": 2.0,
+      "date": "2025-08-29"
+    },
+    "APLN.JK": {
+      "close": 100.0,
+      "date": "2025-09-01"
+    },
+    "BRRC.JK": {
+      "close": 73.0,
+      "date": "2025-09-01"
+    },
+    "HOMI.JK": {
+      "close": 196.0,
+      "date": "2025-09-01"
+    },
+    "MIDI.JK": {
+      "close": 434.0,
+      "date": "2025-09-01"
+    },
+    "TLKM.JK": {
+      "close": 3110.0,
+      "date": "2025-09-01"
+    },
+    "BFIN.JK": {
+      "close": 780.0,
+      "date": "2025-09-01"
+    },
+    "BBHI.JK": {
+      "close": 1575.0,
+      "date": "2025-09-01"
+    },
+    "TAPG.JK": {
+      "close": 1425.0,
+      "date": "2025-09-01"
+    },
+    "ADES.JK": {
+      "close": 13550.0,
+      "date": "2025-09-01"
+    },
+    "PSKT.JK": {
+      "close": 116.0,
+      "date": "2025-09-01"
+    },
+    "FLMC.JK": {
+      "close": 195.0,
+      "date": "2025-09-01"
+    },
+    "IDEA.JK": {
+      "close": 101.0,
+      "date": "2025-09-01"
+    },
+    "LPGI.JK": {
+      "close": 438.0,
+      "date": "2025-09-01"
+    },
+    "EAST.JK": {
+      "close": 94.0,
+      "date": "2025-09-01"
+    },
+    "GPRA.JK": {
+      "close": 146.0,
+      "date": "2025-09-01"
+    },
+    "BALI.JK": {
+      "close": 1470.0,
+      "date": "2025-09-01"
+    },
+    "MPXL.JK": {
+      "close": 120.0,
+      "date": "2025-09-01"
+    },
+    "STAR.JK": {
+      "close": 38.0,
+      "date": "2025-09-01"
+    },
+    "TSPC.JK": {
+      "close": 2240.0,
+      "date": "2025-09-01"
+    },
+    "CENT.JK": {
+      "close": 115.0,
+      "date": "2025-09-01"
+    },
+    "NIRO.JK": {
+      "close": 121.0,
+      "date": "2025-09-01"
+    },
+    "TBLA.JK": {
+      "close": 735.0,
+      "date": "2025-09-01"
+    },
+    "CTRA.JK": {
+      "close": 985.0,
+      "date": "2025-09-01"
+    },
+    "ITMG.JK": {
+      "close": 22200.0,
+      "date": "2025-09-01"
+    },
+    "ASPR.JK": {
+      "close": 94.0,
+      "date": "2025-09-01"
+    },
+    "SEMA.JK": {
+      "close": 90.0,
+      "date": "2025-09-01"
+    },
+    "CTBN.JK": {
+      "close": 5125.0,
+      "date": "2025-09-01"
+    },
+    "ABDA.JK": {
+      "close": 3400.0,
+      "date": "2025-09-01"
+    },
+    "CARS.JK": {
+      "close": 139.0,
+      "date": "2025-09-01"
+    },
+    "MINA.JK": {
+      "close": 180.0,
+      "date": "2025-09-01"
+    },
+    "PANR.JK": {
+      "close": 730.0,
+      "date": "2025-09-01"
+    },
+    "MCOL.JK": {
+      "close": 3820.0,
+      "date": "2025-09-01"
+    },
+    "PRIM.JK": {
+      "close": 88.0,
+      "date": "2025-09-01"
+    },
+    "HUMI.JK": {
+      "close": 180.0,
+      "date": "2025-09-01"
+    },
+    "JPFA.JK": {
+      "close": 1620.0,
+      "date": "2025-09-01"
+    },
+    "SNLK.JK": {
+      "close": 472.0,
+      "date": "2025-09-01"
+    },
+    "CTTH.JK": {
+      "close": 41.0,
+      "date": "2025-09-01"
+    },
+    "BMHS.JK": {
+      "close": 187.0,
+      "date": "2025-09-01"
+    },
+    "DWGL.JK": {
+      "close": 222.0,
+      "date": "2025-09-01"
+    },
+    "HOKI.JK": {
+      "close": 79.0,
+      "date": "2025-09-01"
+    },
+    "KOCI.JK": {
+      "close": 58.0,
+      "date": "2025-09-01"
+    },
+    "AMIN.JK": {
+      "close": 212.0,
+      "date": "2025-09-01"
+    },
+    "MSIE.JK": {
+      "close": 36.0,
+      "date": "2025-09-01"
+    },
+    "MLBI.JK": {
+      "close": 5900.0,
+      "date": "2025-09-01"
+    },
+    "WTON.JK": {
+      "close": 94.0,
+      "date": "2025-09-01"
+    },
+    "BKSW.JK": {
+      "close": 66.0,
+      "date": "2025-09-01"
+    },
+    "SMGR.JK": {
+      "close": 2720.0,
+      "date": "2025-09-01"
+    },
+    "YPAS.JK": {
+      "close": 354.0,
+      "date": "2025-09-01"
+    },
+    "YUPI.JK": {
+      "close": 1580.0,
+      "date": "2025-09-01"
+    },
+    "CANI.JK": {
+      "close": 41.0,
+      "date": "2025-09-01"
+    },
+    "IKBI.JK": {
+      "close": 595.0,
+      "date": "2025-09-01"
+    },
+    "MKAP.JK": {
+      "close": 360.0,
+      "date": "2025-09-01"
+    },
+    "HRTA.JK": {
+      "close": 700.0,
+      "date": "2025-09-01"
+    },
+    "BMRI.JK": {
+      "close": 4600.0,
+      "date": "2025-09-01"
+    },
+    "MTSM.JK": {
+      "close": 500.0,
+      "date": "2025-08-29"
+    },
+    "ZINC.JK": {
+      "close": 20.0,
+      "date": "2025-09-01"
+    },
+    "ASLC.JK": {
+      "close": 110.0,
+      "date": "2025-09-01"
+    },
+    "KBRI.JK": {
+      "close": 50.0,
+      "date": "2025-08-29"
+    },
+    "SHIP.JK": {
+      "close": 4350.0,
+      "date": "2025-09-01"
+    },
+    "PDPP.JK": {
+      "close": 490.0,
+      "date": "2025-09-01"
+    },
+    "ANTM.JK": {
+      "close": 3200.0,
+      "date": "2025-09-01"
+    },
+    "MGNA.JK": {
+      "close": 40.0,
+      "date": "2025-09-01"
+    },
+    "LAPD.JK": {
+      "close": 118.0,
+      "date": "2025-09-01"
+    },
+    "MRAT.JK": {
+      "close": 228.0,
+      "date": "2025-09-01"
+    },
+    "AMAN.JK": {
+      "close": 117.0,
+      "date": "2025-09-01"
+    },
+    "PART.JK": {
+      "close": 119.0,
+      "date": "2025-09-01"
+    },
+    "PNSE.JK": {
+      "close": 710.0,
+      "date": "2025-09-01"
+    },
+    "WINR.JK": {
+      "close": 32.0,
+      "date": "2025-09-01"
+    },
+    "KICI.JK": {
+      "close": 132.0,
+      "date": "2025-09-01"
+    },
+    "BTEL.JK": {
+      "close": 50.0,
+      "date": "2025-08-29"
+    },
+    "TALF.JK": {
+      "close": 380.0,
+      "date": "2025-09-01"
+    },
+    "PRAY.JK": {
+      "close": 685.0,
+      "date": "2025-09-01"
+    },
+    "IMJS.JK": {
+      "close": 238.0,
+      "date": "2025-09-01"
+    },
+    "JKON.JK": {
+      "close": 89.0,
+      "date": "2025-09-01"
+    },
+    "BMAS.JK": {
+      "close": 765.0,
+      "date": "2025-09-01"
+    },
+    "JIHD.JK": {
+      "close": 685.0,
+      "date": "2025-09-01"
+    },
+    "ACST.JK": {
+      "close": 146.0,
+      "date": "2025-09-01"
+    },
+    "KIAS.JK": {
+      "close": 21.0,
+      "date": "2025-08-29"
+    },
+    "CYBR.JK": {
+      "close": 950.0,
+      "date": "2025-09-01"
+    },
+    "DIGI.JK": {
+      "close": 34.0,
+      "date": "2025-09-01"
+    },
+    "IMAS.JK": {
+      "close": 1160.0,
+      "date": "2025-09-01"
+    },
+    "MHKI.JK": {
+      "close": 153.0,
+      "date": "2025-09-01"
+    },
+    "CASH.JK": {
+      "close": 104.0,
+      "date": "2025-09-01"
+    },
+    "ADCP.JK": {
+      "close": 53.0,
+      "date": "2025-09-01"
+    },
+    "LMAX.JK": {
+      "close": 83.0,
+      "date": "2025-09-01"
+    },
+    "STAA.JK": {
+      "close": 980.0,
+      "date": "2025-09-01"
+    },
+    "OLIV.JK": {
+      "close": 55.0,
+      "date": "2025-09-01"
+    },
+    "PGJO.JK": {
+      "close": 915.0,
+      "date": "2025-08-29"
+    },
+    "HADE.JK": {
+      "close": 26.0,
+      "date": "2025-09-01"
+    },
+    "ATIC.JK": {
+      "close": 434.0,
+      "date": "2025-09-01"
+    },
+    "PMUI.JK": {
+      "close": 120.0,
+      "date": "2025-09-01"
+    },
+    "OMED.JK": {
+      "close": 186.0,
+      "date": "2025-09-01"
+    },
+    "BBTN.JK": {
+      "close": 1280.0,
+      "date": "2025-09-01"
+    },
+    "GTBO.JK": {
+      "close": 193.0,
+      "date": "2025-09-01"
+    },
+    "TRUS.JK": {
+      "close": 458.0,
+      "date": "2025-09-01"
+    },
+    "TIRA.JK": {
+      "close": 1650.0,
+      "date": "2025-09-01"
+    },
+    "SMIL.JK": {
+      "close": 486.0,
+      "date": "2025-09-01"
+    },
+    "GRPM.JK": {
+      "close": 53.0,
+      "date": "2025-09-01"
+    },
+    "BSIM.JK": {
+      "close": 870.0,
+      "date": "2025-09-01"
+    },
+    "JMAS.JK": {
+      "close": 147.0,
+      "date": "2025-09-01"
+    },
+    "CBMF.JK": {
+      "close": 50.0,
+      "date": "2025-08-29"
+    },
+    "MERK.JK": {
+      "close": 2810.0,
+      "date": "2025-09-01"
+    },
+    "MITI.JK": {
+      "close": 258.0,
+      "date": "2025-09-01"
+    },
+    "CGAS.JK": {
+      "close": 128.0,
+      "date": "2025-09-01"
+    },
+    "ZYRX.JK": {
+      "close": 144.0,
+      "date": "2025-09-01"
+    },
+    "ENRG.JK": {
+      "close": 585.0,
+      "date": "2025-09-01"
+    },
+    "PTPS.JK": {
+      "close": 167.0,
+      "date": "2025-09-01"
+    },
+    "WMPP.JK": {
+      "close": 12.0,
+      "date": "2025-08-29"
+    },
+    "BRMS.JK": {
+      "close": 476.0,
+      "date": "2025-09-01"
+    },
+    "BJTM.JK": {
+      "close": 510.0,
+      "date": "2025-09-01"
+    },
+    "ASGR.JK": {
+      "close": 1140.0,
+      "date": "2025-09-01"
+    },
+    "DUTI.JK": {
+      "close": 4800.0,
+      "date": "2025-09-01"
+    },
+    "MERI.JK": {
+      "close": 234.0,
+      "date": "2025-09-01"
+    },
+    "SRAJ.JK": {
+      "close": 8100.0,
+      "date": "2025-09-01"
+    },
+    "MORA.JK": {
+      "close": 456.0,
+      "date": "2025-09-01"
+    },
+    "IPOL.JK": {
+      "close": 138.0,
+      "date": "2025-09-01"
+    },
+    "UNIC.JK": {
+      "close": 7975.0,
+      "date": "2025-09-01"
+    },
+    "LCGP.JK": {
+      "close": 114.0,
+      "date": "2025-08-29"
+    },
+    "MREI.JK": {
+      "close": 905.0,
+      "date": "2025-09-01"
+    },
+    "MFIN.JK": {
+      "close": 1155.0,
+      "date": "2025-09-01"
+    },
+    "MKPI.JK": {
+      "close": 24875.0,
+      "date": "2025-09-01"
+    },
+    "PURI.JK": {
+      "close": 186.0,
+      "date": "2025-09-01"
+    },
+    "AMRT.JK": {
+      "close": 2160.0,
+      "date": "2025-09-01"
+    },
+    "KBLI.JK": {
+      "close": 376.0,
+      "date": "2025-09-01"
+    },
+    "PTMR.JK": {
+      "close": 374.0,
+      "date": "2025-08-29"
+    },
+    "JATI.JK": {
+      "close": 136.0,
+      "date": "2025-09-01"
+    },
+    "CFIN.JK": {
+      "close": 312.0,
+      "date": "2025-09-01"
+    },
+    "TBIG.JK": {
+      "close": 1845.0,
+      "date": "2025-09-01"
+    },
+    "ASMI.JK": {
+      "close": 26.0,
+      "date": "2025-09-01"
+    },
+    "SMLE.JK": {
+      "close": 144.0,
+      "date": "2025-09-01"
+    },
+    "FPNI.JK": {
+      "close": 191.0,
+      "date": "2025-09-01"
+    },
+    "IRSX.JK": {
+      "close": 116.0,
+      "date": "2025-08-29"
+    },
+    "RIMO.JK": {
+      "close": 50.0,
+      "date": "2025-08-29"
+    },
+    "DKHH.JK": {
+      "close": 112.0,
+      "date": "2025-09-01"
+    },
+    "TPIA.JK": {
+      "close": 8200.0,
+      "date": "2025-09-01"
+    },
+    "HAIS.JK": {
+      "close": 192.0,
+      "date": "2025-09-01"
+    },
+    "DAYA.JK": {
+      "close": 1005.0,
+      "date": "2025-09-01"
+    },
+    "AGRO.JK": {
+      "close": 228.0,
+      "date": "2025-09-01"
+    },
+    "MBMA.JK": {
+      "close": 414.0,
+      "date": "2025-09-01"
+    },
+    "WEHA.JK": {
+      "close": 117.0,
+      "date": "2025-09-01"
+    },
+    "ICBP.JK": {
+      "close": 9200.0,
+      "date": "2025-09-01"
+    },
+    "KAYU.JK": {
+      "close": 18.0,
+      "date": "2025-08-29"
+    },
+    "KOIN.JK": {
+      "close": 70.0,
+      "date": "2025-09-01"
+    },
+    "BSDE.JK": {
+      "close": 1045.0,
+      "date": "2025-09-01"
+    },
+    "PEVE.JK": {
+      "close": 448.0,
+      "date": "2025-09-01"
+    },
+    "AMMN.JK": {
+      "close": 7850.0,
+      "date": "2025-09-01"
+    },
+    "CSMI.JK": {
+      "close": 374.0,
+      "date": "2025-09-01"
+    },
+    "DAAZ.JK": {
+      "close": 3010.0,
+      "date": "2025-09-01"
+    },
+    "ADMG.JK": {
+      "close": 145.0,
+      "date": "2025-09-01"
+    },
+    "TAXI.JK": {
+      "close": 15.0,
+      "date": "2025-09-01"
+    },
+    "ZBRA.JK": {
+      "close": 50.0,
+      "date": "2025-08-29"
+    },
+    "IGAR.JK": {
+      "close": 520.0,
+      "date": "2025-09-01"
+    },
+    "MGLV.JK": {
+      "close": 1050.0,
+      "date": "2025-08-29"
+    },
+    "MNCN.JK": {
+      "close": 252.0,
+      "date": "2025-09-01"
+    },
+    "AWAN.JK": {
+      "close": 248.0,
+      "date": "2025-09-01"
+    },
+    "ROTI.JK": {
+      "close": 795.0,
+      "date": "2025-09-01"
+    },
+    "HERO.JK": {
+      "close": 388.0,
+      "date": "2025-09-01"
+    },
+    "LABA.JK": {
+      "close": 358.0,
+      "date": "2025-08-29"
+    },
+    "MAYA.JK": {
+      "close": 228.0,
+      "date": "2025-09-01"
+    },
+    "MPRO.JK": {
+      "close": 4540.0,
+      "date": "2025-09-01"
+    },
+    "PTSN.JK": {
+      "close": 354.0,
+      "date": "2025-09-01"
+    },
+    "SURE.JK": {
+      "close": 2950.0,
+      "date": "2025-09-01"
+    },
+    "CLEO.JK": {
+      "close": 545.0,
+      "date": "2025-09-01"
+    },
+    "INTA.JK": {
+      "close": 22.0,
+      "date": "2025-09-01"
+    },
+    "BAUT.JK": {
+      "close": 36.0,
+      "date": "2025-09-01"
+    },
+    "NFCX.JK": {
+      "close": 1790.0,
+      "date": "2025-09-01"
+    },
+    "TRJA.JK": {
+      "close": 135.0,
+      "date": "2025-09-01"
+    },
+    "CDIA.JK": {
+      "close": 1430.0,
+      "date": "2025-09-01"
+    },
+    "SBMA.JK": {
+      "close": 128.0,
+      "date": "2025-09-01"
+    },
+    "POLY.JK": {
+      "close": 24.0,
+      "date": "2025-09-01"
+    },
+    "MIRA.JK": {
+      "close": 81.0,
+      "date": "2025-09-01"
+    },
+    "TOTL.JK": {
+      "close": 765.0,
+      "date": "2025-09-01"
+    },
+    "IPTV.JK": {
+      "close": 39.0,
+      "date": "2025-09-01"
+    },
+    "KDTN.JK": {
+      "close": 116.0,
+      "date": "2025-09-01"
+    },
+    "PEHA.JK": {
+      "close": 328.0,
+      "date": "2025-09-01"
+    },
+    "PTDU.JK": {
+      "close": 16.0,
+      "date": "2025-08-29"
+    },
+    "SKLT.JK": {
+      "close": 186.0,
+      "date": "2025-09-01"
+    },
+    "TELE.JK": {
+      "close": 9.0,
+      "date": "2025-08-29"
+    },
+    "DOSS.JK": {
+      "close": 143.0,
+      "date": "2025-09-01"
+    },
+    "MSJA.JK": {
+      "close": 306.0,
+      "date": "2025-09-01"
+    },
+    "BLUE.JK": {
+      "close": 310.0,
+      "date": "2025-09-01"
+    },
+    "ATAP.JK": {
+      "close": 52.0,
+      "date": "2025-09-01"
+    },
+    "GDST.JK": {
+      "close": 105.0,
+      "date": "2025-09-01"
+    },
+    "AALI.JK": {
+      "close": 7150.0,
+      "date": "2025-09-01"
+    },
+    "PGUN.JK": {
+      "close": 3850.0,
+      "date": "2025-09-01"
+    },
+    "POLL.JK": {
+      "close": 112.0,
+      "date": "2025-08-29"
+    },
+    "PTIS.JK": {
+      "close": 394.0,
+      "date": "2025-09-01"
+    },
+    "TIRT.JK": {
+      "close": 44.0,
+      "date": "2025-08-29"
+    },
+    "TRAM.JK": {
+      "close": 50.0,
+      "date": "2025-08-29"
+    },
+    "MLPT.JK": {
+      "close": 79500.0,
+      "date": "2025-08-29"
+    },
+    "MBTO.JK": {
+      "close": 122.0,
+      "date": "2025-09-01"
+    },
+    "EPAC.JK": {
+      "close": 37.0,
+      "date": "2025-09-01"
+    },
+    "CBPE.JK": {
+      "close": 194.0,
+      "date": "2025-09-01"
+    },
+    "GOOD.JK": {
+      "close": 368.0,
+      "date": "2025-09-01"
+    },
+    "INAF.JK": {
+      "close": 126.0,
+      "date": "2025-08-29"
+    },
+    "AYLS.JK": {
+      "close": 102.0,
+      "date": "2025-09-01"
+    },
+    "SMDR.JK": {
+      "close": 324.0,
+      "date": "2025-09-01"
+    },
+    "COAL.JK": {
+      "close": 46.0,
+      "date": "2025-09-01"
+    },
+    "EMDE.JK": {
+      "close": 95.0,
+      "date": "2025-09-01"
+    },
+    "PLAS.JK": {
+      "close": 50.0,
+      "date": "2025-08-29"
+    },
+    "ISAP.JK": {
+      "close": 28.0,
+      "date": "2025-09-01"
+    },
+    "BSWD.JK": {
+      "close": 1410.0,
+      "date": "2025-09-01"
+    },
+    "MTDL.JK": {
+      "close": 590.0,
+      "date": "2025-09-01"
+    },
+    "PLIN.JK": {
+      "close": 2510.0,
+      "date": "2025-08-29"
+    },
+    "SMDM.JK": {
+      "close": 810.0,
+      "date": "2025-09-01"
+    },
+    "ABBA.JK": {
+      "close": 42.0,
+      "date": "2025-09-01"
+    },
+    "DPUM.JK": {
+      "close": 63.0,
+      "date": "2025-09-01"
+    },
+    "BABY.JK": {
+      "close": 318.0,
+      "date": "2025-09-01"
+    },
+    "BIPI.JK": {
+      "close": 83.0,
+      "date": "2025-09-01"
+    },
+    "INDO.JK": {
+      "close": 230.0,
+      "date": "2025-09-01"
+    },
+    "RMKE.JK": {
+      "close": 920.0,
+      "date": "2025-09-01"
+    },
+    "TRST.JK": {
+      "close": 500.0,
+      "date": "2025-09-01"
+    },
+    "TAMU.JK": {
+      "close": 23.0,
+      "date": "2025-09-01"
+    },
+    "IIKP.JK": {
+      "close": 50.0,
+      "date": "2025-08-29"
+    },
+    "CHEK.JK": {
+      "close": 197.0,
+      "date": "2025-09-01"
+    },
+    "NOBU.JK": {
+      "close": 560.0,
+      "date": "2025-09-01"
+    },
+    "BEKS.JK": {
+      "close": 29.0,
+      "date": "2025-09-01"
+    },
+    "BELL.JK": {
+      "close": 54.0,
+      "date": "2025-09-01"
+    },
+    "SAMF.JK": {
+      "close": 338.0,
+      "date": "2025-09-01"
+    },
+    "LIFE.JK": {
+      "close": 17100.0,
+      "date": "2025-08-29"
+    },
+    "UANG.JK": {
+      "close": 590.0,
+      "date": "2025-09-01"
+    },
+    "MMIX.JK": {
+      "close": 268.0,
+      "date": "2025-09-01"
+    },
+    "NAIK.JK": {
+      "close": 142.0,
+      "date": "2025-09-01"
+    },
+    "LABS.JK": {
+      "close": 138.0,
+      "date": "2025-09-01"
+    },
+    "RAFI.JK": {
+      "close": 15.0,
+      "date": "2025-08-29"
+    },
+    "SAFE.JK": {
+      "close": 186.0,
+      "date": "2025-09-01"
+    },
+    "DEFI.JK": {
+      "close": 474.0,
+      "date": "2025-09-01"
+    },
+    "BHIT.JK": {
+      "close": 35.0,
+      "date": "2025-09-01"
+    },
+    "FIMP.JK": {
+      "close": 69.0,
+      "date": "2025-08-29"
+    },
+    "ARNA.JK": {
+      "close": 565.0,
+      "date": "2025-09-01"
+    },
+    "VRNA.JK": {
+      "close": 95.0,
+      "date": "2025-09-01"
+    },
+    "ELSA.JK": {
+      "close": 484.0,
+      "date": "2025-09-01"
+    },
+    "UCID.JK": {
+      "close": 454.0,
+      "date": "2025-09-01"
+    },
+    "BEBS.JK": {
+      "close": 5.0,
+      "date": "2025-08-29"
+    },
+    "BBSS.JK": {
+      "close": 276.0,
+      "date": "2025-09-01"
+    },
+    "FOLK.JK": {
+      "close": 77.0,
+      "date": "2025-09-01"
+    },
+    "TOYS.JK": {
+      "close": 8.0,
+      "date": "2025-08-29"
+    },
+    "KARW.JK": {
+      "close": 680.0,
+      "date": "2025-09-01"
+    },
+    "WOWS.JK": {
+      "close": 122.0,
+      "date": "2025-09-01"
+    },
+    "BLTZ.JK": {
+      "close": 1800.0,
+      "date": "2025-09-01"
+    },
+    "LUCY.JK": {
+      "close": 96.0,
+      "date": "2025-09-01"
+    },
+    "NTBK.JK": {
+      "close": 52.0,
+      "date": "2025-09-01"
+    },
+    "DUCK.JK": {
+      "close": 176.0,
+      "date": "2025-08-29"
+    },
+    "RELI.JK": {
+      "close": 625.0,
+      "date": "2025-09-01"
+    },
+    "NICE.JK": {
+      "close": 416.0,
+      "date": "2025-09-01"
+    },
+    "SONA.JK": {
+      "close": 4720.0,
+      "date": "2025-09-01"
+    },
+    "ANDI.JK": {
+      "close": 35.0,
+      "date": "2025-09-01"
+    },
+    "PZZA.JK": {
+      "close": 206.0,
+      "date": "2025-09-01"
+    },
+    "KRYA.JK": {
+      "close": 208.0,
+      "date": "2025-09-01"
+    },
+    "SMAR.JK": {
+      "close": 5800.0,
+      "date": "2025-09-01"
+    },
+    "RMKO.JK": {
+      "close": 105.0,
+      "date": "2025-09-01"
+    },
+    "BNLI.JK": {
+      "close": 3130.0,
+      "date": "2025-09-01"
+    },
+    "KETR.JK": {
+      "close": 610.0,
+      "date": "2025-09-01"
+    },
+    "JSMR.JK": {
+      "close": 3300.0,
+      "date": "2025-09-01"
+    },
+    "APEX.JK": {
+      "close": 117.0,
+      "date": "2025-09-01"
+    },
+    "ESTI.JK": {
+      "close": 48.0,
+      "date": "2025-09-01"
+    },
+    "FORU.JK": {
+      "close": 1165.0,
+      "date": "2025-09-01"
+    },
+    "BTPN.JK": {
+      "close": 2120.0,
+      "date": "2025-09-01"
+    },
+    "PNBS.JK": {
+      "close": 52.0,
+      "date": "2025-09-01"
+    },
+    "LEAD.JK": {
+      "close": 77.0,
+      "date": "2025-09-01"
+    },
+    "PSGO.JK": {
+      "close": 200.0,
+      "date": "2025-09-01"
+    },
+    "EKAD.JK": {
+      "close": 185.0,
+      "date": "2025-09-01"
+    },
+    "STRK.JK": {
+      "close": 180.0,
+      "date": "2025-09-01"
+    },
+    "BOAT.JK": {
+      "close": 115.0,
+      "date": "2025-09-01"
+    },
+    "MYTX.JK": {
+      "close": 36.0,
+      "date": "2025-08-29"
+    },
+    "ACRO.JK": {
+      "close": 83.0,
+      "date": "2025-09-01"
+    },
+    "BBRI.JK": {
+      "close": 3980.0,
+      "date": "2025-09-01"
+    },
+    "WMUU.JK": {
+      "close": 16.0,
+      "date": "2025-09-01"
+    },
+    "RISE.JK": {
+      "close": 1020.0,
+      "date": "2025-09-01"
+    },
+    "IOTF.JK": {
+      "close": 100.0,
+      "date": "2025-09-01"
+    },
+    "IPPE.JK": {
+      "close": 14.0,
+      "date": "2025-08-29"
+    },
+    "BATR.JK": {
+      "close": 100.0,
+      "date": "2025-09-01"
+    },
+    "IKAN.JK": {
+      "close": 139.0,
+      "date": "2025-09-01"
+    },
+    "ADMR.JK": {
+      "close": 990.0,
+      "date": "2025-09-01"
+    },
+    "WSKT.JK": {
+      "close": 202.0,
+      "date": "2025-08-29"
+    },
+    "RODA.JK": {
+      "close": 45.0,
+      "date": "2025-09-01"
+    },
+    "LRNA.JK": {
+      "close": 172.0,
+      "date": "2025-09-01"
+    },
+    "NICL.JK": {
+      "close": 1035.0,
+      "date": "2025-09-01"
+    },
+    "GHON.JK": {
+      "close": 1680.0,
+      "date": "2025-09-01"
+    },
+    "LOPI.JK": {
+      "close": 60.0,
+      "date": "2025-09-01"
+    },
+    "PTPW.JK": {
+      "close": 945.0,
+      "date": "2025-09-01"
+    },
+    "BUAH.JK": {
+      "close": 1455.0,
+      "date": "2025-09-01"
+    },
+    "AREA.JK": {
+      "close": 500.0,
+      "date": "2025-09-01"
+    },
+    "GMTD.JK": {
+      "close": 2220.0,
+      "date": "2025-09-01"
+    },
+    "TRIL.JK": {
+      "close": 50.0,
+      "date": "2025-08-29"
+    },
+    "KOTA.JK": {
+      "close": 24.0,
+      "date": "2025-09-01"
+    },
+    "GMFI.JK": {
+      "close": 58.0,
+      "date": "2025-09-01"
+    },
+    "PGEO.JK": {
+      "close": 1415.0,
+      "date": "2025-09-01"
+    },
+    "INCO.JK": {
+      "close": 3710.0,
+      "date": "2025-09-01"
+    },
+    "LMPI.JK": {
+      "close": 139.0,
+      "date": "2025-09-01"
+    },
+    "SMKL.JK": {
+      "close": 164.0,
+      "date": "2025-09-01"
+    },
+    "UVCR.JK": {
+      "close": 73.0,
+      "date": "2025-09-01"
+    },
+    "PLAN.JK": {
+      "close": 50.0,
+      "date": "2025-09-01"
+    },
+    "SULI.JK": {
+      "close": 94.0,
+      "date": "2025-09-01"
+    },
+    "SMKM.JK": {
+      "close": 155.0,
+      "date": "2025-09-01"
+    },
+    "RICY.JK": {
+      "close": 49.0,
+      "date": "2025-09-01"
+    },
+    "TRIO.JK": {
+      "close": 426.0,
+      "date": "2025-08-29"
+    },
+    "MEJA.JK": {
+      "close": 82.0,
+      "date": "2025-09-01"
+    },
+    "MYOH.JK": {
+      "close": 1680.0,
+      "date": "2025-09-01"
+    },
+    "PTBA.JK": {
+      "close": 2400.0,
+      "date": "2025-09-01"
+    },
+    "BISI.JK": {
+      "close": 880.0,
+      "date": "2025-09-01"
+    },
+    "SOSS.JK": {
+      "close": 815.0,
+      "date": "2025-09-01"
+    },
+    "PCAR.JK": {
+      "close": 41.0,
+      "date": "2025-09-01"
+    },
+    "IBFN.JK": {
+      "close": 30.0,
+      "date": "2025-09-01"
+    },
+    "TYRE.JK": {
+      "close": 126.0,
+      "date": "2025-09-01"
+    },
+    "TMPO.JK": {
+      "close": 218.0,
+      "date": "2025-09-01"
+    },
+    "NANO.JK": {
+      "close": 57.0,
+      "date": "2025-09-01"
+    },
+    "CINT.JK": {
+      "close": 155.0,
+      "date": "2025-09-01"
+    },
+    "MPIX.JK": {
+      "close": 67.0,
+      "date": "2025-09-01"
+    },
+    "DGWG.JK": {
+      "close": 416.0,
+      "date": "2025-09-01"
+    },
+    "WOOD.JK": {
+      "close": 342.0,
+      "date": "2025-09-01"
+    },
+    "APII.JK": {
+      "close": 176.0,
+      "date": "2025-09-01"
+    },
+    "SIMA.JK": {
+      "close": 50.0,
+      "date": "2025-08-29"
+    },
+    "BBKP.JK": {
+      "close": 79.0,
+      "date": "2025-09-01"
+    },
+    "VICI.JK": {
+      "close": 615.0,
+      "date": "2025-09-01"
+    },
+    "BOGA.JK": {
+      "close": 575.0,
+      "date": "2025-09-01"
+    },
+    "PNIN.JK": {
+      "close": 835.0,
+      "date": "2025-09-01"
+    },
+    "GDYR.JK": {
+      "close": 1145.0,
+      "date": "2025-09-01"
+    },
+    "CUAN.JK": {
+      "close": 1505.0,
+      "date": "2025-09-01"
+    },
+    "FMII.JK": {
+      "close": 360.0,
+      "date": "2025-09-01"
+    },
+    "DCII.JK": {
+      "close": 322400.0,
+      "date": "2025-09-01"
+    },
+    "HDIT.JK": {
+      "close": 54.0,
+      "date": "2025-09-01"
+    },
+    "BDKR.JK": {
+      "close": 151.0,
+      "date": "2025-09-01"
+    },
+    "BOBA.JK": {
+      "close": 179.0,
+      "date": "2025-09-01"
+    },
+    "GULA.JK": {
+      "close": 324.0,
+      "date": "2025-09-01"
+    },
+    "IKAI.JK": {
+      "close": 18.0,
+      "date": "2025-09-01"
+    },
+    "ERTX.JK": {
+      "close": 110.0,
+      "date": "2025-09-01"
+    },
+    "NISP.JK": {
+      "close": 1365.0,
+      "date": "2025-09-01"
+    },
+    "SFAN.JK": {
+      "close": 1920.0,
+      "date": "2025-09-01"
+    },
+    "ALTO.JK": {
+      "close": 18.0,
+      "date": "2025-08-29"
+    },
+    "MLIA.JK": {
+      "close": 350.0,
+      "date": "2025-09-01"
+    },
+    "PACK.JK": {
+      "close": 2400.0,
+      "date": "2025-09-01"
+    },
+    "STTP.JK": {
+      "close": 10275.0,
+      "date": "2025-09-01"
+    },
+    "PBRX.JK": {
+      "close": 30.0,
+      "date": "2025-09-01"
+    },
+    "TAYS.JK": {
+      "close": 56.0,
+      "date": "2025-09-01"
+    },
+    "UNSP.JK": {
+      "close": 165.0,
+      "date": "2025-09-01"
+    },
+    "BIPP.JK": {
+      "close": 46.0,
+      "date": "2025-09-01"
+    },
+    "DATA.JK": {
+      "close": 4560.0,
+      "date": "2025-08-29"
+    },
+    "ENAK.JK": {
+      "close": 700.0,
+      "date": "2025-09-01"
+    },
+    "BEEF.JK": {
+      "close": 296.0,
+      "date": "2025-09-01"
+    },
+    "TKIM.JK": {
+      "close": 7325.0,
+      "date": "2025-09-01"
+    },
+    "BOLA.JK": {
+      "close": 191.0,
+      "date": "2025-09-01"
+    },
+    "INCF.JK": {
+      "close": 36.0,
+      "date": "2025-09-01"
+    },
+    "PTMP.JK": {
+      "close": 96.0,
+      "date": "2025-09-01"
+    },
+    "BLES.JK": {
+      "close": 160.0,
+      "date": "2025-09-01"
+    },
+    "INAI.JK": {
+      "close": 155.0,
+      "date": "2025-09-01"
+    },
+    "INRU.JK": {
+      "close": 740.0,
+      "date": "2025-09-01"
+    },
+    "AMAR.JK": {
+      "close": 210.0,
+      "date": "2025-09-01"
+    },
+    "IRRA.JK": {
+      "close": 426.0,
+      "date": "2025-09-01"
+    },
+    "LMSH.JK": {
+      "close": 256.0,
+      "date": "2025-08-29"
+    },
+    "PMJS.JK": {
+      "close": 119.0,
+      "date": "2025-09-01"
+    },
+    "SPMA.JK": {
+      "close": 286.0,
+      "date": "2025-09-01"
+    },
+    "RCCC.JK": {
+      "close": 171.0,
+      "date": "2025-09-01"
+    },
+    "AMOR.JK": {
+      "close": 476.0,
+      "date": "2025-09-01"
+    },
+    "AYAM.JK": {
+      "close": 170.0,
+      "date": "2025-09-01"
+    },
+    "SDRA.JK": {
+      "close": 298.0,
+      "date": "2025-09-01"
+    },
+    "HOPE.JK": {
+      "close": 123.0,
+      "date": "2025-08-29"
+    },
+    "SMRA.JK": {
+      "close": 444.0,
+      "date": "2025-09-01"
+    },
+    "URBN.JK": {
+      "close": 129.0,
+      "date": "2025-09-01"
+    },
+    "ARMY.JK": {
+      "close": 50.0,
+      "date": "2025-08-29"
+    },
+    "SOFA.JK": {
+      "close": 47.0,
+      "date": "2025-09-01"
+    },
+    "ASHA.JK": {
+      "close": 33.0,
+      "date": "2025-09-01"
+    },
+    "BMSR.JK": {
+      "close": 254.0,
+      "date": "2025-09-01"
+    },
+    "MASA.JK": {
+      "close": 6200.0,
+      "date": "2025-08-29"
+    },
+    "TRIN.JK": {
+      "close": 93.0,
+      "date": "2025-09-01"
+    },
+    "MKTR.JK": {
+      "close": 108.0,
+      "date": "2025-09-01"
+    },
+    "TFCO.JK": {
+      "close": 498.0,
+      "date": "2025-08-29"
+    },
+    "HYGN.JK": {
+      "close": 159.0,
+      "date": "2025-09-01"
+    },
+    "MIKA.JK": {
+      "close": 2260.0,
+      "date": "2025-09-01"
+    },
+    "BGTG.JK": {
+      "close": 113.0,
+      "date": "2025-09-01"
+    },
+    "GPSO.JK": {
+      "close": 252.0,
+      "date": "2025-09-01"
+    },
+    "WIDI.JK": {
+      "close": 42.0,
+      "date": "2025-09-01"
+    },
+    "MTPS.JK": {
+      "close": 44.0,
+      "date": "2025-09-01"
+    },
+    "WOMF.JK": {
+      "close": 342.0,
+      "date": "2025-09-01"
+    },
+    "NUSA.JK": {
+      "close": 50.0,
+      "date": "2025-08-29"
+    },
+    "JAYA.JK": {
+      "close": 95.0,
+      "date": "2025-09-01"
+    },
+    "ULTJ.JK": {
+      "close": 1275.0,
+      "date": "2025-09-01"
+    },
+    "INPC.JK": {
+      "close": 163.0,
+      "date": "2025-09-01"
+    },
+    "IKPM.JK": {
+      "close": 228.0,
+      "date": "2025-09-01"
+    },
+    "ATLA.JK": {
+      "close": 65.0,
+      "date": "2025-09-01"
+    },
+    "BUKA.JK": {
+      "close": 168.0,
+      "date": "2025-09-01"
+    },
+    "RAJA.JK": {
+      "close": 2580.0,
+      "date": "2025-09-01"
+    },
+    "RIGS.JK": {
+      "close": 760.0,
+      "date": "2025-09-01"
+    },
+    "SURI.JK": {
+      "close": 120.0,
+      "date": "2025-09-01"
+    },
+    "SQMI.JK": {
+      "close": 43.0,
+      "date": "2025-08-29"
+    },
+    "TRIS.JK": {
+      "close": 185.0,
+      "date": "2025-09-01"
+    },
+    "MDLN.JK": {
+      "close": 67.0,
+      "date": "2025-09-01"
+    },
+    "MENN.JK": {
+      "close": 69.0,
+      "date": "2025-09-01"
+    },
+    "VINS.JK": {
+      "close": 122.0,
+      "date": "2025-09-01"
+    },
+    "IATA.JK": {
+      "close": 56.0,
+      "date": "2025-09-01"
+    },
+    "PSDN.JK": {
+      "close": 88.0,
+      "date": "2025-09-01"
+    },
+    "HRME.JK": {
+      "close": 33.0,
+      "date": "2025-09-01"
+    },
+    "ICON.JK": {
+      "close": 48.0,
+      "date": "2025-09-01"
+    },
+    "AKKU.JK": {
+      "close": 27.0,
+      "date": "2025-08-29"
+    },
+    "BPII.JK": {
+      "close": 575.0,
+      "date": "2025-09-01"
+    },
+    "BEER.JK": {
+      "close": 104.0,
+      "date": "2025-09-01"
+    },
+    "SIPD.JK": {
+      "close": 715.0,
+      "date": "2025-09-01"
+    },
+    "ELPI.JK": {
+      "close": 362.0,
+      "date": "2025-09-01"
+    },
+    "TARA.JK": {
+      "close": 26.0,
+      "date": "2025-09-01"
+    },
+    "INDR.JK": {
+      "close": 2730.0,
+      "date": "2025-09-01"
+    },
+    "GOTO.JK": {
+      "close": 58.0,
+      "date": "2025-09-01"
+    },
+    "BIMA.JK": {
+      "close": 65.0,
+      "date": "2025-09-01"
+    },
+    "CHEM.JK": {
+      "close": 90.0,
+      "date": "2025-09-01"
+    },
+    "DFAM.JK": {
+      "close": 81.0,
+      "date": "2025-09-01"
+    },
+    "IFII.JK": {
+      "close": 238.0,
+      "date": "2025-09-01"
+    },
+    "AKRA.JK": {
+      "close": 1190.0,
+      "date": "2025-09-01"
+    },
+    "BACA.JK": {
+      "close": 135.0,
+      "date": "2025-09-01"
+    },
+    "DLTA.JK": {
+      "close": 1985.0,
+      "date": "2025-09-01"
+    },
+    "IFSH.JK": {
+      "close": 780.0,
+      "date": "2025-09-01"
+    },
+    "NASI.JK": {
+      "close": 86.0,
+      "date": "2025-09-01"
+    },
+    "BTON.JK": {
+      "close": 364.0,
+      "date": "2025-09-01"
+    },
+    "MSTI.JK": {
+      "close": 1550.0,
+      "date": "2025-09-01"
+    },
+    "LUCK.JK": {
+      "close": 80.0,
+      "date": "2025-09-01"
+    },
+    "BIKA.JK": {
+      "close": 55.0,
+      "date": "2025-08-29"
+    },
+    "MASB.JK": {
+      "close": 3220.0,
+      "date": "2025-09-01"
+    },
+    "MANG.JK": {
+      "close": 43.0,
+      "date": "2025-09-01"
+    },
+    "KIOS.JK": {
+      "close": 78.0,
+      "date": "2025-09-01"
+    },
+    "ESIP.JK": {
+      "close": 49.0,
+      "date": "2025-09-01"
+    },
+    "SIMP.JK": {
+      "close": 630.0,
+      "date": "2025-09-01"
+    },
+    "NSSS.JK": {
+      "close": 428.0,
+      "date": "2025-09-01"
+    },
+    "AGII.JK": {
+      "close": 820.0,
+      "date": "2025-09-01"
+    },
+    "PAMG.JK": {
+      "close": 74.0,
+      "date": "2025-09-01"
+    },
+    "GGRP.JK": {
+      "close": 220.0,
+      "date": "2025-09-01"
+    },
+    "MAPA.JK": {
+      "close": 610.0,
+      "date": "2025-09-01"
+    },
+    "MTFN.JK": {
+      "close": 17.0,
+      "date": "2025-09-01"
+    },
+    "SPRE.JK": {
+      "close": 80.0,
+      "date": "2025-09-01"
+    },
+    "VIVA.JK": {
+      "close": 27.0,
+      "date": "2025-09-01"
+    },
+    "PKPK.JK": {
+      "close": 585.0,
+      "date": "2025-09-01"
+    },
+    "BWPT.JK": {
+      "close": 159.0,
+      "date": "2025-08-29"
+    },
+    "GLOB.JK": {
+      "close": 53.0,
+      "date": "2025-09-01"
+    },
+    "NINE.JK": {
+      "close": 310.0,
+      "date": "2025-08-29"
+    },
+    "GTSI.JK": {
+      "close": 100.0,
+      "date": "2025-09-01"
+    },
+    "PPGL.JK": {
+      "close": 103.0,
+      "date": "2025-09-01"
+    },
+    "LPPS.JK": {
+      "close": 81.0,
+      "date": "2025-09-01"
+    },
+    "TECH.JK": {
+      "close": 50.0,
+      "date": "2025-08-29"
+    },
+    "DOID.JK": {
+      "close": 338.0,
+      "date": "2025-09-01"
+    },
+    "BDMN.JK": {
+      "close": 2490.0,
+      "date": "2025-09-01"
+    },
+    "ITMA.JK": {
+      "close": 830.0,
+      "date": "2025-09-01"
+    },
+    "PBID.JK": {
+      "close": 482.0,
+      "date": "2025-09-01"
+    },
+    "TINS.JK": {
+      "close": 1000.0,
+      "date": "2025-09-01"
+    },
+    "CPRO.JK": {
+      "close": 60.0,
+      "date": "2025-09-01"
+    },
+    "GLVA.JK": {
+      "close": 324.0,
+      "date": "2025-09-01"
+    },
+    "TMAS.JK": {
+      "close": 131.0,
+      "date": "2025-09-01"
+    },
+    "TOOL.JK": {
+      "close": 60.0,
+      "date": "2025-09-01"
+    },
+    "RSCH.JK": {
+      "close": 362.0,
+      "date": "2025-09-01"
+    },
+    "JTPE.JK": {
+      "close": 318.0,
+      "date": "2025-09-01"
+    },
+    "BMTR.JK": {
+      "close": 140.0,
+      "date": "2025-09-01"
+    },
+    "INCI.JK": {
+      "close": 610.0,
+      "date": "2025-09-01"
+    },
+    "LTLS.JK": {
+      "close": 855.0,
+      "date": "2025-09-01"
+    },
+    "HGII.JK": {
+      "close": 147.0,
+      "date": "2025-09-01"
+    },
+    "ADMF.JK": {
+      "close": 8925.0,
+      "date": "2025-09-01"
+    },
+    "MINE.JK": {
+      "close": 545.0,
+      "date": "2025-09-01"
+    },
+    "BSSR.JK": {
+      "close": 3930.0,
+      "date": "2025-09-01"
+    },
+    "PURA.JK": {
+      "close": 24.0,
+      "date": "2025-09-01"
+    },
+    "FAST.JK": {
+      "close": 330.0,
+      "date": "2025-09-01"
+    },
+    "APIC.JK": {
+      "close": 1140.0,
+      "date": "2025-09-01"
+    },
+    "KRAS.JK": {
+      "close": 282.0,
+      "date": "2025-09-01"
+    },
+    "SRSN.JK": {
+      "close": 63.0,
+      "date": "2025-09-01"
+    },
+    "EMTK.JK": {
+      "close": 1250.0,
+      "date": "2025-09-01"
+    },
+    "KOPI.JK": {
+      "close": 334.0,
+      "date": "2025-09-01"
+    },
+    "NETV.JK": {
+      "close": 131.0,
+      "date": "2025-09-01"
+    },
+    "BBRM.JK": {
+      "close": 84.0,
+      "date": "2025-09-01"
+    },
+    "TCID.JK": {
+      "close": 2500.0,
+      "date": "2025-09-01"
+    },
+    "COWL.JK": {
+      "close": 50.0,
+      "date": "2025-08-29"
+    },
+    "TOTO.JK": {
+      "close": 252.0,
+      "date": "2025-09-01"
+    },
+    "AHAP.JK": {
+      "close": 75.0,
+      "date": "2025-09-01"
+    },
+    "POLI.JK": {
+      "close": 810.0,
+      "date": "2025-09-01"
+    },
+    "PALM.JK": {
+      "close": 404.0,
+      "date": "2025-09-01"
+    },
+    "AIMS.JK": {
+      "close": 292.0,
+      "date": "2025-09-01"
+    },
+    "KDSI.JK": {
+      "close": 452.0,
+      "date": "2025-09-01"
+    },
+    "BUKK.JK": {
+      "close": 845.0,
+      "date": "2025-09-01"
+    },
+    "ARKO.JK": {
+      "close": 1210.0,
+      "date": "2025-09-01"
+    },
+    "KPIG.JK": {
+      "close": 180.0,
+      "date": "2025-09-01"
+    },
+    "LPPF.JK": {
+      "close": 1585.0,
+      "date": "2025-09-01"
+    },
+    "MTWI.JK": {
+      "close": 378.0,
+      "date": "2025-09-01"
+    },
+    "ALDO.JK": {
+      "close": 492.0,
+      "date": "2025-09-01"
+    },
+    "MDKI.JK": {
+      "close": 161.0,
+      "date": "2025-09-01"
+    },
+    "POWR.JK": {
+      "close": 700.0,
+      "date": "2025-09-01"
+    },
+    "OPMS.JK": {
+      "close": 85.0,
+      "date": "2025-09-01"
+    },
+    "JARR.JK": {
+      "close": 1665.0,
+      "date": "2025-08-29"
+    },
+    "TLDN.JK": {
+      "close": 690.0,
+      "date": "2025-09-01"
+    },
+    "SAME.JK": {
+      "close": 348.0,
+      "date": "2025-09-01"
+    },
+    "ISEA.JK": {
+      "close": 81.0,
+      "date": "2025-09-01"
+    },
+    "CAMP.JK": {
+      "close": 208.0,
+      "date": "2025-09-01"
+    },
+    "KUAS.JK": {
+      "close": 66.0,
+      "date": "2025-09-01"
+    },
+    "MAPB.JK": {
+      "close": 1750.0,
+      "date": "2025-09-01"
+    },
+    "FAPA.JK": {
+      "close": 5775.0,
+      "date": "2025-09-01"
+    },
+    "UNTD.JK": {
+      "close": 79.0,
+      "date": "2025-09-01"
+    },
+    "KMTR.JK": {
+      "close": 354.0,
+      "date": "2025-09-01"
+    },
+    "GOLD.JK": {
+      "close": 262.0,
+      "date": "2025-09-01"
+    },
+    "VICO.JK": {
+      "close": 182.0,
+      "date": "2025-09-01"
+    },
+    "SWID.JK": {
+      "close": 89.0,
+      "date": "2025-09-01"
+    },
+    "KBLV.JK": {
+      "close": 195.0,
+      "date": "2025-09-01"
+    },
+    "DPNS.JK": {
+      "close": 254.0,
+      "date": "2025-09-01"
+    },
+    "SPTO.JK": {
+      "close": 675.0,
+      "date": "2025-09-01"
+    },
+    "DOOH.JK": {
+      "close": 137.0,
+      "date": "2025-09-01"
+    },
+    "OBMD.JK": {
+      "close": 300.0,
+      "date": "2025-09-01"
+    },
+    "PRDA.JK": {
+      "close": 2670.0,
+      "date": "2025-09-01"
+    },
+    "PORT.JK": {
+      "close": 920.0,
+      "date": "2025-09-01"
+    },
+    "GUNA.JK": {
+      "close": 228.0,
+      "date": "2025-09-01"
+    },
+    "WINS.JK": {
+      "close": 400.0,
+      "date": "2025-09-01"
+    },
+    "HDFA.JK": {
+      "close": 118.0,
+      "date": "2025-09-01"
+    },
+    "ETWA.JK": {
+      "close": 70.0,
+      "date": "2025-08-29"
+    },
+    "ASII.JK": {
+      "close": 5450.0,
+      "date": "2025-09-01"
+    },
+    "BABP.JK": {
+      "close": 56.0,
+      "date": "2025-09-01"
+    },
+    "BRAM.JK": {
+      "close": 5125.0,
+      "date": "2025-09-01"
+    },
+    "KJEN.JK": {
+      "close": 132.0,
+      "date": "2025-09-01"
+    },
+    "MCAS.JK": {
+      "close": 830.0,
+      "date": "2025-09-01"
+    },
+    "GAMA.JK": {
+      "close": 18.0,
+      "date": "2025-08-29"
+    },
+    "HALO.JK": {
+      "close": 87.0,
+      "date": "2025-09-01"
+    },
+    "AMMS.JK": {
+      "close": 183.0,
+      "date": "2025-09-01"
+    },
+    "PANS.JK": {
+      "close": 1390.0,
+      "date": "2025-09-01"
+    },
+    "BIRD.JK": {
+      "close": 1775.0,
+      "date": "2025-09-01"
+    },
+    "JAST.JK": {
+      "close": 102.0,
+      "date": "2025-09-01"
+    },
+    "CRAB.JK": {
+      "close": 232.0,
+      "date": "2025-09-01"
+    },
+    "BINO.JK": {
+      "close": 119.0,
+      "date": "2025-09-01"
+    },
+    "MGRO.JK": {
+      "close": 700.0,
+      "date": "2025-09-01"
+    },
+    "TNCA.JK": {
+      "close": 172.0,
+      "date": "2025-09-01"
+    },
+    "MLPL.JK": {
+      "close": 133.0,
+      "date": "2025-09-01"
+    },
+    "MEDC.JK": {
+      "close": 1135.0,
+      "date": "2025-09-01"
+    },
+    "CARE.JK": {
+      "close": 282.0,
+      "date": "2025-09-01"
+    },
+    "ERAA.JK": {
+      "close": 436.0,
+      "date": "2025-09-01"
+    },
+    "LSIP.JK": {
+      "close": 1310.0,
+      "date": "2025-09-01"
+    },
+    "BKDP.JK": {
+      "close": 41.0,
+      "date": "2025-09-01"
+    },
+    "CLPI.JK": {
+      "close": 1240.0,
+      "date": "2025-09-01"
+    },
+    "ASLI.JK": {
+      "close": 50.0,
+      "date": "2025-08-29"
+    },
+    "META.JK": {
+      "close": 238.0,
+      "date": "2025-08-29"
+    },
+    "MAXI.JK": {
+      "close": 53.0,
+      "date": "2025-09-01"
+    },
+    "YULE.JK": {
+      "close": 2700.0,
+      "date": "2025-09-01"
+    },
+    "SMSM.JK": {
+      "close": 1900.0,
+      "date": "2025-09-01"
+    },
+    "ASRI.JK": {
+      "close": 169.0,
+      "date": "2025-09-01"
+    },
+    "RSGK.JK": {
+      "close": 980.0,
+      "date": "2025-08-29"
+    },
+    "INDY.JK": {
+      "close": 1295.0,
+      "date": "2025-09-01"
+    },
+    "PICO.JK": {
+      "close": 140.0,
+      "date": "2025-09-01"
+    },
+    "SMMA.JK": {
+      "close": 15675.0,
+      "date": "2025-09-01"
+    },
+    "NICK.JK": {
+      "close": 1405.0,
+      "date": "2025-09-01"
+    },
+    "SOHO.JK": {
+      "close": 765.0,
+      "date": "2025-09-01"
+    },
+    "CASS.JK": {
+      "close": 2600.0,
+      "date": "2025-09-01"
+    },
+    "BPTR.JK": {
+      "close": 95.0,
+      "date": "2025-09-01"
+    },
+    "ALKA.JK": {
+      "close": 304.0,
+      "date": "2025-09-01"
+    },
+    "APLI.JK": {
+      "close": 470.0,
+      "date": "2025-09-01"
+    },
+    "EURO.JK": {
+      "close": 240.0,
+      "date": "2025-09-01"
+    },
+    "INDF.JK": {
+      "close": 7400.0,
+      "date": "2025-09-01"
+    },
+    "GZCO.JK": {
+      "close": 202.0,
+      "date": "2025-09-01"
+    },
+    "KAEF.JK": {
+      "close": 492.0,
+      "date": "2025-09-01"
+    },
+    "LPKR.JK": {
+      "close": 101.0,
+      "date": "2025-09-01"
+    },
+    "TAMA.JK": {
+      "close": 31.0,
+      "date": "2025-09-01"
+    },
+    "HAJJ.JK": {
+      "close": 123.0,
+      "date": "2025-09-01"
+    },
+    "TRON.JK": {
+      "close": 91.0,
+      "date": "2025-09-01"
+    },
+    "INET.JK": {
+      "close": 226.0,
+      "date": "2025-09-01"
+    },
+    "DEPO.JK": {
+      "close": 197.0,
+      "date": "2025-09-01"
+    },
+    "INDS.JK": {
+      "close": 224.0,
+      "date": "2025-09-01"
+    },
+    "MEDS.JK": {
+      "close": 52.0,
+      "date": "2025-09-01"
+    },
+    "MOLI.JK": {
+      "close": 197.0,
+      "date": "2025-09-01"
+    },
+    "ARII.JK": {
+      "close": 248.0,
+      "date": "2025-09-01"
+    },
+    "CBUT.JK": {
+      "close": 1545.0,
+      "date": "2025-09-01"
+    },
+    "FIRE.JK": {
+      "close": 78.0,
+      "date": "2025-09-01"
+    },
+    "GOLF.JK": {
+      "close": 224.0,
+      "date": "2025-09-01"
+    },
+    "TGKA.JK": {
+      "close": 5800.0,
+      "date": "2025-09-01"
+    },
+    "INOV.JK": {
+      "close": 98.0,
+      "date": "2025-09-01"
+    },
+    "OCAP.JK": {
+      "close": 159.0,
+      "date": "2025-08-29"
+    },
+    "PURE.JK": {
+      "close": 51.0,
+      "date": "2025-08-29"
+    },
+    "BRNA.JK": {
+      "close": 755.0,
+      "date": "2025-09-01"
+    },
+    "ITIC.JK": {
+      "close": 222.0,
+      "date": "2025-09-01"
+    },
+    "SMGA.JK": {
+      "close": 102.0,
+      "date": "2025-09-01"
+    },
+    "SIDO.JK": {
+      "close": 515.0,
+      "date": "2025-09-01"
+    },
+    "UFOE.JK": {
+      "close": 174.0,
+      "date": "2025-09-01"
+    },
+    "ROCK.JK": {
+      "close": 570.0,
+      "date": "2025-09-01"
+    },
+    "CMPP.JK": {
+      "close": 90.0,
+      "date": "2025-09-01"
+    },
+    "IBST.JK": {
+      "close": 7350.0,
+      "date": "2025-09-01"
+    },
+    "TRGU.JK": {
+      "close": 184.0,
+      "date": "2025-09-01"
+    },
+    "ELTY.JK": {
+      "close": 22.0,
+      "date": "2025-09-01"
+    },
+    "PPRE.JK": {
+      "close": 92.0,
+      "date": "2025-09-01"
+    },
+    "PTPP.JK": {
+      "close": 370.0,
+      "date": "2025-09-01"
+    },
+    "PIPA.JK": {
+      "close": 173.0,
+      "date": "2025-09-01"
+    },
+    "RONY.JK": {
+      "close": 2990.0,
+      "date": "2025-08-29"
+    },
+    "YELO.JK": {
+      "close": 68.0,
+      "date": "2025-09-01"
+    },
+    "KAQI.JK": {
+      "close": 70.0,
+      "date": "2025-09-01"
+    },
+    "UNTR.JK": {
+      "close": 24475.0,
+      "date": "2025-09-01"
+    },
+    "ARCI.JK": {
+      "close": 760.0,
+      "date": "2025-09-01"
+    },
+    "KBAG.JK": {
+      "close": 39.0,
+      "date": "2025-09-01"
+    },
+    "IPCM.JK": {
+      "close": 290.0,
+      "date": "2025-09-01"
+    },
+    "CASA.JK": {
+      "close": 1110.0,
+      "date": "2025-09-01"
+    },
+    "LPIN.JK": {
+      "close": 414.0,
+      "date": "2025-09-01"
+    },
+    "TOSK.JK": {
+      "close": 55.0,
+      "date": "2025-09-01"
+    },
+    "DSSA.JK": {
+      "close": 98500.0,
+      "date": "2025-09-01"
+    },
+    "TOPS.JK": {
+      "close": 1.0,
+      "date": "2025-08-29"
+    },
+    "HEXA.JK": {
+      "close": 5475.0,
+      "date": "2025-09-01"
+    },
+    "BAYU.JK": {
+      "close": 1290.0,
+      "date": "2025-09-01"
+    },
+    "BSBK.JK": {
+      "close": 73.0,
+      "date": "2025-09-01"
+    },
+    "BAIK.JK": {
+      "close": 103.0,
+      "date": "2025-09-01"
+    },
+    "ESSA.JK": {
+      "close": 560.0,
+      "date": "2025-09-01"
+    },
+    "GRIA.JK": {
+      "close": 87.0,
+      "date": "2025-09-01"
+    },
+    "MTMH.JK": {
+      "close": 1135.0,
+      "date": "2025-09-01"
+    },
+    "LION.JK": {
+      "close": 350.0,
+      "date": "2025-09-01"
+    },
+    "CSIS.JK": {
+      "close": 118.0,
+      "date": "2025-09-01"
+    },
+    "HOTL.JK": {
+      "close": 50.0,
+      "date": "2025-08-29"
+    },
+    "IPAC.JK": {
+      "close": 138.0,
+      "date": "2025-09-01"
+    },
+    "EPMT.JK": {
+      "close": 2310.0,
+      "date": "2025-09-01"
+    },
+    "POOL.JK": {
+      "close": 50.0,
+      "date": "2025-08-29"
+    },
+    "RGAS.JK": {
+      "close": 120.0,
+      "date": "2025-09-01"
+    },
+    "MDIA.JK": {
+      "close": 31.0,
+      "date": "2025-09-01"
+    },
+    "KOKA.JK": {
+      "close": 91.0,
+      "date": "2025-09-01"
+    },
+    "LAJU.JK": {
+      "close": 61.0,
+      "date": "2025-09-01"
+    },
+    "GWSA.JK": {
+      "close": 153.0,
+      "date": "2025-09-01"
+    },
+    "HEAL.JK": {
+      "close": 1600.0,
+      "date": "2025-09-01"
+    },
+    "MARK.JK": {
+      "close": 625.0,
+      "date": "2025-09-01"
+    },
+    "HATM.JK": {
+      "close": 258.0,
+      "date": "2025-09-01"
+    },
+    "PGAS.JK": {
+      "close": 1665.0,
+      "date": "2025-09-01"
+    },
+    "TIFA.JK": {
+      "close": 402.0,
+      "date": "2025-09-01"
+    },
+    "WGSH.JK": {
+      "close": 168.0,
+      "date": "2025-09-01"
+    },
+    "TUGU.JK": {
+      "close": 965.0,
+      "date": "2025-09-01"
+    },
+    "BAPI.JK": {
+      "close": 20.0,
+      "date": "2025-09-01"
+    },
+    "PSSI.JK": {
+      "close": 350.0,
+      "date": "2025-09-01"
+    },
+    "VAST.JK": {
+      "close": 170.0,
+      "date": "2025-09-01"
+    },
+    "AMFG.JK": {
+      "close": 3150.0,
+      "date": "2025-09-01"
+    },
+    "YOII.JK": {
+      "close": 94.0,
+      "date": "2025-09-01"
+    },
+    "CPIN.JK": {
+      "close": 4300.0,
+      "date": "2025-09-01"
+    },
+    "CRSN.JK": {
+      "close": 112.0,
+      "date": "2025-09-01"
+    },
+    "DEAL.JK": {
+      "close": 6.0,
+      "date": "2025-08-29"
+    },
+    "FWCT.JK": {
+      "close": 149.0,
+      "date": "2025-09-01"
+    },
+    "BOSS.JK": {
+      "close": 50.0,
+      "date": "2025-08-29"
+    },
+    "DNAR.JK": {
+      "close": 114.0,
+      "date": "2025-09-01"
+    },
+    "ISAT.JK": {
+      "close": 1995.0,
+      "date": "2025-09-01"
+    },
+    "FORE.JK": {
+      "close": 520.0,
+      "date": "2025-09-01"
+    },
+    "PNBN.JK": {
+      "close": 1145.0,
+      "date": "2025-09-01"
+    },
+    "DMMX.JK": {
+      "close": 324.0,
+      "date": "2025-09-01"
+    },
+    "INKP.JK": {
+      "close": 7850.0,
+      "date": "2025-09-01"
+    },
+    "HELI.JK": {
+      "close": 256.0,
+      "date": "2025-09-01"
+    },
+    "POSA.JK": {
+      "close": 50.0,
+      "date": "2025-08-29"
+    },
+    "WSBP.JK": {
+      "close": 26.0,
+      "date": "2025-09-01"
+    },
+    "PNGO.JK": {
+      "close": 2440.0,
+      "date": "2025-09-01"
+    },
+    "PBSA.JK": {
+      "close": 895.0,
+      "date": "2025-09-01"
+    },
+    "BMBL.JK": {
+      "close": 34.0,
+      "date": "2025-09-01"
+    },
+    "INTD.JK": {
+      "close": 193.0,
+      "date": "2025-09-01"
+    },
+    "PPRO.JK": {
+      "close": 21.0,
+      "date": "2025-08-29"
+    },
+    "SBAT.JK": {
+      "close": 1.0,
+      "date": "2025-08-29"
+    },
+    "SSTM.JK": {
+      "close": 262.0,
+      "date": "2025-09-01"
+    },
+    "WIIM.JK": {
+      "close": 795.0,
+      "date": "2025-09-01"
+    },
+    "HITS.JK": {
+      "close": 116.0,
+      "date": "2025-08-29"
+    },
+    "AADI.JK": {
+      "close": 7050.0,
+      "date": "2025-09-01"
+    },
+    "AMAG.JK": {
+      "close": 364.0,
+      "date": "2025-09-01"
+    },
+    "DEWA.JK": {
+      "close": 218.0,
+      "date": "2025-09-01"
+    },
+    "KSIX.JK": {
+      "close": 232.0,
+      "date": "2025-09-01"
+    },
+    "MMLP.JK": {
+      "close": 540.0,
+      "date": "2025-09-01"
+    },
+    "MSKY.JK": {
+      "close": 81.0,
+      "date": "2025-09-01"
+    },
+    "SKBM.JK": {
+      "close": 348.0,
+      "date": "2025-09-01"
+    },
+    "DILD.JK": {
+      "close": 136.0,
+      "date": "2025-09-01"
+    },
+    "CMNT.JK": {
+      "close": 810.0,
+      "date": "2025-09-01"
+    },
+    "DGIK.JK": {
+      "close": 93.0,
+      "date": "2025-09-01"
+    },
+    "HRUM.JK": {
+      "close": 895.0,
+      "date": "2025-09-01"
+    },
+    "SOTS.JK": {
+      "close": 252.0,
+      "date": "2025-09-01"
+    },
+    "AGRS.JK": {
+      "close": 77.0,
+      "date": "2025-09-01"
+    },
+    "DRMA.JK": {
+      "close": 990.0,
+      "date": "2025-09-01"
+    },
+    "PMMP.JK": {
+      "close": 50.0,
+      "date": "2025-08-29"
+    },
+    "SUPR.JK": {
+      "close": 43850.0,
+      "date": "2025-08-29"
+    },
+    "BNGA.JK": {
+      "close": 1700.0,
+      "date": "2025-09-01"
+    },
+    "ARKA.JK": {
+      "close": 31.0,
+      "date": "2025-09-01"
+    },
+    "CEKA.JK": {
+      "close": 2600.0,
+      "date": "2025-09-01"
+    },
+    "FITT.JK": {
+      "close": 326.0,
+      "date": "2025-09-01"
+    },
+    "SLIS.JK": {
+      "close": 86.0,
+      "date": "2025-09-01"
+    },
+    "PSAT.JK": {
+      "close": 1425.0,
+      "date": "2025-09-01"
+    },
+    "SCNP.JK": {
+      "close": 175.0,
+      "date": "2025-09-01"
+    },
+    "ADHI.JK": {
+      "close": 260.0,
+      "date": "2025-09-01"
+    },
+    "DSNG.JK": {
+      "close": 1555.0,
+      "date": "2025-09-01"
+    },
+    "OMRE.JK": {
+      "close": 426.0,
+      "date": "2025-09-01"
+    },
+    "TOBA.JK": {
+      "close": 1240.0,
+      "date": "2025-09-01"
+    },
+    "WAPO.JK": {
+      "close": 183.0,
+      "date": "2025-09-01"
+    },
+    "SATU.JK": {
+      "close": 234.0,
+      "date": "2025-09-01"
+    },
+    "BBMD.JK": {
+      "close": 2140.0,
+      "date": "2025-09-01"
+    },
+    "MPPA.JK": {
+      "close": 70.0,
+      "date": "2025-09-01"
+    },
+    "MDKA.JK": {
+      "close": 2490.0,
+      "date": "2025-09-01"
+    },
+    "TCPI.JK": {
+      "close": 5475.0,
+      "date": "2025-09-01"
+    },
+    "JRPT.JK": {
+      "close": 800.0,
+      "date": "2025-09-01"
+    },
+    "TEBE.JK": {
+      "close": 1825.0,
+      "date": "2025-09-01"
+    },
+    "WIFI.JK": {
+      "close": 2530.0,
+      "date": "2025-09-01"
+    },
+    "DGNS.JK": {
+      "close": 146.0,
+      "date": "2025-09-01"
+    },
+    "WIRG.JK": {
+      "close": 172.0,
+      "date": "2025-09-01"
+    },
+    "NRCA.JK": {
+      "close": 915.0,
+      "date": "2025-09-01"
+    },
+    "WINE.JK": {
+      "close": 210.0,
+      "date": "2025-09-01"
+    },
+    "JGLE.JK": {
+      "close": 17.0,
+      "date": "2025-09-01"
+    },
+    "NATO.JK": {
+      "close": 130.0,
+      "date": "2025-09-01"
+    },
+    "JSKY.JK": {
+      "close": 52.0,
+      "date": "2025-08-29"
+    },
+    "ZATA.JK": {
+      "close": 20.0,
+      "date": "2025-09-01"
+    },
+    "SRIL.JK": {
+      "close": 146.0,
+      "date": "2025-08-29"
+    },
+    "INDX.JK": {
+      "close": 88.0,
+      "date": "2025-09-01"
+    },
+    "SICO.JK": {
+      "close": 119.0,
+      "date": "2025-09-01"
+    },
+    "HBAT.JK": {
+      "close": 151.0,
+      "date": "2025-08-29"
+    },
+    "KLIN.JK": {
+      "close": 189.0,
+      "date": "2025-09-01"
+    },
+    "WIKA.JK": {
+      "close": 204.0,
+      "date": "2025-08-29"
+    },
+    "CLAY.JK": {
+      "close": 1450.0,
+      "date": "2025-09-01"
+    },
+    "SKRN.JK": {
+      "close": 400.0,
+      "date": "2025-09-01"
+    },
+    "CBRE.JK": {
+      "close": 212.0,
+      "date": "2025-09-01"
+    },
+    "REAL.JK": {
+      "close": 41.0,
+      "date": "2025-09-01"
+    },
+    "BHAT.JK": {
+      "close": 870.0,
+      "date": "2025-09-01"
+    },
+    "ALMI.JK": {
+      "close": 74.0,
+      "date": "2025-08-29"
+    },
+    "MAHA.JK": {
+      "close": 132.0,
+      "date": "2025-09-01"
+    },
+    "SDPC.JK": {
+      "close": 131.0,
+      "date": "2025-09-01"
+    },
+    "BULL.JK": {
+      "close": 141.0,
+      "date": "2025-09-01"
+    },
+    "COIN.JK": {
+      "close": 2150.0,
+      "date": "2025-09-01"
+    },
+    "DIVA.JK": {
+      "close": 123.0,
+      "date": "2025-09-01"
+    },
+    "KOBX.JK": {
+      "close": 140.0,
+      "date": "2025-09-01"
+    },
+    "MAGP.JK": {
+      "close": 50.0,
+      "date": "2025-08-29"
+    },
+    "BUMI.JK": {
+      "close": 107.0,
+      "date": "2025-09-01"
+    },
+    "GGRM.JK": {
+      "close": 8300.0,
+      "date": "2025-09-01"
+    },
+    "SSMS.JK": {
+      "close": 1450.0,
+      "date": "2025-09-01"
+    },
+    "TGUK.JK": {
+      "close": 137.0,
+      "date": "2025-08-29"
+    },
+    "EXCL.JK": {
+      "close": 2720.0,
+      "date": "2025-09-01"
+    },
+    "LIVE.JK": {
+      "close": 167.0,
+      "date": "2025-09-01"
+    },
+    "SOCI.JK": {
+      "close": 184.0,
+      "date": "2025-09-01"
+    },
+    "TRUK.JK": {
+      "close": 197.0,
+      "date": "2025-09-01"
+    },
+    "SMMT.JK": {
+      "close": 1010.0,
+      "date": "2025-09-01"
+    },
+    "UNIT.JK": {
+      "close": 316.0,
+      "date": "2025-08-29"
+    },
+    "MPOW.JK": {
+      "close": 113.0,
+      "date": "2025-09-01"
+    },
+    "BKSL.JK": {
+      "close": 132.0,
+      "date": "2025-09-01"
+    },
+    "ELIT.JK": {
+      "close": 192.0,
+      "date": "2025-09-01"
+    }
+  }
+}
