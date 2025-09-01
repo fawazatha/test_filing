@@ -2,30 +2,31 @@ import argparse
 import json
 from pathlib import Path
 
-from dotenv import load_dotenv  # auto-load .env
-from downloader.runner import download_pdfs
+from downloader.utils.logger import get_logger
 from models.announcement import Announcement
+from downloader.runner import download_pdfs
+
 
 def main():
-    p = argparse.ArgumentParser()
-    p.add_argument("--input", required=True, help="Path to IDX announcements JSON")
+    p = argparse.ArgumentParser(description="Download IDX/NON-IDX PDFs and produce simple metadata JSON.")
+    p.add_argument("--input", required=True, help="Path to idx_announcements.json")
     p.add_argument("--out-idx", default="downloads/idx-format")
     p.add_argument("--out-non-idx", default="downloads/non-idx-format")
     p.add_argument("--meta-out", default="data/downloaded_pdfs.json")
     p.add_argument("--alerts-out", default="alerts/low_title_similarity_alerts.json")
-    p.add_argument("--retries", type=int, default=3)        # kept for compatibility
+    p.add_argument("--retries", type=int, default=3)  # kept for compatibility
     p.add_argument("--min-similarity", type=int, default=80)
     p.add_argument("--dry-run", action="store_true")
     p.add_argument("--verbose", action="store_true")
-    p.add_argument("--env-file", default=".env", help="Path to .env (e.g., contains PROXY)")
     args = p.parse_args()
 
-    # Load .env so PROXY and other variables are picked up automatically
-    load_dotenv(args.env_file, override=False)
+    logger = get_logger("downloader", verbose=args.verbose)
 
+    # Load announcements
     data = json.loads(Path(args.input).read_text(encoding="utf-8"))
     anns = [Announcement(**d) for d in data]
 
+    # Run
     download_pdfs(
         announcements=anns,
         out_idx=args.out_idx,

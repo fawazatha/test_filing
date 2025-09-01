@@ -1,19 +1,18 @@
+from typing import List, Optional, Union, Dict
 from pydantic import BaseModel, Field
-from typing import Optional, Any, List
+
 
 class Announcement(BaseModel):
-    """
-    Tolerant model for incoming announcements.
-
-    Fields expected from the IDX announcements JSON:
-      - title: str
-      - date: str (ISO string)
-      - main_link: optional URL string for IDX-format PDFs
-      - attachments: can be a list of strings OR list of objects (any shape).
-        We normalize them to URLs in the runner.
-    Extra fields (e.g., company_name, category, etc.) are ignored by default.
-    """
+    # Raw fields from idx_announcements.json
+    date: Optional[str] = None
     title: str
-    date: str
+    company_name: Optional[str] = None
     main_link: Optional[str] = None
-    attachments: List[Any] = Field(default_factory=list)
+    attachments: List[Union[str, Dict]] = Field(default_factory=list)
+
+    # Optional extras we may receive
+    attachment_count: Optional[int] = None
+    category: Optional[str] = None
+    description: Optional[str] = None
+    link: Optional[str] = None
+    scraped_at: Optional[str] = None

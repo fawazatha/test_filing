@@ -1,0 +1,2583 @@
+[
+  {
+    "lang": "en",
+    "issuer_code": "INCO",
+    "attachments": "1",
+    "subject": "Information Disclosure of Certain Shareholders",
+    "company_name_raw": "PT Vale Indonesia Tbk",
+    "company_name": "Vale Indonesia Tbk",
+    "symbol": "INCO.JK",
+    "classification_of_shareholder": "Commissioners",
+    "controlling_shareholder": "No",
+    "citizenship": "Indonesia",
+    "percentage_of_shares_traded": 0.0,
+    "share_ownership_status": "Direct",
+    "purpose": "Penjualan saham",
+    "holder_type": "insider",
+    "holder_name_raw": "Edi Permadi",
+    "holder_name": "Edi Permadi",
+    "holder_symbol": null,
+    "holding_before": 131200,
+    "holding_after": 0,
+    "share_percentage_before": 0.0,
+    "share_percentage_after": 0.0,
+    "share_percentage_transaction": 0.0,
+    "company_address": "Jend. Sudirman Kav. 71, Jakarta 12190,",
+    "company_phone": "Citizenship Indonesia",
+    "transactions": [
+      {
+        "type": "sell",
+        "price": 3900,
+        "amount": 131200,
+        "date": "04 June 2025",
+        "value": 511680000
+      }
+    ],
+    "amount_transacted": 131200,
+    "transaction_value": 511680000,
+    "transaction_type": "sell",
+    "price": 3900.0,
+    "price_transaction": {
+      "prices": [
+        3900
+      ],
+      "amount_transacted": [
+        131200
+      ]
+    },
+    "is_transfer": true,
+    "source": "bec4a05540_a1645f4fda.pdf"
+  },
+  {
+    "lang": "en",
+    "issuer_code": "LOPI",
+    "attachments": "1",
+    "subject": "Information Disclosure of Certain Shareholders",
+    "company_name_raw": "PT. Logisticsplus International Tbk",
+    "company_name": "PT Logisticsplus International Tbk",
+    "symbol": "LOPI.JK",
+    "classification_of_shareholder": "Directors",
+    "controlling_shareholder": "Yes",
+    "citizenship": "Indonesia",
+    "percentage_of_shares_traded": 66.8311,
+    "share_ownership_status": "Direct",
+    "purpose": "Strategi Investasi",
+    "holder_type": "insider",
+    "holder_name_raw": "Wahyu Dwi Jatmiko",
+    "holder_name": "Wahyu Dwi Jatmiko",
+    "holder_symbol": null,
+    "holding_before": 746715460,
+    "holding_after": 11565460,
+    "share_percentage_before": 67.8825,
+    "share_percentage_after": 1.0514,
+    "share_percentage_transaction": 66.83109999999999,
+    "company_address": "Jagakarsa - Jakarta Selatan",
+    "company_phone": "Citizenship Indonesia",
+    "transactions": [
+      {
+        "type": "sell",
+        "price": 37,
+        "amount": 735150000,
+        "date": "26 June 2025",
+        "value": 27200550000
+      }
+    ],
+    "amount_transacted": 735150000,
+    "transaction_value": 27200550000,
+    "transaction_type": "sell",
+    "price": 37.0,
+    "price_transaction": {
+      "prices": [
+        37
+      ],
+      "amount_transacted": [
+        735150000
+      ]
+    },
+    "is_transfer": false,
+    "source": "ab9560e09d_e3e33e0cf4.pdf"
+  },
+  {
+    "lang": "en",
+    "issuer_code": "IOTF",
+    "attachments": "1",
+    "subject": "Information Disclosure of Certain Shareholders",
+    "company_name_raw": "PT SUMBER SINERGI MAKMUR TBK",
+    "company_name": "PT Sumber Sinergi Makmur Tbk",
+    "symbol": "IOTF.JK",
+    "classification_of_shareholder": ">5%",
+    "controlling_shareholder": "No",
+    "citizenship": "INDONESIA",
+    "percentage_of_shares_traded": 7.47,
+    "share_ownership_status": "Direct",
+    "purpose": "Transaksi Pembelian Saham IOTF oleh",
+    "holder_type": "institution",
+    "holder_name_raw": "PT GAIA ARTHA DINAMIC",
+    "holder_name": "PT Gaia Artha Dinamic",
+    "holder_symbol": null,
+    "holding_before": 369316400,
+    "holding_after": 395393100,
+    "share_percentage_before": 6.98,
+    "share_percentage_after": 7.47,
+    "share_percentage_transaction": 0.4899999999999993,
+    "company_address": "BARAT NO. 31A, KEC. GAMBIR,",
+    "company_phone": "Citizenship INDONESIA",
+    "transactions": [
+      {
+        "type": "sell",
+        "price": 106.6,
+        "amount": 26076700,
+        "date": "26 June 2025",
+        "value": 2779776220.0
+      }
+    ],
+    "amount_transacted": 26076700,
+    "transaction_value": 2779776220.0,
+    "transaction_type": "sell",
+    "price": 106.6,
+    "price_transaction": {
+      "prices": [
+        106.6
+      ],
+      "amount_transacted": [
+        26076700
+      ]
+    },
+    "is_transfer": false,
+    "source": "92ed0eea78_7c7eadd995.pdf"
+  },
+  {
+    "lang": "en",
+    "issuer_code": "VICO",
+    "attachments": "1",
+    "subject": "Information Disclosure of Certain Shareholders",
+    "company_name_raw": "PT Victoria Insurance Tbk",
+    "company_name": "PT Victoria Insurance Tbk.",
+    "symbol": "VINS.JK",
+    "classification_of_shareholder": ">5%",
+    "controlling_shareholder": "Yes",
+    "citizenship": "Indonesia",
+    "percentage_of_shares_traded": 3.76,
+    "share_ownership_status": "Direct",
+    "purpose": "Meningkatkan penyertaan modal entitas",
+    "holder_type": "institution",
+    "holder_name_raw": "PT Victoria Investama Tbk",
+    "holder_name": "PT Victoria Investama Tbk.",
+    "holder_symbol": "VICO.JK",
+    "holding_before": 1104761895,
+    "holding_after": 1159761895,
+    "share_percentage_before": 75.64,
+    "share_percentage_after": 79.4,
+    "share_percentage_transaction": 3.760000000000005,
+    "company_address": "Jl. Jend. Gatot Subroto Kav. 23, Jakarta",
+    "company_phone": "Citizenship Indonesia",
+    "transactions": [
+      {
+        "type": "buy",
+        "price": 153,
+        "amount": 55000000,
+        "date": "25 June 2025",
+        "value": 8415000000
+      }
+    ],
+    "amount_transacted": 55000000,
+    "transaction_value": 8415000000,
+    "transaction_type": "buy",
+    "price": 153.0,
+    "price_transaction": {
+      "prices": [
+        153
+      ],
+      "amount_transacted": [
+        55000000
+      ]
+    },
+    "is_transfer": false,
+    "source": "22a02f1fbb_4dd23f136b.pdf"
+  },
+  {
+    "lang": "en",
+    "issuer_code": "KMDS",
+    "attachments": "1",
+    "subject": "Information Disclosure of Certain Shareholders",
+    "company_name_raw": "PT Kurniamitra Duta Sentosa Tbk",
+    "company_name": "PT Kurniamitra Duta Sentosa Tbk.",
+    "symbol": "KMDS.JK",
+    "classification_of_shareholder": "Directors",
+    "controlling_shareholder": "No",
+    "citizenship": "Indonesia",
+    "percentage_of_shares_traded": 0.0,
+    "share_ownership_status": "Direct",
+    "purpose": "Investasi",
+    "holder_type": "insider",
+    "holder_name_raw": "Dewi Irianty Wijaya",
+    "holder_name": "Dewi Irianty Wijaya",
+    "holder_symbol": null,
+    "holding_before": 410087,
+    "holding_after": 426787,
+    "share_percentage_before": 0.05,
+    "share_percentage_after": 0.05,
+    "share_percentage_transaction": 0.0,
+    "company_address": "Tangerang Selatan",
+    "company_phone": "Citizenship Indonesia",
+    "transactions": [
+      {
+        "type": "buy",
+        "price": 565,
+        "amount": 16700,
+        "date": "01 July 2025",
+        "value": 9435500
+      }
+    ],
+    "amount_transacted": 16700,
+    "transaction_value": 9435500,
+    "transaction_type": "buy",
+    "price": 565.0,
+    "price_transaction": {
+      "prices": [
+        565
+      ],
+      "amount_transacted": [
+        16700
+      ]
+    },
+    "is_transfer": false,
+    "source": "8183f38c0b_68f8d9011f.pdf"
+  },
+  {
+    "lang": "en",
+    "issuer_code": "CYBR",
+    "attachments": "1",
+    "subject": "Information Disclosure of Certain Shareholders",
+    "company_name_raw": "CYBR",
+    "company_name": "PT ITSEC Asia Tbk.",
+    "symbol": "CYBR.JK",
+    "classification_of_shareholder": ">5%",
+    "controlling_shareholder": "No",
+    "citizenship": "Singapura",
+    "percentage_of_shares_traded": 0.001,
+    "share_ownership_status": "Direct",
+    "purpose": "Investasi",
+    "holder_type": "institution",
+    "holder_name_raw": "MB Investment Management Pte. Ltd.",
+    "holder_name": "Mb Investment Management Pte. LTD",
+    "holder_symbol": null,
+    "holding_before": 1769259857,
+    "holding_after": 1769294857,
+    "share_percentage_before": 26.849,
+    "share_percentage_after": 26.85,
+    "share_percentage_transaction": 0.0010000000000012221,
+    "company_address": "3, Jl. Dr Ide Anak Agung Gde Agung",
+    "company_phone": "Citizenship Singapura",
+    "transactions": [
+      {
+        "type": "buy",
+        "price": 925,
+        "amount": 35000,
+        "date": "04 July 2025",
+        "value": 32375000
+      }
+    ],
+    "amount_transacted": 35000,
+    "transaction_value": 32375000,
+    "transaction_type": "buy",
+    "price": 925.0,
+    "price_transaction": {
+      "prices": [
+        925
+      ],
+      "amount_transacted": [
+        35000
+      ]
+    },
+    "is_transfer": false,
+    "source": "f90977fcf3_ed80567242.pdf"
+  },
+  {
+    "lang": "en",
+    "issuer_code": "TPIA",
+    "attachments": "1",
+    "subject": "Information Disclosure of Certain Shareholders",
+    "company_name_raw": "PT Chandra Asri Petrochemical Tbk",
+    "company_name": "PT Chandra Asri Petrochemical Tbk",
+    "symbol": null,
+    "classification_of_shareholder": "Directors",
+    "controlling_shareholder": "No",
+    "citizenship": "Indonesia",
+    "percentage_of_shares_traded": 6e-05,
+    "share_ownership_status": "Direct",
+    "purpose": "Investasi",
+    "holder_type": "insider",
+    "holder_name_raw": "Raymond",
+    "holder_name": "Raymond",
+    "holder_symbol": null,
+    "holding_before": 2000000,
+    "holding_after": 2050000,
+    "share_percentage_before": 0.00231,
+    "share_percentage_after": 0.00236,
+    "share_percentage_transaction": 5.000000000000013e-05,
+    "company_address": "Let. Jend. S. Parman Kav. 62-63, Slipi,",
+    "company_phone": "Citizenship Indonesia",
+    "transactions": [
+      {
+        "type": "buy",
+        "price": 9300,
+        "amount": 50000,
+        "date": "25 July 2025",
+        "value": 465000000
+      }
+    ],
+    "amount_transacted": 50000,
+    "transaction_value": 465000000,
+    "transaction_type": "buy",
+    "price": 9300.0,
+    "price_transaction": {
+      "prices": [
+        9300
+      ],
+      "amount_transacted": [
+        50000
+      ]
+    },
+    "is_transfer": false,
+    "source": "f058e3fb67_1ab6d22dda.pdf"
+  },
+  {
+    "lang": "en",
+    "issuer_code": "NANO",
+    "attachments": "1",
+    "subject": "Information Disclosure of Certain Shareholders",
+    "company_name_raw": "PT Nanotech Indonesia Global Tbk",
+    "company_name": "PT Nanotech Indonesia Global Tbk",
+    "symbol": "NANO.JK",
+    "classification_of_shareholder": "Directors",
+    "controlling_shareholder": "No",
+    "citizenship": "Indonesia",
+    "percentage_of_shares_traded": 0.001,
+    "share_ownership_status": "Direct",
+    "purpose": "Keperluan Pribadi",
+    "holder_type": "insider",
+    "holder_name_raw": "Umar Alfaruqi Abdurrahman",
+    "holder_name": "Umar Alfaruqi Abdurrahman",
+    "holder_symbol": null,
+    "holding_before": 44507,
+    "holding_after": 7,
+    "share_percentage_before": 0.001,
+    "share_percentage_after": 0.0,
+    "share_percentage_transaction": 0.001,
+    "company_address": "Kademangan Setu",
+    "company_phone": "Citizenship Indonesia",
+    "transactions": [
+      {
+        "type": "sell",
+        "price": 21,
+        "amount": 24500,
+        "date": "25 June 2025",
+        "value": 514500
+      },
+      {
+        "type": "sell",
+        "price": 23,
+        "amount": 20000,
+        "date": "26 June 2025",
+        "value": 460000
+      }
+    ],
+    "amount_transacted": 44500,
+    "transaction_value": 974500,
+    "transaction_type": "sell",
+    "price": 21.9,
+    "price_transaction": {
+      "prices": [
+        21,
+        23
+      ],
+      "amount_transacted": [
+        24500,
+        20000
+      ]
+    },
+    "is_transfer": false,
+    "source": "bf81c78f5d_4d68ffad2b.pdf"
+  },
+  {
+    "lang": "en",
+    "issuer_code": "MTWI",
+    "attachments": "2",
+    "subject": "Information Disclosure of Certain Shareholders",
+    "company_name_raw": "PT Malacca Trust Wuwungan Insurance",
+    "company_name": "PT Malacca Trust Wuwungan Insurance Tbk.",
+    "symbol": "MTWI.JK",
+    "classification_of_shareholder": "Directors",
+    "controlling_shareholder": "No",
+    "citizenship": "Indonesia",
+    "percentage_of_shares_traded": 0.73,
+    "share_ownership_status": "Direct",
+    "purpose": "Penambahan portfolio",
+    "holder_type": "insider",
+    "holder_name_raw": "Vientje Harijanto",
+    "holder_name": "Vientje Harijanto",
+    "holder_symbol": null,
+    "holding_before": 124441296,
+    "holding_after": 146082496,
+    "share_percentage_before": 4.26,
+    "share_percentage_after": 4.99,
+    "share_percentage_transaction": 0.7300000000000004,
+    "company_address": "21. Jakarta Selatan",
+    "company_phone": "Citizenship Indonesia",
+    "transactions": [
+      {
+        "type": "buy",
+        "price": 100,
+        "amount": 21641200,
+        "date": "30 June 2025",
+        "value": 2164120000
+      }
+    ],
+    "amount_transacted": 21641200,
+    "transaction_value": 2164120000,
+    "transaction_type": "buy",
+    "price": 100.0,
+    "price_transaction": {
+      "prices": [
+        100
+      ],
+      "amount_transacted": [
+        21641200
+      ]
+    },
+    "is_transfer": false,
+    "source": "3c5b88d439_b8a6bd3f53.pdf"
+  },
+  {
+    "lang": "en",
+    "issuer_code": "SULI",
+    "attachments": "1",
+    "subject": "Information Disclosure of Certain Shareholders",
+    "company_name_raw": "SULI",
+    "company_name": "PT SLJ Global Tbk",
+    "symbol": "SULI.JK",
+    "classification_of_shareholder": "Directors",
+    "controlling_shareholder": "Yes",
+    "citizenship": "Indonesia",
+    "percentage_of_shares_traded": 0.44,
+    "share_ownership_status": "Direct",
+    "purpose": "Penjualan Saham",
+    "holder_type": "insider",
+    "holder_name_raw": "Amir Sunarko",
+    "holder_name": "Amir Sunarko",
+    "holder_symbol": null,
+    "holding_before": 313461051,
+    "holding_after": 285938115,
+    "share_percentage_before": 4.96,
+    "share_percentage_after": 4.52,
+    "share_percentage_transaction": 0.4400000000000004,
+    "company_address": "Grogol Selatan, Kebayoran Lama,",
+    "company_phone": "Citizenship Indonesia",
+    "transactions": [
+      {
+        "type": "sell",
+        "price": 102,
+        "amount": 5989836,
+        "date": "30 June 2025",
+        "value": 610963272
+      },
+      {
+        "type": "sell",
+        "price": 103,
+        "amount": 21533100,
+        "date": "30 June 2025",
+        "value": 2217909300
+      }
+    ],
+    "amount_transacted": 27522936,
+    "transaction_value": 2828872572,
+    "transaction_type": "sell",
+    "price": 102.78,
+    "price_transaction": {
+      "prices": [
+        102,
+        103
+      ],
+      "amount_transacted": [
+        5989836,
+        21533100
+      ]
+    },
+    "is_transfer": false,
+    "source": "484a0bc7c2_feb927df1c.pdf"
+  },
+  {
+    "lang": "en",
+    "issuer_code": "BOBA",
+    "attachments": "1",
+    "subject": "Information Disclosure of Certain Shareholders",
+    "company_name_raw": "PT. Formosa Ingredient Factory, Tbk",
+    "company_name": "PT Formosa Ingredient Factory Tbk",
+    "symbol": "BOBA.JK",
+    "classification_of_shareholder": "Commissioners",
+    "controlling_shareholder": "Yes",
+    "citizenship": "Indonesia",
+    "percentage_of_shares_traded": 0.01,
+    "share_ownership_status": "Direct",
+    "purpose": "Investasi",
+    "holder_type": "insider",
+    "holder_name_raw": "Hengky Wijaya",
+    "holder_name": "Hengky Wijaya",
+    "holder_symbol": null,
+    "holding_before": 291237700,
+    "holding_after": 291387700,
+    "share_percentage_before": 25.2,
+    "share_percentage_after": 25.21,
+    "share_percentage_transaction": 0.010000000000001563,
+    "company_address": "Telephone Number 021 2222 8975",
+    "company_phone": "Citizenship Indonesia",
+    "transactions": [
+      {
+        "type": "buy",
+        "price": 178,
+        "amount": 400,
+        "date": "25 June 2025",
+        "value": 71200
+      },
+      {
+        "type": "buy",
+        "price": 180,
+        "amount": 200,
+        "date": "25 June 2025",
+        "value": 36000
+      },
+      {
+        "type": "buy",
+        "price": 181,
+        "amount": 143300,
+        "date": "25 June 2025",
+        "value": 25937300
+      },
+      {
+        "type": "buy",
+        "price": 182,
+        "amount": 6100,
+        "date": "25 June 2025",
+        "value": 1110200
+      }
+    ],
+    "amount_transacted": 150000,
+    "transaction_value": 27154700,
+    "transaction_type": "buy",
+    "price": 181.03,
+    "price_transaction": {
+      "prices": [
+        178,
+        180,
+        181,
+        182
+      ],
+      "amount_transacted": [
+        400,
+        200,
+        143300,
+        6100
+      ]
+    },
+    "is_transfer": false,
+    "source": "c94fc6b869_e4d8ff58e3.pdf"
+  },
+  {
+    "lang": "en",
+    "issuer_code": "BHIT",
+    "attachments": "1",
+    "subject": "Information Disclosure of Certain Shareholders",
+    "company_name_raw": "KPIG",
+    "company_name": "MNC Tourism Indonesia Tbk",
+    "symbol": "KPIG.JK",
+    "classification_of_shareholder": ">5%",
+    "controlling_shareholder": "Yes",
+    "citizenship": "Indonesia",
+    "percentage_of_shares_traded": 4.74,
+    "share_ownership_status": "Direct",
+    "purpose": "Menambah kepemilikan strategis di PT",
+    "holder_type": "institution",
+    "holder_name_raw": "PT MNC Asia Holding Tbk",
+    "holder_name": "PT MNC Asia Holding Tbk",
+    "holder_symbol": "BHIT.JK",
+    "holding_before": 20853847680,
+    "holding_after": 25473847680,
+    "share_percentage_before": 21.37,
+    "share_percentage_after": 26.11,
+    "share_percentage_transaction": 4.739999999999998,
+    "company_address": "Jakarta Pusat",
+    "company_phone": "Citizenship Indonesia",
+    "transactions": [
+      {
+        "type": "buy",
+        "price": 200,
+        "amount": 4620000000,
+        "date": "02 July 2025",
+        "value": 924000000000
+      }
+    ],
+    "amount_transacted": 4620000000,
+    "transaction_value": 924000000000,
+    "transaction_type": "buy",
+    "price": 200.0,
+    "price_transaction": {
+      "prices": [
+        200
+      ],
+      "amount_transacted": [
+        4620000000
+      ]
+    },
+    "is_transfer": false,
+    "source": "e9e6830530_943909c95e.pdf"
+  },
+  {
+    "lang": "en",
+    "issuer_code": "HATM",
+    "attachments": "3",
+    "subject": "Information Disclosure of Certain Shareholders",
+    "company_name_raw": "PT Habco Trans Maritima Tbk",
+    "company_name": "PT Habco Trans Maritima Tbk",
+    "symbol": "HATM.JK",
+    "classification_of_shareholder": ">5%",
+    "controlling_shareholder": "No",
+    "citizenship": "Indonesia",
+    "percentage_of_shares_traded": 19.26,
+    "share_ownership_status": "Direct",
+    "purpose": "Investasi",
+    "holder_type": "institution",
+    "holder_name_raw": "PT Multi Sarana Nasional",
+    "holder_name": "PT Multi Sarana Nasional",
+    "holder_symbol": null,
+    "holding_before": 0,
+    "holding_after": 1671837561,
+    "share_percentage_before": 0.0,
+    "share_percentage_after": 19.26,
+    "share_percentage_transaction": 19.26,
+    "company_address": "Tangkerang Utara, Bukit Raya,",
+    "company_phone": "Citizenship Indonesia",
+    "transactions": [
+      {
+        "type": "buy",
+        "price": 320,
+        "amount": 1382089440,
+        "date": "16 June 2025",
+        "value": 442268620800
+      },
+      {
+        "type": "buy",
+        "price": 320,
+        "amount": 289748121,
+        "date": "25 July 2025",
+        "value": 92719398720
+      }
+    ],
+    "amount_transacted": 1671837561,
+    "transaction_value": 534988019520,
+    "transaction_type": "buy",
+    "price": 320.0,
+    "price_transaction": {
+      "prices": [
+        320,
+        320
+      ],
+      "amount_transacted": [
+        1382089440,
+        289748121
+      ]
+    },
+    "is_transfer": true,
+    "source": "364bb92108_2d6e9fcc1d.pdf"
+  },
+  {
+    "lang": "en",
+    "issuer_code": "UVCR",
+    "attachments": "1",
+    "subject": "Information Disclosure of Certain Shareholders",
+    "company_name_raw": "PT Trimegah Karya Pratama Tbk",
+    "company_name": "PT Trimegah Karya Pratama Tbk.",
+    "symbol": "UVCR.JK",
+    "classification_of_shareholder": "Directors",
+    "controlling_shareholder": "Yes",
+    "citizenship": "Indonesia",
+    "percentage_of_shares_traded": 0.02,
+    "share_ownership_status": "Direct",
+    "purpose": "Investasi",
+    "holder_type": "insider",
+    "holder_name_raw": "Hady Kuswanto",
+    "holder_name": "Hady Kuswanto",
+    "holder_symbol": null,
+    "holding_before": 42593000,
+    "holding_after": 43013600,
+    "share_percentage_before": 2.13,
+    "share_percentage_after": 2.15,
+    "share_percentage_transaction": 0.020000000000000018,
+    "company_address": "Tebet, Jakarta Selatan",
+    "company_phone": "Citizenship Indonesia",
+    "transactions": [
+      {
+        "type": "buy",
+        "price": 77,
+        "amount": 420600,
+        "date": "26 June 2025",
+        "value": 32386200
+      }
+    ],
+    "amount_transacted": 420600,
+    "transaction_value": 32386200,
+    "transaction_type": "buy",
+    "price": 77.0,
+    "price_transaction": {
+      "prices": [
+        77
+      ],
+      "amount_transacted": [
+        420600
+      ]
+    },
+    "is_transfer": false,
+    "source": "c371989d4d_389899edaa.pdf"
+  },
+  {
+    "lang": "en",
+    "issuer_code": "IOTF",
+    "attachments": "1",
+    "subject": "Information Disclosure of Certain Shareholders",
+    "company_name_raw": "PT SUMBER SINERGI MAKMUR TBK",
+    "company_name": "PT Sumber Sinergi Makmur Tbk",
+    "symbol": "IOTF.JK",
+    "classification_of_shareholder": ">5%",
+    "controlling_shareholder": "No",
+    "citizenship": "INDONESIA",
+    "percentage_of_shares_traded": 5.26,
+    "share_ownership_status": "Direct",
+    "purpose": "Transaksi Pembelian Saham IOTF oleh",
+    "holder_type": "institution",
+    "holder_name_raw": "PT GAIA ARTHA DINAMIC",
+    "holder_name": "PT Gaia Artha Dinamic",
+    "holder_symbol": null,
+    "holding_before": 0,
+    "holding_after": 278516400,
+    "share_percentage_before": 0.0,
+    "share_percentage_after": 5.26,
+    "share_percentage_transaction": 5.26,
+    "company_address": "BARAT NO. 31A, KEC. GAMBIR,",
+    "company_phone": "Citizenship INDONESIA",
+    "transactions": [
+      {
+        "type": "sell",
+        "price": 191.8,
+        "amount": 278516400,
+        "date": "18 June 2025",
+        "value": 53419445520.0
+      }
+    ],
+    "amount_transacted": 278516400,
+    "transaction_value": 53419445520.0,
+    "transaction_type": "sell",
+    "price": 191.8,
+    "price_transaction": {
+      "prices": [
+        191.8
+      ],
+      "amount_transacted": [
+        278516400
+      ]
+    },
+    "is_transfer": true,
+    "source": "dec4769d5e_a8025c3c2c.pdf"
+  },
+  {
+    "lang": "en",
+    "issuer_code": "EMTK",
+    "attachments": "1",
+    "subject": "Information Disclosure of Certain Shareholders",
+    "company_name_raw": "PT Surya Citra Media Tbk",
+    "company_name": "Surya Citra Media Tbk",
+    "symbol": "SCMA.JK",
+    "classification_of_shareholder": ">5%",
+    "controlling_shareholder": "Yes",
+    "citizenship": "Indonesia",
+    "percentage_of_shares_traded": 0.11,
+    "share_ownership_status": "Direct",
+    "purpose": "Untuk investasi",
+    "holder_type": "institution",
+    "holder_name_raw": "PT Elang Mahkota Teknologi Tbk",
+    "holder_name": "Elang Mahkota Teknologi Tbk",
+    "holder_symbol": "EMTK.JK",
+    "holding_before": 48022335640,
+    "holding_after": 48106335640,
+    "share_percentage_before": 64.92,
+    "share_percentage_after": 65.03,
+    "share_percentage_transaction": 0.10999999999999943,
+    "company_address": "Jl. Asia Afrika Lot. 19, Jakarta 10270",
+    "company_phone": "Citizenship Indonesia",
+    "transactions": [
+      {
+        "type": "buy",
+        "price": 148,
+        "amount": 37000000,
+        "date": "26 June 2025",
+        "value": 5476000000
+      },
+      {
+        "type": "buy",
+        "price": 150,
+        "amount": 27000000,
+        "date": "02 July 2025",
+        "value": 4050000000
+      },
+      {
+        "type": "buy",
+        "price": 149,
+        "amount": 4000000,
+        "date": "03 July 2025",
+        "value": 596000000
+      },
+      {
+        "type": "buy",
+        "price": 150,
+        "amount": 16000000,
+        "date": "04 July 2025",
+        "value": 2400000000
+      }
+    ],
+    "amount_transacted": 84000000,
+    "transaction_value": 12522000000,
+    "transaction_type": "buy",
+    "price": 149.07,
+    "price_transaction": {
+      "prices": [
+        148,
+        150,
+        149,
+        150
+      ],
+      "amount_transacted": [
+        37000000,
+        27000000,
+        4000000,
+        16000000
+      ]
+    },
+    "is_transfer": false,
+    "source": "59ef3a120a_f7e1b1ba8c.pdf"
+  },
+  {
+    "lang": "en",
+    "issuer_code": "ISSP",
+    "attachments": "1",
+    "subject": "Information Disclosure of Certain Shareholders",
+    "company_name_raw": "PT Steel Pipe Industry of Indonesia Tbk",
+    "company_name": "PT Steel Pipe Industry of Indonesia Tbk",
+    "symbol": "ISSP.JK",
+    "classification_of_shareholder": ">5%",
+    "controlling_shareholder": "Yes",
+    "citizenship": "Indonesia",
+    "percentage_of_shares_traded": 0.04,
+    "share_ownership_status": "Direct",
+    "purpose": "Investasi",
+    "holder_type": "institution",
+    "holder_name_raw": "PT Cakra Bhakti Para Putra",
+    "holder_name": "PT Cakra Bhakti Para Putra",
+    "holder_symbol": null,
+    "holding_before": 4090956230,
+    "holding_after": 4093816230,
+    "share_percentage_before": 56.93,
+    "share_percentage_after": 56.97,
+    "share_percentage_transaction": 0.03999999999999915,
+    "company_address": "Bubutan, Surabaya 60173 Jawa Timur",
+    "company_phone": "Citizenship Indonesia",
+    "transactions": [
+      {
+        "type": "buy",
+        "price": 334,
+        "amount": 2860000,
+        "date": "30 June 2025",
+        "value": 955240000
+      }
+    ],
+    "amount_transacted": 2860000,
+    "transaction_value": 955240000,
+    "transaction_type": "buy",
+    "price": 334.0,
+    "price_transaction": {
+      "prices": [
+        334
+      ],
+      "amount_transacted": [
+        2860000
+      ]
+    },
+    "is_transfer": false,
+    "source": "650e341ce7_58d7c67373.pdf"
+  },
+  {
+    "lang": "en",
+    "issuer_code": "ISSP",
+    "attachments": "1",
+    "subject": "Information Disclosure of Certain Shareholders",
+    "company_name_raw": "PT Steel Pipe Industry of Indonesia Tbk",
+    "company_name": "PT Steel Pipe Industry of Indonesia Tbk",
+    "symbol": "ISSP.JK",
+    "classification_of_shareholder": ">5%",
+    "controlling_shareholder": "Yes",
+    "citizenship": "Indonesia",
+    "percentage_of_shares_traded": 0.05,
+    "share_ownership_status": "Direct",
+    "purpose": "Investasi",
+    "holder_type": "institution",
+    "holder_name_raw": "PT Cakra Bhakti Para Putra",
+    "holder_name": "PT Cakra Bhakti Para Putra",
+    "holder_symbol": null,
+    "holding_before": 4093816230,
+    "holding_after": 4097198630,
+    "share_percentage_before": 56.97,
+    "share_percentage_after": 57.02,
+    "share_percentage_transaction": 0.05000000000000426,
+    "company_address": "Bubutan, Surabaya 60173 Jawa Timur",
+    "company_phone": "Citizenship Indonesia",
+    "transactions": [
+      {
+        "type": "buy",
+        "price": 324,
+        "amount": 3382400,
+        "date": "04 July 2025",
+        "value": 1095897600
+      }
+    ],
+    "amount_transacted": 3382400,
+    "transaction_value": 1095897600,
+    "transaction_type": "buy",
+    "price": 324.0,
+    "price_transaction": {
+      "prices": [
+        324
+      ],
+      "amount_transacted": [
+        3382400
+      ]
+    },
+    "is_transfer": false,
+    "source": "3e548d6be0_4f82f2d582.pdf"
+  },
+  {
+    "lang": "en",
+    "issuer_code": "IDPR",
+    "attachments": "1",
+    "subject": "Information Disclosure of Certain Shareholders",
+    "company_name_raw": "PT Indonesia Pondasi Raya Tbk",
+    "company_name": "PT Indonesia Pondasi Raya Tbk.",
+    "symbol": "IDPR.JK",
+    "classification_of_shareholder": "Commissioners",
+    "controlling_shareholder": "Yes",
+    "citizenship": "Indonesia",
+    "percentage_of_shares_traded": 0.103,
+    "share_ownership_status": "Direct",
+    "purpose": "Investasi",
+    "holder_type": "insider",
+    "holder_name_raw": "Manuel Djunako",
+    "holder_name": "Manuel Djunako",
+    "holder_symbol": null,
+    "holding_before": 1719316806,
+    "holding_after": 1721376806,
+    "share_percentage_before": 85.837,
+    "share_percentage_after": 85.94,
+    "share_percentage_transaction": 0.10299999999999443,
+    "company_address": "14250",
+    "company_phone": "Citizenship Indonesia",
+    "transactions": [
+      {
+        "type": "buy",
+        "price": 194,
+        "amount": 100000,
+        "date": "01 July 2025",
+        "value": 19400000
+      },
+      {
+        "type": "buy",
+        "price": 206,
+        "amount": 1035000,
+        "date": "02 July 2025",
+        "value": 213210000
+      },
+      {
+        "type": "buy",
+        "price": 205,
+        "amount": 925000,
+        "date": "03 July 2025",
+        "value": 189625000
+      }
+    ],
+    "amount_transacted": 2060000,
+    "transaction_value": 422235000,
+    "transaction_type": "buy",
+    "price": 204.97,
+    "price_transaction": {
+      "prices": [
+        194,
+        206,
+        205
+      ],
+      "amount_transacted": [
+        100000,
+        1035000,
+        925000
+      ]
+    },
+    "is_transfer": false,
+    "source": "99dad1ee38_2e51ecf04c.pdf"
+  },
+  {
+    "lang": "en",
+    "issuer_code": "VICO",
+    "attachments": "1",
+    "subject": "Information Disclosure of Certain Shareholders",
+    "company_name_raw": "PT Bank Victoria International Tbk",
+    "company_name": "Bank Victoria International Tbk",
+    "symbol": "BVIC.JK",
+    "classification_of_shareholder": ">5%",
+    "controlling_shareholder": "Yes",
+    "citizenship": "Indonesia",
+    "percentage_of_shares_traded": 4.12,
+    "share_ownership_status": "Direct",
+    "purpose": "Meningkatkan penyertaan modal entitas",
+    "holder_type": "institution",
+    "holder_name_raw": "PT Victoria Investama Tbk",
+    "holder_name": "PT Victoria Investama Tbk.",
+    "holder_symbol": "VICO.JK",
+    "holding_before": 9967417411,
+    "holding_after": 10726112445,
+    "share_percentage_before": 54.13,
+    "share_percentage_after": 58.25,
+    "share_percentage_transaction": 4.119999999999997,
+    "company_address": "Jl. Jend. Gatot Subroto Kav. 23, Jakarta",
+    "company_phone": "Citizenship Indonesia",
+    "transactions": [
+      {
+        "type": "buy",
+        "price": 113,
+        "amount": 758695034,
+        "date": "25 June 2025",
+        "value": 85732538842
+      }
+    ],
+    "amount_transacted": 758695034,
+    "transaction_value": 85732538842,
+    "transaction_type": "buy",
+    "price": 113.0,
+    "price_transaction": {
+      "prices": [
+        113
+      ],
+      "amount_transacted": [
+        758695034
+      ]
+    },
+    "is_transfer": false,
+    "source": "34370055b2_3a2f14dd78.pdf"
+  },
+  {
+    "lang": "en",
+    "issuer_code": "IMPC",
+    "attachments": "1",
+    "subject": "Information Disclosure of Certain Shareholders",
+    "company_name_raw": "IMPC",
+    "company_name": "PT Impack Pratama Industri Tbk",
+    "symbol": "IMPC.JK",
+    "classification_of_shareholder": ">5%",
+    "controlling_shareholder": "No",
+    "citizenship": "Badan Hukum Indonesia",
+    "percentage_of_shares_traded": 1.19,
+    "share_ownership_status": "Direct",
+    "purpose": "Investasi",
+    "holder_type": "institution",
+    "holder_name_raw": "PT Tunggal Jaya Investama",
+    "holder_name": "PT Tunggal Jaya Investama",
+    "holder_symbol": null,
+    "holding_before": 23279426194,
+    "holding_after": 23929426194,
+    "share_percentage_before": 42.9,
+    "share_percentage_after": 44.09,
+    "share_percentage_transaction": 1.1900000000000048,
+    "company_address": "38, Jalan Yos Sudarso Kav. 85",
+    "company_phone": "Citizenship Badan Hukum Indonesia",
+    "transactions": [
+      {
+        "type": "buy",
+        "price": 260,
+        "amount": 650000000,
+        "date": "01 July 2025",
+        "value": 169000000000
+      }
+    ],
+    "amount_transacted": 650000000,
+    "transaction_value": 169000000000,
+    "transaction_type": "buy",
+    "price": 260.0,
+    "price_transaction": {
+      "prices": [
+        260
+      ],
+      "amount_transacted": [
+        650000000
+      ]
+    },
+    "is_transfer": false,
+    "source": "749314bfcd_84f3c49c23.pdf"
+  },
+  {
+    "lang": "en",
+    "issuer_code": "KRYA",
+    "attachments": "1",
+    "subject": "Information Disclosure of Certain Shareholders",
+    "company_name_raw": "KRYA",
+    "company_name": "PT Bangun Karya Perkasa Jaya Tbk",
+    "symbol": "KRYA.JK",
+    "classification_of_shareholder": "Commissioners",
+    "controlling_shareholder": "No",
+    "citizenship": "Indonesia",
+    "percentage_of_shares_traded": 0.0,
+    "share_ownership_status": "Direct",
+    "purpose": "Pelaksanaan Tahap Pertama dari",
+    "holder_type": "insider",
+    "holder_name_raw": "Pramana Budihardjo",
+    "holder_name": "Pramana Budihardjo",
+    "holder_symbol": null,
+    "holding_before": 40000,
+    "holding_after": 0,
+    "share_percentage_before": 0.0,
+    "share_percentage_after": 0.0,
+    "share_percentage_transaction": 0.0,
+    "company_address": "Surabaya",
+    "company_phone": "Citizenship Indonesia",
+    "transactions": [
+      {
+        "type": "sell",
+        "price": 29,
+        "amount": 40000,
+        "date": "03 July 2025",
+        "value": 1160000
+      }
+    ],
+    "amount_transacted": 40000,
+    "transaction_value": 1160000,
+    "transaction_type": "sell",
+    "price": 29.0,
+    "price_transaction": {
+      "prices": [
+        29
+      ],
+      "amount_transacted": [
+        40000
+      ]
+    },
+    "is_transfer": true,
+    "source": "adf580d92c_e0b3d28226.pdf"
+  },
+  {
+    "lang": "en",
+    "issuer_code": "DEWA",
+    "attachments": "2",
+    "subject": "Information Disclosure of Certain Shareholders",
+    "company_name_raw": "PT Darma Henwa Tbk",
+    "company_name": "Darma Henwa Tbk",
+    "symbol": "DEWA.JK",
+    "classification_of_shareholder": ">5%",
+    "controlling_shareholder": "No",
+    "citizenship": "Indonesia",
+    "percentage_of_shares_traded": 1.63,
+    "share_ownership_status": "Direct",
+    "purpose": "Perseroan tidak mengetahui tujuan",
+    "holder_type": "institution",
+    "holder_name_raw": "PT Madhani Talatah Nusantara",
+    "holder_name": "PT Madhani Talatah Nusantara",
+    "holder_symbol": null,
+    "holding_before": 9599877188,
+    "holding_after": 8933210522,
+    "share_percentage_before": 23.59,
+    "share_percentage_after": 21.96,
+    "share_percentage_transaction": 1.629999999999999,
+    "company_address": "District 8, Lot 28, Jl. Jenderal Sudirman",
+    "company_phone": "Citizenship Indonesia",
+    "transactions": [
+      {
+        "type": "sell",
+        "price": 0.0,
+        "amount": 666666666,
+        "date": "19 June 2025",
+        "value": 0.0
+      }
+    ],
+    "amount_transacted": 666666666,
+    "transaction_value": 0.0,
+    "transaction_type": "sell",
+    "price": 0.0,
+    "price_transaction": {
+      "prices": [
+        0.0
+      ],
+      "amount_transacted": [
+        666666666
+      ]
+    },
+    "is_transfer": false,
+    "source": "0a5285efd3_6f740af19d.pdf"
+  },
+  {
+    "lang": "en",
+    "issuer_code": "LPLI",
+    "attachments": "1",
+    "subject": "Information Disclosure of Certain Shareholders",
+    "company_name_raw": "PT Bank Nationalnobu Tbk (NOBU)",
+    "company_name": "PT Bank Nationalnobu Tbk (NOBU)",
+    "symbol": null,
+    "classification_of_shareholder": ">5%",
+    "controlling_shareholder": "No",
+    "citizenship": "Indonesia",
+    "percentage_of_shares_traded": 5.14,
+    "share_ownership_status": "Direct",
+    "purpose": "Divestasi",
+    "holder_type": "institution",
+    "holder_name_raw": "PT Star Pacific Tbk",
+    "holder_name": "Star Pacific Tbk",
+    "holder_symbol": "LPLI.JK",
+    "holding_before": 1006170721,
+    "holding_after": 621621621,
+    "share_percentage_before": 13.45,
+    "share_percentage_after": 8.31,
+    "share_percentage_transaction": 5.139999999999999,
+    "company_address": "Jl. Boulevard Palem Raya No. 7",
+    "company_phone": "Citizenship Indonesia",
+    "transactions": [
+      {
+        "type": "sell",
+        "price": 1110,
+        "amount": 384549100,
+        "date": "26 June 2025",
+        "value": 426849501000
+      }
+    ],
+    "amount_transacted": 384549100,
+    "transaction_value": 426849501000,
+    "transaction_type": "sell",
+    "price": 1110.0,
+    "price_transaction": {
+      "prices": [
+        1110
+      ],
+      "amount_transacted": [
+        384549100
+      ]
+    },
+    "is_transfer": false,
+    "source": "507ad9487d_22aeba57b9.pdf"
+  },
+  {
+    "lang": "en",
+    "issuer_code": "VICO",
+    "attachments": "1",
+    "subject": "Information Disclosure of Certain Shareholders",
+    "company_name_raw": "PT Bhuwanatala Indah Permai Tbk",
+    "company_name": "Bhuwanatala Indah Permai Tbk",
+    "symbol": "BIPP.JK",
+    "classification_of_shareholder": ">5%",
+    "controlling_shareholder": "No",
+    "citizenship": "INDONESIA",
+    "percentage_of_shares_traded": 1.18,
+    "share_ownership_status": "Direct",
+    "purpose": "Trading",
+    "holder_type": "institution",
+    "holder_name_raw": "PT VICTORIA INVESTAMA TBK",
+    "holder_name": "PT Victoria Investama Tbk.",
+    "holder_symbol": "VICO.JK",
+    "holding_before": 267725000,
+    "holding_after": 326725000,
+    "share_percentage_before": 5.32,
+    "share_percentage_after": 6.5,
+    "share_percentage_transaction": 1.1799999999999997,
+    "company_address": "Jl. Jend Gatot Subroto Kav.23, Jakarta",
+    "company_phone": "Citizenship INDONESIA",
+    "transactions": [
+      {
+        "type": "buy",
+        "price": 42,
+        "amount": 326725000,
+        "date": "26 June 2025",
+        "value": 13722450000
+      }
+    ],
+    "amount_transacted": 326725000,
+    "transaction_value": 13722450000,
+    "transaction_type": "buy",
+    "price": 42.0,
+    "price_transaction": {
+      "prices": [
+        42
+      ],
+      "amount_transacted": [
+        326725000
+      ]
+    },
+    "is_transfer": false,
+    "source": "81147367a2_ba03a8b7a0.pdf"
+  },
+  {
+    "lang": "en",
+    "issuer_code": "WIRG",
+    "attachments": "1",
+    "subject": "Information Disclosure of Certain Shareholders",
+    "company_name_raw": "PT WIR ASIA Tbk",
+    "company_name": "PT Wir Asia Tbk",
+    "symbol": "WIRG.JK",
+    "classification_of_shareholder": ">5%",
+    "controlling_shareholder": "Yes",
+    "citizenship": "Indonesia",
+    "percentage_of_shares_traded": 2.568,
+    "share_ownership_status": "Direct",
+    "purpose": "Peningkatan Saham",
+    "holder_type": "institution",
+    "holder_name_raw": "PT WIR Global Kreatif",
+    "holder_name": "PT Wir Global Kreatif",
+    "holder_symbol": null,
+    "holding_before": 956289210,
+    "holding_after": 1262816410,
+    "share_percentage_before": 8.01,
+    "share_percentage_after": 10.578,
+    "share_percentage_transaction": 2.5679999999999996,
+    "company_address": "Barat",
+    "company_phone": "Citizenship Indonesia",
+    "transactions": [
+      {
+        "type": "sell",
+        "price": 83,
+        "amount": 35814000,
+        "date": "23 June 2025",
+        "value": 2972562000
+      },
+      {
+        "type": "sell",
+        "price": 81,
+        "amount": 13686000,
+        "date": "24 June 2025",
+        "value": 1108566000
+      },
+      {
+        "type": "sell",
+        "price": 82,
+        "amount": 1339500,
+        "date": "24 June 2025",
+        "value": 109839000
+      },
+      {
+        "type": "sell",
+        "price": 78,
+        "amount": 31240000,
+        "date": "25 June 2025",
+        "value": 2436720000
+      },
+      {
+        "type": "sell",
+        "price": 79,
+        "amount": 3450400,
+        "date": "25 June 2025",
+        "value": 272581600
+      },
+      {
+        "type": "sell",
+        "price": 78,
+        "amount": 3343300,
+        "date": "26 June 2025",
+        "value": 260777400
+      },
+      {
+        "type": "sell",
+        "price": 79,
+        "amount": 7826800,
+        "date": "26 June 2025",
+        "value": 618317200
+      },
+      {
+        "type": "sell",
+        "price": 80,
+        "amount": 300000,
+        "date": "26 June 2025",
+        "value": 24000000
+      }
+    ],
+    "amount_transacted": 97000000,
+    "transaction_value": 7803363200,
+    "transaction_type": "sell",
+    "price": 80.45,
+    "price_transaction": {
+      "prices": [
+        83,
+        81,
+        82,
+        78,
+        79,
+        78,
+        79,
+        80
+      ],
+      "amount_transacted": [
+        35814000,
+        13686000,
+        1339500,
+        31240000,
+        3450400,
+        3343300,
+        7826800,
+        300000
+      ]
+    },
+    "is_transfer": false,
+    "source": "8b75c0b4da_156e3f5c7b.pdf"
+  },
+  {
+    "lang": "en",
+    "issuer_code": "VICO",
+    "attachments": "1",
+    "subject": "Information Disclosure of Certain Shareholders",
+    "company_name_raw": "PT Bhuwanatala Indah Permai Tbk",
+    "company_name": "Bhuwanatala Indah Permai Tbk",
+    "symbol": "BIPP.JK",
+    "classification_of_shareholder": ">5%",
+    "controlling_shareholder": "No",
+    "citizenship": "Indonesia",
+    "percentage_of_shares_traded": 4.6,
+    "share_ownership_status": "Direct",
+    "purpose": "Trading",
+    "holder_type": "institution",
+    "holder_name_raw": "PT Victoria Investama Tbk",
+    "holder_name": "PT Victoria Investama Tbk.",
+    "holder_symbol": "VICO.JK",
+    "holding_before": 36371000,
+    "holding_after": 267725000,
+    "share_percentage_before": 0.72,
+    "share_percentage_after": 5.32,
+    "share_percentage_transaction": 4.6000000000000005,
+    "company_address": "Jl. Jend. Gatot Subroto Kav. 23, Jakarta",
+    "company_phone": "Citizenship Indonesia",
+    "transactions": [
+      {
+        "type": "buy",
+        "price": 39,
+        "amount": 231354000,
+        "date": "25 June 2025",
+        "value": 9022806000
+      }
+    ],
+    "amount_transacted": 231354000,
+    "transaction_value": 9022806000,
+    "transaction_type": "buy",
+    "price": 39.0,
+    "price_transaction": {
+      "prices": [
+        39
+      ],
+      "amount_transacted": [
+        231354000
+      ]
+    },
+    "is_transfer": false,
+    "source": "7a72f09220_acfeb6d14d.pdf"
+  },
+  {
+    "lang": "en",
+    "issuer_code": "CYBR",
+    "attachments": "1",
+    "subject": "Information Disclosure of Certain Shareholders",
+    "company_name_raw": "CYBR",
+    "company_name": "PT ITSEC Asia Tbk.",
+    "symbol": "CYBR.JK",
+    "classification_of_shareholder": "Directors",
+    "controlling_shareholder": "Yes",
+    "citizenship": "Swiss",
+    "percentage_of_shares_traded": 0.006,
+    "share_ownership_status": "Direct",
+    "purpose": "Investasi",
+    "holder_type": "insider",
+    "holder_name_raw": "Patrick Rudolf Dannacher",
+    "holder_name": "Patrick Rudolf Dannacher",
+    "holder_symbol": null,
+    "holding_before": 47350750,
+    "holding_after": 47749750,
+    "share_percentage_before": 0.719,
+    "share_percentage_after": 0.725,
+    "share_percentage_transaction": 0.006000000000000005,
+    "company_address": "3, Jl. Dr Ide Anak Agung Gde Agung",
+    "company_phone": "Citizenship Swiss",
+    "transactions": [
+      {
+        "type": "buy",
+        "price": 935,
+        "amount": 198000,
+        "date": "24 June 2025",
+        "value": 185130000
+      },
+      {
+        "type": "buy",
+        "price": 985,
+        "amount": 126000,
+        "date": "24 June 2025",
+        "value": 124110000
+      },
+      {
+        "type": "buy",
+        "price": 990,
+        "amount": 75000,
+        "date": "24 June 2025",
+        "value": 74250000
+      }
+    ],
+    "amount_transacted": 399000,
+    "transaction_value": 383490000,
+    "transaction_type": "buy",
+    "price": 961.13,
+    "price_transaction": {
+      "prices": [
+        935,
+        985,
+        990
+      ],
+      "amount_transacted": [
+        198000,
+        126000,
+        75000
+      ]
+    },
+    "is_transfer": false,
+    "source": "31b9cf2df6_97a2b9d5ac.pdf"
+  },
+  {
+    "lang": "en",
+    "issuer_code": "IDPR",
+    "attachments": "1",
+    "subject": "Information Disclosure of Certain Shareholders",
+    "company_name_raw": "PT Indonesia Pondasi Raya Tbk",
+    "company_name": "PT Indonesia Pondasi Raya Tbk.",
+    "symbol": "IDPR.JK",
+    "classification_of_shareholder": "Commissioners",
+    "controlling_shareholder": "Yes",
+    "citizenship": "Indonesia",
+    "percentage_of_shares_traded": 0.069,
+    "share_ownership_status": "Direct",
+    "purpose": "Investasi",
+    "holder_type": "insider",
+    "holder_name_raw": "Manuel Djunako",
+    "holder_name": "Manuel Djunako",
+    "holder_symbol": null,
+    "holding_before": 1721376806,
+    "holding_after": 1722768306,
+    "share_percentage_before": 85.94,
+    "share_percentage_after": 86.009,
+    "share_percentage_transaction": 0.06900000000000261,
+    "company_address": "14250",
+    "company_phone": "Citizenship Indonesia",
+    "transactions": [
+      {
+        "type": "buy",
+        "price": 192,
+        "amount": 30000,
+        "date": "04 July 2025",
+        "value": 5760000
+      },
+      {
+        "type": "buy",
+        "price": 208,
+        "amount": 1361500,
+        "date": "07 July 2025",
+        "value": 283192000
+      }
+    ],
+    "amount_transacted": 1391500,
+    "transaction_value": 288952000,
+    "transaction_type": "buy",
+    "price": 207.66,
+    "price_transaction": {
+      "prices": [
+        192,
+        208
+      ],
+      "amount_transacted": [
+        30000,
+        1361500
+      ]
+    },
+    "is_transfer": false,
+    "source": "85dc778b00_4a1e652a63.pdf"
+  },
+  {
+    "lang": "en",
+    "issuer_code": "CYBR",
+    "attachments": "1",
+    "subject": "Information Disclosure of Certain Shareholders",
+    "company_name_raw": "CYBR",
+    "company_name": "PT ITSEC Asia Tbk.",
+    "symbol": "CYBR.JK",
+    "classification_of_shareholder": ">5%",
+    "controlling_shareholder": "No",
+    "citizenship": "Singapura",
+    "percentage_of_shares_traded": 0.003,
+    "share_ownership_status": "Direct",
+    "purpose": "Investasi",
+    "holder_type": "institution",
+    "holder_name_raw": "MB Investment Management Pte. Ltd.",
+    "holder_name": "Mb Investment Management Pte. LTD",
+    "holder_symbol": null,
+    "holding_before": 1769433657,
+    "holding_after": 1769259857,
+    "share_percentage_before": 26.852,
+    "share_percentage_after": 26.849,
+    "share_percentage_transaction": 0.0030000000000001137,
+    "company_address": "3, Jl. Dr Ide Anak Agung Gde Agung",
+    "company_phone": "Citizenship Singapura",
+    "transactions": [
+      {
+        "type": "sell",
+        "price": 1000,
+        "amount": 200000,
+        "date": "01 July 2025",
+        "value": 200000000
+      },
+      {
+        "type": "buy",
+        "price": 935,
+        "amount": 26200,
+        "date": "02 July 2025",
+        "value": 24497000
+      }
+    ],
+    "amount_transacted": 226200,
+    "transaction_value": 224497000,
+    "price": 992.47,
+    "price_transaction": {
+      "prices": [
+        1000,
+        935
+      ],
+      "amount_transacted": [
+        200000,
+        26200
+      ]
+    },
+    "is_transfer": false,
+    "source": "f9b3ff5d39_2a2ea91edc.pdf"
+  },
+  {
+    "lang": "en",
+    "issuer_code": "KRYA",
+    "attachments": "1",
+    "subject": "Information Disclosure of Certain Shareholders",
+    "company_name_raw": "KRYA",
+    "company_name": "PT Bangun Karya Perkasa Jaya Tbk",
+    "symbol": "KRYA.JK",
+    "classification_of_shareholder": "Directors",
+    "controlling_shareholder": "No",
+    "citizenship": "Indonesia",
+    "percentage_of_shares_traded": 7.998,
+    "share_ownership_status": "Direct",
+    "purpose": "Pelaksanaan Tahap Pertama dari",
+    "holder_type": "insider",
+    "holder_name_raw": "Brigitta Notoatmodjo",
+    "holder_name": "Brigitta Notoatmodjo",
+    "holder_symbol": null,
+    "holding_before": 230848100,
+    "holding_after": 97773100,
+    "share_percentage_before": 13.874,
+    "share_percentage_after": 5.876,
+    "share_percentage_transaction": 7.998,
+    "company_address": "Indah, Surabaya",
+    "company_phone": "Citizenship Indonesia",
+    "transactions": [
+      {
+        "type": "sell",
+        "price": 29,
+        "amount": 133075000,
+        "date": "03 July 2025",
+        "value": 3859175000
+      }
+    ],
+    "amount_transacted": 133075000,
+    "transaction_value": 3859175000,
+    "transaction_type": "sell",
+    "price": 29.0,
+    "price_transaction": {
+      "prices": [
+        29
+      ],
+      "amount_transacted": [
+        133075000
+      ]
+    },
+    "is_transfer": false,
+    "source": "1aa3398ed8_b846f3fdbd.pdf"
+  },
+  {
+    "lang": "en",
+    "issuer_code": "GEMA",
+    "attachments": "1",
+    "subject": "Information Disclosure of Certain Shareholders",
+    "company_name_raw": "PT GEMA GRAHASARANA TBK",
+    "company_name": "Gema Grahasarana Tbk",
+    "symbol": "GEMA.JK",
+    "classification_of_shareholder": "Directors",
+    "controlling_shareholder": "No",
+    "citizenship": "WNI",
+    "percentage_of_shares_traded": 0.0191,
+    "share_ownership_status": "Direct",
+    "purpose": "INVESTASI JANGKA PANJANG",
+    "holder_type": "insider",
+    "holder_name_raw": "Dr. PULUNG PERANGINANGIN",
+    "holder_name": "Dr. Pulung Peranginangin",
+    "holder_symbol": null,
+    "holding_before": 6704400,
+    "holding_after": 7010000,
+    "share_percentage_before": 0.419,
+    "share_percentage_after": 0.4381,
+    "share_percentage_transaction": 0.019100000000000006,
+    "company_address": "SERPONG BLOK O NO 7-8 MEDANG",
+    "company_phone": "Citizenship WNI",
+    "transactions": [
+      {
+        "type": "buy",
+        "price": 97.35,
+        "amount": 305600,
+        "date": "04 July 2025",
+        "value": 29750160.0
+      }
+    ],
+    "amount_transacted": 305600,
+    "transaction_value": 29750160.0,
+    "transaction_type": "buy",
+    "price": 97.35,
+    "price_transaction": {
+      "prices": [
+        97.35
+      ],
+      "amount_transacted": [
+        305600
+      ]
+    },
+    "is_transfer": false,
+    "source": "16d70f9ac5_be2cced6dd.pdf"
+  },
+  {
+    "lang": "en",
+    "issuer_code": "HILL",
+    "attachments": "3",
+    "subject": "Information Disclosure of Certain Shareholders",
+    "company_name_raw": "PT Hillcon Tbk",
+    "company_name": "PT Hillcon Tbk",
+    "symbol": "HILL.JK",
+    "classification_of_shareholder": ">5%",
+    "controlling_shareholder": "Yes",
+    "citizenship": "Indonesia",
+    "percentage_of_shares_traded": 0.58,
+    "share_ownership_status": "Direct",
+    "purpose": "Investasi",
+    "holder_type": "institution",
+    "holder_name_raw": "PT Hillcon Equity Management",
+    "holder_name": "PT Hillcon Equity Management",
+    "holder_symbol": null,
+    "holding_before": 8107305500,
+    "holding_after": 8022020500,
+    "share_percentage_before": 55.0,
+    "share_percentage_after": 54.42,
+    "share_percentage_transaction": 0.5799999999999983,
+    "company_address": "RT.014/RW.006,",
+    "company_phone": "Citizenship Indonesia",
+    "transactions": [
+      {
+        "type": "sell",
+        "price": 320,
+        "amount": 85285000,
+        "date": "01 July 2025",
+        "value": 27291200000
+      }
+    ],
+    "amount_transacted": 85285000,
+    "transaction_value": 27291200000,
+    "transaction_type": "sell",
+    "price": 320.0,
+    "price_transaction": {
+      "prices": [
+        320
+      ],
+      "amount_transacted": [
+        85285000
+      ]
+    },
+    "is_transfer": false,
+    "source": "7de4657c77_e6d5927c7e.pdf"
+  },
+  {
+    "lang": "en",
+    "issuer_code": "WINE",
+    "attachments": "1",
+    "subject": "Information Disclosure of Certain Shareholders",
+    "company_name_raw": "PT Hatten Bali Tbk",
+    "company_name": "PT Hatten Bali Tbk",
+    "symbol": "WINE.JK",
+    "classification_of_shareholder": "Directors",
+    "controlling_shareholder": "Yes",
+    "citizenship": "Indonesia",
+    "percentage_of_shares_traded": 0.0001,
+    "share_ownership_status": "Direct",
+    "purpose": "Investasi",
+    "holder_type": "insider",
+    "holder_name_raw": "Ida Bagus Rai Budarsa",
+    "holder_name": "Ida Bagus Rai Budarsa",
+    "holder_symbol": null,
+    "holding_before": 1016122500,
+    "holding_after": 1016123900,
+    "share_percentage_before": 37.4952,
+    "share_percentage_after": 37.4953,
+    "share_percentage_transaction": 0.00010000000000331966,
+    "company_address": "Denpasar - Bali",
+    "company_phone": "Citizenship Indonesia",
+    "transactions": [
+      {
+        "type": "buy",
+        "price": 223,
+        "amount": 1400,
+        "date": "25 June 2025",
+        "value": 312200
+      }
+    ],
+    "amount_transacted": 1400,
+    "transaction_value": 312200,
+    "transaction_type": "buy",
+    "price": 223.0,
+    "price_transaction": {
+      "prices": [
+        223
+      ],
+      "amount_transacted": [
+        1400
+      ]
+    },
+    "is_transfer": false,
+    "source": "262defd45c_49aee858d7.pdf"
+  },
+  {
+    "lang": "en",
+    "issuer_code": "IOTF",
+    "attachments": "1",
+    "subject": "Information Disclosure of Certain Shareholders",
+    "company_name_raw": "PT SUMBER SINERGI MAKMUR TBK",
+    "company_name": "PT Sumber Sinergi Makmur Tbk",
+    "symbol": "IOTF.JK",
+    "classification_of_shareholder": ">5%",
+    "controlling_shareholder": "No",
+    "citizenship": "INDONESIA",
+    "percentage_of_shares_traded": 6.98,
+    "share_ownership_status": "Direct",
+    "purpose": "Transaksi Pembelian Saham IOTF oleh",
+    "holder_type": "institution",
+    "holder_name_raw": "PT GAIA ARTHA DINAMIC",
+    "holder_name": "PT Gaia Artha Dinamic",
+    "holder_symbol": null,
+    "holding_before": 278516400,
+    "holding_after": 369316400,
+    "share_percentage_before": 5.26,
+    "share_percentage_after": 6.98,
+    "share_percentage_transaction": 1.7200000000000006,
+    "company_address": "BARAT NO. 31A, KEC. GAMBIR,",
+    "company_phone": "Citizenship INDONESIA",
+    "transactions": [
+      {
+        "type": "sell",
+        "price": 125,
+        "amount": 90800000,
+        "date": "23 June 2025",
+        "value": 11350000000
+      }
+    ],
+    "amount_transacted": 90800000,
+    "transaction_value": 11350000000,
+    "transaction_type": "sell",
+    "price": 125.0,
+    "price_transaction": {
+      "prices": [
+        125
+      ],
+      "amount_transacted": [
+        90800000
+      ]
+    },
+    "is_transfer": false,
+    "source": "dd44652157_23d9eb9c7d.pdf"
+  },
+  {
+    "lang": "en",
+    "issuer_code": "BCIP",
+    "attachments": "1",
+    "subject": "Information Disclosure of Certain Shareholders",
+    "company_name_raw": "PT Bumi Citra Permai, Tbk",
+    "company_name": "Bumi Citra Permai Tbk",
+    "symbol": "BCIP.JK",
+    "classification_of_shareholder": "Directors",
+    "controlling_shareholder": "No",
+    "citizenship": "Indonesia",
+    "percentage_of_shares_traded": 7190.0,
+    "share_ownership_status": "Indirect",
+    "purpose": "Investasi",
+    "holder_type": "institution",
+    "holder_name_raw": "PT Benteng Terang Sejahtera",
+    "holder_name": "PT Benteng Terang Sejahtera",
+    "holder_symbol": null,
+    "holding_before": 66019900,
+    "holding_after": 73209900,
+    "share_percentage_before": 4.62,
+    "share_percentage_after": 5.12,
+    "share_percentage_transaction": 0.5,
+    "company_address": "Senen - Jakarta Pusat",
+    "company_phone": "Citizenship Indonesia",
+    "transactions": [
+      {
+        "type": "buy",
+        "price": 86,
+        "amount": 500000,
+        "date": "05 June 2025",
+        "value": 43000000
+      },
+      {
+        "type": "buy",
+        "price": 88,
+        "amount": 1000000,
+        "date": "05 June 2025",
+        "value": 88000000
+      },
+      {
+        "type": "buy",
+        "price": 89,
+        "amount": 2100000,
+        "date": "05 June 2025",
+        "value": 186900000
+      },
+      {
+        "type": "buy",
+        "price": 85,
+        "amount": 200000,
+        "date": "19 June 2025",
+        "value": 17000000
+      },
+      {
+        "type": "buy",
+        "price": 86,
+        "amount": 350000,
+        "date": "19 June 2025",
+        "value": 30100000
+      },
+      {
+        "type": "buy",
+        "price": 87,
+        "amount": 1500000,
+        "date": "19 June 2025",
+        "value": 130500000
+      },
+      {
+        "type": "buy",
+        "price": 86,
+        "amount": 300000,
+        "date": "20 June 2025",
+        "value": 25800000
+      },
+      {
+        "type": "buy",
+        "price": 87,
+        "amount": 600000,
+        "date": "20 June 2025",
+        "value": 52200000
+      },
+      {
+        "type": "buy",
+        "price": 88,
+        "amount": 230000,
+        "date": "20 June 2025",
+        "value": 20240000
+      },
+      {
+        "type": "buy",
+        "price": 89,
+        "amount": 410000,
+        "date": "20 June 2025",
+        "value": 36490000
+      }
+    ],
+    "amount_transacted": 7190000,
+    "transaction_value": 630230000,
+    "transaction_type": "buy",
+    "price": 87.65,
+    "price_transaction": {
+      "prices": [
+        86,
+        88,
+        89,
+        85,
+        86,
+        87,
+        86,
+        87,
+        88,
+        89
+      ],
+      "amount_transacted": [
+        500000,
+        1000000,
+        2100000,
+        200000,
+        350000,
+        1500000,
+        300000,
+        600000,
+        230000,
+        410000
+      ]
+    },
+    "is_transfer": false,
+    "source": "0a07880ddc_8537210a02.pdf"
+  },
+  {
+    "lang": "en",
+    "issuer_code": "HILL",
+    "attachments": "3",
+    "subject": "Information Disclosure of Certain Shareholders",
+    "company_name_raw": "PT Hillcon Tbk",
+    "company_name": "PT Hillcon Tbk",
+    "symbol": "HILL.JK",
+    "classification_of_shareholder": ">5%",
+    "controlling_shareholder": "Yes",
+    "citizenship": "Indonesia",
+    "percentage_of_shares_traded": 0.35,
+    "share_ownership_status": "Direct",
+    "purpose": "Investasi",
+    "holder_type": "institution",
+    "holder_name_raw": "PT Hillcon Equity Management",
+    "holder_name": "PT Hillcon Equity Management",
+    "holder_symbol": null,
+    "holding_before": 8158405500,
+    "holding_after": 8107305500,
+    "share_percentage_before": 55.34,
+    "share_percentage_after": 55.0,
+    "share_percentage_transaction": 0.3400000000000034,
+    "company_address": "RT.014/RW.006,",
+    "company_phone": "Citizenship Indonesia",
+    "transactions": [
+      {
+        "type": "sell",
+        "price": 310,
+        "amount": 51100000,
+        "date": "26 June 2025",
+        "value": 15841000000
+      }
+    ],
+    "amount_transacted": 51100000,
+    "transaction_value": 15841000000,
+    "transaction_type": "sell",
+    "price": 310.0,
+    "price_transaction": {
+      "prices": [
+        310
+      ],
+      "amount_transacted": [
+        51100000
+      ]
+    },
+    "is_transfer": false,
+    "source": "14cdf3454b_273da961f4.pdf"
+  },
+  {
+    "lang": "en",
+    "issuer_code": "WINE",
+    "attachments": "1",
+    "subject": "Information Disclosure of Certain Shareholders",
+    "company_name_raw": "PT Hatten Bali Tbk",
+    "company_name": "PT Hatten Bali Tbk",
+    "symbol": "WINE.JK",
+    "classification_of_shareholder": "Commissioners",
+    "controlling_shareholder": "No",
+    "citizenship": "Indonesia",
+    "percentage_of_shares_traded": 0.002,
+    "share_ownership_status": "Direct",
+    "purpose": "Investasi",
+    "holder_type": "insider",
+    "holder_name_raw": "Ida Ayu Somawati",
+    "holder_name": "Ida Ayu Somawati",
+    "holder_symbol": null,
+    "holding_before": 1431100,
+    "holding_after": 1480600,
+    "share_percentage_before": 0.052,
+    "share_percentage_after": 0.054,
+    "share_percentage_transaction": 0.0020000000000000018,
+    "company_address": "Denpasar - Bali",
+    "company_phone": "Citizenship Indonesia",
+    "transactions": [
+      {
+        "type": "buy",
+        "price": 222,
+        "amount": 49500,
+        "date": "02 July 2025",
+        "value": 10989000
+      }
+    ],
+    "amount_transacted": 49500,
+    "transaction_value": 10989000,
+    "transaction_type": "buy",
+    "price": 222.0,
+    "price_transaction": {
+      "prices": [
+        222
+      ],
+      "amount_transacted": [
+        49500
+      ]
+    },
+    "is_transfer": false,
+    "source": "238eb0a1e0_89697188f0.pdf"
+  },
+  {
+    "lang": "en",
+    "issuer_code": "VICO",
+    "attachments": "1",
+    "subject": "Information Disclosure of Certain Shareholders",
+    "company_name_raw": "PT Batavia Prosperindo Trans Tbk",
+    "company_name": "PT Batavia Prosperindo Trans Tbk.",
+    "symbol": "BPTR.JK",
+    "classification_of_shareholder": ">5%",
+    "controlling_shareholder": "No",
+    "citizenship": "Indonesia",
+    "percentage_of_shares_traded": 4.95,
+    "share_ownership_status": "Direct",
+    "purpose": "Trading",
+    "holder_type": "institution",
+    "holder_name_raw": "PT Victoria Investama Tbk",
+    "holder_name": "PT Victoria Investama Tbk.",
+    "holder_symbol": "VICO.JK",
+    "holding_before": 195327900,
+    "holding_after": 370212200,
+    "share_percentage_before": 5.53,
+    "share_percentage_after": 10.48,
+    "share_percentage_transaction": 4.95,
+    "company_address": "Jl. Jend. Sudirman Kav. 12, Jakarta",
+    "company_phone": "Citizenship Indonesia",
+    "transactions": [
+      {
+        "type": "buy",
+        "price": 122,
+        "amount": 174884300,
+        "date": "25 June 2025",
+        "value": 21335884600
+      }
+    ],
+    "amount_transacted": 174884300,
+    "transaction_value": 21335884600,
+    "transaction_type": "buy",
+    "price": 122.0,
+    "price_transaction": {
+      "prices": [
+        122
+      ],
+      "amount_transacted": [
+        174884300
+      ]
+    },
+    "is_transfer": false,
+    "source": "5eb0cf722d_b18ebb5e5b.pdf"
+  },
+  {
+    "lang": "en",
+    "issuer_code": "IOTF",
+    "attachments": "1",
+    "subject": "Information Disclosure of Certain Shareholders",
+    "company_name_raw": "PT SUMBER SINERGI MAKMUR TBK",
+    "company_name": "PT Sumber Sinergi Makmur Tbk",
+    "symbol": "IOTF.JK",
+    "classification_of_shareholder": ">5%",
+    "controlling_shareholder": "No",
+    "citizenship": "INDONESIA",
+    "percentage_of_shares_traded": 8.23,
+    "share_ownership_status": "Direct",
+    "purpose": "Transaksi Pembelian Saham IOTF oleh",
+    "holder_type": "institution",
+    "holder_name_raw": "PT GAIA ARTHA DINAMIC",
+    "holder_name": "PT Gaia Artha Dinamic",
+    "holder_symbol": null,
+    "holding_before": 395393100,
+    "holding_after": 435493100,
+    "share_percentage_before": 7.47,
+    "share_percentage_after": 8.23,
+    "share_percentage_transaction": 0.7600000000000007,
+    "company_address": "BARAT NO. 31A, KEC. GAMBIR,",
+    "company_phone": "Citizenship INDONESIA",
+    "transactions": [
+      {
+        "type": "sell",
+        "price": 104,
+        "amount": 40100000,
+        "date": "02 July 2025",
+        "value": 4170400000
+      }
+    ],
+    "amount_transacted": 40100000,
+    "transaction_value": 4170400000,
+    "transaction_type": "sell",
+    "price": 104.0,
+    "price_transaction": {
+      "prices": [
+        104
+      ],
+      "amount_transacted": [
+        40100000
+      ]
+    },
+    "is_transfer": false,
+    "source": "c6732c5c7b_91b1fc1e9c.pdf"
+  },
+  {
+    "lang": "en",
+    "issuer_code": "SOLA",
+    "attachments": "1",
+    "subject": "Information Disclosure of Certain Shareholders",
+    "company_name_raw": "PT Xolare RCR Energy TBK (SOLA)",
+    "company_name": "PT Xolare RCR Energy TBK (SOLA)",
+    "symbol": null,
+    "classification_of_shareholder": "Directors",
+    "controlling_shareholder": "Yes",
+    "citizenship": "Indonesia",
+    "percentage_of_shares_traded": 0.01,
+    "share_ownership_status": "Direct",
+    "purpose": "Investasi",
+    "holder_type": "insider",
+    "holder_name_raw": "Mochamad Bhadaiwi",
+    "holder_name": "Mochamad Bhadaiwi",
+    "holder_symbol": null,
+    "holding_before": 109355300,
+    "holding_after": 109733300,
+    "share_percentage_before": 3.33,
+    "share_percentage_after": 3.34,
+    "share_percentage_transaction": 0.009999999999999787,
+    "company_address": "Kel. Lebak Bulus, Kec. Cilandak, Kota",
+    "company_phone": "Citizenship Indonesia",
+    "transactions": [
+      {
+        "type": "buy",
+        "price": 132,
+        "amount": 378000,
+        "date": "03 July 2025",
+        "value": 49896000
+      }
+    ],
+    "amount_transacted": 378000,
+    "transaction_value": 49896000,
+    "transaction_type": "buy",
+    "price": 132.0,
+    "price_transaction": {
+      "prices": [
+        132
+      ],
+      "amount_transacted": [
+        378000
+      ]
+    },
+    "is_transfer": false,
+    "source": "2eab7e002d_1517ee7e67.pdf"
+  },
+  {
+    "lang": "en",
+    "issuer_code": "BVIC",
+    "attachments": "1",
+    "subject": "Information Disclosure of Certain Shareholders",
+    "company_name_raw": "PT Bank Victoria International Tbk",
+    "company_name": "Bank Victoria International Tbk",
+    "symbol": "BVIC.JK",
+    "classification_of_shareholder": ">5%",
+    "controlling_shareholder": "Yes",
+    "citizenship": "Indonesia",
+    "percentage_of_shares_traded": 4.12,
+    "share_ownership_status": "Direct",
+    "purpose": "Meningkatkan penyertaan modal entitas",
+    "holder_type": "institution",
+    "holder_name_raw": "PT Victoria Investama Tbk",
+    "holder_name": "PT Victoria Investama Tbk.",
+    "holder_symbol": "VICO.JK",
+    "holding_before": 9967417411,
+    "holding_after": 10726112445,
+    "share_percentage_before": 54.13,
+    "share_percentage_after": 58.25,
+    "share_percentage_transaction": 4.119999999999997,
+    "company_address": "Jl. Jend. Gatot Subroto Kav. 23, Jakarta",
+    "company_phone": "Citizenship Indonesia",
+    "transactions": [
+      {
+        "type": "buy",
+        "price": 113,
+        "amount": 758695034,
+        "date": "25 June 2025",
+        "value": 85732538842
+      }
+    ],
+    "amount_transacted": 758695034,
+    "transaction_value": 85732538842,
+    "transaction_type": "buy",
+    "price": 113.0,
+    "price_transaction": {
+      "prices": [
+        113
+      ],
+      "amount_transacted": [
+        758695034
+      ]
+    },
+    "is_transfer": false,
+    "source": "878469de05_ff282c9fea.pdf"
+  },
+  {
+    "lang": "en",
+    "issuer_code": "MTWI",
+    "attachments": "2",
+    "subject": "Information Disclosure of Certain Shareholders",
+    "company_name_raw": "PT Malacca Trust Wuwungan Insurance",
+    "company_name": "PT Malacca Trust Wuwungan Insurance Tbk.",
+    "symbol": "MTWI.JK",
+    "classification_of_shareholder": "Directors",
+    "controlling_shareholder": "No",
+    "citizenship": "Indonesia",
+    "percentage_of_shares_traded": 0.74,
+    "share_ownership_status": "Direct",
+    "purpose": "Penambahan portfolio",
+    "holder_type": "insider",
+    "holder_name_raw": "Vientje Harijanto",
+    "holder_name": "Vientje Harijanto",
+    "holder_symbol": null,
+    "holding_before": 124441296,
+    "holding_after": 146082496,
+    "share_percentage_before": 4.26,
+    "share_percentage_after": 5.0,
+    "share_percentage_transaction": 0.7400000000000002,
+    "company_address": "21, Jakarta Selatan",
+    "company_phone": "Citizenship Indonesia",
+    "transactions": [
+      {
+        "type": "buy",
+        "price": 100,
+        "amount": 21641200,
+        "date": "30 June 2025",
+        "value": 2164120000
+      }
+    ],
+    "amount_transacted": 21641200,
+    "transaction_value": 2164120000,
+    "transaction_type": "buy",
+    "price": 100.0,
+    "price_transaction": {
+      "prices": [
+        100
+      ],
+      "amount_transacted": [
+        21641200
+      ]
+    },
+    "is_transfer": false,
+    "source": "34cbf01013_167fce1b1e.pdf"
+  },
+  {
+    "lang": "en",
+    "issuer_code": "LOPI",
+    "attachments": "1",
+    "subject": "Information Disclosure of Certain Shareholders",
+    "company_name_raw": "PT. Logisticsplus International Tbk",
+    "company_name": "PT Logisticsplus International Tbk",
+    "symbol": "LOPI.JK",
+    "classification_of_shareholder": "Directors",
+    "controlling_shareholder": "Yes",
+    "citizenship": "Indonesia",
+    "percentage_of_shares_traded": 0.4545,
+    "share_ownership_status": "Direct",
+    "purpose": "Strategi Investasi",
+    "holder_type": "insider",
+    "holder_name_raw": "Wahyu Dwi Jatmiko",
+    "holder_name": "Wahyu Dwi Jatmiko",
+    "holder_symbol": null,
+    "holding_before": 751715460,
+    "holding_after": 746715460,
+    "share_percentage_before": 68.3371,
+    "share_percentage_after": 67.8825,
+    "share_percentage_transaction": 0.45460000000001344,
+    "company_address": "Jagakarsa - Jakarta Selatan",
+    "company_phone": "Citizenship Indonesia",
+    "transactions": [
+      {
+        "type": "sell",
+        "price": 39,
+        "amount": 5000000,
+        "date": "13 June 2025",
+        "value": 195000000
+      }
+    ],
+    "amount_transacted": 5000000,
+    "transaction_value": 195000000,
+    "transaction_type": "sell",
+    "price": 39.0,
+    "price_transaction": {
+      "prices": [
+        39
+      ],
+      "amount_transacted": [
+        5000000
+      ]
+    },
+    "is_transfer": false,
+    "source": "360eee9534_d9ff197b64.pdf"
+  },
+  {
+    "lang": "en",
+    "issuer_code": "LOPI",
+    "attachments": "1",
+    "subject": "Information Disclosure of Certain Shareholders (CORRECTION)",
+    "company_name_raw": "PT. Logisticsplus International Tbk",
+    "company_name": "PT Logisticsplus International Tbk",
+    "symbol": "LOPI.JK",
+    "classification_of_shareholder": "Directors",
+    "controlling_shareholder": "Yes",
+    "citizenship": "Indonesia",
+    "percentage_of_shares_traded": 66.8311,
+    "share_ownership_status": "Direct",
+    "purpose": "Strategi Investasi",
+    "holder_type": "insider",
+    "holder_name_raw": "Wahyu Dwi Jatmiko",
+    "holder_name": "Wahyu Dwi Jatmiko",
+    "holder_symbol": null,
+    "holding_before": 746715460,
+    "holding_after": 11565460,
+    "share_percentage_before": 67.8825,
+    "share_percentage_after": 1.0514,
+    "share_percentage_transaction": 66.83109999999999,
+    "company_address": "Jagakarsa - Jakarta Selatan",
+    "company_phone": "Citizenship Indonesia",
+    "transactions": [
+      {
+        "type": "sell",
+        "price": 37,
+        "amount": 735150000,
+        "date": "30 June 2025",
+        "value": 27200550000
+      }
+    ],
+    "amount_transacted": 735150000,
+    "transaction_value": 27200550000,
+    "transaction_type": "sell",
+    "price": 37.0,
+    "price_transaction": {
+      "prices": [
+        37
+      ],
+      "amount_transacted": [
+        735150000
+      ]
+    },
+    "is_transfer": false,
+    "source": "4a13c5257e_059e588570.pdf"
+  },
+  {
+    "lang": "en",
+    "issuer_code": "LOPI",
+    "attachments": "1",
+    "subject": "Information Disclosure of Certain Shareholders (CORRECTION)",
+    "company_name_raw": "PT. Logisticsplus International Tbk",
+    "company_name": "PT Logisticsplus International Tbk",
+    "symbol": "LOPI.JK",
+    "classification_of_shareholder": "Commissioners",
+    "controlling_shareholder": "No",
+    "citizenship": "Indonesia",
+    "percentage_of_shares_traded": 0.0003,
+    "share_ownership_status": "Direct",
+    "purpose": "Strategi Investasi",
+    "holder_type": "insider",
+    "holder_name_raw": "Arfindi A. Batubara",
+    "holder_name": "Arfindi A. Batubara",
+    "holder_symbol": null,
+    "holding_before": 29500,
+    "holding_after": 32800,
+    "share_percentage_before": 0.0027,
+    "share_percentage_after": 0.003,
+    "share_percentage_transaction": 0.0002999999999999999,
+    "company_address": "Jagakarsa - Jakarta Selatan",
+    "company_phone": "Citizenship Indonesia",
+    "transactions": [
+      {
+        "type": "buy",
+        "price": 35,
+        "amount": 3300,
+        "date": "25 June 2025",
+        "value": 115500
+      }
+    ],
+    "amount_transacted": 3300,
+    "transaction_value": 115500,
+    "transaction_type": "buy",
+    "price": 35.0,
+    "price_transaction": {
+      "prices": [
+        35
+      ],
+      "amount_transacted": [
+        3300
+      ]
+    },
+    "is_transfer": false,
+    "source": "131bcec164_c4c3c25cfc.pdf"
+  },
+  {
+    "lang": "en",
+    "issuer_code": "BPFI",
+    "attachments": "2",
+    "subject": "Information Disclosure of Certain Shareholders",
+    "company_name_raw": "PT Woori Finance Indonesia Tbk",
+    "company_name": "PT Woori Finance Indonesia Tbk",
+    "symbol": "BPFI.JK",
+    "classification_of_shareholder": ">5%",
+    "controlling_shareholder": "Yes",
+    "citizenship": "Republik Korea",
+    "percentage_of_shares_traded": 2.48,
+    "share_ownership_status": "Direct",
+    "purpose": "Pemenuhan kewajiban pengalihan",
+    "holder_type": "institution",
+    "holder_name_raw": "Woori Card CO., LTD",
+    "holder_name": "Woori Card Co., LTD",
+    "holder_symbol": null,
+    "holding_before": 2259723668,
+    "holding_after": 2193552006,
+    "share_percentage_before": 84.51,
+    "share_percentage_after": 82.03,
+    "share_percentage_transaction": 2.480000000000004,
+    "company_address": "Jong-ro 1-gil, Jongno-gu, Seoul, 03142",
+    "company_phone": "Citizenship Republik Korea",
+    "transactions": [
+      {
+        "type": "sell",
+        "price": 331,
+        "amount": 66171662,
+        "date": "04 July 2025",
+        "value": 21902820122
+      }
+    ],
+    "amount_transacted": 66171662,
+    "transaction_value": 21902820122,
+    "transaction_type": "sell",
+    "price": 331.0,
+    "price_transaction": {
+      "prices": [
+        331
+      ],
+      "amount_transacted": [
+        66171662
+      ]
+    },
+    "is_transfer": false,
+    "source": "9ee8a26836_c6171cfd7f.pdf"
+  }
+]

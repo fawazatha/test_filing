@@ -1,0 +1,9 @@
+{
+  "generated_at": "2025-08-27T23:07:11.420540Z",
+  "profile_table": "idx_company_profile",
+  "report_table": "idx_company_report",
+  "row_count": 968,
+  "row_count_profile": 968,
+  "row_count_report": 954,
+  "checksum": "sha256:e4c6cb39f6d8fd957e67b8452943c59bc8991fb452a7e4fbd0d7f7bd6eb090f9"
+}

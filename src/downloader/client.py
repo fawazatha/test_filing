@@ -1,74 +1,71 @@
+from typing import Optional
 import os
-import warnings
-import urllib3
 import requests
+import urllib3
+from dotenv import load_dotenv
 
-# Minimal headers exactly like the working script
-MINIMAL_HEADERS = {
-    "User-Agent": (
-        "Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
-        "AppleWebKit/537.36 (KHTML, like Gecko) "
-        "Chrome/91.0.4472.124 Safari/537.36"
-    ),
-    "Referer": "https://www.idx.co.id/en/news-announcements/announcement-summary",
-}
+UA = (
+    "Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
+    "AppleWebKit/537.36 (KHTML, like Gecko) "
+    "Chrome/122.0 Safari/537.36"
+)
+REFERER = "https://www.idx.co.id/en/news-announcements/announcement-summary"
 
-def _proxies_from_env():
-    """
-    Read common proxy env var names.
-    Returns a requests-compatible proxies dict or None.
-    """
-    for key in ("PROXY", "HTTPS_PROXY", "HTTP_PROXY", "https_proxy", "http_proxy"):
-        v = os.getenv(key)
-        if v:
-            return {"http": v, "https": v}
-    return None
 
-def init_http(insecure: bool = True, silence_warnings: bool = True):
+def init_http(insecure: bool = True, silence_warnings: bool = True, load_env: bool = True) -> None:
     """
-    Match legacy behavior:
-      - insecure=True -> verify=False in actual GET helpers
-      - silence urllib3 SSL warnings if requested
+    Initialize HTTP behavior:
+      - Optionally load `.env`
+      - If PROXY is present, propagate it to HTTP(S)_PROXY so `requests` uses it
+      - Optionally silence SSL warnings (we use verify=False on purpose)
     """
-    if silence_warnings:
-        warnings.filterwarnings("ignore", category=urllib3.exceptions.InsecureRequestWarning)
-        # Optional: silence NotOpenSSLWarning on macOS/LibreSSL (it's harmless)
-        try:
-            from urllib3.exceptions import NotOpenSSLWarning  # type: ignore
-            warnings.filterwarnings("ignore", category=NotOpenSSLWarning)
-        except Exception:
-            pass
+    if load_env:
+        load_dotenv(override=True)
+
+    proxy = os.getenv("PROXY")
+    if proxy:
+        # populate both upper/lower so requests picks them up
+        for k in ("HTTP_PROXY", "HTTPS_PROXY", "http_proxy", "https_proxy"):
+            os.environ.setdefault(k, proxy)
+
+    if insecure and silence_warnings:
+        urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
+
+
+def _headers(seed: bool = False) -> dict:
+    h = {
+        "User-Agent": UA,
+        "Accept": "application/pdf,application/octet-stream;q=0.9,*/*;q=0.8",
+        "Accept-Language": "en-US,en;q=0.9",
+        "Connection": "keep-alive",
+        "DNT": "1",
+        "Upgrade-Insecure-Requests": "1",
+    }
+    if seed:
+        h["Referer"] = REFERER
+    return h
+
 
 def get_pdf_bytes_minimal(url: str, timeout: int = 60) -> bytes:
     """
-    EXACT call shape that worked in the original script:
-      requests.get(url, headers=MINIMAL_HEADERS, proxies=..., verify=False)
+    Single-shot GET using UA + Referer. Proxies come from env (HTTP[S]_PROXY).
     """
-    r = requests.get(
-        url,
-        headers=MINIMAL_HEADERS,
-        proxies=_proxies_from_env(),
-        verify=False,               # legacy
-        timeout=timeout,
-        allow_redirects=True,
-    )
-    r.raise_for_status()
-    return r.content
+    with requests.Session() as s:
+        r = s.get(url, headers=_headers(seed=True), timeout=timeout, verify=False, allow_redirects=True)
+        r.raise_for_status()
+        return r.content
+
 
 def seed_and_retry_minimal(url: str, timeout: int = 60) -> bytes:
     """
-    If a server returns 403, seed the referer once (to set cookies) then retry.
+    Touch the announcement summary page to establish cookies, then retry the PDF.
     """
-    try:
-        requests.get(
-            MINIMAL_HEADERS["Referer"],
-            headers=MINIMAL_HEADERS,
-            proxies=_proxies_from_env(),
-            verify=False,
-            timeout=timeout,
-            allow_redirects=True,
-        )
-    except Exception:
-        # Ignore failures; still attempt retry
-        pass
-    return get_pdf_bytes_minimal(url, timeout=timeout)
+    with requests.Session() as s:
+        try:
+            s.get(REFERER, headers=_headers(seed=True), timeout=timeout, verify=False)
+        except Exception:
+            # Seeding failure is not fatal; continue to the target URL.
+            pass
+        r = s.get(url, headers=_headers(seed=True), timeout=timeout, verify=False, allow_redirects=True)
+        r.raise_for_status()
+        return r.content

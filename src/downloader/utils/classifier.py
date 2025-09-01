@@ -1,29 +1,26 @@
 from typing import Tuple
-from thefuzz import fuzz
+from rapidfuzz import fuzz
 
-# Canonicals aligned with the working script
-IDX_CANONICAL = "Ownership Report or Any Changes in Ownership of Public Company Shares"
-NON_IDX_VARIANTS = [
+IDX_KNOWN = [
+    "Ownership Report or Any Changes in Ownership of Public Company Shares",
+]
+NON_IDX_KNOWN = [
     "Share Ownership Report",
     "Laporan Kepemilikan Saham",
 ]
 
 def classify_format(title: str, threshold: int = 80) -> Tuple[str, int, int, int]:
     """
-    Returns (label, best_score, sim_idx, sim_non)
-      label ∈ {"IDX", "NON-IDX", "UNKNOWN"}
-
-    Rule:
-      - compute sim_idx (vs IDX_CANONICAL) and sim_non (max vs NON_IDX_VARIANTS)
-      - pick the label with the higher score IF it meets threshold
-      - otherwise, return UNKNOWN
+    Return (label, best_score, idx_score, non_idx_score)
+      - label ∈ {"IDX", "NON-IDX", "UNKNOWN"}
+      - best_score = max(idx_score, non_idx_score)
     """
-    t = (title or "").lower()
-    sim_idx = fuzz.token_set_ratio(t, IDX_CANONICAL.lower())
-    sim_non = max(fuzz.token_set_ratio(t, v.lower()) for v in NON_IDX_VARIANTS)
+    t = (title or "").strip().lower()
+    idx_score = max((fuzz.token_set_ratio(t, k.lower()) for k in IDX_KNOWN), default=0)
+    non_score = max((fuzz.token_set_ratio(t, k.lower()) for k in NON_IDX_KNOWN), default=0)
+    best = max(idx_score, non_score)
 
-    if sim_idx >= sim_non and sim_idx >= threshold:
-        return "IDX", sim_idx, sim_idx, sim_non
-    if sim_non > sim_idx and sim_non >= threshold:
-        return "NON-IDX", sim_non, sim_idx, sim_non
-    return "UNKNOWN", max(sim_idx, sim_non), sim_idx, sim_non
+    if best < threshold:
+        return "UNKNOWN", best, idx_score, non_score
+    label = "IDX" if idx_score >= non_score else "NON-IDX"
+    return label, best, idx_score, non_score

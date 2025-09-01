@@ -1,0 +1,297 @@
+[
+  {
+    "error_filename": "92ed0eea78_7c7eadd995.pdf",
+    "error_reason": "Transaction Type Mismatch",
+    "timestamp": "2025-09-01T14:16:15.778145Z",
+    "symbol": "IOTF.JK",
+    "company_name": "PT Sumber Sinergi Makmur Tbk",
+    "document_type": "sell",
+    "inferred_type": "buy",
+    "explanation": "holdings d=+26076700; share% d=+0.49 → implies 'buy'",
+    "holding_before": 369316400,
+    "holding_after": 395393100,
+    "share_percentage_before": 6.98,
+    "share_percentage_after": 7.47,
+    "is_transfer_hint": false,
+    "announcement": {
+      "date": "2025-07-01T17:05:12",
+      "title": "Ownership Report or Any Changes in Ownership of Public Company Shares",
+      "company_name": "IOTF",
+      "main_link": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_EREP/202507/92ed0eea78_7c7eadd995.pdf",
+      "attachments": [
+        {
+          "filename": "20250701_IOTF_Laporan Kepemilikan atau Setiap Perubahan Kepemilikan Saham Perusahaan Terbuka_31910142_lamp1.pdf",
+          "url": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_EREP/202507/476e9f7814_50087e742f.pdf"
+        }
+      ],
+      "attachment_count": 1,
+      "category": "Ownership Report",
+      "description": "Ownership report for IOTF",
+      "link": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_EREP/202507/92ed0eea78_7c7eadd995.pdf",
+      "scraped_at": "2025-08-28T06:33:50.543103+07:00"
+    }
+  },
+  {
+    "error_filename": "f058e3fb67_1ab6d22dda.pdf",
+    "error_reason": "symbol_not_resolved_from_name",
+    "timestamp": "2025-09-01T14:16:16.121702Z",
+    "company_name_raw": "PT Chandra Asri Petrochemical Tbk",
+    "normalized_key": "CHANDRA ASRI PETROCHEMICAL",
+    "missing_in_company_map": true,
+    "suggestions": [
+      {
+        "symbol": "TPIA.JK",
+        "company_name": "PT Chandra Asri Pacific Tbk",
+        "score": "74",
+        "normalized_key": "CHANDRA ASRI PACIFIC"
+      },
+      {
+        "symbol": "BAPA.JK",
+        "company_name": "Bekasi Asri Pemula Tbk",
+        "score": "50",
+        "normalized_key": "BEKASI ASRI PEMULA"
+      },
+      {
+        "symbol": "ANDI.JK",
+        "company_name": "PT Andira Agro Tbk",
+        "score": "49",
+        "normalized_key": "ANDIRA AGRO"
+      }
+    ],
+    "announcement": {
+      "date": "2025-07-02T16:43:42",
+      "title": "Ownership Report or Any Changes in Ownership of Public Company Shares",
+      "company_name": "TPIA",
+      "main_link": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_EREP/202507/f058e3fb67_1ab6d22dda.pdf",
+      "attachments": [
+        {
+          "filename": "20250701_TPIA_Laporan Kepemilikan atau Setiap Perubahan Kepemilikan Saham Perusahaan Terbuka_31910575_lamp1.pdf",
+          "url": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_EREP/202507/5a3e5ce37b_cb2ae891d5.pdf"
+        }
+      ],
+      "attachment_count": 1,
+      "category": "Ownership Report",
+      "description": "Ownership report for TPIA",
+      "link": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_EREP/202507/f058e3fb67_1ab6d22dda.pdf",
+      "scraped_at": "2025-08-28T06:33:48.745123+07:00"
+    }
+  },
+  {
+    "error_filename": "dec4769d5e_a8025c3c2c.pdf",
+    "error_reason": "Transaction Type Mismatch",
+    "timestamp": "2025-09-01T14:16:16.779779Z",
+    "symbol": "IOTF.JK",
+    "company_name": "PT Sumber Sinergi Makmur Tbk",
+    "document_type": "sell",
+    "inferred_type": "buy",
+    "explanation": "holdings d=+278516400; share% d=+5.26 → implies 'buy'",
+    "holding_before": 0,
+    "holding_after": 278516400,
+    "share_percentage_before": 0.0,
+    "share_percentage_after": 5.26,
+    "is_transfer_hint": true,
+    "announcement": {
+      "date": "2025-07-01T17:05:26",
+      "title": "Ownership Report or Any Changes in Ownership of Public Company Shares",
+      "company_name": "IOTF",
+      "main_link": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_EREP/202507/dec4769d5e_a8025c3c2c.pdf",
+      "attachments": [
+        {
+          "filename": "20250701_IOTF_Laporan Kepemilikan atau Setiap Perubahan Kepemilikan Saham Perusahaan Terbuka_31910139_lamp1.pdf",
+          "url": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_EREP/202507/fb0f2c3a7b_b1520e38cb.pdf"
+        }
+      ],
+      "attachment_count": 1,
+      "category": "Ownership Report",
+      "description": "Ownership report for IOTF",
+      "link": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_EREP/202507/dec4769d5e_a8025c3c2c.pdf",
+      "scraped_at": "2025-08-28T06:33:50.543069+07:00"
+    }
+  },
+  {
+    "error_filename": "507ad9487d_22aeba57b9.pdf",
+    "error_reason": "symbol_not_resolved_from_name",
+    "timestamp": "2025-09-01T14:16:17.749228Z",
+    "company_name_raw": "PT Bank Nationalnobu Tbk (NOBU)",
+    "normalized_key": "BANK NATIONALNOBU NOBU",
+    "missing_in_company_map": true,
+    "suggestions": [
+      {
+        "symbol": "NOBU.JK",
+        "company_name": "PT Bank Nationalnobu Tbk.",
+        "score": "87",
+        "normalized_key": "BANK NATIONALNOBU"
+      },
+      {
+        "symbol": "BABP.JK",
+        "company_name": "PT Bank MNC Internasional Tbk.",
+        "score": "55",
+        "normalized_key": "BANK MNC INTERNASIONAL"
+      },
+      {
+        "symbol": "BVIC.JK",
+        "company_name": "Bank Victoria International Tbk",
+        "score": "53",
+        "normalized_key": "BANK VICTORIA INTERNATIONAL"
+      }
+    ],
+    "announcement": {
+      "date": "2025-07-02T10:47:17",
+      "title": "Ownership Report or Any Changes in Ownership of Public Company Shares",
+      "company_name": "LPLI",
+      "main_link": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_EREP/202507/507ad9487d_22aeba57b9.pdf",
+      "attachments": [
+        {
+          "filename": "20250702_LPLI_Laporan Kepemilikan atau Setiap Perubahan Kepemilikan Saham Perusahaan Terbuka_31910663_lamp1.pdf",
+          "url": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_EREP/202507/cf54c43f0c_e76dda89ec.pdf"
+        }
+      ],
+      "attachment_count": 1,
+      "category": "Ownership Report",
+      "description": "Ownership report for LPLI",
+      "link": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_EREP/202507/507ad9487d_22aeba57b9.pdf",
+      "scraped_at": "2025-08-28T06:33:48.745284+07:00"
+    }
+  },
+  {
+    "error_filename": "8b75c0b4da_156e3f5c7b.pdf",
+    "error_reason": "Transaction Type Mismatch",
+    "timestamp": "2025-09-01T14:16:17.957378Z",
+    "symbol": "WIRG.JK",
+    "company_name": "PT Wir Asia Tbk",
+    "document_type": "sell",
+    "inferred_type": "buy",
+    "explanation": "holdings d=+306527200; share% d=+2.568 → implies 'buy'",
+    "holding_before": 956289210,
+    "holding_after": 1262816410,
+    "share_percentage_before": 8.01,
+    "share_percentage_after": 10.578,
+    "is_transfer_hint": false,
+    "announcement": {
+      "date": "2025-07-07T16:17:55",
+      "title": "Ownership Report or Any Changes in Ownership of Public Company Shares",
+      "company_name": "WIRG",
+      "main_link": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_EREP/202507/8b75c0b4da_156e3f5c7b.pdf",
+      "attachments": [
+        {
+          "filename": "20250624_WIRG_Laporan Kepemilikan atau Setiap Perubahan Kepemilikan Saham Perusahaan Terbuka_31908323_lamp1.pdf",
+          "url": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_EREP/202507/60f81995e6_b777dd01be.pdf"
+        }
+      ],
+      "attachment_count": 1,
+      "category": "Ownership Report",
+      "description": "Ownership report for WIRG",
+      "link": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_EREP/202507/8b75c0b4da_156e3f5c7b.pdf",
+      "scraped_at": "2025-08-28T06:33:36.418329+07:00"
+    }
+  },
+  {
+    "error_filename": "dd44652157_23d9eb9c7d.pdf",
+    "error_reason": "Transaction Type Mismatch",
+    "timestamp": "2025-09-01T14:16:18.695020Z",
+    "symbol": "IOTF.JK",
+    "company_name": "PT Sumber Sinergi Makmur Tbk",
+    "document_type": "sell",
+    "inferred_type": "buy",
+    "explanation": "holdings d=+90800000; share% d=+1.72 → implies 'buy'",
+    "holding_before": 278516400,
+    "holding_after": 369316400,
+    "share_percentage_before": 5.26,
+    "share_percentage_after": 6.98,
+    "is_transfer_hint": false,
+    "announcement": {
+      "date": "2025-07-01T17:05:47",
+      "title": "Ownership Report or Any Changes in Ownership of Public Company Shares",
+      "company_name": "IOTF",
+      "main_link": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_EREP/202507/dd44652157_23d9eb9c7d.pdf",
+      "attachments": [
+        {
+          "filename": "20250701_IOTF_Laporan Kepemilikan atau Setiap Perubahan Kepemilikan Saham Perusahaan Terbuka_31910143_lamp1.pdf",
+          "url": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_EREP/202507/dd329156c0_3ec597e1d2.pdf"
+        }
+      ],
+      "attachment_count": 1,
+      "category": "Ownership Report",
+      "description": "Ownership report for IOTF",
+      "link": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_EREP/202507/dd44652157_23d9eb9c7d.pdf",
+      "scraped_at": "2025-08-28T06:33:50.543034+07:00"
+    }
+  },
+  {
+    "error_filename": "c6732c5c7b_91b1fc1e9c.pdf",
+    "error_reason": "Transaction Type Mismatch",
+    "timestamp": "2025-09-01T14:16:19.235579Z",
+    "symbol": "IOTF.JK",
+    "company_name": "PT Sumber Sinergi Makmur Tbk",
+    "document_type": "sell",
+    "inferred_type": "buy",
+    "explanation": "holdings d=+40100000; share% d=+0.76 → implies 'buy'",
+    "holding_before": 395393100,
+    "holding_after": 435493100,
+    "share_percentage_before": 7.47,
+    "share_percentage_after": 8.23,
+    "is_transfer_hint": false,
+    "announcement": {
+      "date": "2025-07-03T08:13:10",
+      "title": "Ownership Report or Any Changes in Ownership of Public Company Shares",
+      "company_name": "IOTF",
+      "main_link": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_EREP/202507/c6732c5c7b_91b1fc1e9c.pdf",
+      "attachments": [
+        {
+          "filename": "20250702_IOTF_Laporan Kepemilikan atau Setiap Perubahan Kepemilikan Saham Perusahaan Terbuka_31911053_lamp1.pdf",
+          "url": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_EREP/202507/60e6bbc249_b4db3aff9d.pdf"
+        }
+      ],
+      "attachment_count": 1,
+      "category": "Ownership Report",
+      "description": "Ownership report for IOTF",
+      "link": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_EREP/202507/c6732c5c7b_91b1fc1e9c.pdf",
+      "scraped_at": "2025-08-28T06:33:48.744858+07:00"
+    }
+  },
+  {
+    "error_filename": "2eab7e002d_1517ee7e67.pdf",
+    "error_reason": "symbol_not_resolved_from_name",
+    "timestamp": "2025-09-01T14:16:19.340634Z",
+    "company_name_raw": "PT Xolare RCR Energy TBK (SOLA)",
+    "normalized_key": "XOLARE RCR ENERGY SOLA",
+    "missing_in_company_map": true,
+    "suggestions": [
+      {
+        "symbol": "SOLA.JK",
+        "company_name": "PT Xolare RCR Energy Tbk",
+        "score": "87",
+        "normalized_key": "XOLARE RCR ENERGY"
+      },
+      {
+        "symbol": "GEMS.JK",
+        "company_name": "Golden Energy Mines Tbk",
+        "score": "59",
+        "normalized_key": "GOLDEN ENERGY MINES"
+      },
+      {
+        "symbol": "SMMT.JK",
+        "company_name": "Golden Eagle Energy Tbk",
+        "score": "54",
+        "normalized_key": "GOLDEN EAGLE ENERGY"
+      }
+    ],
+    "announcement": {
+      "date": "2025-07-07T15:12:31",
+      "title": "Ownership Report or Any Changes in Ownership of Public Company Shares",
+      "company_name": "SOLA",
+      "main_link": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_EREP/202507/2eab7e002d_1517ee7e67.pdf",
+      "attachments": [
+        {
+          "filename": "20250707_SOLA_Laporan Kepemilikan atau Setiap Perubahan Kepemilikan Saham Perusahaan Terbuka_31912267_lamp1.pdf",
+          "url": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_EREP/202507/ad17501f4b_841770b748.pdf"
+        }
+      ],
+      "attachment_count": 1,
+      "category": "Ownership Report",
+      "description": "Ownership report for SOLA",
+      "link": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_EREP/202507/2eab7e002d_1517ee7e67.pdf",
+      "scraped_at": "2025-08-28T06:33:36.418392+07:00"
+    }
+  }
+]

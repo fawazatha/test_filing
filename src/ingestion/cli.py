@@ -2,7 +2,8 @@ import argparse
 from pathlib import Path
 from dotenv import load_dotenv
 
-from downloader.utils.logger import get_logger
+# from downloader.utils.logger import get_logger
+from downloader.utils.logger import get_logger 
 from ingestion.runner import (
     get_ownership_announcements,
     get_ownership_announcements_range,
