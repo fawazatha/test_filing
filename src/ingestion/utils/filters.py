@@ -1,3 +1,4 @@
+from __future__ import annotations
 from datetime import datetime, timedelta
 from typing import Optional, Tuple
 import calendar
@@ -6,12 +7,30 @@ from ingestion.utils.config import JKT
 
 # ---------- Parsers & Validators ----------
 
-def parse_publish_wib(publish_iso_no_tz: str) -> datetime:
+def parse_publish_wib(publish_iso: str) -> datetime:
     """
-    Parse 'YYYY-MM-DDTHH:MM:SS' (no timezone) and treat it explicitly as Asia/Jakarta.
+    Parse IDX PublishDate in ISO forms:
+      - 'YYYY-MM-DDTHH:MM:SS'
+      - 'YYYY-MM-DDTHH:MM:SS.ssssss'
+      - 'YYYY-MM-DDTHH:MM:SS(+offset|Z)'
+    Return timezone-aware datetime in Asia/Jakarta.
     """
-    dt_naive = datetime.strptime(publish_iso_no_tz, "%Y-%m-%dT%H:%M:%S")
-    return dt_naive.replace(tzinfo=JKT)
+    s = (publish_iso or "").strip()
+    if not s:
+        raise ValueError("empty PublishDate")
+
+    # Support trailing 'Z'
+    try:
+        dt = datetime.fromisoformat(s.replace("Z", "+00:00"))
+    except Exception:
+        # Fallback to naive without offset
+        dt = datetime.strptime(s, "%Y-%m-%dT%H:%M:%S")
+
+    if dt.tzinfo is None:
+        # Treat naive as WIB
+        return dt.replace(tzinfo=JKT)
+    # Convert any offset to WIB
+    return dt.astimezone(JKT)
 
 def validate_yyyymmdd(date_str: str) -> None:
     """
@@ -41,7 +60,7 @@ def in_window(dt: datetime, start_dt: Optional[datetime], end_dt: Optional[datet
     """
     if start_dt is None or end_dt is None:
         return True
-    return start_dt <= dt <= end_dt
+    return start_dt <= dt <= end_dt  # inclusive bounds
 
 def compute_range_and_window(
     date_yyyymmdd: str,
@@ -50,7 +69,7 @@ def compute_range_and_window(
 ) -> Tuple[str, str, Optional[datetime], Optional[datetime]]:
     """
     Build dateFrom/dateTo (YYYYMMDD) and WIB-aware start/end datetimes for a single-day time window.
-    If the time window crosses midnight, extend dateTo by +1 day.
+    If the time window crosses midnight (e.g., 22:00→02:00), extend dateTo +1 day and move end_dt accordingly.
     """
     validate_yyyymmdd(date_yyyymmdd)
 
@@ -64,11 +83,12 @@ def compute_range_and_window(
         s_h, s_m = [int(x) for x in start_hhmm.split(":")]
         e_h, e_m = [int(x) for x in end_hhmm.split(":")]
         start_dt = base.replace(hour=s_h, minute=s_m, second=0, microsecond=0)
-        end_dt = base.replace(hour=e_h, minute=e_m, second=0, microsecond=0)
+        end_dt   = base.replace(hour=e_h, minute=e_m, second=0, microsecond=0)
 
-        # Cross-midnight range (e.g., 22:00→02:00) should extend dateTo
+        # Cross-midnight: push end_dt to next day at the requested HH:MM
         if end_dt < start_dt:
-            end_date = (base + timedelta(days=1)).strftime("%Y%m%d")
+            end_dt = (base + timedelta(days=1)).replace(hour=e_h, minute=e_m, second=0, microsecond=0)
+            end_date = end_dt.strftime("%Y%m%d")
 
     return start_date, end_date, start_dt, end_dt
 
@@ -80,7 +100,7 @@ def compute_month_range(year_month: str) -> Tuple[str, str]:
     first_day = 1
     last_day = calendar.monthrange(year, month)[1]
     start_yyyymmdd = f"{year:04d}{month:02d}{first_day:02d}"
-    end_yyyymmdd = f"{year:04d}{month:02d}{last_day:02d}"
+    end_yyyymmdd   = f"{year:04d}{month:02d}{last_day:02d}"
     return start_yyyymmdd, end_yyyymmdd
 
 def compute_span_from_date_hour(
@@ -90,16 +110,8 @@ def compute_span_from_date_hour(
     end_hour: int,
 ) -> Tuple[str, str, datetime, datetime]:
     """
-    Generic span:
-      Inputs:
-        - start_yyyymmdd: 'YYYYMMDD'
-        - start_hour: 0..23
-        - end_yyyymmdd: 'YYYYMMDD'
-        - end_hour: 0..23
-      Returns:
-        (date_from, date_to, start_dt_wib, end_dt_wib)
-
-    Validates format and that end >= start.
+    Generic span with hour precision (inclusive on the end hour).
+    Returns (date_from, date_to, start_dt_wib, end_dt_wib)
     """
     validate_yyyymmdd(start_yyyymmdd)
     validate_yyyymmdd(end_yyyymmdd)
@@ -109,12 +121,12 @@ def compute_span_from_date_hour(
     s_base = datetime.strptime(start_yyyymmdd, "%Y%m%d").replace(tzinfo=JKT)
     e_base = datetime.strptime(end_yyyymmdd, "%Y%m%d").replace(tzinfo=JKT)
     start_dt = s_base.replace(hour=int(start_hour), minute=0, second=0, microsecond=0)
-    end_dt = e_base.replace(hour=int(end_hour), minute=0, second=0, microsecond=0)
+    # Make end hour inclusive (HH:59:59)
+    end_dt   = e_base.replace(hour=int(end_hour), minute=59, second=59, microsecond=0)
 
     if end_dt < start_dt:
         raise ValueError("End datetime must be >= start datetime")
 
-    # API dateFrom/dateTo are full-day bounds (inclusive); we hand them the calendar span
     date_from = start_dt.strftime("%Y%m%d")
-    date_to = end_dt.strftime("%Y%m%d")
+    date_to   = end_dt.strftime("%Y%m%d")
     return date_from, date_to, start_dt, end_dt

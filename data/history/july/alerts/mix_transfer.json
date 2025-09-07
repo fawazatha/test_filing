@@ -1,0 +1,70 @@
+[
+  {
+    "reason": "mix_transfer",
+    "symbol": "WIRG.JK",
+    "company": "PT Wir Asia Tbk",
+    "holder_name": "PT Wir Global Kreatif",
+    "transaction_type_declared": "sell",
+    "timestamp": "2025-07-07 16:17:55",
+    "source": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_EREP/202507/8b75c0b4da_156e3f5c7b.pdf",
+    "counts": {
+      "buy_sell": 8,
+      "transfer": 2
+    },
+    "amounts": {
+      "buy_sell": 97000000,
+      "transfer": 1338327200
+    },
+    "values": {
+      "buy_sell": 7803363200.0,
+      "transfer": 107066176000.0
+    },
+    "transfer_rows": [
+      {
+        "price": 80.0,
+        "amount": 467400000,
+        "date": "07 July 2025"
+      },
+      {
+        "price": 80.0,
+        "amount": 870927200,
+        "date": "07 July 2025"
+      }
+    ],
+    "price_transaction": {
+      "type": [
+        "sell",
+        "sell",
+        "sell",
+        "sell",
+        "sell",
+        "sell",
+        "sell",
+        "sell"
+      ],
+      "prices": [
+        83.0,
+        81.0,
+        82.0,
+        78.0,
+        79.0,
+        78.0,
+        79.0,
+        80.0
+      ],
+      "amount_transacted": [
+        35814000,
+        13686000,
+        1339500,
+        31240000,
+        3450400,
+        3343300,
+        7826800,
+        300000
+      ]
+    },
+    "announcement": {
+      "title": "Ownership Report or Any Changes in Ownership of Public Company Shares"
+    }
+  }
+]

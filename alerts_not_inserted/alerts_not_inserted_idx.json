@@ -1,0 +1,81 @@
+[
+  {
+    "error_filename": "ecf28f48f7_96502248de.pdf",
+    "error_reason": "Symbol Not Resolved from Name",
+    "timestamp": "2025-09-07T01:48:39.437896Z",
+    "company_name_raw": "PT Basis Utama Prima",
+    "normalized_key": "BASIS UTAMA PRIMA",
+    "missing_in_company_map": true,
+    "suggestions": [
+      {
+        "symbol": "MPPA.JK",
+        "company_name": "Matahari Putra Prima Tbk",
+        "score": "65",
+        "normalized_key": "MATAHARI PUTRA PRIMA"
+      },
+      {
+        "symbol": "SAPX.JK",
+        "company_name": "PT Satria Antaran Prima Tbk.",
+        "score": "65",
+        "normalized_key": "SATRIA ANTARAN PRIMA"
+      },
+      {
+        "symbol": "ASPR.JK",
+        "company_name": "PT Asia Pramulia Tbk",
+        "score": "60",
+        "normalized_key": "ASIA PRAMULIA"
+      }
+    ],
+    "announcement": {
+      "date": "2025-09-04T18:17:44",
+      "title": "Ownership Report or Any Changes in Ownership of Public Company Shares",
+      "company_name": "UANG",
+      "main_link": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_EREP/202509/ecf28f48f7_96502248de.pdf",
+      "attachments": [
+        {
+          "filename": "20250904_UANG_Laporan Kepemilikan atau Setiap Perubahan Kepemilikan Saham Perusahaan Terbuka_31937803_lamp1.pdf",
+          "url": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_EREP/202509/edcea002d7_fa4efd3333.pdf"
+        }
+      ],
+      "attachment_count": 1,
+      "category": "Ownership Report",
+      "description": "Ownership report for UANG",
+      "link": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_EREP/202509/ecf28f48f7_96502248de.pdf",
+      "scraped_at": "2025-09-07T01:32:00.636300+07:00"
+    }
+  },
+  {
+    "error_filename": "cd0f628cea_a9324e8b67.pdf",
+    "error_reason": "Validation failed or no data extracted",
+    "timestamp": "2025-09-07T01:48:43.781866Z",
+    "announcement": {
+      "date": "2025-09-03T16:47:47",
+      "title": "Report on the Changes of Shares Ownership in a Public Company",
+      "company_name": "MASA",
+      "main_link": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_EREP/202509/cd0f628cea_a9324e8b67.pdf",
+      "attachments": [
+        {
+          "filename": "20250903_MASA_Laporan Informasi dan Fakta Material_31937154_lamp3.pdf",
+          "url": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_EREP/202509/1c5f6c37b3_09a6e121ca.pdf"
+        },
+        {
+          "filename": "20250903_MASA_Laporan Informasi dan Fakta Material_31937154_lamp4.pdf",
+          "url": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_EREP/202509/31e16e2a5a_64f6e95cad.pdf"
+        },
+        {
+          "filename": "20250903_MASA_Laporan Informasi dan Fakta Material_31937154_lamp2.pdf",
+          "url": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_EREP/202509/475ff1671b_4840038498.pdf"
+        },
+        {
+          "filename": "20250903_MASA_Laporan Informasi dan Fakta Material_31937154_lamp1.pdf",
+          "url": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_EREP/202509/843af466d6_eed6fd991a.pdf"
+        }
+      ],
+      "attachment_count": 4,
+      "category": "Ownership Report",
+      "description": "Ownership report for MASA",
+      "link": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_EREP/202509/cd0f628cea_a9324e8b67.pdf",
+      "scraped_at": "2025-09-07T01:31:59.292186+07:00"
+    }
+  }
+]

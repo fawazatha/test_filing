@@ -1,9 +1,9 @@
+from __future__ import annotations
 import argparse
 from pathlib import Path
 from dotenv import load_dotenv
 
-# from downloader.utils.logger import get_logger
-from downloader.utils.logger import get_logger 
+from downloader.utils.logger import get_logger
 from ingestion.runner import (
     get_ownership_announcements,
     get_ownership_announcements_range,
@@ -14,7 +14,7 @@ from ingestion.utils.filters import (
     validate_yyyymmdd,
     compute_month_range,
 )
-from ingestion.utils.sorters import sort_announcements  # <-- NEW
+from ingestion.utils.sorters import sort_announcements
 
 def main():
     p = argparse.ArgumentParser(description="Fetch IDX ownership announcements into a JSON file.")
@@ -54,7 +54,7 @@ def main():
     if args.start and args.end:
         s_date, s_hour = args.start[0], int(args.start[1])
         e_date, e_hour = args.end[0], int(args.end[1])
-        logger.info("[MODE] Generic span (date+hour) WIB")
+        logger.info("[MODE] Generic span (WIB)")
         data = get_ownership_announcements_span(
             start_yyyymmdd=s_date,
             start_hour=s_hour,

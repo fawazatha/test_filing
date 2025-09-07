@@ -1,0 +1,130 @@
+[
+  {
+    "error_filename": "92ed0eea78_7c7eadd995.pdf",
+    "error_reason": "Transaction Type Mismatch",
+    "timestamp": "2025-09-03T00:09:00.414850Z",
+    "symbol": "IOTF.JK",
+    "company_name": "PT Sumber Sinergi Makmur Tbk",
+    "document_type": "sell",
+    "inferred_type": "buy",
+    "explanation": "holdings d=+26076700; share% d=+0.49 → implies 'buy'",
+    "holding_before": 369316400,
+    "holding_after": 395393100,
+    "share_percentage_before": 6.98,
+    "share_percentage_after": 7.47,
+    "is_transfer_hint": false,
+    "announcement": {
+      "date": "2025-07-01T17:05:12",
+      "title": "Ownership Report or Any Changes in Ownership of Public Company Shares",
+      "company_name": "IOTF",
+      "main_link": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_EREP/202507/92ed0eea78_7c7eadd995.pdf",
+      "attachments": [
+        {
+          "filename": "20250701_IOTF_Laporan Kepemilikan atau Setiap Perubahan Kepemilikan Saham Perusahaan Terbuka_31910142_lamp1.pdf",
+          "url": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_EREP/202507/476e9f7814_50087e742f.pdf"
+        }
+      ],
+      "attachment_count": 1,
+      "category": "Ownership Report",
+      "description": "Ownership report for IOTF",
+      "link": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_EREP/202507/92ed0eea78_7c7eadd995.pdf",
+      "scraped_at": "2025-08-28T06:33:50.543103+07:00"
+    }
+  },
+  {
+    "error_filename": "dec4769d5e_a8025c3c2c.pdf",
+    "error_reason": "Transaction Type Mismatch",
+    "timestamp": "2025-09-03T00:09:01.431862Z",
+    "symbol": "IOTF.JK",
+    "company_name": "PT Sumber Sinergi Makmur Tbk",
+    "document_type": "sell",
+    "inferred_type": "buy",
+    "explanation": "holdings d=+278516400; share% d=+5.26 → implies 'buy'",
+    "holding_before": 0,
+    "holding_after": 278516400,
+    "share_percentage_before": 0.0,
+    "share_percentage_after": 5.26,
+    "is_transfer_hint": true,
+    "announcement": {
+      "date": "2025-07-01T17:05:26",
+      "title": "Ownership Report or Any Changes in Ownership of Public Company Shares",
+      "company_name": "IOTF",
+      "main_link": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_EREP/202507/dec4769d5e_a8025c3c2c.pdf",
+      "attachments": [
+        {
+          "filename": "20250701_IOTF_Laporan Kepemilikan atau Setiap Perubahan Kepemilikan Saham Perusahaan Terbuka_31910139_lamp1.pdf",
+          "url": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_EREP/202507/fb0f2c3a7b_b1520e38cb.pdf"
+        }
+      ],
+      "attachment_count": 1,
+      "category": "Ownership Report",
+      "description": "Ownership report for IOTF",
+      "link": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_EREP/202507/dec4769d5e_a8025c3c2c.pdf",
+      "scraped_at": "2025-08-28T06:33:50.543069+07:00"
+    }
+  },
+  {
+    "error_filename": "dd44652157_23d9eb9c7d.pdf",
+    "error_reason": "Transaction Type Mismatch",
+    "timestamp": "2025-09-03T00:09:03.301775Z",
+    "symbol": "IOTF.JK",
+    "company_name": "PT Sumber Sinergi Makmur Tbk",
+    "document_type": "sell",
+    "inferred_type": "buy",
+    "explanation": "holdings d=+90800000; share% d=+1.72 → implies 'buy'",
+    "holding_before": 278516400,
+    "holding_after": 369316400,
+    "share_percentage_before": 5.26,
+    "share_percentage_after": 6.98,
+    "is_transfer_hint": false,
+    "announcement": {
+      "date": "2025-07-01T17:05:47",
+      "title": "Ownership Report or Any Changes in Ownership of Public Company Shares",
+      "company_name": "IOTF",
+      "main_link": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_EREP/202507/dd44652157_23d9eb9c7d.pdf",
+      "attachments": [
+        {
+          "filename": "20250701_IOTF_Laporan Kepemilikan atau Setiap Perubahan Kepemilikan Saham Perusahaan Terbuka_31910143_lamp1.pdf",
+          "url": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_EREP/202507/dd329156c0_3ec597e1d2.pdf"
+        }
+      ],
+      "attachment_count": 1,
+      "category": "Ownership Report",
+      "description": "Ownership report for IOTF",
+      "link": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_EREP/202507/dd44652157_23d9eb9c7d.pdf",
+      "scraped_at": "2025-08-28T06:33:50.543034+07:00"
+    }
+  },
+  {
+    "error_filename": "c6732c5c7b_91b1fc1e9c.pdf",
+    "error_reason": "Transaction Type Mismatch",
+    "timestamp": "2025-09-03T00:09:03.839065Z",
+    "symbol": "IOTF.JK",
+    "company_name": "PT Sumber Sinergi Makmur Tbk",
+    "document_type": "sell",
+    "inferred_type": "buy",
+    "explanation": "holdings d=+40100000; share% d=+0.76 → implies 'buy'",
+    "holding_before": 395393100,
+    "holding_after": 435493100,
+    "share_percentage_before": 7.47,
+    "share_percentage_after": 8.23,
+    "is_transfer_hint": false,
+    "announcement": {
+      "date": "2025-07-03T08:13:10",
+      "title": "Ownership Report or Any Changes in Ownership of Public Company Shares",
+      "company_name": "IOTF",
+      "main_link": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_EREP/202507/c6732c5c7b_91b1fc1e9c.pdf",
+      "attachments": [
+        {
+          "filename": "20250702_IOTF_Laporan Kepemilikan atau Setiap Perubahan Kepemilikan Saham Perusahaan Terbuka_31911053_lamp1.pdf",
+          "url": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_EREP/202507/60e6bbc249_b4db3aff9d.pdf"
+        }
+      ],
+      "attachment_count": 1,
+      "category": "Ownership Report",
+      "description": "Ownership report for IOTF",
+      "link": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_EREP/202507/c6732c5c7b_91b1fc1e9c.pdf",
+      "scraped_at": "2025-08-28T06:33:48.744858+07:00"
+    }
+  }
+]

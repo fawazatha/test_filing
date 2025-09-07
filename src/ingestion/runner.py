@@ -1,5 +1,6 @@
+from __future__ import annotations
 from typing import List, Dict, Optional
-from datetime import datetime
+from datetime import datetime, timedelta
 from pathlib import Path
 import json
 
@@ -15,6 +16,33 @@ from ingestion.utils.filters import (
 )
 from ingestion.utils.normalizer import normalize_item
 
+# --------------------------------------------------------------------
+# Helpers
+# --------------------------------------------------------------------
+
+def _daterange_yyyymmdd(a: str, b: str):
+    s = datetime.strptime(a, "%Y%m%d")
+    e = datetime.strptime(b, "%Y%m%d")
+    cur = s
+    while cur <= e:
+        yield cur.strftime("%Y%m%d")
+        cur += timedelta(days=1)
+
+def _dedupe(items: List[Dict]) -> List[Dict]:
+    seen = set()
+    out = []
+    for it in items:
+        key = it.get("id") or (it.get("main_link") or it.get("link"), it.get("title"), it.get("date"))
+        if key in seen:
+            continue
+        seen.add(key)
+        out.append(it)
+    return out
+
+# --------------------------------------------------------------------
+# Core fetchers
+# --------------------------------------------------------------------
+
 def get_ownership_announcements_range(
     start_yyyymmdd: str,
     end_yyyymmdd: str,
@@ -23,8 +51,9 @@ def get_ownership_announcements_range(
     logger_name: str = "ingestion",
 ) -> List[Dict]:
     """
-    Fetch announcements across an arbitrary date range [start_yyyymmdd, end_yyyymmdd] (inclusive).
-    If start_dt/end_dt are provided, they will be used as a publish-time window (WIB) filter.
+    ROBUST: tarik per-hari (dateFrom=dateTo=YYYYMMDD), paginasi per hari,
+    filter publish-time (WIB) bila diberikan, normalisasi, de-dupe.
+    Ini menghindari bug IDX ketika rentang hari diabaikan/ter-clip.
     """
     logger = get_logger(logger_name, verbose=True)
 
@@ -32,6 +61,7 @@ def get_ownership_announcements_range(
     validate_yyyymmdd(start_yyyymmdd)
     validate_yyyymmdd(end_yyyymmdd)
 
+    # Normalize timezone for window
     if start_dt and start_dt.tzinfo is None:
         start_dt = start_dt.replace(tzinfo=JKT)
     if end_dt and end_dt.tzinfo is None:
@@ -43,46 +73,49 @@ def get_ownership_announcements_range(
         logger.info("[FILTER] No time window (full days)")
 
     session = make_session()
-    page = 1
     out: List[Dict] = []
 
-    while True:
-        try:
-            payload = fetch_page(session, start_yyyymmdd, end_yyyymmdd, page=page, page_size=DEFAULT_PAGE_SIZE)
-        except Exception as e:
-            logger.error("API fetch failed at page %d: %s", page, e)
-            break
-
-        items = payload.get("Items") or []
-        if not items:
-            logger.info("No more data at page %d", page)
-            break
-
-        logger.info("Fetched %d announcements from page %d", len(items), page)
-
-        for item in items:
-            pub = item.get("PublishDate")
-            if not isinstance(pub, str):
-                continue
+    for day in _daterange_yyyymmdd(start_yyyymmdd, end_yyyymmdd):
+        page = 1
+        logger.info("=== Day %s ===", day)
+        while True:
             try:
-                pub_dt = parse_publish_wib(pub)
-            except Exception:
-                logger.warning("Failed to parse PublishDate '%s'", pub)
-                continue
+                payload = fetch_page(session, day, day, page=page, page_size=DEFAULT_PAGE_SIZE)
+            except Exception as e:
+                logger.error("API fetch failed at %s page %d: %s", day, page, e)
+                break
 
-            if not in_window(pub_dt, start_dt, end_dt):
-                continue
+            items = payload.get("Items") or []
+            if not items:
+                logger.info("No more data at page %d for %s", page, day)
+                break
 
-            item["_scraped_at"] = datetime.now(JKT).isoformat()
-            normalized = normalize_item(item)
-            if normalized:
-                out.append(normalized)
+            logger.info("Fetched %d announcements from %s page %d", len(items), day, page)
 
-        if len(items) < DEFAULT_PAGE_SIZE:
-            break
-        page += 1
+            for item in items:
+                pub = item.get("PublishDate")
+                if not isinstance(pub, str):
+                    continue
+                try:
+                    pub_dt = parse_publish_wib(pub)  # robust ISO (+offset/Z/naive) → WIB
+                except Exception:
+                    logger.warning("Failed to parse PublishDate '%s'", pub)
+                    continue
 
-    return out
+                if not in_window(pub_dt, start_dt, end_dt):
+                    continue
+
+                item["_scraped_at"] = datetime.now(JKT).isoformat()
+                normalized = normalize_item(item)
+                if normalized:
+                    out.append(normalized)
+
+            if len(items) < DEFAULT_PAGE_SIZE:
+                break
+            page += 1
+
+    # de-dupe across days
+    return _dedupe(out)
 
 def get_ownership_announcements(
     date_yyyymmdd: str,
@@ -92,6 +125,7 @@ def get_ownership_announcements(
 ) -> List[Dict]:
     """
     Convenience wrapper for single-day fetch with an optional HH:MM time window.
+    Handles cross-midnight (e.g., 22:30→02:15) by extending end_date.
     """
     start_date, end_date, start_dt, end_dt = compute_range_and_window(date_yyyymmdd, start_hhmm, end_hhmm)
     return get_ownership_announcements_range(
@@ -119,7 +153,7 @@ def get_ownership_announcements_span(
         start_yyyymmdd, start_hour, end_yyyymmdd, end_hour
     )
     logger = get_logger(logger_name, verbose=True)
-    logger.info("[RUN] Span: %s %02d:00 → %s %02d:00 (WIB)", start_yyyymmdd, start_hour, end_yyyymmdd, end_hour)
+    logger.info("[RUN] Span: %s %02d:00 → %s %02d:59 (WIB)", start_yyyymmdd, start_hour, end_yyyymmdd, end_hour)
 
     return get_ownership_announcements_range(
         start_yyyymmdd=date_from,

@@ -14,10 +14,12 @@ def main():
     p.add_argument("--out-non-idx", default="downloads/non-idx-format")
     p.add_argument("--meta-out", default="data/downloaded_pdfs.json")
     p.add_argument("--alerts-out", default="alerts/low_title_similarity_alerts.json")
-    p.add_argument("--retries", type=int, default=3)  # kept for compatibility
+    p.add_argument("--retries", type=int, default=3) 
     p.add_argument("--min-similarity", type=int, default=80)
     p.add_argument("--dry-run", action="store_true")
     p.add_argument("--verbose", action="store_true")
+    p.add_argument("--clean-out", action="store_true",   
+                   help="Hapus folder output & reset meta/alerts sebelum download.")  
     args = p.parse_args()
 
     logger = get_logger("downloader", verbose=args.verbose)
@@ -37,6 +39,7 @@ def main():
         min_similarity=args.min_similarity,
         dry_run=args.dry_run,
         verbose=args.verbose,
+        clean_out=args.clean_out,  
     )
 
 if __name__ == "__main__":

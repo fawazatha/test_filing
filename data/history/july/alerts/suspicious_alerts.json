@@ -1,0 +1,176 @@
+[
+  {
+    "reason": "Suspicious price deviation (>50%) from latest market price",
+    "holder_name": "Vientje Harijanto",
+    "transaction_type": "buy",
+    "holding_before": 124441296,
+    "holding_after": 146082496,
+    "share_percentage_before": 4.26,
+    "share_percentage_after": 4.99,
+    "UID": null,
+    "source": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_EREP/202507/3c5b88d439_b8a6bd3f53.pdf",
+    "timestamp": "2025-07-03 15:51:41",
+    "company": "PT Malacca Trust Wuwungan Insurance Tbk.",
+    "inferred_price": 100.0,
+    "latest_price": 378.0,
+    "deviation": "73.54%",
+    "amount_transacted": 21641200,
+    "transaction_value": 2164120000.0,
+    "price_transaction": {
+      "type": [
+        "buy"
+      ],
+      "prices": [
+        100.0
+      ],
+      "amount_transacted": [
+        21641200
+      ]
+    }
+  },
+  {
+    "reason": "Suspicious price deviation (>50%) from latest market price",
+    "holder_name": "PT Gaia Artha Dinamic",
+    "transaction_type": "sell",
+    "holding_before": 0,
+    "holding_after": 278516400,
+    "share_percentage_before": 0.0,
+    "share_percentage_after": 5.26,
+    "UID": null,
+    "source": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_EREP/202507/dec4769d5e_a8025c3c2c.pdf",
+    "timestamp": "2025-07-01 17:05:26",
+    "company": "PT Sumber Sinergi Makmur Tbk",
+    "inferred_price": 191.8,
+    "latest_price": 100.0,
+    "deviation": "91.80%",
+    "amount_transacted": 278516400,
+    "transaction_value": 53419445520.0,
+    "price_transaction": {
+      "type": [
+        "sell"
+      ],
+      "prices": [
+        191.8
+      ],
+      "amount_transacted": [
+        278516400
+      ]
+    }
+  },
+  {
+    "reason": "Suspicious price deviation (>50%) from latest market price",
+    "holder_name": "PT Tunggal Jaya Investama",
+    "transaction_type": "buy",
+    "holding_before": 23279426194,
+    "holding_after": 23929426194,
+    "share_percentage_before": 42.9,
+    "share_percentage_after": 44.09,
+    "UID": null,
+    "source": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_EREP/202507/749314bfcd_84f3c49c23.pdf",
+    "timestamp": "2025-07-02 17:06:07",
+    "company": "PT Impack Pratama Industri Tbk",
+    "inferred_price": 260.0,
+    "latest_price": 1310.0,
+    "deviation": "80.15%",
+    "amount_transacted": 650000000,
+    "transaction_value": 169000000000.0,
+    "price_transaction": {
+      "type": [
+        "buy"
+      ],
+      "prices": [
+        260.0
+      ],
+      "amount_transacted": [
+        650000000
+      ]
+    }
+  },
+  {
+    "reason": "Suspicious price deviation (>50%) from latest market price",
+    "holder_name": "Star Pacific Tbk",
+    "transaction_type": "sell",
+    "holding_before": 1006170721,
+    "holding_after": 621621621,
+    "share_percentage_before": 13.45,
+    "share_percentage_after": 8.31,
+    "UID": null,
+    "source": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_EREP/202507/507ad9487d_22aeba57b9.pdf",
+    "timestamp": "2025-07-02 10:47:17",
+    "company": "Star Pacific Tbk",
+    "inferred_price": 1110.0,
+    "latest_price": 318.0,
+    "deviation": "249.06%",
+    "amount_transacted": 384549100,
+    "transaction_value": 426849501000.0,
+    "price_transaction": {
+      "type": [
+        "sell"
+      ],
+      "prices": [
+        1110.0
+      ],
+      "amount_transacted": [
+        384549100
+      ]
+    }
+  },
+  {
+    "reason": "Suspicious price deviation (>50%) from latest market price",
+    "holder_name": "Brigitta Notoatmodjo",
+    "transaction_type": "sell",
+    "holding_before": 230848100,
+    "holding_after": 97773100,
+    "share_percentage_before": 13.874,
+    "share_percentage_after": 5.876,
+    "UID": null,
+    "source": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_EREP/202507/1aa3398ed8_b846f3fdbd.pdf",
+    "timestamp": "2025-07-04 09:22:52",
+    "company": "PT Bangun Karya Perkasa Jaya Tbk",
+    "inferred_price": 29.0,
+    "latest_price": 208.0,
+    "deviation": "86.06%",
+    "amount_transacted": 133075000,
+    "transaction_value": 3859175000.0,
+    "price_transaction": {
+      "type": [
+        "sell"
+      ],
+      "prices": [
+        29.0
+      ],
+      "amount_transacted": [
+        133075000
+      ]
+    }
+  },
+  {
+    "reason": "Suspicious price deviation (>50%) from latest market price",
+    "holder_name": "Vientje Harijanto",
+    "transaction_type": "buy",
+    "holding_before": 124441296,
+    "holding_after": 146082496,
+    "share_percentage_before": 4.26,
+    "share_percentage_after": 5.0,
+    "UID": null,
+    "source": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_EREP/202507/34cbf01013_167fce1b1e.pdf",
+    "timestamp": "2025-07-02 10:34:33",
+    "company": "PT Malacca Trust Wuwungan Insurance Tbk.",
+    "inferred_price": 100.0,
+    "latest_price": 378.0,
+    "deviation": "73.54%",
+    "amount_transacted": 21641200,
+    "transaction_value": 2164120000.0,
+    "price_transaction": {
+      "type": [
+        "buy"
+      ],
+      "prices": [
+        100.0
+      ],
+      "amount_transacted": [
+        21641200
+      ]
+    }
+  }
+]

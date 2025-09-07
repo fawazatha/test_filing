@@ -6,16 +6,11 @@ import os
 import threading
 from pathlib import Path
 from typing import Any
-
 from ..types import CompanyInfo
 
 logger = logging.getLogger(__name__)
 
-
-LATEST_PRICE_PATHS: list[str] = [
-    os.getenv("LATEST_PRICE_PATH") or "data/company/latest_prices.json",
-    "data/company/latest_prices.json",
-]
+LATEST_PRICE_PATHS: list[str] = [os.getenv("LATEST_PRICE_PATH") or "data/company/latest_prices.json"]
 COMPANY_MAP_PATH: str = os.getenv("COMPANY_MAP_PATH") or "data/company/company_map.json"
 
 _lock = threading.RLock()
@@ -44,9 +39,7 @@ def _ensure_prices_loaded() -> None:
 
         if not found:
             if _prices_cache is None:
-                logger.warning(
-                    "File latest_price(s).json tidak ditemukan di %s", LATEST_PRICE_PATHS
-                )
+                logger.warning("File latest_price(s).json tidak ditemukan di %s", LATEST_PRICE_PATHS)
                 _prices_cache = {}
             return
 
@@ -63,7 +56,6 @@ def _ensure_prices_loaded() -> None:
 
 
 def _ensure_map_loaded() -> None:
-    """Muat (atau reload) peta company dari file."""
     global _map_cache, _map_mtime
     with _lock:
         p = Path(COMPANY_MAP_PATH)
@@ -130,16 +122,25 @@ def get_company_info(symbol_full: str) -> CompanyInfo | None:
     return _lookup_company(symbol_full)
 
 
-def configure_paths(
-    latest_price_path: str | None = None,
-    company_map_path: str | None = None,
-) -> None:
-    """Opsional: panggil ini kalau mau override path via kode."""
+def get_tags(tx_type: str, before_pct: float, after_pct: float):
+    tx = (tx_type or "").lower()
+    if tx=="sell":
+        tags = ["Bearish","Divestment","Ownership Change","Insider Trading"]
+    elif tx=="buy":
+        tags = ["Bullish","Investment","Ownership Change","Insider Trading"]
+    else:
+        tags = ["Neutral","Ownership Change","Insider Trading"]
+    if (before_pct<50<=after_pct) or (before_pct>=50>after_pct):
+        tags.append("Takeover")
+    return tags
+
+
+def configure_paths(latest_price_path: str | None = None, company_map_path: str | None = None) -> None:
     global LATEST_PRICE_PATHS, COMPANY_MAP_PATH, _prices_mtime, _map_mtime
     if latest_price_path:
         LATEST_PRICE_PATHS = [latest_price_path]
     if company_map_path:
         COMPANY_MAP_PATH = company_map_path
-        
+
     _prices_mtime = None
     _map_mtime = None

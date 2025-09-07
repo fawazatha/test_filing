@@ -1,4 +1,459 @@
 {
+  "SONA.JK": {
+    "company_name": "Sona Topas Tourism Industry Tbk",
+    "sector": "Consumer Cyclicals",
+    "sub_sector": "Retailing"
+  },
+  "SKBM.JK": {
+    "company_name": "Sekar Bumi Tbk",
+    "sector": "Consumer Non-Cyclicals",
+    "sub_sector": "Food & Beverage"
+  },
+  "ZYRX.JK": {
+    "company_name": "PT Zyrexindo Mandiri Buana Tbk",
+    "sector": "Technology",
+    "sub_sector": "Technology Hardware & Equipment"
+  },
+  "ZINC.JK": {
+    "company_name": "PT Kapuas Prima Coal Tbk",
+    "sector": "Basic Materials",
+    "sub_sector": "Basic Materials"
+  },
+  "ZBRA.JK": {
+    "company_name": "PT Dosni Roha Indonesia Tbk",
+    "sector": "Industrials",
+    "sub_sector": "Multi-sector Holdings"
+  },
+  "ZATA.JK": {
+    "company_name": "PT Bersama Zatta Jaya Tbk",
+    "sector": "Consumer Cyclicals",
+    "sub_sector": "Retailing"
+  },
+  "WOOD.JK": {
+    "company_name": "PT Integra Indocabinet Tbk",
+    "sector": "Consumer Cyclicals",
+    "sub_sector": "Household Goods"
+  },
+  "WOMF.JK": {
+    "company_name": "PT Wahana Ottomitra Multiartha Tbk",
+    "sector": "Financials",
+    "sub_sector": "Financing Service"
+  },
+  "WMPP.JK": {
+    "company_name": "PT Widodo Makmur Perkasa Tbk",
+    "sector": "Consumer Non-Cyclicals",
+    "sub_sector": "Food & Beverage"
+  },
+  "WINS.JK": {
+    "company_name": "Wintermar Offshore Marine Tbk",
+    "sector": "Energy",
+    "sub_sector": "Oil, Gas & Coal"
+  },
+  "WINE.JK": {
+    "company_name": "PT Hatten Bali Tbk",
+    "sector": "Consumer Non-Cyclicals",
+    "sub_sector": "Food & Beverage"
+  },
+  "WIFI.JK": {
+    "company_name": "PT Solusi Sinergi Digital Tbk",
+    "sector": "Technology",
+    "sub_sector": "Software & IT Services"
+  },
+  "WIDI.JK": {
+    "company_name": "PT Widiant Jaya Krenindo Tbk.",
+    "sector": "Industrials",
+    "sub_sector": "Industrial Goods"
+  },
+  "WICO.JK": {
+    "company_name": "Wicaksana Overseas International Tbk",
+    "sector": "Consumer Non-Cyclicals",
+    "sub_sector": "Food & Staples Retailing"
+  },
+  "VTNY.JK": {
+    "company_name": "PT Venteny Fortuna International Tbk",
+    "sector": "Financials",
+    "sub_sector": "Financing Service"
+  },
+  "VOKS.JK": {
+    "company_name": "Voksel Electric Tbk",
+    "sector": "Industrials",
+    "sub_sector": "Industrial Goods"
+  },
+  "VINS.JK": {
+    "company_name": "PT Victoria Insurance Tbk.",
+    "sector": "Financials",
+    "sub_sector": "Insurance"
+  },
+  "VICO.JK": {
+    "company_name": "PT Victoria Investama Tbk.",
+    "sector": "Financials",
+    "sub_sector": "Holding & Investment Companies"
+  },
+  "VICI.JK": {
+    "company_name": "PT Victoria Care Indonesia Tbk",
+    "sector": "Consumer Non-Cyclicals",
+    "sub_sector": "Nondurable Household Products"
+  },
+  "VERN.JK": {
+    "company_name": "PT Verona Indah Pictures Tbk",
+    "sector": "Consumer Cyclicals",
+    "sub_sector": "Media & Entertainment"
+  },
+  "VAST.JK": {
+    "company_name": "PT Vastland Indonesia Tbk",
+    "sector": "Properties & Real Estate",
+    "sub_sector": "Properties & Real Estate"
+  },
+  "UVCR.JK": {
+    "company_name": "PT Trimegah Karya Pratama Tbk.",
+    "sector": "Technology",
+    "sub_sector": "Software & IT Services"
+  },
+  "URBN.JK": {
+    "company_name": "PT Urban Jakarta Propertindo Tbk.",
+    "sector": "Properties & Real Estate",
+    "sub_sector": "Properties & Real Estate"
+  },
+  "UNVR.JK": {
+    "company_name": "Unilever Indonesia Tbk",
+    "sector": "Consumer Non-Cyclicals",
+    "sub_sector": "Nondurable Household Products"
+  },
+  "UNTR.JK": {
+    "company_name": "United Tractors Tbk",
+    "sector": "Industrials",
+    "sub_sector": "Industrial Goods"
+  },
+  "UNSP.JK": {
+    "company_name": "Bakrie Sumatera Plantations Tbk",
+    "sector": "Consumer Non-Cyclicals",
+    "sub_sector": "Food & Beverage"
+  },
+  "ULTJ.JK": {
+    "company_name": "PT Ultrajaya Milk Industry & Trading Company Tbk",
+    "sector": "Consumer Non-Cyclicals",
+    "sub_sector": "Food & Beverage"
+  },
+  "UFOE.JK": {
+    "company_name": "PT Damai Sejahtera Abadi Tbk",
+    "sector": "Consumer Cyclicals",
+    "sub_sector": "Retailing"
+  },
+  "UCID.JK": {
+    "company_name": "PT Uni-Charm Indonesia Tbk.",
+    "sector": "Consumer Non-Cyclicals",
+    "sub_sector": "Nondurable Household Products"
+  },
+  "UANG.JK": {
+    "company_name": "PT Pakuan Tbk",
+    "sector": "Properties & Real Estate",
+    "sub_sector": "Properties & Real Estate"
+  },
+  "TYRE.JK": {
+    "company_name": "PT King Tire Indonesia Tbk.",
+    "sector": "Consumer Cyclicals",
+    "sub_sector": "Automobiles & Components"
+  },
+  "DUCK.JK": {
+    "company_name": "PT Jaya Bersama Indo Tbk.",
+    "sector": "Consumer Cyclicals",
+    "sub_sector": "Consumer Services"
+  },
+  "TRUS.JK": {
+    "company_name": "Trust Finance Indonesia Tbk",
+    "sector": "Financials",
+    "sub_sector": "Financing Service"
+  },
+  "TRUE.JK": {
+    "company_name": "PT Triniti Dinamik Tbk",
+    "sector": "Properties & Real Estate",
+    "sub_sector": "Properties & Real Estate"
+  },
+  "TRJA.JK": {
+    "company_name": "PT Transkon Jaya Tbk.",
+    "sector": "Transportation & Logistic",
+    "sub_sector": "Transportation"
+  },
+  "TRIS.JK": {
+    "company_name": "Trisula International Tbk",
+    "sector": "Consumer Cyclicals",
+    "sub_sector": "Apparel & Luxury Goods"
+  },
+  "TRIN.JK": {
+    "company_name": "PT Perintis Triniti Properti Tbk",
+    "sector": "Properties & Real Estate",
+    "sub_sector": "Properties & Real Estate"
+  },
+  "TRIM.JK": {
+    "company_name": "PT Trimegah Sekuritas Indonesia Tbk",
+    "sector": "Financials",
+    "sub_sector": "Investment Service"
+  },
+  "TOYS.JK": {
+    "company_name": "PT Sunindo Adipersada Tbk.",
+    "sector": "Consumer Cyclicals",
+    "sub_sector": "Leisure Goods"
+  },
+  "TOWR.JK": {
+    "company_name": "Sarana Menara Nusantara Tbk",
+    "sector": "Infrastructures",
+    "sub_sector": "Telecommunication"
+  },
+  "TOTO.JK": {
+    "company_name": "Surya Toto Indonesia Tbk",
+    "sector": "Industrials",
+    "sub_sector": "Industrial Goods"
+  },
+  "TOOL.JK": {
+    "company_name": "PT Rohartindo Nusantara Luas Tbk",
+    "sector": "Consumer Cyclicals",
+    "sub_sector": "Retailing"
+  },
+  "TMAS.JK": {
+    "company_name": "PT Temas Tbk.",
+    "sector": "Transportation & Logistic",
+    "sub_sector": "Logistics & Deliveries"
+  },
+  "TKIM.JK": {
+    "company_name": "Pabrik Kertas Tjiwi Kimia Tbk",
+    "sector": "Basic Materials",
+    "sub_sector": "Basic Materials"
+  },
+  "TIRT.JK": {
+    "company_name": "Tirta Mahakam Resources Tbk",
+    "sector": "Basic Materials",
+    "sub_sector": "Basic Materials"
+  },
+  "HOME.JK": {
+    "company_name": "Hotel Mandarine Regency Tbk",
+    "sector": "Consumer Cyclicals",
+    "sub_sector": "Consumer Services"
+  },
+  "TIRA.JK": {
+    "company_name": "Tira Austenite Tbk",
+    "sector": "Industrials",
+    "sub_sector": "Industrial Services"
+  },
+  "TGUK.JK": {
+    "company_name": "PT Platinum Wahab Nusantara Tbk.",
+    "sector": "Consumer Non-Cyclicals",
+    "sub_sector": "Food & Beverage"
+  },
+  "TGRA.JK": {
+    "company_name": "PT Terregra Asia Energy",
+    "sector": "Infrastructures",
+    "sub_sector": "Utilities"
+  },
+  "TFCO.JK": {
+    "company_name": "Tifico Fiber Indonesia Tbk",
+    "sector": "Consumer Cyclicals",
+    "sub_sector": "Apparel & Luxury Goods"
+  },
+  "TECH.JK": {
+    "company_name": "PT Indosterling Technomedia Tbk",
+    "sector": "Technology",
+    "sub_sector": "Software & IT Services"
+  },
+  "TDPM.JK": {
+    "company_name": "PT Tianrong Chemicals Industry Tbk",
+    "sector": "Basic Materials",
+    "sub_sector": "Basic Materials"
+  },
+  "KBRI.JK": {
+    "company_name": "Kertas Basuki Rachmat Indonesia Tbk",
+    "sector": "Basic Materials",
+    "sub_sector": "Basic Materials"
+  },
+  "TCPI.JK": {
+    "company_name": "PT Transcoal Pacific Tbk.",
+    "sector": "Energy",
+    "sub_sector": "Oil, Gas & Coal"
+  },
+  "TBMS.JK": {
+    "company_name": "Tembaga Mulia Semanan Tbk",
+    "sector": "Basic Materials",
+    "sub_sector": "Basic Materials"
+  },
+  "TBLA.JK": {
+    "company_name": "Tunas Baru Lampung Tbk",
+    "sector": "Consumer Non-Cyclicals",
+    "sub_sector": "Food & Beverage"
+  },
+  "TAXI.JK": {
+    "company_name": "Express Transindo Utama Tbk",
+    "sector": "Transportation & Logistic",
+    "sub_sector": "Transportation"
+  },
+  "MABA.JK": {
+    "company_name": "PT Marga Abhinaya Abadi Tbk",
+    "sector": "Consumer Cyclicals",
+    "sub_sector": "Consumer Services"
+  },
+  "TARA.JK": {
+    "company_name": "PT Agung Semesta Sejahtera Tbk",
+    "sector": "Properties & Real Estate",
+    "sub_sector": "Properties & Real Estate"
+  },
+  "TAPG.JK": {
+    "company_name": "PT Triputra Agro Persada Tbk.",
+    "sector": "Consumer Non-Cyclicals",
+    "sub_sector": "Food & Beverage"
+  },
+  "TALF.JK": {
+    "company_name": "PT Tunas Alfin Tbk",
+    "sector": "Basic Materials",
+    "sub_sector": "Basic Materials"
+  },
+  "SWID.JK": {
+    "company_name": "PT Saraswanti Indoland Development Tbk",
+    "sector": "Properties & Real Estate",
+    "sub_sector": "Properties & Real Estate"
+  },
+  "SWAT.JK": {
+    "company_name": "PT Sriwahana Adityakarta Tbk.",
+    "sector": "Basic Materials",
+    "sub_sector": "Basic Materials"
+  },
+  "SURI.JK": {
+    "company_name": "PT Maja Agung Latexindo Tbk.",
+    "sector": "Healthcare",
+    "sub_sector": "Healthcare Equipment & Providers"
+  },
+  "SURE.JK": {
+    "company_name": "PT Super Energy Tbk.",
+    "sector": "Energy",
+    "sub_sector": "Oil, Gas & Coal"
+  },
+  "SUNI.JK": {
+    "company_name": "PT Sunindo Pratama Tbk",
+    "sector": "Energy",
+    "sub_sector": "Oil, Gas & Coal"
+  },
+  "STTP.JK": {
+    "company_name": "PT Siantar Top Tbk",
+    "sector": "Consumer Non-Cyclicals",
+    "sub_sector": "Food & Beverage"
+  },
+  "STAR.JK": {
+    "company_name": "PT Buana Artha Anugerah Tbk.",
+    "sector": "Financials",
+    "sub_sector": "Holding & Investment Companies"
+  },
+  "STAA.JK": {
+    "company_name": "PT Sumber Tani Agung Resources Tbk",
+    "sector": "Consumer Non-Cyclicals",
+    "sub_sector": "Food & Beverage"
+  },
+  "SSMS.JK": {
+    "company_name": "PT Sawit Sumbermas Sarana Tbk.",
+    "sector": "Consumer Non-Cyclicals",
+    "sub_sector": "Food & Beverage"
+  },
+  "SRTG.JK": {
+    "company_name": "PT Saratoga Investama Sedaya Tbk.",
+    "sector": "Financials",
+    "sub_sector": "Holding & Investment Companies"
+  },
+  "SRIL.JK": {
+    "company_name": "PT Sri Rejeki Isman Tbk",
+    "sector": "Consumer Cyclicals",
+    "sub_sector": "Apparel & Luxury Goods"
+  },
+  "SRAJ.JK": {
+    "company_name": "Sejahteraraya Anugrahjaya Tbk",
+    "sector": "Healthcare",
+    "sub_sector": "Healthcare Equipment & Providers"
+  },
+  "SQMI.JK": {
+    "company_name": "Wilton Makmur Indonesia Tbk",
+    "sector": "Basic Materials",
+    "sub_sector": "Basic Materials"
+  },
+  "SPMA.JK": {
+    "company_name": "Suparma Tbk",
+    "sector": "Basic Materials",
+    "sub_sector": "Basic Materials"
+  },
+  "SOSS.JK": {
+    "company_name": "PT Shield On Service Tbk.",
+    "sector": "Industrials",
+    "sub_sector": "Industrial Services"
+  },
+  "SOHO.JK": {
+    "company_name": "PT Soho Global Health Tbk",
+    "sector": "Healthcare",
+    "sub_sector": "Pharmaceuticals & Health Care Research"
+  },
+  "SOFA.JK": {
+    "company_name": "PT Boston Furniture Industries Tbk..",
+    "sector": "Consumer Cyclicals",
+    "sub_sector": "Household Goods"
+  },
+  "SOCI.JK": {
+    "company_name": "PT Soechi Lines Tbk.",
+    "sector": "Energy",
+    "sub_sector": "Oil, Gas & Coal"
+  },
+  "SNLK.JK": {
+    "company_name": "PT Sunter Lakeside Hotel Tbk.",
+    "sector": "Consumer Cyclicals",
+    "sub_sector": "Consumer Services"
+  },
+  "SMSM.JK": {
+    "company_name": "Selamat Sempurna Tbk",
+    "sector": "Consumer Cyclicals",
+    "sub_sector": "Automobiles & Components"
+  },
+  "SMRA.JK": {
+    "company_name": "PT Summarecon Agung Tbk",
+    "sector": "Properties & Real Estate",
+    "sub_sector": "Properties & Real Estate"
+  },
+  "SMLE.JK": {
+    "company_name": "PT Sinergi Multi Lestarindo Tbk",
+    "sector": "Basic Materials",
+    "sub_sector": "Basic Materials"
+  },
+  "SMKM.JK": {
+    "company_name": "PT Sumber Mas Konstruksi Tbk",
+    "sector": "Infrastructures",
+    "sub_sector": "Heavy Constructions & Civil Engineering"
+  },
+  "SMIL.JK": {
+    "company_name": "PT Sarana Mitra Luas Tbk",
+    "sector": "Industrials",
+    "sub_sector": "Industrial Goods"
+  },
+  "SMDM.JK": {
+    "company_name": "Suryamas Dutamakmur Tbk",
+    "sector": "Properties & Real Estate",
+    "sub_sector": "Properties & Real Estate"
+  },
+  "SMCB.JK": {
+    "company_name": "PT Solusi Bangun Indonesia Tbk",
+    "sector": "Basic Materials",
+    "sub_sector": "Basic Materials"
+  },
+  "SMBR.JK": {
+    "company_name": "PT Semen Baturaja Tbk",
+    "sector": "Basic Materials",
+    "sub_sector": "Basic Materials"
+  },
+  "SMAR.JK": {
+    "company_name": "PT Sinar Mas Agro Resources and Technology Tbk",
+    "sector": "Consumer Non-Cyclicals",
+    "sub_sector": "Food & Beverage"
+  },
+  "SLIS.JK": {
+    "company_name": "PT Gaya Abadi Sempurna Tbk",
+    "sector": "Consumer Cyclicals",
+    "sub_sector": "Retailing"
+  },
+  "SKRN.JK": {
+    "company_name": "PT Superkrane Mitra Utama Tbk",
+    "sector": "Industrials",
+    "sub_sector": "Industrial Goods"
+  },
   "AADI.JK": {
     "company_name": "PT Adaro Andalan Indonesia Tbk",
     "sector": "Energy",
@@ -8,16 +463,6 @@
     "company_name": "Astra Agro Lestari Tbk",
     "sector": "Consumer Non-Cyclicals",
     "sub_sector": "Food & Beverage"
-  },
-  "ABBA.JK": {
-    "company_name": "Mahaka Media Tbk",
-    "sector": "Consumer Cyclicals",
-    "sub_sector": "Media & Entertainment"
-  },
-  "ABDA.JK": {
-    "company_name": "Asuransi Bina Dana Arta Tbk",
-    "sector": "Financials",
-    "sub_sector": "Insurance"
   },
   "ABMM.JK": {
     "company_name": "ABM Investama Tbk",
@@ -34,20 +479,10 @@
     "sector": "Consumer Cyclicals",
     "sub_sector": "Apparel & Luxury Goods"
   },
-  "ACST.JK": {
-    "company_name": "PT Acset Indonusa Tbk.",
-    "sector": "Infrastructures",
-    "sub_sector": "Heavy Constructions & Civil Engineering"
-  },
   "ADCP.JK": {
     "company_name": "PT Adhi Commuter Properti Tbk",
     "sector": "Properties & Real Estate",
     "sub_sector": "Properties & Real Estate"
-  },
-  "ADES.JK": {
-    "company_name": "Akasha Wira International Tbk  Tbk",
-    "sector": "Consumer Non-Cyclicals",
-    "sub_sector": "Food & Beverage"
   },
   "ADHI.JK": {
     "company_name": "PT Adhi Karya (Persero) Tbk.",
@@ -59,40 +494,15 @@
     "sector": "Financials",
     "sub_sector": "Financing Service"
   },
-  "ADMG.JK": {
-    "company_name": "Polychem Indonesia Tbk",
-    "sector": "Basic Materials",
-    "sub_sector": "Basic Materials"
-  },
-  "ADMR.JK": {
-    "company_name": "PT Adaro Minerals Indonesia Tbk",
-    "sector": "Energy",
-    "sub_sector": "Oil, Gas & Coal"
-  },
-  "ADRO.JK": {
-    "company_name": "Alamtri Resources Indonesia Tbk",
-    "sector": "Energy",
-    "sub_sector": "Oil, Gas & Coal"
-  },
   "AEGS.JK": {
     "company_name": "PT Anugerah Spareparts Sejahtera Tbk.",
     "sector": "Consumer Cyclicals",
     "sub_sector": "Automobiles & Components"
   },
-  "AGAR.JK": {
-    "company_name": "PT Asia Sejahtera Mina Tbk",
-    "sector": "Consumer Non-Cyclicals",
-    "sub_sector": "Food & Beverage"
-  },
   "AGII.JK": {
     "company_name": "PT Samator Indo Gas Tbk",
     "sector": "Basic Materials",
     "sub_sector": "Basic Materials"
-  },
-  "AGRO.JK": {
-    "company_name": "PT Bank Raya Indonesia Tbk",
-    "sector": "Financials",
-    "sub_sector": "Banks"
   },
   "AGRS.JK": {
     "company_name": "PT Bank IBK Indonesia Tbk.",
@@ -109,75 +519,20 @@
     "sector": "Energy",
     "sub_sector": "Oil, Gas & Coal"
   },
-  "AISA.JK": {
-    "company_name": "PT FKS Food Sejahtera Tbk",
-    "sector": "Consumer Non-Cyclicals",
-    "sub_sector": "Food & Beverage"
-  },
-  "AKKU.JK": {
-    "company_name": "PT Anugerah Kagum Karya Utama Tbk",
-    "sector": "Consumer Cyclicals",
-    "sub_sector": "Consumer Services"
-  },
   "AKPI.JK": {
     "company_name": "Argha Karya Prima Ind. Tbk",
     "sector": "Basic Materials",
     "sub_sector": "Basic Materials"
-  },
-  "AKRA.JK": {
-    "company_name": "PT AKR Corporindo Tbk.",
-    "sector": "Energy",
-    "sub_sector": "Oil, Gas & Coal"
-  },
-  "AKSI.JK": {
-    "company_name": "PT Mineral Sumberdaya Mandiri Tbk",
-    "sector": "Transportation & Logistic",
-    "sub_sector": "Logistics & Deliveries"
   },
   "ALDO.JK": {
     "company_name": "Alkindo Naratama Tbk",
     "sector": "Basic Materials",
     "sub_sector": "Basic Materials"
   },
-  "ALII.JK": {
-    "company_name": "PT Ancara Logistics Indonesia Tbk",
-    "sector": "Energy",
-    "sub_sector": "Oil, Gas & Coal"
-  },
-  "ALKA.JK": {
-    "company_name": "Alakasa Industrindo Tbk",
-    "sector": "Basic Materials",
-    "sub_sector": "Basic Materials"
-  },
-  "ALMI.JK": {
-    "company_name": "Alumindo Light Metal Industry Tbk",
-    "sector": "Basic Materials",
-    "sub_sector": "Basic Materials"
-  },
-  "ALTO.JK": {
-    "company_name": "Tri Banyan Tirta Tbk",
-    "sector": "Consumer Non-Cyclicals",
-    "sub_sector": "Food & Beverage"
-  },
-  "AMAG.JK": {
-    "company_name": "Asuransi Multi Artha Guna Tbk",
-    "sector": "Financials",
-    "sub_sector": "Insurance"
-  },
-  "AMAN.JK": {
-    "company_name": "PT Makmur Berkah Amanda Tbk.",
-    "sector": "Properties & Real Estate",
-    "sub_sector": "Properties & Real Estate"
-  },
   "AMAR.JK": {
     "company_name": "PT Bank Amar Indonesia Tbk.",
     "sector": "Financials",
     "sub_sector": "Banks"
-  },
-  "AMFG.JK": {
-    "company_name": "Asahimas Flat Glass Tbk",
-    "sector": "Industrials",
-    "sub_sector": "Industrial Goods"
   },
   "AMIN.JK": {
     "company_name": "PT Ateliers Mecaniques D Indonesie Tbk.",
@@ -189,60 +544,15 @@
     "sector": "Basic Materials",
     "sub_sector": "Basic Materials"
   },
-  "AMMS.JK": {
-    "company_name": "PT Agung Menjangan Mas Tbk",
-    "sector": "Consumer Non-Cyclicals",
-    "sub_sector": "Food & Beverage"
-  },
-  "AMOR.JK": {
-    "company_name": "PT Ashmore Asset Management Indonesia Tbk.",
-    "sector": "Financials",
-    "sub_sector": "Investment Service"
-  },
-  "AMRT.JK": {
-    "company_name": "PT Sumber Alfaria Trijaya Tbk.",
-    "sector": "Consumer Non-Cyclicals",
-    "sub_sector": "Food & Staples Retailing"
-  },
-  "ANDI.JK": {
-    "company_name": "PT Andira Agro Tbk",
-    "sector": "Consumer Non-Cyclicals",
-    "sub_sector": "Food & Beverage"
-  },
-  "ANJT.JK": {
-    "company_name": "PT Austindo Nusantara Jaya Tbk.",
-    "sector": "Consumer Non-Cyclicals",
-    "sub_sector": "Food & Beverage"
-  },
   "ANTM.JK": {
     "company_name": "Aneka Tambang Tbk.",
     "sector": "Basic Materials",
     "sub_sector": "Basic Materials"
   },
-  "APEX.JK": {
-    "company_name": "Apexindo Pratama Duta Tbk",
-    "sector": "Energy",
-    "sub_sector": "Oil, Gas & Coal"
-  },
-  "APIC.JK": {
-    "company_name": "Pacific Strategic Financial Tbk",
-    "sector": "Financials",
-    "sub_sector": "Holding & Investment Companies"
-  },
   "APII.JK": {
     "company_name": "PT Arita Prima Indonesia Tbk.",
     "sector": "Industrials",
     "sub_sector": "Industrial Goods"
-  },
-  "APLI.JK": {
-    "company_name": "Asiaplast Industries Tbk",
-    "sector": "Basic Materials",
-    "sub_sector": "Basic Materials"
-  },
-  "APLN.JK": {
-    "company_name": "PT Agung Podomoro Land Tbk.",
-    "sector": "Properties & Real Estate",
-    "sub_sector": "Properties & Real Estate"
   },
   "ARCI.JK": {
     "company_name": "PT Archi Indonesia Tbk",
@@ -254,21 +564,6 @@
     "sector": "Technology",
     "sub_sector": "Software & IT Services"
   },
-  "ARGO.JK": {
-    "company_name": "Argo Pantes Tbk",
-    "sector": "Consumer Cyclicals",
-    "sub_sector": "Apparel & Luxury Goods"
-  },
-  "ARII.JK": {
-    "company_name": "Atlas Resources Tbk",
-    "sector": "Energy",
-    "sub_sector": "Oil, Gas & Coal"
-  },
-  "ARKA.JK": {
-    "company_name": "PT Arkha Jayanti Persada Tbk.",
-    "sector": "Industrials",
-    "sub_sector": "Industrial Goods"
-  },
   "ARKO.JK": {
     "company_name": "PT Arkora Hydro Tbk.",
     "sector": "Infrastructures",
@@ -279,20 +574,10 @@
     "sector": "Properties & Real Estate",
     "sub_sector": "Properties & Real Estate"
   },
-  "ARNA.JK": {
-    "company_name": "Arwana Citramulia Tbk",
-    "sector": "Industrials",
-    "sub_sector": "Industrial Goods"
-  },
-  "ARTA.JK": {
-    "company_name": "Arthavest Tbk",
-    "sector": "Consumer Cyclicals",
-    "sub_sector": "Consumer Services"
-  },
-  "ARTI.JK": {
-    "company_name": "Ratu Prabu Energi Tbk",
-    "sector": "Energy",
-    "sub_sector": "Oil, Gas & Coal"
+  "COWL.JK": {
+    "company_name": "Cowell Development Tbk",
+    "sector": "Properties & Real Estate",
+    "sub_sector": "Properties & Real Estate"
   },
   "ARTO.JK": {
     "company_name": "PT Bank Jago Tbk.",
@@ -309,25 +594,10 @@
     "sector": "Financials",
     "sub_sector": "Insurance"
   },
-  "ASGR.JK": {
-    "company_name": "Astra Graphia Tbk",
-    "sector": "Industrials",
-    "sub_sector": "Industrial Services"
-  },
   "ASHA.JK": {
     "company_name": "PT Cilacap Samudera Fishing Industry Tbk",
     "sector": "Consumer Non-Cyclicals",
     "sub_sector": "Food & Beverage"
-  },
-  "ASII.JK": {
-    "company_name": "Astra International Tbk",
-    "sector": "Industrials",
-    "sub_sector": "Multi-sector Holdings"
-  },
-  "ASJT.JK": {
-    "company_name": "Asuransi Jasa Tania Tbk",
-    "sector": "Financials",
-    "sub_sector": "Insurance"
   },
   "ASLC.JK": {
     "company_name": "PT Autopedia Sukses Lestari Tbk",
@@ -349,25 +619,10 @@
     "sector": "Properties & Real Estate",
     "sub_sector": "Properties & Real Estate"
   },
-  "ASPR.JK": {
-    "company_name": "PT Asia Pramulia Tbk",
-    "sector": "Basic Materials",
-    "sub_sector": "Basic Materials"
-  },
-  "ASRI.JK": {
-    "company_name": "Alam Sutera Realty Tbk",
-    "sector": "Properties & Real Estate",
-    "sub_sector": "Properties & Real Estate"
-  },
   "ASRM.JK": {
     "company_name": "Asuransi Ramayana Tbk",
     "sector": "Financials",
     "sub_sector": "Insurance"
-  },
-  "ASSA.JK": {
-    "company_name": "Adi Sarana Armada Tbk",
-    "sector": "Transportation & Logistic",
-    "sub_sector": "Transportation"
   },
   "ATAP.JK": {
     "company_name": "PT Trimitra Prawara Goldland Tbk",
@@ -394,40 +649,15 @@
     "sector": "Basic Materials",
     "sub_sector": "Basic Materials"
   },
-  "AWAN.JK": {
-    "company_name": "PT Era Digital Media Tbk",
-    "sector": "Technology",
-    "sub_sector": "Software & IT Services"
-  },
   "AXIO.JK": {
     "company_name": "PT Tera Data Indonusa Tbk",
     "sector": "Technology",
     "sub_sector": "Technology Hardware & Equipment"
   },
-  "AYAM.JK": {
-    "company_name": "PT Janu Putra Sejahtera Tbk.",
-    "sector": "Consumer Non-Cyclicals",
-    "sub_sector": "Food & Beverage"
-  },
   "AYLS.JK": {
     "company_name": "PT Agro Yasa Lestari Tbk",
     "sector": "Basic Materials",
     "sub_sector": "Basic Materials"
-  },
-  "BABP.JK": {
-    "company_name": "PT Bank MNC Internasional Tbk.",
-    "sector": "Financials",
-    "sub_sector": "Banks"
-  },
-  "BABY.JK": {
-    "company_name": "PT Multitrend Indo Tbk.",
-    "sector": "Consumer Cyclicals",
-    "sub_sector": "Retailing"
-  },
-  "BACA.JK": {
-    "company_name": "PT Bank Capital Indonesia Tbk",
-    "sector": "Financials",
-    "sub_sector": "Banks"
   },
   "BAIK.JK": {
     "company_name": "PT Bersama Mencapai Puncak Tbk.",
@@ -438,11 +668,6 @@
     "company_name": "Saranacentral Bajatama Tbk",
     "sector": "Basic Materials",
     "sub_sector": "Basic Materials"
-  },
-  "BALI.JK": {
-    "company_name": "PT Bali Towerindo Sentra Tbk.",
-    "sector": "Infrastructures",
-    "sub_sector": "Telecommunication"
   },
   "BANK.JK": {
     "company_name": "PT Bank Aladin Syariah Tbk",
@@ -458,11 +683,6 @@
     "company_name": "PT Bhakti Agung Propertindo Tbk.",
     "sector": "Properties & Real Estate",
     "sub_sector": "Properties & Real Estate"
-  },
-  "BATA.JK": {
-    "company_name": "Sepatu Bata Tbk",
-    "sector": "Consumer Cyclicals",
-    "sub_sector": "Apparel & Luxury Goods"
   },
   "BATR.JK": {
     "company_name": "PT Benteng Api Technic Tbk",
@@ -489,11 +709,6 @@
     "sector": "Financials",
     "sub_sector": "Banks"
   },
-  "BBKP.JK": {
-    "company_name": "PT Bank KB Indonesia Tbk",
-    "sector": "Financials",
-    "sub_sector": "Banks"
-  },
   "BBLD.JK": {
     "company_name": "Buana Finance Tbk",
     "sector": "Financials",
@@ -501,11 +716,6 @@
   },
   "BBMD.JK": {
     "company_name": "PT Bank Mestika Dharma Tbk.",
-    "sector": "Financials",
-    "sub_sector": "Banks"
-  },
-  "BBNI.JK": {
-    "company_name": "PT Bank Negara Indonesia (Persero) Tbk",
     "sector": "Financials",
     "sub_sector": "Banks"
   },
@@ -519,16 +729,6 @@
     "sector": "Energy",
     "sub_sector": "Oil, Gas & Coal"
   },
-  "BBSI.JK": {
-    "company_name": "PT Krom Bank Indonesia Tbk",
-    "sector": "Financials",
-    "sub_sector": "Banks"
-  },
-  "BBSS.JK": {
-    "company_name": "PT Bumi Benowo Sukses Sejahtera Tbk",
-    "sector": "Properties & Real Estate",
-    "sub_sector": "Properties & Real Estate"
-  },
   "BBTN.JK": {
     "company_name": "PT Bank Tabungan Negara (Persero) Tbk",
     "sector": "Financials",
@@ -538,6 +738,11 @@
     "company_name": "PT Bank Neo Commerce Tbk.",
     "sector": "Financials",
     "sub_sector": "Banks"
+  },
+  "NUSA.JK": {
+    "company_name": "PT Sinergi Megah Internusa Tbk",
+    "sector": "Consumer Cyclicals",
+    "sub_sector": "Consumer Services"
   },
   "BCAP.JK": {
     "company_name": "MNC Kapital Indonesia Tbk",
@@ -549,33 +754,18 @@
     "sector": "Financials",
     "sub_sector": "Banks"
   },
-  "BCIP.JK": {
-    "company_name": "Bumi Citra Permai Tbk",
-    "sector": "Properties & Real Estate",
-    "sub_sector": "Properties & Real Estate"
-  },
-  "BDKR.JK": {
-    "company_name": "PT Berdikari Pondasi Perkasa Tbk.",
-    "sector": "Infrastructures",
-    "sub_sector": "Heavy Constructions & Civil Engineering"
-  },
   "BDMN.JK": {
     "company_name": "PT Bank Danamon Indonesia Tbk",
     "sector": "Financials",
     "sub_sector": "Banks"
   },
-  "BEBS.JK": {
-    "company_name": "PT Berkah Beton Sadaya Tbk",
-    "sector": "Basic Materials",
-    "sub_sector": "Basic Materials"
+  "PLAS.JK": {
+    "company_name": "Polaris Investama Tbk",
+    "sector": "Financials",
+    "sub_sector": "Holding & Investment Companies"
   },
   "BEEF.JK": {
     "company_name": "PT Estika Tata Tiara Tbk.",
-    "sector": "Consumer Non-Cyclicals",
-    "sub_sector": "Food & Beverage"
-  },
-  "BEER.JK": {
-    "company_name": "PT Jobubu Jarum Minahasa Tbk",
     "sector": "Consumer Non-Cyclicals",
     "sub_sector": "Food & Beverage"
   },
@@ -583,21 +773,6 @@
     "company_name": "PT Bank Pembangunan Daerah Banten Tbk.",
     "sector": "Financials",
     "sub_sector": "Banks"
-  },
-  "BELI.JK": {
-    "company_name": "PT Global Digital Niaga Tbk",
-    "sector": "Technology",
-    "sub_sector": "Software & IT Services"
-  },
-  "BELL.JK": {
-    "company_name": "PT Trisula Textile Industries Tbk",
-    "sector": "Consumer Cyclicals",
-    "sub_sector": "Apparel & Luxury Goods"
-  },
-  "BESS.JK": {
-    "company_name": "PT Batulicin Nusantara Maritim Tbk.",
-    "sector": "Energy",
-    "sub_sector": "Oil, Gas & Coal"
   },
   "BEST.JK": {
     "company_name": "Bekasi Fajar Industrial Estate Tbk",
@@ -609,16 +784,6 @@
     "sector": "Financials",
     "sub_sector": "Financing Service"
   },
-  "BGTG.JK": {
-    "company_name": "PT Bank Ganesha Tbk.",
-    "sector": "Financials",
-    "sub_sector": "Banks"
-  },
-  "BHAT.JK": {
-    "company_name": "PT Bhakti Multi Artha Tbk.",
-    "sector": "Financials",
-    "sub_sector": "Insurance"
-  },
   "BHIT.JK": {
     "company_name": "PT MNC Asia Holding Tbk",
     "sector": "Industrials",
@@ -629,45 +794,10 @@
     "sector": "Properties & Real Estate",
     "sub_sector": "Properties & Real Estate"
   },
-  "BIKE.JK": {
-    "company_name": "PT Sepeda Bersama Indonesia Tbk",
-    "sector": "Consumer Cyclicals",
-    "sub_sector": "Leisure Goods"
-  },
-  "BIMA.JK": {
-    "company_name": "Primarindo Asia Infrastructure Tbk",
-    "sector": "Consumer Cyclicals",
-    "sub_sector": "Apparel & Luxury Goods"
-  },
-  "BINA.JK": {
-    "company_name": "PT Bank Ina Perdana Tbk.",
-    "sector": "Financials",
-    "sub_sector": "Banks"
-  },
   "BINO.JK": {
     "company_name": "PT Perma Plasindo Tbk",
     "sector": "Industrials",
     "sub_sector": "Industrial Services"
-  },
-  "BIPI.JK": {
-    "company_name": "PT Astrindo Nusantara Infrastruktur Tbk.",
-    "sector": "Energy",
-    "sub_sector": "Oil, Gas & Coal"
-  },
-  "BIPP.JK": {
-    "company_name": "Bhuwanatala Indah Permai Tbk",
-    "sector": "Properties & Real Estate",
-    "sub_sector": "Properties & Real Estate"
-  },
-  "BIRD.JK": {
-    "company_name": "PT Blue Bird Tbk",
-    "sector": "Transportation & Logistic",
-    "sub_sector": "Transportation"
-  },
-  "BISI.JK": {
-    "company_name": "Bisi International Tbk",
-    "sector": "Consumer Non-Cyclicals",
-    "sub_sector": "Food & Beverage"
   },
   "BJBR.JK": {
     "company_name": "Bank Pembangunan Daerah Jawa Barat dan Banten Tbk",
@@ -679,11 +809,6 @@
     "sector": "Financials",
     "sub_sector": "Banks"
   },
-  "BKDP.JK": {
-    "company_name": "Bukit Darmo Property Tbk",
-    "sector": "Properties & Real Estate",
-    "sub_sector": "Properties & Real Estate"
-  },
   "BKSL.JK": {
     "company_name": "Sentul City Tbk",
     "sector": "Properties & Real Estate",
@@ -693,21 +818,6 @@
     "company_name": "PT Bank QNB Indonesia Tbk",
     "sector": "Financials",
     "sub_sector": "Banks"
-  },
-  "BLES.JK": {
-    "company_name": "PT Superior Prima Sukses Tbk",
-    "sector": "Basic Materials",
-    "sub_sector": "Basic Materials"
-  },
-  "BLOG.JK": {
-    "company_name": "PT Trimitra Trans Persada Tbk",
-    "sector": "Transportation & Logistic",
-    "sub_sector": "Logistics & Deliveries"
-  },
-  "BLTA.JK": {
-    "company_name": "Berlian Laju Tanker Tbk",
-    "sector": "Transportation & Logistic",
-    "sub_sector": "Logistics & Deliveries"
   },
   "BLTZ.JK": {
     "company_name": "PT Graha Layar Prima Tbk.",
@@ -719,30 +829,10 @@
     "sector": "Industrials",
     "sub_sector": "Industrial Services"
   },
-  "BMAS.JK": {
-    "company_name": "PT Bank Maspion Indonesia Tbk.",
-    "sector": "Financials",
-    "sub_sector": "Banks"
-  },
-  "BMBL.JK": {
-    "company_name": "PT Lavender Bina Cendikia Tbk",
-    "sector": "Consumer Cyclicals",
-    "sub_sector": "Consumer Services"
-  },
   "BMHS.JK": {
     "company_name": "PT Bundamedik Tbk",
     "sector": "Healthcare",
     "sub_sector": "Healthcare Equipment & Providers"
-  },
-  "BMRI.JK": {
-    "company_name": "PT Bank Mandiri (Persero) Tbk",
-    "sector": "Financials",
-    "sub_sector": "Banks"
-  },
-  "BMSR.JK": {
-    "company_name": "Bintang Mitra Semestaraya Tbk",
-    "sector": "Basic Materials",
-    "sub_sector": "Basic Materials"
   },
   "BMTR.JK": {
     "company_name": "PT Global Mediacom Tbk",
@@ -764,65 +854,20 @@
     "sector": "Financials",
     "sub_sector": "Banks"
   },
-  "BNII.JK": {
-    "company_name": "PT Bank Maybank Indonesia Tbk",
-    "sector": "Financials",
-    "sub_sector": "Banks"
-  },
-  "BNLI.JK": {
-    "company_name": "Bank Permata Tbk",
-    "sector": "Financials",
-    "sub_sector": "Banks"
-  },
-  "BOAT.JK": {
-    "company_name": "PT Newport Marine Services Tbk",
-    "sector": "Energy",
-    "sub_sector": "Oil, Gas & Coal"
-  },
   "BOBA.JK": {
     "company_name": "PT Formosa Ingredient Factory Tbk",
     "sector": "Consumer Non-Cyclicals",
     "sub_sector": "Food & Beverage"
-  },
-  "BOGA.JK": {
-    "company_name": "PT Bintang Oto Global Tbk",
-    "sector": "Consumer Cyclicals",
-    "sub_sector": "Retailing"
   },
   "BOLA.JK": {
     "company_name": "PT Bali Bintang Sejahtera Tbk.",
     "sector": "Consumer Cyclicals",
     "sub_sector": "Consumer Services"
   },
-  "BOLT.JK": {
-    "company_name": "PT Garuda Metalindo Tbk.",
-    "sector": "Consumer Cyclicals",
-    "sub_sector": "Automobiles & Components"
-  },
   "BOSS.JK": {
     "company_name": "PT Borneo Olah Sarana Sukses Tbk.",
     "sector": "Energy",
     "sub_sector": "Oil, Gas & Coal"
-  },
-  "BPFI.JK": {
-    "company_name": "PT Woori Finance Indonesia Tbk",
-    "sector": "Financials",
-    "sub_sector": "Financing Service"
-  },
-  "BPII.JK": {
-    "company_name": "PT Batavia Prosperindo Internasional Tbk.",
-    "sector": "Financials",
-    "sub_sector": "Holding & Investment Companies"
-  },
-  "BPTR.JK": {
-    "company_name": "PT Batavia Prosperindo Trans Tbk.",
-    "sector": "Transportation & Logistic",
-    "sub_sector": "Transportation"
-  },
-  "BRAM.JK": {
-    "company_name": "Indo Kordsa Tbk",
-    "sector": "Consumer Cyclicals",
-    "sub_sector": "Automobiles & Components"
   },
   "BREN.JK": {
     "company_name": "PT Barito Renewables Energy Tbk.",
@@ -834,45 +879,15 @@
     "sector": "Financials",
     "sub_sector": "Banks"
   },
-  "BRMS.JK": {
-    "company_name": "Bumi Resources Minerals Tbk",
-    "sector": "Basic Materials",
-    "sub_sector": "Basic Materials"
-  },
   "BRNA.JK": {
     "company_name": "Berlina Tbk",
     "sector": "Basic Materials",
     "sub_sector": "Basic Materials"
   },
-  "BRPT.JK": {
-    "company_name": "Barito Pacific Tbk",
-    "sector": "Basic Materials",
-    "sub_sector": "Basic Materials"
-  },
-  "BRRC.JK": {
-    "company_name": "PT Raja Roti Cemerlang Tbk",
-    "sector": "Consumer Non-Cyclicals",
-    "sub_sector": "Food & Beverage"
-  },
-  "BSBK.JK": {
-    "company_name": "PT Wulandari Bangun Laksana Tbk",
-    "sector": "Properties & Real Estate",
-    "sub_sector": "Properties & Real Estate"
-  },
   "BSDE.JK": {
     "company_name": "PT Bumi Serpong Damai Tbk",
     "sector": "Properties & Real Estate",
     "sub_sector": "Properties & Real Estate"
-  },
-  "BSIM.JK": {
-    "company_name": "Bank Sinarmas Tbk",
-    "sector": "Financials",
-    "sub_sector": "Banks"
-  },
-  "BSML.JK": {
-    "company_name": "PT Bintang Samudera Mandiri Lines Tbk",
-    "sector": "Energy",
-    "sub_sector": "Oil, Gas & Coal"
   },
   "BSSR.JK": {
     "company_name": "Baramulti Suksessarana Tbk",
@@ -888,11 +903,6 @@
     "company_name": "Bumi Teknokultura Unggul Tbk",
     "sector": "Consumer Non-Cyclicals",
     "sub_sector": "Food & Beverage"
-  },
-  "BTEL.JK": {
-    "company_name": "Bakrie Telecom Tbk",
-    "sector": "Infrastructures",
-    "sub_sector": "Telecommunication"
   },
   "BTON.JK": {
     "company_name": "Betonjaya Manunggal Tbk",
@@ -919,85 +929,50 @@
     "sector": "Consumer Non-Cyclicals",
     "sub_sector": "Food & Beverage"
   },
-  "BUKA.JK": {
-    "company_name": "PT Bukalapak.com Tbk",
-    "sector": "Technology",
-    "sub_sector": "Software & IT Services"
-  },
-  "BUKK.JK": {
-    "company_name": "Bukaka Teknik Utama Tbk",
-    "sector": "Infrastructures",
-    "sub_sector": "Heavy Constructions & Civil Engineering"
-  },
-  "BULL.JK": {
-    "company_name": "PT Buana Lintas Lautan Tbk.",
-    "sector": "Energy",
-    "sub_sector": "Oil, Gas & Coal"
-  },
-  "BUMI.JK": {
-    "company_name": "Bumi Resources Tbk",
-    "sector": "Energy",
-    "sub_sector": "Oil, Gas & Coal"
-  },
-  "BUVA.JK": {
-    "company_name": "PT Bukit Uluwatu Villa Tbk",
-    "sector": "Consumer Cyclicals",
-    "sub_sector": "Consumer Services"
-  },
   "BVIC.JK": {
     "company_name": "Bank Victoria International Tbk",
     "sector": "Financials",
     "sub_sector": "Banks"
   },
-  "BWPT.JK": {
-    "company_name": "Eagle High Plantations Tbk",
-    "sector": "Consumer Non-Cyclicals",
-    "sub_sector": "Food & Beverage"
+  "RIMO.JK": {
+    "company_name": "PT Rimo International Lestari Tbk.",
+    "sector": "Properties & Real Estate",
+    "sub_sector": "Properties & Real Estate"
+  },
+  "SKYB.JK": {
+    "company_name": "PT Northcliff Citranusa Indonesia Tbk.",
+    "sector": "Technology",
+    "sub_sector": "Software & IT Services"
+  },
+  "CHEK.JK": {
+    "company_name": "PT Diastika Biotekindo Tbk",
+    "sector": "Healthcare",
+    "sub_sector": "Healthcare Equipment & Providers"
+  },
+  "KAQI.JK": {
+    "company_name": "PT Jantra Grupo Indonesia Tbk",
+    "sector": "Consumer Cyclicals",
+    "sub_sector": "Automobiles & Components"
   },
   "BYAN.JK": {
     "company_name": "Bayan Resources Tbk",
     "sector": "Energy",
     "sub_sector": "Oil, Gas & Coal"
   },
-  "CAKK.JK": {
-    "company_name": "PT Cahayaputra Asa Keramik Tbk.",
-    "sector": "Industrials",
-    "sub_sector": "Industrial Goods"
-  },
   "CAMP.JK": {
     "company_name": "PT Campina Ice Cream Industry Tbk.",
     "sector": "Consumer Non-Cyclicals",
     "sub_sector": "Food & Beverage"
-  },
-  "CANI.JK": {
-    "company_name": "PT Capitol Nusantara Indonesia Tbk.",
-    "sector": "Energy",
-    "sub_sector": "Oil, Gas & Coal"
   },
   "CARE.JK": {
     "company_name": "PT Metro Healthcare Indonesia Tbk",
     "sector": "Healthcare",
     "sub_sector": "Healthcare Equipment & Providers"
   },
-  "CARS.JK": {
-    "company_name": "PT Industri dan Perdagangan Bintraco Dharma Tbk",
-    "sector": "Consumer Cyclicals",
-    "sub_sector": "Retailing"
-  },
   "CASA.JK": {
     "company_name": "PT Capital Financial Indonesia Tbk",
     "sector": "Financials",
     "sub_sector": "Holding & Investment Companies"
-  },
-  "CASH.JK": {
-    "company_name": "PT Cashlez Worldwide Indonesia Tbk.",
-    "sector": "Technology",
-    "sub_sector": "Software & IT Services"
-  },
-  "CASS.JK": {
-    "company_name": "PT Cahaya Aero Services Tbk",
-    "sector": "Infrastructures",
-    "sub_sector": "Transportation Infrastructure"
   },
   "CBDK.JK": {
     "company_name": "PT Bangun Kosambi Sukses Tbk",
@@ -1014,28 +989,8 @@
     "sector": "Properties & Real Estate",
     "sub_sector": "Properties & Real Estate"
   },
-  "CBRE.JK": {
-    "company_name": "PT Cakra Buana Resources Energi Tbk",
-    "sector": "Energy",
-    "sub_sector": "Oil, Gas & Coal"
-  },
   "CBUT.JK": {
     "company_name": "PT Citra Borneo Utama Tbk",
-    "sector": "Consumer Non-Cyclicals",
-    "sub_sector": "Food & Beverage"
-  },
-  "CCSI.JK": {
-    "company_name": "PT Communication Cable Systems Indonesia Tbk.",
-    "sector": "Industrials",
-    "sub_sector": "Industrial Goods"
-  },
-  "CDIA.JK": {
-    "company_name": "PT Chandra Daya Investasi Tbk",
-    "sector": "Infrastructures",
-    "sub_sector": "Utilities"
-  },
-  "CEKA.JK": {
-    "company_name": "PT Wilmar Cahaya Indonesia Tbk.",
     "sector": "Consumer Non-Cyclicals",
     "sub_sector": "Food & Beverage"
   },
@@ -1049,21 +1004,6 @@
     "sector": "Financials",
     "sub_sector": "Financing Service"
   },
-  "CGAS.JK": {
-    "company_name": "PT Citra Nusantara Gemilang Tbk.",
-    "sector": "Energy",
-    "sub_sector": "Oil, Gas & Coal"
-  },
-  "CHEK.JK": {
-    "company_name": "PT Diastika Biotekindo Tbk",
-    "sector": "Healthcare",
-    "sub_sector": "Healthcare Equipment & Providers"
-  },
-  "CHEM.JK": {
-    "company_name": "PT Chemstar Indonesia Tbk",
-    "sector": "Basic Materials",
-    "sub_sector": "Basic Materials"
-  },
   "CHIP.JK": {
     "company_name": "PT Pelita Teknologi Global Tbk",
     "sector": "Technology",
@@ -1073,11 +1013,6 @@
     "company_name": "PT Chitose Internasional Tbk",
     "sector": "Consumer Cyclicals",
     "sub_sector": "Household Goods"
-  },
-  "CITA.JK": {
-    "company_name": "Cita Mineral Investindo Tbk",
-    "sector": "Basic Materials",
-    "sub_sector": "Basic Materials"
   },
   "CITY.JK": {
     "company_name": "PT Natura City Developments Tbk.",
@@ -1089,73 +1024,23 @@
     "sector": "Consumer Cyclicals",
     "sub_sector": "Consumer Services"
   },
-  "CLEO.JK": {
-    "company_name": "PT Sariguna Primatirta Tbk",
-    "sector": "Consumer Non-Cyclicals",
-    "sub_sector": "Food & Beverage"
-  },
-  "CLPI.JK": {
-    "company_name": "Colorpak Indonesia Tbk",
-    "sector": "Basic Materials",
-    "sub_sector": "Basic Materials"
-  },
   "CMNP.JK": {
     "company_name": "Citra Marga Nusaphala Persada Tbk",
     "sector": "Infrastructures",
     "sub_sector": "Transportation Infrastructure"
-  },
-  "CMNT.JK": {
-    "company_name": "PT Cemindo Gemilang Tbk",
-    "sector": "Basic Materials",
-    "sub_sector": "Basic Materials"
-  },
-  "CMPP.JK": {
-    "company_name": "PT AirAsia Indonesia Tbk",
-    "sector": "Transportation & Logistic",
-    "sub_sector": "Transportation"
   },
   "CMRY.JK": {
     "company_name": "PT Cisarua Mountain Dairy Tbk",
     "sector": "Consumer Non-Cyclicals",
     "sub_sector": "Food & Beverage"
   },
-  "CNKO.JK": {
-    "company_name": "Exploitasi Energi Indonesia Tbk",
-    "sector": "Energy",
-    "sub_sector": "Oil, Gas & Coal"
-  },
-  "CNMA.JK": {
-    "company_name": "PT Nusantara Sejahtera Raya Tbk",
-    "sector": "Consumer Cyclicals",
-    "sub_sector": "Consumer Services"
-  },
   "CNTX.JK": {
     "company_name": "PT Century Textile Industry Tbk",
     "sector": "Consumer Cyclicals",
     "sub_sector": "Apparel & Luxury Goods"
   },
-  "COAL.JK": {
-    "company_name": "PT Black Diamond Resources Tbk",
-    "sector": "Energy",
-    "sub_sector": "Oil, Gas & Coal"
-  },
   "COCO.JK": {
     "company_name": "PT Wahana Interfood Nusantara Tbk.",
-    "sector": "Consumer Non-Cyclicals",
-    "sub_sector": "Food & Beverage"
-  },
-  "COIN.JK": {
-    "company_name": "PT Indokripto Koin Semesta Tbk",
-    "sector": "Financials",
-    "sub_sector": "Holding & Investment Companies"
-  },
-  "COWL.JK": {
-    "company_name": "Cowell Development Tbk",
-    "sector": "Properties & Real Estate",
-    "sub_sector": "Properties & Real Estate"
-  },
-  "CPIN.JK": {
-    "company_name": "Charoen Pokphand Indonesia Tbk",
     "sector": "Consumer Non-Cyclicals",
     "sub_sector": "Food & Beverage"
   },
@@ -1169,11 +1054,6 @@
     "sector": "Consumer Non-Cyclicals",
     "sub_sector": "Food & Beverage"
   },
-  "CRAB.JK": {
-    "company_name": "PT Toba Surimi Industries Tbk",
-    "sector": "Consumer Non-Cyclicals",
-    "sub_sector": "Food & Beverage"
-  },
   "CRSN.JK": {
     "company_name": "PT Carsurin Tbk",
     "sector": "Industrials",
@@ -1183,16 +1063,6 @@
     "company_name": "Catur Sentosa Adiprana Tbk",
     "sector": "Consumer Cyclicals",
     "sub_sector": "Retailing"
-  },
-  "CSIS.JK": {
-    "company_name": "PT Cahayasakti Investindo Sukses Tbk",
-    "sector": "Properties & Real Estate",
-    "sub_sector": "Properties & Real Estate"
-  },
-  "CSMI.JK": {
-    "company_name": "PT Cipta Selera Murni Tbk.",
-    "sector": "Consumer Cyclicals",
-    "sub_sector": "Consumer Services"
   },
   "CSRA.JK": {
     "company_name": "PT Cisadane Sawit Raya Tbk.",
@@ -1204,35 +1074,10 @@
     "sector": "Basic Materials",
     "sub_sector": "Basic Materials"
   },
-  "CTRA.JK": {
-    "company_name": "Ciputra Development Tbk",
-    "sector": "Properties & Real Estate",
-    "sub_sector": "Properties & Real Estate"
-  },
-  "CTTH.JK": {
-    "company_name": "Citatah Tbk",
-    "sector": "Industrials",
-    "sub_sector": "Industrial Goods"
-  },
-  "CUAN.JK": {
-    "company_name": "PT Petrindo Jaya Kreasi Tbk",
-    "sector": "Energy",
-    "sub_sector": "Oil, Gas & Coal"
-  },
   "CYBR.JK": {
     "company_name": "PT ITSEC Asia Tbk.",
     "sector": "Technology",
     "sub_sector": "Software & IT Services"
-  },
-  "DAAZ.JK": {
-    "company_name": "PT Daaz Bara Lestari Tbk",
-    "sector": "Basic Materials",
-    "sub_sector": "Basic Materials"
-  },
-  "DADA.JK": {
-    "company_name": "PT Diamond Citra Propertindo Tbk.",
-    "sector": "Properties & Real Estate",
-    "sub_sector": "Properties & Real Estate"
   },
   "DART.JK": {
     "company_name": "Duta Anggada Realty Tbk",
@@ -1244,30 +1089,10 @@
     "sector": "Infrastructures",
     "sub_sector": "Telecommunication"
   },
-  "DAYA.JK": {
-    "company_name": "PT Duta Intidaya Tbk.",
-    "sector": "Consumer Non-Cyclicals",
-    "sub_sector": "Food & Staples Retailing"
-  },
   "DCII.JK": {
     "company_name": "PT DCI Indonesia Tbk",
     "sector": "Technology",
     "sub_sector": "Software & IT Services"
-  },
-  "DEAL.JK": {
-    "company_name": "PT Dewata Freightinternational Tbk.",
-    "sector": "Transportation & Logistic",
-    "sub_sector": "Logistics & Deliveries"
-  },
-  "DEFI.JK": {
-    "company_name": "Danasupra Erapacific Tbk",
-    "sector": "Financials",
-    "sub_sector": "Financing Service"
-  },
-  "DEPO.JK": {
-    "company_name": "PT Caturkarda Depo Bangunan Tbk",
-    "sector": "Consumer Cyclicals",
-    "sub_sector": "Retailing"
   },
   "DEWA.JK": {
     "company_name": "Darma Henwa Tbk",
@@ -1279,11 +1104,6 @@
     "sector": "Consumer Non-Cyclicals",
     "sub_sector": "Food & Beverage"
   },
-  "DFAM.JK": {
-    "company_name": "PT Dafam Property Indonesia Tbk",
-    "sector": "Consumer Cyclicals",
-    "sub_sector": "Consumer Services"
-  },
   "DGIK.JK": {
     "company_name": "Nusa Konstruksi Enjiniring  Tbk",
     "sector": "Infrastructures",
@@ -1293,11 +1113,6 @@
     "company_name": "PT Diagnos Laboratorium Utama Tbk",
     "sector": "Healthcare",
     "sub_sector": "Healthcare Equipment & Providers"
-  },
-  "DGWG.JK": {
-    "company_name": "PT Delta Giri Wacana Tbk",
-    "sector": "Basic Materials",
-    "sub_sector": "Basic Materials"
   },
   "DIGI.JK": {
     "company_name": "PT Arkadia Digital Media Tbk",
@@ -1309,50 +1124,15 @@
     "sector": "Properties & Real Estate",
     "sub_sector": "Properties & Real Estate"
   },
-  "DIVA.JK": {
-    "company_name": "PT Distribusi Voucher Nusantara Tbk",
-    "sector": "Technology",
-    "sub_sector": "Software & IT Services"
-  },
   "DKFT.JK": {
     "company_name": "Central Omega Resources Tbk",
     "sector": "Basic Materials",
     "sub_sector": "Basic Materials"
   },
-  "DKHH.JK": {
-    "company_name": "PT Cipta Sarana Medika Tbk",
-    "sector": "Healthcare",
-    "sub_sector": "Healthcare Equipment & Providers"
-  },
-  "DLTA.JK": {
-    "company_name": "Delta Djakarta Tbk",
-    "sector": "Consumer Non-Cyclicals",
-    "sub_sector": "Food & Beverage"
-  },
-  "DMAS.JK": {
-    "company_name": "PT Puradelta Lestari Tbk.",
-    "sector": "Properties & Real Estate",
-    "sub_sector": "Properties & Real Estate"
-  },
-  "DMMX.JK": {
-    "company_name": "PT Digital Mediatama Maxima Tbk",
-    "sector": "Technology",
-    "sub_sector": "Software & IT Services"
-  },
-  "DMND.JK": {
-    "company_name": "PT Diamond Food Indonesia Tbk.",
-    "sector": "Consumer Non-Cyclicals",
-    "sub_sector": "Food & Staples Retailing"
-  },
   "DNAR.JK": {
     "company_name": "PT Bank Oke Indonesia Tbk.",
     "sector": "Financials",
     "sub_sector": "Banks"
-  },
-  "DNET.JK": {
-    "company_name": "PT Indoritel Makmur Internasional Tbk.",
-    "sector": "Financials",
-    "sub_sector": "Holding & Investment Companies"
   },
   "DOID.JK": {
     "company_name": "PT BUMA Internasional Grup Tbk",
@@ -1368,11 +1148,6 @@
     "company_name": "PT Global Sukses Digital Tbk",
     "sector": "Consumer Cyclicals",
     "sub_sector": "Leisure Goods"
-  },
-  "DPNS.JK": {
-    "company_name": "Duta Pertiwi Nusantara Tbk",
-    "sector": "Basic Materials",
-    "sub_sector": "Basic Materials"
   },
   "DPUM.JK": {
     "company_name": "PT Dua Putra Utama Makmur Tbk.",
@@ -1394,16 +1169,6 @@
     "sector": "Consumer Non-Cyclicals",
     "sub_sector": "Food & Beverage"
   },
-  "DSSA.JK": {
-    "company_name": "Dian Swastatika Sentosa Tbk",
-    "sector": "Energy",
-    "sub_sector": "Oil, Gas & Coal"
-  },
-  "DUCK.JK": {
-    "company_name": "PT Jaya Bersama Indo Tbk.",
-    "sector": "Consumer Cyclicals",
-    "sub_sector": "Consumer Services"
-  },
   "DUTI.JK": {
     "company_name": "Duta Pertiwi Tbk",
     "sector": "Properties & Real Estate",
@@ -1424,6 +1189,781 @@
     "sector": "Industrials",
     "sub_sector": "Industrial Services"
   },
+  "EKAD.JK": {
+    "company_name": "Ekadharma International Tbk",
+    "sector": "Basic Materials",
+    "sub_sector": "Basic Materials"
+  },
+  "ELIT.JK": {
+    "company_name": "PT Data Sinergitama Jaya Tbk",
+    "sector": "Technology",
+    "sub_sector": "Software & IT Services"
+  },
+  "EMTK.JK": {
+    "company_name": "Elang Mahkota Teknologi Tbk",
+    "sector": "Technology",
+    "sub_sector": "Software & IT Services"
+  },
+  "ENRG.JK": {
+    "company_name": "Energi Mega Persada Tbk",
+    "sector": "Energy",
+    "sub_sector": "Oil, Gas & Coal"
+  },
+  "ENVY.JK": {
+    "company_name": "PT Envy Technologies Indonesia Tbk",
+    "sector": "Technology",
+    "sub_sector": "Software & IT Services"
+  },
+  "EPMT.JK": {
+    "company_name": "Enseval Putera Megatrading Tbk",
+    "sector": "Consumer Non-Cyclicals",
+    "sub_sector": "Food & Staples Retailing"
+  },
+  "ERAA.JK": {
+    "company_name": "Erajaya Swasembada Tbk",
+    "sector": "Consumer Cyclicals",
+    "sub_sector": "Retailing"
+  },
+  "ERTX.JK": {
+    "company_name": "Eratex Djaja Tbk",
+    "sector": "Consumer Cyclicals",
+    "sub_sector": "Apparel & Luxury Goods"
+  },
+  "ESSA.JK": {
+    "company_name": "ESSA Industries Indonesia Tbk",
+    "sector": "Basic Materials",
+    "sub_sector": "Basic Materials"
+  },
+  "ESTI.JK": {
+    "company_name": "Ever Shine Textile Industry Tbk",
+    "sector": "Consumer Cyclicals",
+    "sub_sector": "Apparel & Luxury Goods"
+  },
+  "EURO.JK": {
+    "company_name": "PT Estee Gold Feet Tbk",
+    "sector": "Consumer Non-Cyclicals",
+    "sub_sector": "Nondurable Household Products"
+  },
+  "FAPA.JK": {
+    "company_name": "PT FAP Agri Tbk",
+    "sector": "Consumer Non-Cyclicals",
+    "sub_sector": "Food & Beverage"
+  },
+  "FASW.JK": {
+    "company_name": "Fajar Surya Wisesa Tbk",
+    "sector": "Basic Materials",
+    "sub_sector": "Basic Materials"
+  },
+  "FILM.JK": {
+    "company_name": "PT MD Entertainment Tbk",
+    "sector": "Consumer Cyclicals",
+    "sub_sector": "Media & Entertainment"
+  },
+  "FIRE.JK": {
+    "company_name": "PT Alfa Energi Investama Tbk.",
+    "sector": "Energy",
+    "sub_sector": "Oil, Gas & Coal"
+  },
+  "FISH.JK": {
+    "company_name": "FKS Multi Agro Tbk",
+    "sector": "Consumer Non-Cyclicals",
+    "sub_sector": "Food & Beverage"
+  },
+  "FITT.JK": {
+    "company_name": "PT Hotel Fitra International Tbk",
+    "sector": "Consumer Cyclicals",
+    "sub_sector": "Consumer Services"
+  },
+  "FLMC.JK": {
+    "company_name": "PT Falmaco Nonwoven Industri Tbk",
+    "sector": "Consumer Non-Cyclicals",
+    "sub_sector": "Nondurable Household Products"
+  },
+  "FOLK.JK": {
+    "company_name": "PT Multi Garam Utama Tbk.",
+    "sector": "Industrials",
+    "sub_sector": "Multi-sector Holdings"
+  },
+  "FOOD.JK": {
+    "company_name": "PT Sentra Food Indonesia Tbk.",
+    "sector": "Consumer Non-Cyclicals",
+    "sub_sector": "Food & Beverage"
+  },
+  "FWCT.JK": {
+    "company_name": "PT Wijaya Cahaya Timber Tbk",
+    "sector": "Basic Materials",
+    "sub_sector": "Basic Materials"
+  },
+  "GEMA.JK": {
+    "company_name": "Gema Grahasarana Tbk",
+    "sector": "Consumer Cyclicals",
+    "sub_sector": "Household Goods"
+  },
+  "GGRM.JK": {
+    "company_name": "Gudang Garam Tbk",
+    "sector": "Consumer Non-Cyclicals",
+    "sub_sector": "Tobacco"
+  },
+  "GJTL.JK": {
+    "company_name": "Gajah Tunggal Tbk",
+    "sector": "Consumer Cyclicals",
+    "sub_sector": "Automobiles & Components"
+  },
+  "GLOB.JK": {
+    "company_name": "PT Globe Kita Terang Tbk",
+    "sector": "Consumer Cyclicals",
+    "sub_sector": "Retailing"
+  },
+  "GLVA.JK": {
+    "company_name": "PT Galva Technologies Tbk",
+    "sector": "Technology",
+    "sub_sector": "Technology Hardware & Equipment"
+  },
+  "GMFI.JK": {
+    "company_name": "PT Garuda Maintenance Facility Aero Asia Tbk.",
+    "sector": "Infrastructures",
+    "sub_sector": "Transportation Infrastructure"
+  },
+  "GOLL.JK": {
+    "company_name": "PT Golden Plantation Tbk",
+    "sector": "Consumer Non-Cyclicals",
+    "sub_sector": "Food & Beverage"
+  },
+  "GOOD.JK": {
+    "company_name": "PT Garudafood Putra Putri Jaya Tbk.",
+    "sector": "Consumer Non-Cyclicals",
+    "sub_sector": "Food & Beverage"
+  },
+  "GOTO.JK": {
+    "company_name": "PT GoTo Gojek Tokopedia Tbk",
+    "sector": "Technology",
+    "sub_sector": "Software & IT Services"
+  },
+  "GPRA.JK": {
+    "company_name": "Perdana Gapura Prima Tbk",
+    "sector": "Properties & Real Estate",
+    "sub_sector": "Properties & Real Estate"
+  },
+  "GTBO.JK": {
+    "company_name": "Garda Tujuh Buana Tbk",
+    "sector": "Energy",
+    "sub_sector": "Oil, Gas & Coal"
+  },
+  "GZCO.JK": {
+    "company_name": "Gozco Plantations Tbk",
+    "sector": "Consumer Non-Cyclicals",
+    "sub_sector": "Food & Beverage"
+  },
+  "HADE.JK": {
+    "company_name": "PT Himalaya Energi Perkasa Tbk",
+    "sector": "Infrastructures",
+    "sub_sector": "Utilities"
+  },
+  "HAJJ.JK": {
+    "company_name": "PT Arsy Buana Travelindo Tbk",
+    "sector": "Consumer Cyclicals",
+    "sub_sector": "Consumer Services"
+  },
+  "HALO.JK": {
+    "company_name": "PT Haloni Jane Tbk",
+    "sector": "Healthcare",
+    "sub_sector": "Healthcare Equipment & Providers"
+  },
+  "HBAT.JK": {
+    "company_name": "PT Minahasa Membangun Hebat Tbk",
+    "sector": "Properties & Real Estate",
+    "sub_sector": "Properties & Real Estate"
+  },
+  "HDFA.JK": {
+    "company_name": "Radana Bhaskara Finance Tbk",
+    "sector": "Financials",
+    "sub_sector": "Financing Service"
+  },
+  "HEXA.JK": {
+    "company_name": "Hexindo Adiperkasa Tbk",
+    "sector": "Industrials",
+    "sub_sector": "Industrial Goods"
+  },
+  "HITS.JK": {
+    "company_name": "Humpuss Intermoda Transportasi Tbk",
+    "sector": "Energy",
+    "sub_sector": "Oil, Gas & Coal"
+  },
+  "HKMU.JK": {
+    "company_name": "PT HK Metals Utama Tbk",
+    "sector": "Basic Materials",
+    "sub_sector": "Basic Materials"
+  },
+  "HMSP.JK": {
+    "company_name": "HM Sampoerna Tbk",
+    "sector": "Consumer Non-Cyclicals",
+    "sub_sector": "Tobacco"
+  },
+  "HOKI.JK": {
+    "company_name": "PT Buyung Poetra Sembada Tbk.",
+    "sector": "Consumer Non-Cyclicals",
+    "sub_sector": "Food & Beverage"
+  },
+  "HOPE.JK": {
+    "company_name": "PT Harapan Duta Pertiwi Tbk.",
+    "sector": "Industrials",
+    "sub_sector": "Industrial Goods"
+  },
+  "HOTL.JK": {
+    "company_name": "Saraswati Griya Lestari Tbk",
+    "sector": "Consumer Cyclicals",
+    "sub_sector": "Consumer Services"
+  },
+  "IATA.JK": {
+    "company_name": "PT MNC Energy Investments Tbk",
+    "sector": "Energy",
+    "sub_sector": "Oil, Gas & Coal"
+  },
+  "IBFN.JK": {
+    "company_name": "PT Intan Baru Prana Tbk",
+    "sector": "Industrials",
+    "sub_sector": "Industrial Goods"
+  },
+  "IBOS.JK": {
+    "company_name": "PT Indo Boga Sukses Tbk",
+    "sector": "Consumer Non-Cyclicals",
+    "sub_sector": "Food & Beverage"
+  },
+  "ICBP.JK": {
+    "company_name": "Indofood CBP Sukses Makmur Tbk",
+    "sector": "Consumer Non-Cyclicals",
+    "sub_sector": "Food & Beverage"
+  },
+  "IDEA.JK": {
+    "company_name": "PT Idea Indonesia Akademi Tbk",
+    "sector": "Consumer Cyclicals",
+    "sub_sector": "Consumer Services"
+  },
+  "IFSH.JK": {
+    "company_name": "PT Ifishdeco Tbk.",
+    "sector": "Basic Materials",
+    "sub_sector": "Basic Materials"
+  },
+  "IGAR.JK": {
+    "company_name": "Champion Pacific Indonesia Tbk",
+    "sector": "Basic Materials",
+    "sub_sector": "Basic Materials"
+  },
+  "IIKP.JK": {
+    "company_name": "Inti Agri Resources Tbk",
+    "sector": "Consumer Cyclicals",
+    "sub_sector": "Leisure Goods"
+  },
+  "IKAN.JK": {
+    "company_name": "PT Era Mandiri Cemerlang Tbk",
+    "sector": "Consumer Non-Cyclicals",
+    "sub_sector": "Food & Beverage"
+  },
+  "IMAS.JK": {
+    "company_name": "Indomobil Sukses Internasional Tbk",
+    "sector": "Consumer Cyclicals",
+    "sub_sector": "Retailing"
+  },
+  "INAI.JK": {
+    "company_name": "Indal Aluminium Industry Tbk",
+    "sector": "Basic Materials",
+    "sub_sector": "Basic Materials"
+  },
+  "INCF.JK": {
+    "company_name": "PT Indo Komoditi Korpora Tbk",
+    "sector": "Basic Materials",
+    "sub_sector": "Basic Materials"
+  },
+  "INCI.JK": {
+    "company_name": "Intanwijaya Internasional Tbk",
+    "sector": "Basic Materials",
+    "sub_sector": "Basic Materials"
+  },
+  "INCO.JK": {
+    "company_name": "Vale Indonesia Tbk",
+    "sector": "Basic Materials",
+    "sub_sector": "Basic Materials"
+  },
+  "INDX.JK": {
+    "company_name": "Tanah Laut Tbk",
+    "sector": "Industrials",
+    "sub_sector": "Industrial Services"
+  },
+  "INDY.JK": {
+    "company_name": "Indika Energy Tbk",
+    "sector": "Energy",
+    "sub_sector": "Oil, Gas & Coal"
+  },
+  "INET.JK": {
+    "company_name": "PT Sinergi Inti Andalan Prima Tbk.",
+    "sector": "Infrastructures",
+    "sub_sector": "Telecommunication"
+  },
+  "INPP.JK": {
+    "company_name": "Indonesian Paradise Property Tbk",
+    "sector": "Properties & Real Estate",
+    "sub_sector": "Properties & Real Estate"
+  },
+  "INPS.JK": {
+    "company_name": "PT Indah Prakasa Sentosa Tbk.",
+    "sector": "Energy",
+    "sub_sector": "Oil, Gas & Coal"
+  },
+  "INRU.JK": {
+    "company_name": "Toba Pulp Lestari Tbk",
+    "sector": "Basic Materials",
+    "sub_sector": "Basic Materials"
+  },
+  "INTA.JK": {
+    "company_name": "Intraco Penta Tbk",
+    "sector": "Industrials",
+    "sub_sector": "Industrial Goods"
+  },
+  "INTP.JK": {
+    "company_name": "Indocement Tunggal Prakarsa Tbk",
+    "sector": "Basic Materials",
+    "sub_sector": "Basic Materials"
+  },
+  "IPPE.JK": {
+    "company_name": "PT Indo Pureco Pratama Tbk",
+    "sector": "Consumer Non-Cyclicals",
+    "sub_sector": "Food & Beverage"
+  },
+  "ISAT.JK": {
+    "company_name": "PT Indosat Tbk",
+    "sector": "Infrastructures",
+    "sub_sector": "Telecommunication"
+  },
+  "ISEA.JK": {
+    "company_name": "PT Indo American Seafoods Tbk",
+    "sector": "Consumer Non-Cyclicals",
+    "sub_sector": "Food & Beverage"
+  },
+  "ISSP.JK": {
+    "company_name": "PT Steel Pipe Industry of Indonesia Tbk",
+    "sector": "Basic Materials",
+    "sub_sector": "Basic Materials"
+  },
+  "ITIC.JK": {
+    "company_name": "PT Indonesian Tobacco Tbk.",
+    "sector": "Consumer Non-Cyclicals",
+    "sub_sector": "Tobacco"
+  },
+  "ITMG.JK": {
+    "company_name": "Indo Tambangraya Megah Tbk",
+    "sector": "Energy",
+    "sub_sector": "Oil, Gas & Coal"
+  },
+  "JATI.JK": {
+    "company_name": "PT Informasi Teknologi Indonesia Tbk.",
+    "sector": "Technology",
+    "sub_sector": "Software & IT Services"
+  },
+  "JAYA.JK": {
+    "company_name": "PT Armada Berjaya Trans Tbk.",
+    "sector": "Transportation & Logistic",
+    "sub_sector": "Logistics & Deliveries"
+  },
+  "JMAS.JK": {
+    "company_name": "PT Asuransi Jiwa Syariah Jasa Mitra Abadi Tbk",
+    "sector": "Financials",
+    "sub_sector": "Insurance"
+  },
+  "JPFA.JK": {
+    "company_name": "JAPFA Comfeed Indonesia Tbk",
+    "sector": "Consumer Non-Cyclicals",
+    "sub_sector": "Food & Beverage"
+  },
+  "JSMR.JK": {
+    "company_name": "PT Jasa Marga Tbk",
+    "sector": "Infrastructures",
+    "sub_sector": "Transportation Infrastructure"
+  },
+  "JSPT.JK": {
+    "company_name": "Jakarta Setiabudi Internasional Tbk",
+    "sector": "Consumer Cyclicals",
+    "sub_sector": "Consumer Services"
+  },
+  "JTPE.JK": {
+    "company_name": "Jasuindo Tiga Perkasa Tbk",
+    "sector": "Industrials",
+    "sub_sector": "Industrial Services"
+  },
+  "KAYU.JK": {
+    "company_name": "PT Darmi Bersaudara Tbk.",
+    "sector": "Basic Materials",
+    "sub_sector": "Basic Materials"
+  },
+  "KBLI.JK": {
+    "company_name": "KMI Wire and Cable Tbk",
+    "sector": "Industrials",
+    "sub_sector": "Industrial Goods"
+  },
+  "KBLM.JK": {
+    "company_name": "Kabelindo Murni Tbk",
+    "sector": "Industrials",
+    "sub_sector": "Industrial Goods"
+  },
+  "KDTN.JK": {
+    "company_name": "PT Puri Sentul Permai Tbk",
+    "sector": "Consumer Cyclicals",
+    "sub_sector": "Consumer Services"
+  },
+  "KEEN.JK": {
+    "company_name": "PT Kencana Energi Lestari Tbk.",
+    "sector": "Infrastructures",
+    "sub_sector": "Utilities"
+  },
+  "KEJU.JK": {
+    "company_name": "PT Mulia Boga Raya Tbk",
+    "sector": "Consumer Non-Cyclicals",
+    "sub_sector": "Food & Beverage"
+  },
+  "KETR.JK": {
+    "company_name": "PT Ketrosden Triasmitra Tbk",
+    "sector": "Infrastructures",
+    "sub_sector": "Telecommunication"
+  },
+  "KIJA.JK": {
+    "company_name": "Kawasan Industri Jababeka Tbk",
+    "sector": "Properties & Real Estate",
+    "sub_sector": "Properties & Real Estate"
+  },
+  "KING.JK": {
+    "company_name": "PT Hoffmen Cleanindo Tbk",
+    "sector": "Industrials",
+    "sub_sector": "Industrial Services"
+  },
+  "KINO.JK": {
+    "company_name": "PT Kino Indonesia Tbk",
+    "sector": "Consumer Non-Cyclicals",
+    "sub_sector": "Nondurable Household Products"
+  },
+  "KIOS.JK": {
+    "company_name": "PT Kioson Komersial Indonesia Tbk.",
+    "sector": "Technology",
+    "sub_sector": "Software & IT Services"
+  },
+  "KKES.JK": {
+    "company_name": "PT Kusuma Kemindo Sentosa Tbk",
+    "sector": "Basic Materials",
+    "sub_sector": "Basic Materials"
+  },
+  "KKGI.JK": {
+    "company_name": "Resource Alam Indonesia Tbk",
+    "sector": "Energy",
+    "sub_sector": "Oil, Gas & Coal"
+  },
+  "KLBF.JK": {
+    "company_name": "Kalbe Farma Tbk",
+    "sector": "Healthcare",
+    "sub_sector": "Pharmaceuticals & Health Care Research"
+  },
+  "KLIN.JK": {
+    "company_name": "PT Klinko Karya Imaji Tbk",
+    "sector": "Consumer Cyclicals",
+    "sub_sector": "Retailing"
+  },
+  "KOKA.JK": {
+    "company_name": "PT Koka Indonesia Tbk.",
+    "sector": "Infrastructures",
+    "sub_sector": "Heavy Constructions & Civil Engineering"
+  },
+  "KONI.JK": {
+    "company_name": "Perdana Bangun Pusaka Tbk",
+    "sector": "Industrials",
+    "sub_sector": "Industrial Services"
+  },
+  "KOTA.JK": {
+    "company_name": "PT DMS Propertindo Tbk.",
+    "sector": "Consumer Cyclicals",
+    "sub_sector": "Consumer Services"
+  },
+  "KPIG.JK": {
+    "company_name": "MNC Tourism Indonesia Tbk",
+    "sector": "Consumer Cyclicals",
+    "sub_sector": "Consumer Services"
+  },
+  "KRAS.JK": {
+    "company_name": "Krakatau Steel (Persero) Tbk",
+    "sector": "Basic Materials",
+    "sub_sector": "Basic Materials"
+  },
+  "KREN.JK": {
+    "company_name": "PT Quantum Clovera Investama Tbk.",
+    "sector": "Technology",
+    "sub_sector": "Software & IT Services"
+  },
+  "KRYA.JK": {
+    "company_name": "PT Bangun Karya Perkasa Jaya Tbk",
+    "sector": "Infrastructures",
+    "sub_sector": "Heavy Constructions & Civil Engineering"
+  },
+  "KUAS.JK": {
+    "company_name": "PT Ace Oldfields Tbk",
+    "sector": "Industrials",
+    "sub_sector": "Industrial Goods"
+  },
+  "LAND.JK": {
+    "company_name": "PT Trimitra Propertindo Tbk.",
+    "sector": "Properties & Real Estate",
+    "sub_sector": "Properties & Real Estate"
+  },
+  "LAPD.JK": {
+    "company_name": "Leyand International Tbk",
+    "sector": "Infrastructures",
+    "sub_sector": "Utilities"
+  },
+  "LCGP.JK": {
+    "company_name": "PT Eureka Prima Jakarta Tbk.",
+    "sector": "Properties & Real Estate",
+    "sub_sector": "Properties & Real Estate"
+  },
+  "LIFE.JK": {
+    "company_name": "PT MSIG Life Insurance Indonesia Tbk.",
+    "sector": "Financials",
+    "sub_sector": "Insurance"
+  },
+  "LMAS.JK": {
+    "company_name": "Limas Indonesia Makmur Tbk",
+    "sector": "Technology",
+    "sub_sector": "Software & IT Services"
+  },
+  "LPGI.JK": {
+    "company_name": "Lippo General Insurance Tbk",
+    "sector": "Financials",
+    "sub_sector": "Insurance"
+  },
+  "LSIP.JK": {
+    "company_name": "PP London Sumatra Indonesia Tbk",
+    "sector": "Consumer Non-Cyclicals",
+    "sub_sector": "Food & Beverage"
+  },
+  "LUCK.JK": {
+    "company_name": "PT Sentral Mitra Informatika Tbk.",
+    "sector": "Technology",
+    "sub_sector": "Technology Hardware & Equipment"
+  },
+  "LUCY.JK": {
+    "company_name": "PT Lima Dua Lima Tiga Tbk",
+    "sector": "Consumer Cyclicals",
+    "sub_sector": "Consumer Services"
+  },
+  "MAGP.JK": {
+    "company_name": "Multi Agro Gemilang Plantation Tbk",
+    "sector": "Consumer Non-Cyclicals",
+    "sub_sector": "Food & Beverage"
+  },
+  "MAPA.JK": {
+    "company_name": "PT MAP Aktif Adiperkasa Tbk.",
+    "sector": "Consumer Cyclicals",
+    "sub_sector": "Retailing"
+  },
+  "MAPB.JK": {
+    "company_name": "PT MAP Boga Adiperkasa Tbk.",
+    "sector": "Consumer Cyclicals",
+    "sub_sector": "Consumer Services"
+  },
+  "MARK.JK": {
+    "company_name": "PT Mark Dynamics Indonesia Tbk.",
+    "sector": "Industrials",
+    "sub_sector": "Industrial Goods"
+  },
+  "MAXI.JK": {
+    "company_name": "PT Maxindo Karya Anugerah Tbk",
+    "sector": "Consumer Non-Cyclicals",
+    "sub_sector": "Food & Beverage"
+  },
+  "MAYA.JK": {
+    "company_name": "PT Bank Mayapada Internasional Tbk",
+    "sector": "Financials",
+    "sub_sector": "Banks"
+  },
+  "MCAS.JK": {
+    "company_name": "PT M Cash Integrasi Tbk",
+    "sector": "Technology",
+    "sub_sector": "Software & IT Services"
+  },
+  "MCOR.JK": {
+    "company_name": "PT Bank China Construction Bank Indonesia Tbk",
+    "sector": "Financials",
+    "sub_sector": "Banks"
+  },
+  "MDKI.JK": {
+    "company_name": "PT Emdeki Utama Tbk",
+    "sector": "Basic Materials",
+    "sub_sector": "Basic Materials"
+  },
+  "MDLN.JK": {
+    "company_name": "PT Modernland Realty Tbk.",
+    "sector": "Properties & Real Estate",
+    "sub_sector": "Properties & Real Estate"
+  },
+  "MEDC.JK": {
+    "company_name": "PT Medco Energi Internasional Tbk",
+    "sector": "Energy",
+    "sub_sector": "Oil, Gas & Coal"
+  },
+  "MEJA.JK": {
+    "company_name": "PT Harta Djaya Karya Tbk",
+    "sector": "Consumer Cyclicals",
+    "sub_sector": "Household Goods"
+  },
+  "MENN.JK": {
+    "company_name": "PT Menn Teknologi Indonesia Tbk.",
+    "sector": "Technology",
+    "sub_sector": "Technology Hardware & Equipment"
+  },
+  "MERK.JK": {
+    "company_name": "Merck Tbk",
+    "sector": "Healthcare",
+    "sub_sector": "Pharmaceuticals & Health Care Research"
+  },
+  "META.JK": {
+    "company_name": "Nusantara Infrastructure Tbk",
+    "sector": "Infrastructures",
+    "sub_sector": "Transportation Infrastructure"
+  },
+  "MFIN.JK": {
+    "company_name": "PT Mandala Multifinance Tbk.",
+    "sector": "Financials",
+    "sub_sector": "Financing Service"
+  },
+  "MICE.JK": {
+    "company_name": "Multi Indocitra Tbk",
+    "sector": "Consumer Cyclicals",
+    "sub_sector": "Household Goods"
+  },
+  "MIDI.JK": {
+    "company_name": "Midi Utama Indonesia Tbk",
+    "sector": "Consumer Non-Cyclicals",
+    "sub_sector": "Food & Staples Retailing"
+  },
+  "MIKA.JK": {
+    "company_name": "PT Mitra Keluarga Karyasehat Tbk.",
+    "sector": "Healthcare",
+    "sub_sector": "Healthcare Equipment & Providers"
+  },
+  "MINA.JK": {
+    "company_name": "PT Sanurhasta Mitra Tbk.",
+    "sector": "Consumer Cyclicals",
+    "sub_sector": "Consumer Services"
+  },
+  "MKNT.JK": {
+    "company_name": "PT Mitra Komunikasi Nusantara Tbk.",
+    "sector": "Consumer Cyclicals",
+    "sub_sector": "Retailing"
+  },
+  "MKTR.JK": {
+    "company_name": "PT Menthobi Karyatama Raya Tbk",
+    "sector": "Consumer Non-Cyclicals",
+    "sub_sector": "Food & Beverage"
+  },
+  "MLBI.JK": {
+    "company_name": "Multi Bintang Indonesia Tbk",
+    "sector": "Consumer Non-Cyclicals",
+    "sub_sector": "Food & Beverage"
+  },
+  "MMLP.JK": {
+    "company_name": "PT Mega Manunggal Property Tbk.",
+    "sector": "Properties & Real Estate",
+    "sub_sector": "Properties & Real Estate"
+  },
+  "MORA.JK": {
+    "company_name": "PT Mora Telematika Indonesia Tbk",
+    "sector": "Infrastructures",
+    "sub_sector": "Telecommunication"
+  },
+  "MPIX.JK": {
+    "company_name": "PT Mitra Pedagang Indonesia Tbk.",
+    "sector": "Technology",
+    "sub_sector": "Software & IT Services"
+  },
+  "MPOW.JK": {
+    "company_name": "PT Megapower Makmur Tbk.",
+    "sector": "Infrastructures",
+    "sub_sector": "Utilities"
+  },
+  "MPPA.JK": {
+    "company_name": "Matahari Putra Prima Tbk",
+    "sector": "Consumer Non-Cyclicals",
+    "sub_sector": "Food & Staples Retailing"
+  },
+  "MPXL.JK": {
+    "company_name": "PT MPX Logistics International Tbk",
+    "sector": "Transportation & Logistic",
+    "sub_sector": "Logistics & Deliveries"
+  },
+  "DAYA.JK": {
+    "company_name": "PT Duta Intidaya Tbk.",
+    "sector": "Consumer Non-Cyclicals",
+    "sub_sector": "Food & Staples Retailing"
+  },
+  "DEAL.JK": {
+    "company_name": "PT Dewata Freightinternational Tbk.",
+    "sector": "Transportation & Logistic",
+    "sub_sector": "Logistics & Deliveries"
+  },
+  "DEFI.JK": {
+    "company_name": "Danasupra Erapacific Tbk",
+    "sector": "Financials",
+    "sub_sector": "Financing Service"
+  },
+  "DEPO.JK": {
+    "company_name": "PT Caturkarda Depo Bangunan Tbk",
+    "sector": "Consumer Cyclicals",
+    "sub_sector": "Retailing"
+  },
+  "DFAM.JK": {
+    "company_name": "PT Dafam Property Indonesia Tbk",
+    "sector": "Consumer Cyclicals",
+    "sub_sector": "Consumer Services"
+  },
+  "DGWG.JK": {
+    "company_name": "PT Delta Giri Wacana Tbk",
+    "sector": "Basic Materials",
+    "sub_sector": "Basic Materials"
+  },
+  "DIVA.JK": {
+    "company_name": "PT Distribusi Voucher Nusantara Tbk",
+    "sector": "Technology",
+    "sub_sector": "Software & IT Services"
+  },
+  "DLTA.JK": {
+    "company_name": "Delta Djakarta Tbk",
+    "sector": "Consumer Non-Cyclicals",
+    "sub_sector": "Food & Beverage"
+  },
+  "DMAS.JK": {
+    "company_name": "PT Puradelta Lestari Tbk.",
+    "sector": "Properties & Real Estate",
+    "sub_sector": "Properties & Real Estate"
+  },
+  "DMMX.JK": {
+    "company_name": "PT Digital Mediatama Maxima Tbk",
+    "sector": "Technology",
+    "sub_sector": "Software & IT Services"
+  },
+  "DMND.JK": {
+    "company_name": "PT Diamond Food Indonesia Tbk.",
+    "sector": "Consumer Non-Cyclicals",
+    "sub_sector": "Food & Staples Retailing"
+  },
+  "DNET.JK": {
+    "company_name": "PT Indoritel Makmur Internasional Tbk.",
+    "sector": "Financials",
+    "sub_sector": "Holding & Investment Companies"
+  },
+  "DPNS.JK": {
+    "company_name": "Duta Pertiwi Nusantara Tbk",
+    "sector": "Basic Materials",
+    "sub_sector": "Basic Materials"
+  },
+  "DSSA.JK": {
+    "company_name": "Dian Swastatika Sentosa Tbk",
+    "sector": "Energy",
+    "sub_sector": "Oil, Gas & Coal"
+  },
   "EAST.JK": {
     "company_name": "PT Eastparc Hotel Tbk",
     "sector": "Consumer Cyclicals",
@@ -1436,16 +1976,6 @@
   },
   "EDGE.JK": {
     "company_name": "PT Indointernet Tbk.",
-    "sector": "Technology",
-    "sub_sector": "Software & IT Services"
-  },
-  "EKAD.JK": {
-    "company_name": "Ekadharma International Tbk",
-    "sector": "Basic Materials",
-    "sub_sector": "Basic Materials"
-  },
-  "ELIT.JK": {
-    "company_name": "PT Data Sinergitama Jaya Tbk",
     "sector": "Technology",
     "sub_sector": "Software & IT Services"
   },
@@ -1469,25 +1999,10 @@
     "sector": "Properties & Real Estate",
     "sub_sector": "Properties & Real Estate"
   },
-  "EMTK.JK": {
-    "company_name": "Elang Mahkota Teknologi Tbk",
-    "sector": "Technology",
-    "sub_sector": "Software & IT Services"
-  },
   "ENAK.JK": {
     "company_name": "PT Champ Resto Indonesia Tbk",
     "sector": "Consumer Cyclicals",
     "sub_sector": "Consumer Services"
-  },
-  "ENRG.JK": {
-    "company_name": "Energi Mega Persada Tbk",
-    "sector": "Energy",
-    "sub_sector": "Oil, Gas & Coal"
-  },
-  "ENVY.JK": {
-    "company_name": "PT Envy Technologies Indonesia Tbk",
-    "sector": "Technology",
-    "sub_sector": "Software & IT Services"
   },
   "ENZO.JK": {
     "company_name": "PT Morenzo Abadi Perkasa Tbk",
@@ -1499,33 +2014,13 @@
     "sector": "Basic Materials",
     "sub_sector": "Basic Materials"
   },
-  "EPMT.JK": {
-    "company_name": "Enseval Putera Megatrading Tbk",
-    "sector": "Consumer Non-Cyclicals",
-    "sub_sector": "Food & Staples Retailing"
-  },
-  "ERAA.JK": {
-    "company_name": "Erajaya Swasembada Tbk",
-    "sector": "Consumer Cyclicals",
-    "sub_sector": "Retailing"
-  },
   "ERAL.JK": {
     "company_name": "PT Sinar Eka Selaras Tbk",
     "sector": "Consumer Cyclicals",
     "sub_sector": "Retailing"
   },
-  "ERTX.JK": {
-    "company_name": "Eratex Djaja Tbk",
-    "sector": "Consumer Cyclicals",
-    "sub_sector": "Apparel & Luxury Goods"
-  },
   "ESIP.JK": {
     "company_name": "PT Sinergi Inti Plastindo Tbk.",
-    "sector": "Basic Materials",
-    "sub_sector": "Basic Materials"
-  },
-  "ESSA.JK": {
-    "company_name": "ESSA Industries Indonesia Tbk",
     "sector": "Basic Materials",
     "sub_sector": "Basic Materials"
   },
@@ -1534,85 +2029,30 @@
     "sector": "Consumer Cyclicals",
     "sub_sector": "Consumer Services"
   },
-  "ESTI.JK": {
-    "company_name": "Ever Shine Textile Industry Tbk",
-    "sector": "Consumer Cyclicals",
-    "sub_sector": "Apparel & Luxury Goods"
-  },
   "ETWA.JK": {
     "company_name": "Eterindo Wahanatama Tbk",
     "sector": "Basic Materials",
     "sub_sector": "Basic Materials"
-  },
-  "EURO.JK": {
-    "company_name": "PT Estee Gold Feet Tbk",
-    "sector": "Consumer Non-Cyclicals",
-    "sub_sector": "Nondurable Household Products"
   },
   "EXCL.JK": {
     "company_name": "PT XLSMART Telecom Sejahtera Tbk",
     "sector": "Infrastructures",
     "sub_sector": "Telecommunication"
   },
-  "FAPA.JK": {
-    "company_name": "PT FAP Agri Tbk",
-    "sector": "Consumer Non-Cyclicals",
-    "sub_sector": "Food & Beverage"
-  },
   "FAST.JK": {
     "company_name": "PT Fast Food Indonesia Tbk",
     "sector": "Consumer Cyclicals",
     "sub_sector": "Consumer Services"
-  },
-  "FASW.JK": {
-    "company_name": "Fajar Surya Wisesa Tbk",
-    "sector": "Basic Materials",
-    "sub_sector": "Basic Materials"
-  },
-  "FILM.JK": {
-    "company_name": "PT MD Entertainment Tbk",
-    "sector": "Consumer Cyclicals",
-    "sub_sector": "Media & Entertainment"
   },
   "FIMP.JK": {
     "company_name": "PT Fimperkasa Utama Tbk",
     "sector": "Infrastructures",
     "sub_sector": "Heavy Constructions & Civil Engineering"
   },
-  "FIRE.JK": {
-    "company_name": "PT Alfa Energi Investama Tbk.",
-    "sector": "Energy",
-    "sub_sector": "Oil, Gas & Coal"
-  },
-  "FISH.JK": {
-    "company_name": "FKS Multi Agro Tbk",
-    "sector": "Consumer Non-Cyclicals",
-    "sub_sector": "Food & Beverage"
-  },
-  "FITT.JK": {
-    "company_name": "PT Hotel Fitra International Tbk",
-    "sector": "Consumer Cyclicals",
-    "sub_sector": "Consumer Services"
-  },
-  "FLMC.JK": {
-    "company_name": "PT Falmaco Nonwoven Industri Tbk",
-    "sector": "Consumer Non-Cyclicals",
-    "sub_sector": "Nondurable Household Products"
-  },
   "FMII.JK": {
     "company_name": "Fortune Mate Indonesia Tbk",
     "sector": "Properties & Real Estate",
     "sub_sector": "Properties & Real Estate"
-  },
-  "FOLK.JK": {
-    "company_name": "PT Multi Garam Utama Tbk.",
-    "sector": "Industrials",
-    "sub_sector": "Multi-sector Holdings"
-  },
-  "FOOD.JK": {
-    "company_name": "PT Sentra Food Indonesia Tbk.",
-    "sector": "Consumer Non-Cyclicals",
-    "sub_sector": "Food & Beverage"
   },
   "FORE.JK": {
     "company_name": "PT Fore Kopi Indonesia Tbk",
@@ -1623,6 +2063,11 @@
     "company_name": "Fortune Indonesia Tbk",
     "sector": "Consumer Cyclicals",
     "sub_sector": "Media & Entertainment"
+  },
+  "DKHH.JK": {
+    "company_name": "PT Cipta Sarana Medika Tbk",
+    "sector": "Healthcare",
+    "sub_sector": "Healthcare Equipment & Providers"
   },
   "FPNI.JK": {
     "company_name": "PT Lotte Chemical Titan Tbk.",
@@ -1639,11 +2084,6 @@
     "sector": "Consumer Cyclicals",
     "sub_sector": "Media & Entertainment"
   },
-  "FWCT.JK": {
-    "company_name": "PT Wijaya Cahaya Timber Tbk",
-    "sector": "Basic Materials",
-    "sub_sector": "Basic Materials"
-  },
   "GAMA.JK": {
     "company_name": "Aksara Global Development Tbk",
     "sector": "Properties & Real Estate",
@@ -1659,20 +2099,10 @@
     "sector": "Consumer Cyclicals",
     "sub_sector": "Automobiles & Components"
   },
-  "GEMA.JK": {
-    "company_name": "Gema Grahasarana Tbk",
-    "sector": "Consumer Cyclicals",
-    "sub_sector": "Household Goods"
-  },
   "GEMS.JK": {
     "company_name": "Golden Energy Mines Tbk",
     "sector": "Energy",
     "sub_sector": "Oil, Gas & Coal"
-  },
-  "GGRM.JK": {
-    "company_name": "Gudang Garam Tbk",
-    "sector": "Consumer Non-Cyclicals",
-    "sub_sector": "Tobacco"
   },
   "GGRP.JK": {
     "company_name": "PT Gunung Raja Paksi Tbk.",
@@ -1689,26 +2119,6 @@
     "sector": "Transportation & Logistic",
     "sub_sector": "Transportation"
   },
-  "GJTL.JK": {
-    "company_name": "Gajah Tunggal Tbk",
-    "sector": "Consumer Cyclicals",
-    "sub_sector": "Automobiles & Components"
-  },
-  "GLOB.JK": {
-    "company_name": "PT Globe Kita Terang Tbk",
-    "sector": "Consumer Cyclicals",
-    "sub_sector": "Retailing"
-  },
-  "GLVA.JK": {
-    "company_name": "PT Galva Technologies Tbk",
-    "sector": "Technology",
-    "sub_sector": "Technology Hardware & Equipment"
-  },
-  "GMFI.JK": {
-    "company_name": "PT Garuda Maintenance Facility Aero Asia Tbk.",
-    "sector": "Infrastructures",
-    "sub_sector": "Transportation Infrastructure"
-  },
   "GMTD.JK": {
     "company_name": "Gowa Makassar Tourism Development Tbk",
     "sector": "Properties & Real Estate",
@@ -1723,26 +2133,6 @@
     "company_name": "PT Intra GolfLink Resorts Tbk",
     "sector": "Consumer Cyclicals",
     "sub_sector": "Consumer Services"
-  },
-  "GOLL.JK": {
-    "company_name": "PT Golden Plantation Tbk",
-    "sector": "Consumer Non-Cyclicals",
-    "sub_sector": "Food & Beverage"
-  },
-  "GOOD.JK": {
-    "company_name": "PT Garudafood Putra Putri Jaya Tbk.",
-    "sector": "Consumer Non-Cyclicals",
-    "sub_sector": "Food & Beverage"
-  },
-  "GOTO.JK": {
-    "company_name": "PT GoTo Gojek Tokopedia Tbk",
-    "sector": "Technology",
-    "sub_sector": "Software & IT Services"
-  },
-  "GPRA.JK": {
-    "company_name": "Perdana Gapura Prima Tbk",
-    "sector": "Properties & Real Estate",
-    "sub_sector": "Properties & Real Estate"
   },
   "GPSO.JK": {
     "company_name": "PT Geoprima Solusi Tbk",
@@ -1769,11 +2159,6 @@
     "sector": "Financials",
     "sub_sector": "Holding & Investment Companies"
   },
-  "GTBO.JK": {
-    "company_name": "Garda Tujuh Buana Tbk",
-    "sector": "Energy",
-    "sub_sector": "Oil, Gas & Coal"
-  },
   "GTRA.JK": {
     "company_name": "PT Grahaprima Suksesmandiri Tbk",
     "sector": "Transportation & Logistic",
@@ -1799,45 +2184,15 @@
     "sector": "Consumer Cyclicals",
     "sub_sector": "Consumer Services"
   },
-  "GZCO.JK": {
-    "company_name": "Gozco Plantations Tbk",
-    "sector": "Consumer Non-Cyclicals",
-    "sub_sector": "Food & Beverage"
-  },
-  "HADE.JK": {
-    "company_name": "PT Himalaya Energi Perkasa Tbk",
-    "sector": "Infrastructures",
-    "sub_sector": "Utilities"
-  },
   "HAIS.JK": {
     "company_name": "PT Hasnur Internasional Shipping Tbk",
     "sector": "Transportation & Logistic",
     "sub_sector": "Logistics & Deliveries"
   },
-  "HAJJ.JK": {
-    "company_name": "PT Arsy Buana Travelindo Tbk",
-    "sector": "Consumer Cyclicals",
-    "sub_sector": "Consumer Services"
-  },
-  "HALO.JK": {
-    "company_name": "PT Haloni Jane Tbk",
-    "sector": "Healthcare",
-    "sub_sector": "Healthcare Equipment & Providers"
-  },
   "HATM.JK": {
     "company_name": "PT Habco Trans Maritima Tbk",
     "sector": "Transportation & Logistic",
     "sub_sector": "Logistics & Deliveries"
-  },
-  "HBAT.JK": {
-    "company_name": "PT Minahasa Membangun Hebat Tbk",
-    "sector": "Properties & Real Estate",
-    "sub_sector": "Properties & Real Estate"
-  },
-  "HDFA.JK": {
-    "company_name": "Radana Bhaskara Finance Tbk",
-    "sector": "Financials",
-    "sub_sector": "Financing Service"
   },
   "HDIT.JK": {
     "company_name": "PT Hensel Davest Indonesia Tbk",
@@ -1859,60 +2214,15 @@
     "sector": "Consumer Non-Cyclicals",
     "sub_sector": "Food & Staples Retailing"
   },
-  "HEXA.JK": {
-    "company_name": "Hexindo Adiperkasa Tbk",
-    "sector": "Industrials",
-    "sub_sector": "Industrial Goods"
-  },
-  "HGII.JK": {
-    "company_name": "PT Hero Global Investment Tbk",
-    "sector": "Infrastructures",
-    "sub_sector": "Utilities"
-  },
   "HILL.JK": {
     "company_name": "PT Hillcon Tbk",
     "sector": "Energy",
     "sub_sector": "Oil, Gas & Coal"
   },
-  "HITS.JK": {
-    "company_name": "Humpuss Intermoda Transportasi Tbk",
-    "sector": "Energy",
-    "sub_sector": "Oil, Gas & Coal"
-  },
-  "HKMU.JK": {
-    "company_name": "PT HK Metals Utama Tbk",
-    "sector": "Basic Materials",
-    "sub_sector": "Basic Materials"
-  },
-  "HMSP.JK": {
-    "company_name": "HM Sampoerna Tbk",
-    "sector": "Consumer Non-Cyclicals",
-    "sub_sector": "Tobacco"
-  },
-  "HOKI.JK": {
-    "company_name": "PT Buyung Poetra Sembada Tbk.",
-    "sector": "Consumer Non-Cyclicals",
-    "sub_sector": "Food & Beverage"
-  },
-  "HOME.JK": {
-    "company_name": "Hotel Mandarine Regency Tbk",
-    "sector": "Consumer Cyclicals",
-    "sub_sector": "Consumer Services"
-  },
   "HOMI.JK": {
     "company_name": "PT Grand House Mulia Tbk",
     "sector": "Properties & Real Estate",
     "sub_sector": "Properties & Real Estate"
-  },
-  "HOPE.JK": {
-    "company_name": "PT Harapan Duta Pertiwi Tbk.",
-    "sector": "Industrials",
-    "sub_sector": "Industrial Goods"
-  },
-  "HOTL.JK": {
-    "company_name": "Saraswati Griya Lestari Tbk",
-    "sector": "Consumer Cyclicals",
-    "sub_sector": "Consumer Services"
   },
   "HRME.JK": {
     "company_name": "PT Menteng Heritage Realty Tbk.",
@@ -1939,40 +2249,15 @@
     "sector": "Industrials",
     "sub_sector": "Industrial Services"
   },
-  "IATA.JK": {
-    "company_name": "PT MNC Energy Investments Tbk",
-    "sector": "Energy",
-    "sub_sector": "Oil, Gas & Coal"
-  },
-  "IBFN.JK": {
-    "company_name": "PT Intan Baru Prana Tbk",
-    "sector": "Industrials",
-    "sub_sector": "Industrial Goods"
-  },
-  "IBOS.JK": {
-    "company_name": "PT Indo Boga Sukses Tbk",
-    "sector": "Consumer Non-Cyclicals",
-    "sub_sector": "Food & Beverage"
-  },
   "IBST.JK": {
     "company_name": "Inti Bangun Sejahtera Tbk",
     "sector": "Infrastructures",
     "sub_sector": "Telecommunication"
   },
-  "ICBP.JK": {
-    "company_name": "Indofood CBP Sukses Makmur Tbk",
-    "sector": "Consumer Non-Cyclicals",
-    "sub_sector": "Food & Beverage"
-  },
   "ICON.JK": {
     "company_name": "Island Concepts Indonesia Tbk",
     "sector": "Industrials",
     "sub_sector": "Industrial Services"
-  },
-  "IDEA.JK": {
-    "company_name": "PT Idea Indonesia Akademi Tbk",
-    "sector": "Consumer Cyclicals",
-    "sub_sector": "Consumer Services"
   },
   "IDPR.JK": {
     "company_name": "PT Indonesia Pondasi Raya Tbk.",
@@ -1984,30 +2269,10 @@
     "sector": "Basic Materials",
     "sub_sector": "Basic Materials"
   },
-  "IFSH.JK": {
-    "company_name": "PT Ifishdeco Tbk.",
-    "sector": "Basic Materials",
-    "sub_sector": "Basic Materials"
-  },
-  "IGAR.JK": {
-    "company_name": "Champion Pacific Indonesia Tbk",
-    "sector": "Basic Materials",
-    "sub_sector": "Basic Materials"
-  },
-  "IIKP.JK": {
-    "company_name": "Inti Agri Resources Tbk",
-    "sector": "Consumer Cyclicals",
-    "sub_sector": "Leisure Goods"
-  },
   "IKAI.JK": {
     "company_name": "Intikeramik Alamasri Industri Tbk",
     "sector": "Industrials",
     "sub_sector": "Industrial Goods"
-  },
-  "IKAN.JK": {
-    "company_name": "PT Era Mandiri Cemerlang Tbk",
-    "sector": "Consumer Non-Cyclicals",
-    "sub_sector": "Food & Beverage"
   },
   "IKBI.JK": {
     "company_name": "Sumi Indo Kabel Tbk",
@@ -2018,11 +2283,6 @@
     "company_name": "PT Ikapharmindo Putramas Tbk.",
     "sector": "Healthcare",
     "sub_sector": "Pharmaceuticals & Health Care Research"
-  },
-  "IMAS.JK": {
-    "company_name": "Indomobil Sukses Internasional Tbk",
-    "sector": "Consumer Cyclicals",
-    "sub_sector": "Retailing"
   },
   "IMJS.JK": {
     "company_name": "PT Indomobil Multi Jasa Tbk.",
@@ -2038,26 +2298,6 @@
     "company_name": "Indofarma Tbk.",
     "sector": "Healthcare",
     "sub_sector": "Pharmaceuticals & Health Care Research"
-  },
-  "INAI.JK": {
-    "company_name": "Indal Aluminium Industry Tbk",
-    "sector": "Basic Materials",
-    "sub_sector": "Basic Materials"
-  },
-  "INCF.JK": {
-    "company_name": "PT Indo Komoditi Korpora Tbk",
-    "sector": "Basic Materials",
-    "sub_sector": "Basic Materials"
-  },
-  "INCI.JK": {
-    "company_name": "Intanwijaya Internasional Tbk",
-    "sector": "Basic Materials",
-    "sub_sector": "Basic Materials"
-  },
-  "INCO.JK": {
-    "company_name": "Vale Indonesia Tbk",
-    "sector": "Basic Materials",
-    "sub_sector": "Basic Materials"
   },
   "INDF.JK": {
     "company_name": "Indofood Sukses Makmur Tbk",
@@ -2079,21 +2319,6 @@
     "sector": "Consumer Cyclicals",
     "sub_sector": "Automobiles & Components"
   },
-  "INDX.JK": {
-    "company_name": "Tanah Laut Tbk",
-    "sector": "Industrials",
-    "sub_sector": "Industrial Services"
-  },
-  "INDY.JK": {
-    "company_name": "Indika Energy Tbk",
-    "sector": "Energy",
-    "sub_sector": "Oil, Gas & Coal"
-  },
-  "INET.JK": {
-    "company_name": "PT Sinergi Inti Andalan Prima Tbk.",
-    "sector": "Infrastructures",
-    "sub_sector": "Telecommunication"
-  },
   "INKP.JK": {
     "company_name": "Indah Kiat Pulp & Paper Tbk",
     "sector": "Basic Materials",
@@ -2109,33 +2334,8 @@
     "sector": "Financials",
     "sub_sector": "Banks"
   },
-  "INPP.JK": {
-    "company_name": "Indonesian Paradise Property Tbk",
-    "sector": "Properties & Real Estate",
-    "sub_sector": "Properties & Real Estate"
-  },
-  "INPS.JK": {
-    "company_name": "PT Indah Prakasa Sentosa Tbk.",
-    "sector": "Energy",
-    "sub_sector": "Oil, Gas & Coal"
-  },
-  "INRU.JK": {
-    "company_name": "Toba Pulp Lestari Tbk",
-    "sector": "Basic Materials",
-    "sub_sector": "Basic Materials"
-  },
-  "INTA.JK": {
-    "company_name": "Intraco Penta Tbk",
-    "sector": "Industrials",
-    "sub_sector": "Industrial Goods"
-  },
   "INTD.JK": {
     "company_name": "Inter-Delta Tbk",
-    "sector": "Basic Materials",
-    "sub_sector": "Basic Materials"
-  },
-  "INTP.JK": {
-    "company_name": "Indocement Tunggal Prakarsa Tbk",
     "sector": "Basic Materials",
     "sub_sector": "Basic Materials"
   },
@@ -2164,11 +2364,6 @@
     "sector": "Basic Materials",
     "sub_sector": "Basic Materials"
   },
-  "IPPE.JK": {
-    "company_name": "PT Indo Pureco Pratama Tbk",
-    "sector": "Consumer Non-Cyclicals",
-    "sub_sector": "Food & Beverage"
-  },
   "IPTV.JK": {
     "company_name": "PT MNC Vision Networks Tbk.",
     "sector": "Consumer Cyclicals",
@@ -2189,33 +2384,8 @@
     "sector": "Consumer Cyclicals",
     "sub_sector": "Automobiles & Components"
   },
-  "ISAT.JK": {
-    "company_name": "PT Indosat Tbk",
-    "sector": "Infrastructures",
-    "sub_sector": "Telecommunication"
-  },
-  "ISEA.JK": {
-    "company_name": "PT Indo American Seafoods Tbk",
-    "sector": "Consumer Non-Cyclicals",
-    "sub_sector": "Food & Beverage"
-  },
-  "ISSP.JK": {
-    "company_name": "PT Steel Pipe Industry of Indonesia Tbk",
-    "sector": "Basic Materials",
-    "sub_sector": "Basic Materials"
-  },
-  "ITIC.JK": {
-    "company_name": "PT Indonesian Tobacco Tbk.",
-    "sector": "Consumer Non-Cyclicals",
-    "sub_sector": "Tobacco"
-  },
   "ITMA.JK": {
     "company_name": "Sumber Energi Andalan Tbk",
-    "sector": "Energy",
-    "sub_sector": "Oil, Gas & Coal"
-  },
-  "ITMG.JK": {
-    "company_name": "Indo Tambangraya Megah Tbk",
     "sector": "Energy",
     "sub_sector": "Oil, Gas & Coal"
   },
@@ -2229,20 +2399,10 @@
     "sector": "Infrastructures",
     "sub_sector": "Telecommunication"
   },
-  "JATI.JK": {
-    "company_name": "PT Informasi Teknologi Indonesia Tbk.",
-    "sector": "Technology",
-    "sub_sector": "Software & IT Services"
-  },
   "JAWA.JK": {
     "company_name": "Jaya Agra Wattie Tbk",
     "sector": "Consumer Non-Cyclicals",
     "sub_sector": "Food & Beverage"
-  },
-  "JAYA.JK": {
-    "company_name": "PT Armada Berjaya Trans Tbk.",
-    "sector": "Transportation & Logistic",
-    "sub_sector": "Logistics & Deliveries"
   },
   "JECC.JK": {
     "company_name": "Jembo Cable Company Tbk",
@@ -2264,16 +2424,6 @@
     "sector": "Infrastructures",
     "sub_sector": "Heavy Constructions & Civil Engineering"
   },
-  "JMAS.JK": {
-    "company_name": "PT Asuransi Jiwa Syariah Jasa Mitra Abadi Tbk",
-    "sector": "Financials",
-    "sub_sector": "Insurance"
-  },
-  "JPFA.JK": {
-    "company_name": "JAPFA Comfeed Indonesia Tbk",
-    "sector": "Consumer Non-Cyclicals",
-    "sub_sector": "Food & Beverage"
-  },
   "JRPT.JK": {
     "company_name": "Jaya Real Property Tbk",
     "sector": "Properties & Real Estate",
@@ -2284,90 +2434,30 @@
     "sector": "Energy",
     "sub_sector": "Alternative Energy"
   },
-  "JSMR.JK": {
-    "company_name": "PT Jasa Marga Tbk",
-    "sector": "Infrastructures",
-    "sub_sector": "Transportation Infrastructure"
-  },
-  "JSPT.JK": {
-    "company_name": "Jakarta Setiabudi Internasional Tbk",
-    "sector": "Consumer Cyclicals",
-    "sub_sector": "Consumer Services"
-  },
-  "JTPE.JK": {
-    "company_name": "Jasuindo Tiga Perkasa Tbk",
-    "sector": "Industrials",
-    "sub_sector": "Industrial Services"
-  },
   "KAEF.JK": {
     "company_name": "Kimia Farma Tbk.",
     "sector": "Healthcare",
     "sub_sector": "Pharmaceuticals & Health Care Research"
-  },
-  "KAQI.JK": {
-    "company_name": "PT Jantra Grupo Indonesia Tbk",
-    "sector": "Consumer Cyclicals",
-    "sub_sector": "Automobiles & Components"
   },
   "KARW.JK": {
     "company_name": "Meratus Jasa Prima Tbk",
     "sector": "Infrastructures",
     "sub_sector": "Transportation Infrastructure"
   },
-  "KAYU.JK": {
-    "company_name": "PT Darmi Bersaudara Tbk.",
-    "sector": "Basic Materials",
-    "sub_sector": "Basic Materials"
-  },
   "KBAG.JK": {
     "company_name": "PT Karya Bersama Anugerah Tbk",
     "sector": "Properties & Real Estate",
     "sub_sector": "Properties & Real Estate"
-  },
-  "KBLI.JK": {
-    "company_name": "KMI Wire and Cable Tbk",
-    "sector": "Industrials",
-    "sub_sector": "Industrial Goods"
-  },
-  "KBLM.JK": {
-    "company_name": "Kabelindo Murni Tbk",
-    "sector": "Industrials",
-    "sub_sector": "Industrial Goods"
   },
   "KBLV.JK": {
     "company_name": "First Media Tbk",
     "sector": "Infrastructures",
     "sub_sector": "Telecommunication"
   },
-  "KBRI.JK": {
-    "company_name": "Kertas Basuki Rachmat Indonesia Tbk",
-    "sector": "Basic Materials",
-    "sub_sector": "Basic Materials"
-  },
   "KDSI.JK": {
     "company_name": "Kedawung Setia Industrial Tbk",
     "sector": "Basic Materials",
     "sub_sector": "Basic Materials"
-  },
-  "KDTN.JK": {
-    "company_name": "PT Puri Sentul Permai Tbk",
-    "sector": "Consumer Cyclicals",
-    "sub_sector": "Consumer Services"
-  },
-  "KEEN.JK": {
-    "company_name": "PT Kencana Energi Lestari Tbk.",
-    "sector": "Infrastructures",
-    "sub_sector": "Utilities"
-  },
-  "KEJU.JK": {
-    "company_name": "PT Mulia Boga Raya Tbk",
-    "sector": "Consumer Non-Cyclicals",
-    "sub_sector": "Food & Beverage"
-  },
-  "KETR.JK": {
-    "company_name": "PT Ketrosden Triasmitra Tbk",
-    "sector": "Infrastructures",
-    "sub_sector": "Telecommunication"
   },
   "KIAS.JK": {
     "company_name": "Keramika Indonesia Assosiasi Tbk",
@@ -2379,55 +2469,15 @@
     "sector": "Consumer Cyclicals",
     "sub_sector": "Household Goods"
   },
-  "KIJA.JK": {
-    "company_name": "Kawasan Industri Jababeka Tbk",
-    "sector": "Properties & Real Estate",
-    "sub_sector": "Properties & Real Estate"
-  },
-  "KING.JK": {
-    "company_name": "PT Hoffmen Cleanindo Tbk",
-    "sector": "Industrials",
-    "sub_sector": "Industrial Services"
-  },
-  "KINO.JK": {
-    "company_name": "PT Kino Indonesia Tbk",
-    "sector": "Consumer Non-Cyclicals",
-    "sub_sector": "Nondurable Household Products"
-  },
-  "KIOS.JK": {
-    "company_name": "PT Kioson Komersial Indonesia Tbk.",
-    "sector": "Technology",
-    "sub_sector": "Software & IT Services"
-  },
   "KJEN.JK": {
     "company_name": "PT Krida Jaringan Nusantara Tbk.",
     "sector": "Transportation & Logistic",
     "sub_sector": "Logistics & Deliveries"
   },
-  "KKES.JK": {
-    "company_name": "PT Kusuma Kemindo Sentosa Tbk",
-    "sector": "Basic Materials",
-    "sub_sector": "Basic Materials"
-  },
-  "KKGI.JK": {
-    "company_name": "Resource Alam Indonesia Tbk",
-    "sector": "Energy",
-    "sub_sector": "Oil, Gas & Coal"
-  },
   "KLAS.JK": {
     "company_name": "PT Pelayaran Kurnia Lautan Semesta Tbk",
     "sector": "Transportation & Logistic",
     "sub_sector": "Logistics & Deliveries"
-  },
-  "KLBF.JK": {
-    "company_name": "Kalbe Farma Tbk",
-    "sector": "Healthcare",
-    "sub_sector": "Pharmaceuticals & Health Care Research"
-  },
-  "KLIN.JK": {
-    "company_name": "PT Klinko Karya Imaji Tbk",
-    "sector": "Consumer Cyclicals",
-    "sub_sector": "Retailing"
   },
   "KMDS.JK": {
     "company_name": "PT Kurniamitra Duta Sentosa Tbk.",
@@ -2454,55 +2504,15 @@
     "sector": "Industrials",
     "sub_sector": "Industrial Goods"
   },
-  "KOKA.JK": {
-    "company_name": "PT Koka Indonesia Tbk.",
-    "sector": "Infrastructures",
-    "sub_sector": "Heavy Constructions & Civil Engineering"
-  },
-  "KONI.JK": {
-    "company_name": "Perdana Bangun Pusaka Tbk",
-    "sector": "Industrials",
-    "sub_sector": "Industrial Services"
-  },
   "KOPI.JK": {
     "company_name": "PT Mitra Energi Persada Tbk",
     "sector": "Energy",
     "sub_sector": "Oil, Gas & Coal"
   },
-  "KOTA.JK": {
-    "company_name": "PT DMS Propertindo Tbk.",
-    "sector": "Consumer Cyclicals",
-    "sub_sector": "Consumer Services"
-  },
-  "KPIG.JK": {
-    "company_name": "MNC Tourism Indonesia Tbk",
-    "sector": "Consumer Cyclicals",
-    "sub_sector": "Consumer Services"
-  },
-  "KRAS.JK": {
-    "company_name": "Krakatau Steel (Persero) Tbk",
-    "sector": "Basic Materials",
-    "sub_sector": "Basic Materials"
-  },
-  "KREN.JK": {
-    "company_name": "PT Quantum Clovera Investama Tbk.",
-    "sector": "Technology",
-    "sub_sector": "Software & IT Services"
-  },
-  "KRYA.JK": {
-    "company_name": "PT Bangun Karya Perkasa Jaya Tbk",
-    "sector": "Infrastructures",
-    "sub_sector": "Heavy Constructions & Civil Engineering"
-  },
   "KSIX.JK": {
     "company_name": "PT Kentanix Supra International Tbk",
     "sector": "Properties & Real Estate",
     "sub_sector": "Properties & Real Estate"
-  },
-  "KUAS.JK": {
-    "company_name": "PT Ace Oldfields Tbk",
-    "sector": "Industrials",
-    "sub_sector": "Industrial Goods"
   },
   "LABA.JK": {
     "company_name": "PT Green Power Group Tbk",
@@ -2519,21 +2529,6 @@
     "sector": "Transportation & Logistic",
     "sub_sector": "Logistics & Deliveries"
   },
-  "LAND.JK": {
-    "company_name": "PT Trimitra Propertindo Tbk.",
-    "sector": "Properties & Real Estate",
-    "sub_sector": "Properties & Real Estate"
-  },
-  "LAPD.JK": {
-    "company_name": "Leyand International Tbk",
-    "sector": "Infrastructures",
-    "sub_sector": "Utilities"
-  },
-  "LCGP.JK": {
-    "company_name": "PT Eureka Prima Jakarta Tbk.",
-    "sector": "Properties & Real Estate",
-    "sub_sector": "Properties & Real Estate"
-  },
   "LCKM.JK": {
     "company_name": "PT LCK Global Kedaton Tbk",
     "sector": "Infrastructures",
@@ -2549,11 +2544,6 @@
     "sector": "Consumer Cyclicals",
     "sub_sector": "Household Goods"
   },
-  "LIFE.JK": {
-    "company_name": "PT MSIG Life Insurance Indonesia Tbk.",
-    "sector": "Financials",
-    "sub_sector": "Insurance"
-  },
   "LINK.JK": {
     "company_name": "PT Link Net Tbk.",
     "sector": "Infrastructures",
@@ -2568,11 +2558,6 @@
     "company_name": "PT Homeco Victoria Makmur Tbk",
     "sector": "Consumer Cyclicals",
     "sub_sector": "Household Goods"
-  },
-  "LMAS.JK": {
-    "company_name": "Limas Indonesia Makmur Tbk",
-    "sector": "Technology",
-    "sub_sector": "Software & IT Services"
   },
   "LMAX.JK": {
     "company_name": "PT Lupromax Pelumas Indonesia Tbk.",
@@ -2598,11 +2583,6 @@
     "company_name": "Lippo Cikarang Tbk",
     "sector": "Properties & Real Estate",
     "sub_sector": "Properties & Real Estate"
-  },
-  "LPGI.JK": {
-    "company_name": "Lippo General Insurance Tbk",
-    "sector": "Financials",
-    "sub_sector": "Insurance"
   },
   "LPIN.JK": {
     "company_name": "Multi Prima Sejahtera Tbk",
@@ -2634,35 +2614,10 @@
     "sector": "Transportation & Logistic",
     "sub_sector": "Transportation"
   },
-  "LSIP.JK": {
-    "company_name": "PP London Sumatra Indonesia Tbk",
-    "sector": "Consumer Non-Cyclicals",
-    "sub_sector": "Food & Beverage"
-  },
   "LTLS.JK": {
     "company_name": "PT Lautan Luas Tbk",
     "sector": "Basic Materials",
     "sub_sector": "Basic Materials"
-  },
-  "LUCK.JK": {
-    "company_name": "PT Sentral Mitra Informatika Tbk.",
-    "sector": "Technology",
-    "sub_sector": "Technology Hardware & Equipment"
-  },
-  "LUCY.JK": {
-    "company_name": "PT Lima Dua Lima Tiga Tbk",
-    "sector": "Consumer Cyclicals",
-    "sub_sector": "Consumer Services"
-  },
-  "MABA.JK": {
-    "company_name": "PT Marga Abhinaya Abadi Tbk",
-    "sector": "Consumer Cyclicals",
-    "sub_sector": "Consumer Services"
-  },
-  "MAGP.JK": {
-    "company_name": "Multi Agro Gemilang Plantation Tbk",
-    "sector": "Consumer Non-Cyclicals",
-    "sub_sector": "Food & Beverage"
   },
   "MAHA.JK": {
     "company_name": "PT Mandiri Herindo Adiperkasa Tbk",
@@ -2679,16 +2634,6 @@
     "sector": "Infrastructures",
     "sub_sector": "Heavy Constructions & Civil Engineering"
   },
-  "MAPA.JK": {
-    "company_name": "PT MAP Aktif Adiperkasa Tbk.",
-    "sector": "Consumer Cyclicals",
-    "sub_sector": "Retailing"
-  },
-  "MAPB.JK": {
-    "company_name": "PT MAP Boga Adiperkasa Tbk.",
-    "sector": "Consumer Cyclicals",
-    "sub_sector": "Consumer Services"
-  },
   "MAPI.JK": {
     "company_name": "Mitra Adiperkasa Tbk",
     "sector": "Consumer Cyclicals",
@@ -2699,11 +2644,6 @@
     "sector": "Consumer Cyclicals",
     "sub_sector": "Media & Entertainment"
   },
-  "MARK.JK": {
-    "company_name": "PT Mark Dynamics Indonesia Tbk.",
-    "sector": "Industrials",
-    "sub_sector": "Industrial Goods"
-  },
   "MASA.JK": {
     "company_name": "Multistrada Arah Sarana Tbk",
     "sector": "Consumer Cyclicals",
@@ -2711,16 +2651,6 @@
   },
   "MASB.JK": {
     "company_name": "PT Bank Multiarta Sentosa Tbk",
-    "sector": "Financials",
-    "sub_sector": "Banks"
-  },
-  "MAXI.JK": {
-    "company_name": "PT Maxindo Karya Anugerah Tbk",
-    "sector": "Consumer Non-Cyclicals",
-    "sub_sector": "Food & Beverage"
-  },
-  "MAYA.JK": {
-    "company_name": "PT Bank Mayapada Internasional Tbk",
     "sector": "Financials",
     "sub_sector": "Banks"
   },
@@ -2744,20 +2674,10 @@
     "sector": "Consumer Non-Cyclicals",
     "sub_sector": "Nondurable Household Products"
   },
-  "MCAS.JK": {
-    "company_name": "PT M Cash Integrasi Tbk",
-    "sector": "Technology",
-    "sub_sector": "Software & IT Services"
-  },
   "MCOL.JK": {
     "company_name": "PT Prima Andalan Mandiri Tbk",
     "sector": "Energy",
     "sub_sector": "Oil, Gas & Coal"
-  },
-  "MCOR.JK": {
-    "company_name": "PT Bank China Construction Bank Indonesia Tbk",
-    "sector": "Financials",
-    "sub_sector": "Banks"
   },
   "MDIA.JK": {
     "company_name": "PT Intermedia Capital Tbk.",
@@ -2774,30 +2694,15 @@
     "sector": "Basic Materials",
     "sub_sector": "Basic Materials"
   },
-  "MDKI.JK": {
-    "company_name": "PT Emdeki Utama Tbk",
-    "sector": "Basic Materials",
-    "sub_sector": "Basic Materials"
-  },
   "MDLA.JK": {
     "company_name": "PT Medela Potentia Tbk",
     "sector": "Healthcare",
     "sub_sector": "Pharmaceuticals & Health Care Research"
   },
-  "MDLN.JK": {
-    "company_name": "PT Modernland Realty Tbk.",
-    "sector": "Properties & Real Estate",
-    "sub_sector": "Properties & Real Estate"
-  },
   "MDRN.JK": {
     "company_name": "Modern Internasional Tbk",
     "sector": "Industrials",
     "sub_sector": "Industrial Services"
-  },
-  "MEDC.JK": {
-    "company_name": "PT Medco Energi Internasional Tbk",
-    "sector": "Energy",
-    "sub_sector": "Oil, Gas & Coal"
   },
   "MEDS.JK": {
     "company_name": "PT Hetzer Medical Indonesia Tbk",
@@ -2808,36 +2713,6 @@
     "company_name": "Bank Mega Tbk",
     "sector": "Financials",
     "sub_sector": "Banks"
-  },
-  "MEJA.JK": {
-    "company_name": "PT Harta Djaya Karya Tbk",
-    "sector": "Consumer Cyclicals",
-    "sub_sector": "Household Goods"
-  },
-  "MENN.JK": {
-    "company_name": "PT Menn Teknologi Indonesia Tbk.",
-    "sector": "Technology",
-    "sub_sector": "Technology Hardware & Equipment"
-  },
-  "MERI.JK": {
-    "company_name": "PT Merry Riana Edukasi Tbk",
-    "sector": "Consumer Cyclicals",
-    "sub_sector": "Consumer Services"
-  },
-  "MERK.JK": {
-    "company_name": "Merck Tbk",
-    "sector": "Healthcare",
-    "sub_sector": "Pharmaceuticals & Health Care Research"
-  },
-  "META.JK": {
-    "company_name": "Nusantara Infrastructure Tbk",
-    "sector": "Infrastructures",
-    "sub_sector": "Transportation Infrastructure"
-  },
-  "MFIN.JK": {
-    "company_name": "PT Mandala Multifinance Tbk.",
-    "sector": "Financials",
-    "sub_sector": "Financing Service"
   },
   "MFMI.JK": {
     "company_name": "Multifiling Mitra Indonesia Tbk",
@@ -2864,26 +2739,6 @@
     "sector": "Industrials",
     "sub_sector": "Industrial Services"
   },
-  "MICE.JK": {
-    "company_name": "Multi Indocitra Tbk",
-    "sector": "Consumer Cyclicals",
-    "sub_sector": "Household Goods"
-  },
-  "MIDI.JK": {
-    "company_name": "Midi Utama Indonesia Tbk",
-    "sector": "Consumer Non-Cyclicals",
-    "sub_sector": "Food & Staples Retailing"
-  },
-  "MIKA.JK": {
-    "company_name": "PT Mitra Keluarga Karyasehat Tbk.",
-    "sector": "Healthcare",
-    "sub_sector": "Healthcare Equipment & Providers"
-  },
-  "MINA.JK": {
-    "company_name": "PT Sanurhasta Mitra Tbk.",
-    "sector": "Consumer Cyclicals",
-    "sub_sector": "Consumer Services"
-  },
   "MINE.JK": {
     "company_name": "PT Sinar Terang Mandiri Tbk",
     "sector": "Basic Materials",
@@ -2904,25 +2759,10 @@
     "sector": "Energy",
     "sub_sector": "Oil, Gas & Coal"
   },
-  "MKNT.JK": {
-    "company_name": "PT Mitra Komunikasi Nusantara Tbk.",
-    "sector": "Consumer Cyclicals",
-    "sub_sector": "Retailing"
-  },
   "MKPI.JK": {
     "company_name": "Metropolitan Kentjana Tbk",
     "sector": "Properties & Real Estate",
     "sub_sector": "Properties & Real Estate"
-  },
-  "MKTR.JK": {
-    "company_name": "PT Menthobi Karyatama Raya Tbk",
-    "sector": "Consumer Non-Cyclicals",
-    "sub_sector": "Food & Beverage"
-  },
-  "MLBI.JK": {
-    "company_name": "Multi Bintang Indonesia Tbk",
-    "sector": "Consumer Non-Cyclicals",
-    "sub_sector": "Food & Beverage"
   },
   "MLIA.JK": {
     "company_name": "Mulia Industrindo Tbk",
@@ -2944,11 +2784,6 @@
     "sector": "Healthcare",
     "sub_sector": "Healthcare Equipment & Providers"
   },
-  "MMLP.JK": {
-    "company_name": "PT Mega Manunggal Property Tbk.",
-    "sector": "Properties & Real Estate",
-    "sub_sector": "Properties & Real Estate"
-  },
   "MNCN.JK": {
     "company_name": "Media Nusantara Citra Tbk",
     "sector": "Consumer Cyclicals",
@@ -2959,40 +2794,15 @@
     "sector": "Basic Materials",
     "sub_sector": "Basic Materials"
   },
-  "MORA.JK": {
-    "company_name": "PT Mora Telematika Indonesia Tbk",
-    "sector": "Infrastructures",
-    "sub_sector": "Telecommunication"
-  },
-  "MPIX.JK": {
-    "company_name": "PT Mitra Pedagang Indonesia Tbk.",
-    "sector": "Technology",
-    "sub_sector": "Software & IT Services"
-  },
   "MPMX.JK": {
     "company_name": "PT Mitra Pinasthika Mustika Tbk.",
     "sector": "Consumer Cyclicals",
     "sub_sector": "Retailing"
   },
-  "MPOW.JK": {
-    "company_name": "PT Megapower Makmur Tbk.",
-    "sector": "Infrastructures",
-    "sub_sector": "Utilities"
-  },
-  "MPPA.JK": {
-    "company_name": "Matahari Putra Prima Tbk",
-    "sector": "Consumer Non-Cyclicals",
-    "sub_sector": "Food & Staples Retailing"
-  },
   "MPRO.JK": {
     "company_name": "PT Maha Properti Indonesia Tbk.",
     "sector": "Properties & Real Estate",
     "sub_sector": "Properties & Real Estate"
-  },
-  "MPXL.JK": {
-    "company_name": "PT MPX Logistics International Tbk",
-    "sector": "Transportation & Logistic",
-    "sub_sector": "Logistics & Deliveries"
   },
   "MRAT.JK": {
     "company_name": "Mustika Ratu Tbk",
@@ -3003,16 +2813,6 @@
     "company_name": "Maskapai Reasuransi Indonesia Tbk",
     "sector": "Financials",
     "sub_sector": "Insurance"
-  },
-  "MSIE.JK": {
-    "company_name": "PT Multisarana Intan Eduka Tbk",
-    "sector": "Properties & Real Estate",
-    "sub_sector": "Properties & Real Estate"
-  },
-  "MSIN.JK": {
-    "company_name": "PT MNC Digital Entertainment Tbk",
-    "sector": "Consumer Cyclicals",
-    "sub_sector": "Media & Entertainment"
   },
   "MSJA.JK": {
     "company_name": "PT Multi Spunindo Jaya Tbk.",
@@ -3039,21 +2839,6 @@
     "sector": "Infrastructures",
     "sub_sector": "Telecommunication"
   },
-  "MTFN.JK": {
-    "company_name": "Capitalinc Investment Tbk",
-    "sector": "Energy",
-    "sub_sector": "Oil, Gas & Coal"
-  },
-  "MTLA.JK": {
-    "company_name": "Metropolitan Land Tbk",
-    "sector": "Properties & Real Estate",
-    "sub_sector": "Properties & Real Estate"
-  },
-  "MTMH.JK": {
-    "company_name": "PT Murni Sadar Tbk",
-    "sector": "Healthcare",
-    "sub_sector": "Healthcare Equipment & Providers"
-  },
   "MTPS.JK": {
     "company_name": "PT Meta Epsi Tbk.",
     "sector": "Infrastructures",
@@ -3079,63 +2864,18 @@
     "sector": "Industrials",
     "sub_sector": "Industrial Services"
   },
-  "MYOH.JK": {
-    "company_name": "Samindo Resources Tbk",
-    "sector": "Energy",
-    "sub_sector": "Oil, Gas & Coal"
-  },
-  "MYOR.JK": {
-    "company_name": "Mayora Indah Tbk",
-    "sector": "Consumer Non-Cyclicals",
-    "sub_sector": "Food & Beverage"
-  },
   "MYTX.JK": {
     "company_name": "PT Asia Pacific Investama Tbk.",
     "sector": "Consumer Cyclicals",
     "sub_sector": "Apparel & Luxury Goods"
-  },
-  "NAIK.JK": {
-    "company_name": "PT Adiwarna Anugerah Abadi Tbk",
-    "sector": "Industrials",
-    "sub_sector": "Industrial Services"
-  },
-  "NANO.JK": {
-    "company_name": "PT Nanotech Indonesia Global Tbk",
-    "sector": "Consumer Non-Cyclicals",
-    "sub_sector": "Nondurable Household Products"
-  },
-  "NASA.JK": {
-    "company_name": "PT Andalan Perkasa Abadi Tbk",
-    "sector": "Properties & Real Estate",
-    "sub_sector": "Properties & Real Estate"
   },
   "NASI.JK": {
     "company_name": "PT Wahana Inti Makmur Tbk",
     "sector": "Consumer Non-Cyclicals",
     "sub_sector": "Food & Beverage"
   },
-  "NATO.JK": {
-    "company_name": "PT Surya Permata Andalan Tbk",
-    "sector": "Consumer Cyclicals",
-    "sub_sector": "Consumer Services"
-  },
   "NAYZ.JK": {
     "company_name": "PT Hassana Boga Sejahtera Tbk",
-    "sector": "Consumer Non-Cyclicals",
-    "sub_sector": "Food & Beverage"
-  },
-  "NCKL.JK": {
-    "company_name": "PT Trimegah Bangun Persada Tbk.",
-    "sector": "Basic Materials",
-    "sub_sector": "Basic Materials"
-  },
-  "NELY.JK": {
-    "company_name": "Pelayaran Nelly Dwi Putri Tbk",
-    "sector": "Transportation & Logistic",
-    "sub_sector": "Logistics & Deliveries"
-  },
-  "NEST.JK": {
-    "company_name": "PT Esta Indonesia Tbk",
     "sector": "Consumer Non-Cyclicals",
     "sub_sector": "Food & Beverage"
   },
@@ -3148,11 +2888,6 @@
     "company_name": "PT NFC Indonesia Tbk",
     "sector": "Technology",
     "sub_sector": "Software & IT Services"
-  },
-  "NICE.JK": {
-    "company_name": "PT Adhi Kartiko Pratama Tbk",
-    "sector": "Basic Materials",
-    "sub_sector": "Basic Materials"
   },
   "NICK.JK": {
     "company_name": "PT Charnic Capital Tbk.",
@@ -3169,35 +2904,10 @@
     "sector": "Basic Materials",
     "sub_sector": "Basic Materials"
   },
-  "NINE.JK": {
-    "company_name": "PT Techno9 Indonesia Tbk",
-    "sector": "Technology",
-    "sub_sector": "Technology Hardware & Equipment"
-  },
-  "NIRO.JK": {
-    "company_name": "City Retail Developments Tbk",
-    "sector": "Properties & Real Estate",
-    "sub_sector": "Properties & Real Estate"
-  },
   "NISP.JK": {
     "company_name": "PT Bank OCBC NISP Tbk",
     "sector": "Financials",
     "sub_sector": "Banks"
-  },
-  "NOBU.JK": {
-    "company_name": "PT Bank Nationalnobu Tbk.",
-    "sector": "Financials",
-    "sub_sector": "Banks"
-  },
-  "NPGF.JK": {
-    "company_name": "PT Nusa Palapa Gemilang Tbk",
-    "sector": "Basic Materials",
-    "sub_sector": "Basic Materials"
-  },
-  "NRCA.JK": {
-    "company_name": "PT Nusa Raya Cipta Tbk.",
-    "sector": "Infrastructures",
-    "sub_sector": "Heavy Constructions & Civil Engineering"
   },
   "NSSS.JK": {
     "company_name": "PT Nusantara Sawit Sejahtera Tbk",
@@ -3209,20 +2919,10 @@
     "sector": "Industrials",
     "sub_sector": "Industrial Goods"
   },
-  "NUSA.JK": {
-    "company_name": "PT Sinergi Megah Internusa Tbk",
-    "sector": "Consumer Cyclicals",
-    "sub_sector": "Consumer Services"
-  },
   "NZIA.JK": {
     "company_name": "PT Nusantara Almazia, Tbk.",
     "sector": "Properties & Real Estate",
     "sub_sector": "Properties & Real Estate"
-  },
-  "OASA.JK": {
-    "company_name": "PT Maharaksa Biru Energi Tbk",
-    "sector": "Infrastructures",
-    "sub_sector": "Telecommunication"
   },
   "OBAT.JK": {
     "company_name": "PT Brigit Biofarmaka Teknologi Tbk",
@@ -3239,11 +2939,6 @@
     "sector": "Financials",
     "sub_sector": "Holding & Investment Companies"
   },
-  "OILS.JK": {
-    "company_name": "PT Indo Oil Perkasa Tbk",
-    "sector": "Consumer Non-Cyclicals",
-    "sub_sector": "Food & Beverage"
-  },
   "OKAS.JK": {
     "company_name": "Ancora Indonesia Resources Tbk",
     "sector": "Basic Materials",
@@ -3259,11 +2954,6 @@
     "sector": "Healthcare",
     "sub_sector": "Healthcare Equipment & Providers"
   },
-  "OMRE.JK": {
-    "company_name": "Indonesia Prima Property Tbk",
-    "sector": "Properties & Real Estate",
-    "sub_sector": "Properties & Real Estate"
-  },
   "OPMS.JK": {
     "company_name": "PT Optima Prima Metal Sinergi Tbk.",
     "sector": "Basic Materials",
@@ -3273,16 +2963,6 @@
     "company_name": "PT Abadi Nusantara Hijau Investama Tbk",
     "sector": "Basic Materials",
     "sub_sector": "Basic Materials"
-  },
-  "PADA.JK": {
-    "company_name": "PT Personel Alih Daya Tbk",
-    "sector": "Industrials",
-    "sub_sector": "Industrial Services"
-  },
-  "PADI.JK": {
-    "company_name": "Minna Padi Investama Sekuritas Tbk",
-    "sector": "Financials",
-    "sub_sector": "Investment Service"
   },
   "PALM.JK": {
     "company_name": "PT Provident Investasi Bersama Tbk",
@@ -3299,21 +2979,6 @@
     "sector": "Consumer Non-Cyclicals",
     "sub_sector": "Food & Beverage"
   },
-  "PANR.JK": {
-    "company_name": "Panorama Sentrawisata Tbk",
-    "sector": "Consumer Cyclicals",
-    "sub_sector": "Consumer Services"
-  },
-  "PANS.JK": {
-    "company_name": "Panin Sekuritas Tbk",
-    "sector": "Financials",
-    "sub_sector": "Investment Service"
-  },
-  "PART.JK": {
-    "company_name": "PT Cipta Perdana Lancar Tbk",
-    "sector": "Consumer Cyclicals",
-    "sub_sector": "Automobiles & Components"
-  },
   "PBID.JK": {
     "company_name": "PT Panca Budi Idaman Tbk",
     "sector": "Basic Materials",
@@ -3324,80 +2989,15 @@
     "sector": "Consumer Cyclicals",
     "sub_sector": "Apparel & Luxury Goods"
   },
-  "PBSA.JK": {
-    "company_name": "PT Paramita Bangun Sarana Tbk",
-    "sector": "Infrastructures",
-    "sub_sector": "Heavy Constructions & Civil Engineering"
-  },
-  "PCAR.JK": {
-    "company_name": "PT Prima Cakrawala Abadi Tbk",
-    "sector": "Consumer Non-Cyclicals",
-    "sub_sector": "Food & Staples Retailing"
-  },
-  "PDES.JK": {
-    "company_name": "Destinasi Tirta Nusantara Tbk",
-    "sector": "Consumer Cyclicals",
-    "sub_sector": "Consumer Services"
-  },
-  "PDPP.JK": {
-    "company_name": "PT Primadaya Plastisindo Tbk",
-    "sector": "Basic Materials",
-    "sub_sector": "Basic Materials"
-  },
-  "PEGE.JK": {
-    "company_name": "PT Panca Global Kapital Tbk.",
-    "sector": "Financials",
-    "sub_sector": "Holding & Investment Companies"
-  },
-  "PEHA.JK": {
-    "company_name": "PT Phapros Tbk",
-    "sector": "Healthcare",
-    "sub_sector": "Pharmaceuticals & Health Care Research"
-  },
-  "PEVE.JK": {
-    "company_name": "PT Penta Valent Tbk",
-    "sector": "Healthcare",
-    "sub_sector": "Pharmaceuticals & Health Care Research"
-  },
   "PGAS.JK": {
     "company_name": "PT Perusahaan Gas Negara Tbk.",
     "sector": "Energy",
     "sub_sector": "Oil, Gas & Coal"
   },
-  "PGEO.JK": {
-    "company_name": "PT Pertamina Geothermal Energy Tbk",
-    "sector": "Infrastructures",
-    "sub_sector": "Utilities"
-  },
-  "PGJO.JK": {
-    "company_name": "PT Tourindo Guide Indonesia Tbk.",
-    "sector": "Technology",
-    "sub_sector": "Software & IT Services"
-  },
-  "PGLI.JK": {
-    "company_name": "Pembangunan Graha Lestari Indah Tbk",
-    "sector": "Consumer Cyclicals",
-    "sub_sector": "Consumer Services"
-  },
   "PGUN.JK": {
     "company_name": "PT Pradiksi Gunatama Tbk",
     "sector": "Consumer Non-Cyclicals",
     "sub_sector": "Food & Beverage"
-  },
-  "PICO.JK": {
-    "company_name": "Pelangi Indah Canindo Tbk",
-    "sector": "Basic Materials",
-    "sub_sector": "Basic Materials"
-  },
-  "PIPA.JK": {
-    "company_name": "PT Multi Makmur Lemindo Tbk.",
-    "sector": "Industrials",
-    "sub_sector": "Industrial Goods"
-  },
-  "PJAA.JK": {
-    "company_name": "Pembangunan Jaya Ancol Tbk",
-    "sector": "Consumer Cyclicals",
-    "sub_sector": "Consumer Services"
   },
   "PKPK.JK": {
     "company_name": "Perdana Karya Perkasa Tbk",
@@ -3409,11 +3009,6 @@
     "sector": "Consumer Cyclicals",
     "sub_sector": "Consumer Services"
   },
-  "PLAS.JK": {
-    "company_name": "Polaris Investama Tbk",
-    "sector": "Financials",
-    "sub_sector": "Holding & Investment Companies"
-  },
   "PLIN.JK": {
     "company_name": "Plaza Indonesia Realty Tbk",
     "sector": "Properties & Real Estate",
@@ -3423,26 +3018,6 @@
     "company_name": "PT Putra Mandiri Jembar Tbk",
     "sector": "Consumer Cyclicals",
     "sub_sector": "Retailing"
-  },
-  "PMMP.JK": {
-    "company_name": "PT Panca Mitra Multiperdana Tbk.",
-    "sector": "Consumer Non-Cyclicals",
-    "sub_sector": "Food & Beverage"
-  },
-  "PMUI.JK": {
-    "company_name": "PT Prima Multi Usaha Indonesia Tbk",
-    "sector": "Consumer Cyclicals",
-    "sub_sector": "Retailing"
-  },
-  "PNBN.JK": {
-    "company_name": "Bank Pan Indonesia Tbk",
-    "sector": "Financials",
-    "sub_sector": "Banks"
-  },
-  "PNBS.JK": {
-    "company_name": "PT Bank Panin Dubai Syariah Tbk.",
-    "sector": "Financials",
-    "sub_sector": "Banks"
   },
   "PNGO.JK": {
     "company_name": "PT Pinago Utama Tbk",
@@ -3464,28 +3039,8 @@
     "sector": "Consumer Cyclicals",
     "sub_sector": "Consumer Services"
   },
-  "POLA.JK": {
-    "company_name": "PT Pool Advista Finance Tbk.",
-    "sector": "Financials",
-    "sub_sector": "Financing Service"
-  },
-  "POLI.JK": {
-    "company_name": "PT Pollux Hotels Group Tbk",
-    "sector": "Properties & Real Estate",
-    "sub_sector": "Properties & Real Estate"
-  },
-  "POLL.JK": {
-    "company_name": "PT Pollux Properties Indonesia Tbk.",
-    "sector": "Properties & Real Estate",
-    "sub_sector": "Properties & Real Estate"
-  },
   "POLU.JK": {
     "company_name": "PT Golden Flower Tbk.",
-    "sector": "Consumer Cyclicals",
-    "sub_sector": "Apparel & Luxury Goods"
-  },
-  "POLY.JK": {
-    "company_name": "Asia Pacific Fibers Tbk",
     "sector": "Consumer Cyclicals",
     "sub_sector": "Apparel & Luxury Goods"
   },
@@ -3493,16 +3048,6 @@
     "company_name": "Pool Advista Indonesia Tbk",
     "sector": "Financials",
     "sub_sector": "Holding & Investment Companies"
-  },
-  "PORT.JK": {
-    "company_name": "PT Nusantara Pelabuhan Handal Tbk.",
-    "sector": "Infrastructures",
-    "sub_sector": "Transportation Infrastructure"
-  },
-  "POSA.JK": {
-    "company_name": "PT Bliss Properti Indonesia Tbk.",
-    "sector": "Properties & Real Estate",
-    "sub_sector": "Properties & Real Estate"
   },
   "POWR.JK": {
     "company_name": "PT Cikarang Listrindo Tbk.",
@@ -3514,11 +3059,6 @@
     "sector": "Transportation & Logistic",
     "sub_sector": "Logistics & Deliveries"
   },
-  "PPRE.JK": {
-    "company_name": "PT PP Presisi Tbk.",
-    "sector": "Infrastructures",
-    "sub_sector": "Heavy Constructions & Civil Engineering"
-  },
   "PPRI.JK": {
     "company_name": "PT Paperocks Indonesia Tbk.",
     "sector": "Basic Materials",
@@ -3528,11 +3068,6 @@
     "company_name": "PT PP Properti Tbk.",
     "sector": "Properties & Real Estate",
     "sub_sector": "Properties & Real Estate"
-  },
-  "PRAY.JK": {
-    "company_name": "PT Famon Awal Bros Sedaya Tbk",
-    "sector": "Healthcare",
-    "sub_sector": "Healthcare Equipment & Providers"
   },
   "PRDA.JK": {
     "company_name": "PT Prodia Widyahusada Tbk.",
@@ -3544,20 +3079,10 @@
     "sector": "Healthcare",
     "sub_sector": "Healthcare Equipment & Providers"
   },
-  "PSAB.JK": {
-    "company_name": "J Resources Asia Pasifik Tbk",
-    "sector": "Basic Materials",
-    "sub_sector": "Basic Materials"
-  },
   "PSAT.JK": {
     "company_name": "PT Pancaran Samudera Transport Tbk",
     "sector": "Energy",
     "sub_sector": "Oil, Gas & Coal"
-  },
-  "PSDN.JK": {
-    "company_name": "Prasidha Aneka Niaga Tbk",
-    "sector": "Consumer Non-Cyclicals",
-    "sub_sector": "Food & Beverage"
   },
   "PSGO.JK": {
     "company_name": "PT Palma Serasih Tbk.",
@@ -3579,11 +3104,6 @@
     "sector": "Energy",
     "sub_sector": "Oil, Gas & Coal"
   },
-  "PTDU.JK": {
-    "company_name": "PT Djasa Ubersakti Tbk",
-    "sector": "Infrastructures",
-    "sub_sector": "Heavy Constructions & Civil Engineering"
-  },
   "PTIS.JK": {
     "company_name": "Indo Straits Tbk",
     "sector": "Energy",
@@ -3599,11 +3119,6 @@
     "sector": "Basic Materials",
     "sub_sector": "Basic Materials"
   },
-  "PTPP.JK": {
-    "company_name": "PP (Persero) Tbk",
-    "sector": "Infrastructures",
-    "sub_sector": "Heavy Constructions & Civil Engineering"
-  },
   "PTPS.JK": {
     "company_name": "PT Pulau Subur Tbk.",
     "sector": "Consumer Non-Cyclicals",
@@ -3614,11 +3129,6 @@
     "sector": "Infrastructures",
     "sub_sector": "Heavy Constructions & Civil Engineering"
   },
-  "PTRO.JK": {
-    "company_name": "Petrosea Tbk",
-    "sector": "Energy",
-    "sub_sector": "Oil, Gas & Coal"
-  },
   "PTSN.JK": {
     "company_name": "Sat Nusapersada Tbk",
     "sector": "Technology",
@@ -3628,11 +3138,6 @@
     "company_name": "Pioneerindo Gourmet International Tbk",
     "sector": "Consumer Cyclicals",
     "sub_sector": "Consumer Services"
-  },
-  "PUDP.JK": {
-    "company_name": "Pudjiadi Prestige Tbk",
-    "sector": "Properties & Real Estate",
-    "sub_sector": "Properties & Real Estate"
   },
   "PURA.JK": {
     "company_name": "PT Putra Rajawali Kencana Tbk.",
@@ -3669,25 +3174,15 @@
     "sector": "Consumer Cyclicals",
     "sub_sector": "Media & Entertainment"
   },
-  "RAFI.JK": {
-    "company_name": "PT Sari Kreasi Boga Tbk",
-    "sector": "Consumer Cyclicals",
-    "sub_sector": "Consumer Services"
-  },
   "RAJA.JK": {
     "company_name": "Rukun Raharja Tbk",
     "sector": "Energy",
     "sub_sector": "Oil, Gas & Coal"
   },
-  "RALS.JK": {
-    "company_name": "Ramayana Lestari Sentosa Tbk",
-    "sector": "Consumer Cyclicals",
-    "sub_sector": "Retailing"
-  },
-  "RANC.JK": {
-    "company_name": "Supra Boga Lestari Tbk",
-    "sector": "Consumer Non-Cyclicals",
-    "sub_sector": "Food & Staples Retailing"
+  "HGII.JK": {
+    "company_name": "PT Hero Global Investment Tbk",
+    "sector": "Infrastructures",
+    "sub_sector": "Utilities"
   },
   "RATU.JK": {
     "company_name": "PT Raharja Energi Cepu Tbk",
@@ -3706,11 +3201,6 @@
   },
   "RDTX.JK": {
     "company_name": "Roda Vivatex Tbk",
-    "sector": "Properties & Real Estate",
-    "sub_sector": "Properties & Real Estate"
-  },
-  "REAL.JK": {
-    "company_name": "PT Repower Asia Indonesia Tbk.",
     "sector": "Properties & Real Estate",
     "sub_sector": "Properties & Real Estate"
   },
@@ -3734,26 +3224,6 @@
     "sector": "Consumer Cyclicals",
     "sub_sector": "Apparel & Luxury Goods"
   },
-  "RIGS.JK": {
-    "company_name": "Rig Tenders Tbk",
-    "sector": "Energy",
-    "sub_sector": "Oil, Gas & Coal"
-  },
-  "RIMO.JK": {
-    "company_name": "PT Rimo International Lestari Tbk.",
-    "sector": "Properties & Real Estate",
-    "sub_sector": "Properties & Real Estate"
-  },
-  "RISE.JK": {
-    "company_name": "PT Jaya Sukses Makmur Sentosa Tbk.",
-    "sector": "Properties & Real Estate",
-    "sub_sector": "Properties & Real Estate"
-  },
-  "RMKE.JK": {
-    "company_name": "PT RMK Energy Tbk",
-    "sector": "Energy",
-    "sub_sector": "Oil, Gas & Coal"
-  },
   "RMKO.JK": {
     "company_name": "PT Royaltama Mulia Kontraktorindo Tbk.",
     "sector": "Energy",
@@ -3761,11 +3231,6 @@
   },
   "ROCK.JK": {
     "company_name": "PT Rockfields Properti Indonesia Tbk.",
-    "sector": "Properties & Real Estate",
-    "sub_sector": "Properties & Real Estate"
-  },
-  "RODA.JK": {
-    "company_name": "Pikko Land Development Tbk",
     "sector": "Properties & Real Estate",
     "sub_sector": "Properties & Real Estate"
   },
@@ -3778,11 +3243,6 @@
     "company_name": "PT Nippon Indosari Corpindo Tbk",
     "sector": "Consumer Non-Cyclicals",
     "sub_sector": "Food & Beverage"
-  },
-  "RSCH.JK": {
-    "company_name": "PT Charlie Hospital Semarang Tbk.",
-    "sector": "Healthcare",
-    "sub_sector": "Healthcare Equipment & Providers"
   },
   "RSGK.JK": {
     "company_name": "PT Kedoya Adyaraya Tbk",
@@ -3803,11 +3263,6 @@
     "company_name": "Steady Safe Tbk",
     "sector": "Transportation & Logistic",
     "sub_sector": "Transportation"
-  },
-  "SAGE.JK": {
-    "company_name": "PT Saptausaha Gemilangindah Tbk",
-    "sector": "Properties & Real Estate",
-    "sub_sector": "Properties & Real Estate"
   },
   "SAME.JK": {
     "company_name": "Sarana Meditama Metropolitan Tbk",
@@ -3844,30 +3299,15 @@
     "sector": "Industrials",
     "sub_sector": "Industrial Goods"
   },
-  "SCMA.JK": {
-    "company_name": "Surya Citra Media Tbk",
-    "sector": "Consumer Cyclicals",
-    "sub_sector": "Media & Entertainment"
-  },
   "SCNP.JK": {
     "company_name": "PT Selaras Citra Nusantara Perkasa Tbk",
     "sector": "Consumer Cyclicals",
     "sub_sector": "Household Goods"
   },
-  "SCPI.JK": {
-    "company_name": "PT Organon Pharma Indonesia Tbk",
-    "sector": "Healthcare",
-    "sub_sector": "Pharmaceuticals & Health Care Research"
-  },
   "SDMU.JK": {
     "company_name": "Sidomulyo Selaras Tbk",
     "sector": "Transportation & Logistic",
     "sub_sector": "Logistics & Deliveries"
-  },
-  "SDPC.JK": {
-    "company_name": "Millennium Pharmacon International Tbk",
-    "sector": "Consumer Non-Cyclicals",
-    "sub_sector": "Food & Staples Retailing"
   },
   "SDRA.JK": {
     "company_name": "PT Bank Woori Saudara Indonesia 1906 Tbk",
@@ -3894,11 +3334,6 @@
     "sector": "Consumer Non-Cyclicals",
     "sub_sector": "Food & Beverage"
   },
-  "SHID.JK": {
-    "company_name": "Hotel Sahid Jaya Tbk",
-    "sector": "Consumer Cyclicals",
-    "sub_sector": "Consumer Services"
-  },
   "SHIP.JK": {
     "company_name": "PT Sillo Maritime Perdana Tbk",
     "sector": "Energy",
@@ -3909,20 +3344,380 @@
     "sector": "Energy",
     "sub_sector": "Oil, Gas & Coal"
   },
-  "SIDO.JK": {
-    "company_name": "PT Industri Jamu Dan Farmasi Sido Muncul Tbk",
-    "sector": "Healthcare",
-    "sub_sector": "Pharmaceuticals & Health Care Research"
-  },
   "SILO.JK": {
     "company_name": "PT Siloam International Hospitals Tbk.",
     "sector": "Healthcare",
     "sub_sector": "Healthcare Equipment & Providers"
   },
-  "SIMA.JK": {
-    "company_name": "Siwani Makmur Tbk",
+  "DADA.JK": {
+    "company_name": "PT Diamond Citra Propertindo Tbk.",
+    "sector": "Properties & Real Estate",
+    "sub_sector": "Properties & Real Estate"
+  },
+  "MSIN.JK": {
+    "company_name": "PT MNC Digital Entertainment Tbk",
+    "sector": "Consumer Cyclicals",
+    "sub_sector": "Media & Entertainment"
+  },
+  "MTFN.JK": {
+    "company_name": "Capitalinc Investment Tbk",
+    "sector": "Energy",
+    "sub_sector": "Oil, Gas & Coal"
+  },
+  "MTLA.JK": {
+    "company_name": "Metropolitan Land Tbk",
+    "sector": "Properties & Real Estate",
+    "sub_sector": "Properties & Real Estate"
+  },
+  "MTMH.JK": {
+    "company_name": "PT Murni Sadar Tbk",
+    "sector": "Healthcare",
+    "sub_sector": "Healthcare Equipment & Providers"
+  },
+  "MYOH.JK": {
+    "company_name": "Samindo Resources Tbk",
+    "sector": "Energy",
+    "sub_sector": "Oil, Gas & Coal"
+  },
+  "MYOR.JK": {
+    "company_name": "Mayora Indah Tbk",
+    "sector": "Consumer Non-Cyclicals",
+    "sub_sector": "Food & Beverage"
+  },
+  "NAIK.JK": {
+    "company_name": "PT Adiwarna Anugerah Abadi Tbk",
+    "sector": "Industrials",
+    "sub_sector": "Industrial Services"
+  },
+  "NANO.JK": {
+    "company_name": "PT Nanotech Indonesia Global Tbk",
+    "sector": "Consumer Non-Cyclicals",
+    "sub_sector": "Nondurable Household Products"
+  },
+  "NASA.JK": {
+    "company_name": "PT Andalan Perkasa Abadi Tbk",
+    "sector": "Properties & Real Estate",
+    "sub_sector": "Properties & Real Estate"
+  },
+  "NATO.JK": {
+    "company_name": "PT Surya Permata Andalan Tbk",
+    "sector": "Consumer Cyclicals",
+    "sub_sector": "Consumer Services"
+  },
+  "NCKL.JK": {
+    "company_name": "PT Trimegah Bangun Persada Tbk.",
     "sector": "Basic Materials",
     "sub_sector": "Basic Materials"
+  },
+  "NELY.JK": {
+    "company_name": "Pelayaran Nelly Dwi Putri Tbk",
+    "sector": "Transportation & Logistic",
+    "sub_sector": "Logistics & Deliveries"
+  },
+  "NEST.JK": {
+    "company_name": "PT Esta Indonesia Tbk",
+    "sector": "Consumer Non-Cyclicals",
+    "sub_sector": "Food & Beverage"
+  },
+  "NICE.JK": {
+    "company_name": "PT Adhi Kartiko Pratama Tbk",
+    "sector": "Basic Materials",
+    "sub_sector": "Basic Materials"
+  },
+  "NINE.JK": {
+    "company_name": "PT Techno9 Indonesia Tbk",
+    "sector": "Technology",
+    "sub_sector": "Technology Hardware & Equipment"
+  },
+  "NIRO.JK": {
+    "company_name": "City Retail Developments Tbk",
+    "sector": "Properties & Real Estate",
+    "sub_sector": "Properties & Real Estate"
+  },
+  "NOBU.JK": {
+    "company_name": "PT Bank Nationalnobu Tbk.",
+    "sector": "Financials",
+    "sub_sector": "Banks"
+  },
+  "NPGF.JK": {
+    "company_name": "PT Nusa Palapa Gemilang Tbk",
+    "sector": "Basic Materials",
+    "sub_sector": "Basic Materials"
+  },
+  "NRCA.JK": {
+    "company_name": "PT Nusa Raya Cipta Tbk.",
+    "sector": "Infrastructures",
+    "sub_sector": "Heavy Constructions & Civil Engineering"
+  },
+  "OASA.JK": {
+    "company_name": "PT Maharaksa Biru Energi Tbk",
+    "sector": "Infrastructures",
+    "sub_sector": "Telecommunication"
+  },
+  "OILS.JK": {
+    "company_name": "PT Indo Oil Perkasa Tbk",
+    "sector": "Consumer Non-Cyclicals",
+    "sub_sector": "Food & Beverage"
+  },
+  "OMRE.JK": {
+    "company_name": "Indonesia Prima Property Tbk",
+    "sector": "Properties & Real Estate",
+    "sub_sector": "Properties & Real Estate"
+  },
+  "PADA.JK": {
+    "company_name": "PT Personel Alih Daya Tbk",
+    "sector": "Industrials",
+    "sub_sector": "Industrial Services"
+  },
+  "PADI.JK": {
+    "company_name": "Minna Padi Investama Sekuritas Tbk",
+    "sector": "Financials",
+    "sub_sector": "Investment Service"
+  },
+  "PANR.JK": {
+    "company_name": "Panorama Sentrawisata Tbk",
+    "sector": "Consumer Cyclicals",
+    "sub_sector": "Consumer Services"
+  },
+  "PANS.JK": {
+    "company_name": "Panin Sekuritas Tbk",
+    "sector": "Financials",
+    "sub_sector": "Investment Service"
+  },
+  "PART.JK": {
+    "company_name": "PT Cipta Perdana Lancar Tbk",
+    "sector": "Consumer Cyclicals",
+    "sub_sector": "Automobiles & Components"
+  },
+  "PBSA.JK": {
+    "company_name": "PT Paramita Bangun Sarana Tbk",
+    "sector": "Infrastructures",
+    "sub_sector": "Heavy Constructions & Civil Engineering"
+  },
+  "PCAR.JK": {
+    "company_name": "PT Prima Cakrawala Abadi Tbk",
+    "sector": "Consumer Non-Cyclicals",
+    "sub_sector": "Food & Staples Retailing"
+  },
+  "PDES.JK": {
+    "company_name": "Destinasi Tirta Nusantara Tbk",
+    "sector": "Consumer Cyclicals",
+    "sub_sector": "Consumer Services"
+  },
+  "PDPP.JK": {
+    "company_name": "PT Primadaya Plastisindo Tbk",
+    "sector": "Basic Materials",
+    "sub_sector": "Basic Materials"
+  },
+  "PEGE.JK": {
+    "company_name": "PT Panca Global Kapital Tbk.",
+    "sector": "Financials",
+    "sub_sector": "Holding & Investment Companies"
+  },
+  "PEHA.JK": {
+    "company_name": "PT Phapros Tbk",
+    "sector": "Healthcare",
+    "sub_sector": "Pharmaceuticals & Health Care Research"
+  },
+  "PEVE.JK": {
+    "company_name": "PT Penta Valent Tbk",
+    "sector": "Healthcare",
+    "sub_sector": "Pharmaceuticals & Health Care Research"
+  },
+  "PGEO.JK": {
+    "company_name": "PT Pertamina Geothermal Energy Tbk",
+    "sector": "Infrastructures",
+    "sub_sector": "Utilities"
+  },
+  "PGJO.JK": {
+    "company_name": "PT Tourindo Guide Indonesia Tbk.",
+    "sector": "Technology",
+    "sub_sector": "Software & IT Services"
+  },
+  "PGLI.JK": {
+    "company_name": "Pembangunan Graha Lestari Indah Tbk",
+    "sector": "Consumer Cyclicals",
+    "sub_sector": "Consumer Services"
+  },
+  "PICO.JK": {
+    "company_name": "Pelangi Indah Canindo Tbk",
+    "sector": "Basic Materials",
+    "sub_sector": "Basic Materials"
+  },
+  "PIPA.JK": {
+    "company_name": "PT Multi Makmur Lemindo Tbk.",
+    "sector": "Industrials",
+    "sub_sector": "Industrial Goods"
+  },
+  "PJAA.JK": {
+    "company_name": "Pembangunan Jaya Ancol Tbk",
+    "sector": "Consumer Cyclicals",
+    "sub_sector": "Consumer Services"
+  },
+  "PMMP.JK": {
+    "company_name": "PT Panca Mitra Multiperdana Tbk.",
+    "sector": "Consumer Non-Cyclicals",
+    "sub_sector": "Food & Beverage"
+  },
+  "PNBN.JK": {
+    "company_name": "Bank Pan Indonesia Tbk",
+    "sector": "Financials",
+    "sub_sector": "Banks"
+  },
+  "PNBS.JK": {
+    "company_name": "PT Bank Panin Dubai Syariah Tbk.",
+    "sector": "Financials",
+    "sub_sector": "Banks"
+  },
+  "POLA.JK": {
+    "company_name": "PT Pool Advista Finance Tbk.",
+    "sector": "Financials",
+    "sub_sector": "Financing Service"
+  },
+  "POLI.JK": {
+    "company_name": "PT Pollux Hotels Group Tbk",
+    "sector": "Properties & Real Estate",
+    "sub_sector": "Properties & Real Estate"
+  },
+  "POLL.JK": {
+    "company_name": "PT Pollux Properties Indonesia Tbk.",
+    "sector": "Properties & Real Estate",
+    "sub_sector": "Properties & Real Estate"
+  },
+  "POLY.JK": {
+    "company_name": "Asia Pacific Fibers Tbk",
+    "sector": "Consumer Cyclicals",
+    "sub_sector": "Apparel & Luxury Goods"
+  },
+  "PORT.JK": {
+    "company_name": "PT Nusantara Pelabuhan Handal Tbk.",
+    "sector": "Infrastructures",
+    "sub_sector": "Transportation Infrastructure"
+  },
+  "POSA.JK": {
+    "company_name": "PT Bliss Properti Indonesia Tbk.",
+    "sector": "Properties & Real Estate",
+    "sub_sector": "Properties & Real Estate"
+  },
+  "PPRE.JK": {
+    "company_name": "PT PP Presisi Tbk.",
+    "sector": "Infrastructures",
+    "sub_sector": "Heavy Constructions & Civil Engineering"
+  },
+  "PRAY.JK": {
+    "company_name": "PT Famon Awal Bros Sedaya Tbk",
+    "sector": "Healthcare",
+    "sub_sector": "Healthcare Equipment & Providers"
+  },
+  "PSAB.JK": {
+    "company_name": "J Resources Asia Pasifik Tbk",
+    "sector": "Basic Materials",
+    "sub_sector": "Basic Materials"
+  },
+  "PSDN.JK": {
+    "company_name": "Prasidha Aneka Niaga Tbk",
+    "sector": "Consumer Non-Cyclicals",
+    "sub_sector": "Food & Beverage"
+  },
+  "PTDU.JK": {
+    "company_name": "PT Djasa Ubersakti Tbk",
+    "sector": "Infrastructures",
+    "sub_sector": "Heavy Constructions & Civil Engineering"
+  },
+  "PTPP.JK": {
+    "company_name": "PP (Persero) Tbk",
+    "sector": "Infrastructures",
+    "sub_sector": "Heavy Constructions & Civil Engineering"
+  },
+  "PTRO.JK": {
+    "company_name": "Petrosea Tbk",
+    "sector": "Energy",
+    "sub_sector": "Oil, Gas & Coal"
+  },
+  "PUDP.JK": {
+    "company_name": "Pudjiadi Prestige Tbk",
+    "sector": "Properties & Real Estate",
+    "sub_sector": "Properties & Real Estate"
+  },
+  "RAFI.JK": {
+    "company_name": "PT Sari Kreasi Boga Tbk",
+    "sector": "Consumer Cyclicals",
+    "sub_sector": "Consumer Services"
+  },
+  "RALS.JK": {
+    "company_name": "Ramayana Lestari Sentosa Tbk",
+    "sector": "Consumer Cyclicals",
+    "sub_sector": "Retailing"
+  },
+  "RANC.JK": {
+    "company_name": "Supra Boga Lestari Tbk",
+    "sector": "Consumer Non-Cyclicals",
+    "sub_sector": "Food & Staples Retailing"
+  },
+  "REAL.JK": {
+    "company_name": "PT Repower Asia Indonesia Tbk.",
+    "sector": "Properties & Real Estate",
+    "sub_sector": "Properties & Real Estate"
+  },
+  "RIGS.JK": {
+    "company_name": "Rig Tenders Tbk",
+    "sector": "Energy",
+    "sub_sector": "Oil, Gas & Coal"
+  },
+  "RISE.JK": {
+    "company_name": "PT Jaya Sukses Makmur Sentosa Tbk.",
+    "sector": "Properties & Real Estate",
+    "sub_sector": "Properties & Real Estate"
+  },
+  "RMKE.JK": {
+    "company_name": "PT RMK Energy Tbk",
+    "sector": "Energy",
+    "sub_sector": "Oil, Gas & Coal"
+  },
+  "RODA.JK": {
+    "company_name": "Pikko Land Development Tbk",
+    "sector": "Properties & Real Estate",
+    "sub_sector": "Properties & Real Estate"
+  },
+  "RSCH.JK": {
+    "company_name": "PT Charlie Hospital Semarang Tbk.",
+    "sector": "Healthcare",
+    "sub_sector": "Healthcare Equipment & Providers"
+  },
+  "MERI.JK": {
+    "company_name": "PT Merry Riana Edukasi Tbk",
+    "sector": "Consumer Cyclicals",
+    "sub_sector": "Consumer Services"
+  },
+  "SAGE.JK": {
+    "company_name": "PT Saptausaha Gemilangindah Tbk",
+    "sector": "Properties & Real Estate",
+    "sub_sector": "Properties & Real Estate"
+  },
+  "SCMA.JK": {
+    "company_name": "Surya Citra Media Tbk",
+    "sector": "Consumer Cyclicals",
+    "sub_sector": "Media & Entertainment"
+  },
+  "SCPI.JK": {
+    "company_name": "PT Organon Pharma Indonesia Tbk",
+    "sector": "Healthcare",
+    "sub_sector": "Pharmaceuticals & Health Care Research"
+  },
+  "SDPC.JK": {
+    "company_name": "Millennium Pharmacon International Tbk",
+    "sector": "Consumer Non-Cyclicals",
+    "sub_sector": "Food & Staples Retailing"
+  },
+  "SHID.JK": {
+    "company_name": "Hotel Sahid Jaya Tbk",
+    "sector": "Consumer Cyclicals",
+    "sub_sector": "Consumer Services"
+  },
+  "SIDO.JK": {
+    "company_name": "PT Industri Jamu Dan Farmasi Sido Muncul Tbk",
+    "sector": "Healthcare",
+    "sub_sector": "Pharmaceuticals & Health Care Research"
   },
   "SIMP.JK": {
     "company_name": "Salim Ivomas Pratama Tbk",
@@ -3939,50 +3734,10 @@
     "sector": "Consumer Non-Cyclicals",
     "sub_sector": "Food & Beverage"
   },
-  "SKBM.JK": {
-    "company_name": "Sekar Bumi Tbk",
-    "sector": "Consumer Non-Cyclicals",
-    "sub_sector": "Food & Beverage"
-  },
   "SKLT.JK": {
     "company_name": "Sekar Laut Tbk",
     "sector": "Consumer Non-Cyclicals",
     "sub_sector": "Food & Beverage"
-  },
-  "SKRN.JK": {
-    "company_name": "PT Superkrane Mitra Utama Tbk",
-    "sector": "Industrials",
-    "sub_sector": "Industrial Goods"
-  },
-  "SKYB.JK": {
-    "company_name": "PT Northcliff Citranusa Indonesia Tbk.",
-    "sector": "Technology",
-    "sub_sector": "Software & IT Services"
-  },
-  "SLIS.JK": {
-    "company_name": "PT Gaya Abadi Sempurna Tbk",
-    "sector": "Consumer Cyclicals",
-    "sub_sector": "Retailing"
-  },
-  "SMAR.JK": {
-    "company_name": "PT Sinar Mas Agro Resources and Technology Tbk",
-    "sector": "Consumer Non-Cyclicals",
-    "sub_sector": "Food & Beverage"
-  },
-  "SMBR.JK": {
-    "company_name": "PT Semen Baturaja Tbk",
-    "sector": "Basic Materials",
-    "sub_sector": "Basic Materials"
-  },
-  "SMCB.JK": {
-    "company_name": "PT Solusi Bangun Indonesia Tbk",
-    "sector": "Basic Materials",
-    "sub_sector": "Basic Materials"
-  },
-  "SMDM.JK": {
-    "company_name": "Suryamas Dutamakmur Tbk",
-    "sector": "Properties & Real Estate",
-    "sub_sector": "Properties & Real Estate"
   },
   "SMDR.JK": {
     "company_name": "Samudera Indonesia Tbk",
@@ -3999,23 +3754,8 @@
     "sector": "Basic Materials",
     "sub_sector": "Basic Materials"
   },
-  "SMIL.JK": {
-    "company_name": "PT Sarana Mitra Luas Tbk",
-    "sector": "Industrials",
-    "sub_sector": "Industrial Goods"
-  },
   "SMKL.JK": {
     "company_name": "PT Satyamitra Kemas Lestari Tbk",
-    "sector": "Basic Materials",
-    "sub_sector": "Basic Materials"
-  },
-  "SMKM.JK": {
-    "company_name": "PT Sumber Mas Konstruksi Tbk",
-    "sector": "Infrastructures",
-    "sub_sector": "Heavy Constructions & Civil Engineering"
-  },
-  "SMLE.JK": {
-    "company_name": "PT Sinergi Multi Lestarindo Tbk",
     "sector": "Basic Materials",
     "sub_sector": "Basic Materials"
   },
@@ -4029,55 +3769,15 @@
     "sector": "Energy",
     "sub_sector": "Oil, Gas & Coal"
   },
-  "SMRA.JK": {
-    "company_name": "PT Summarecon Agung Tbk",
-    "sector": "Properties & Real Estate",
-    "sub_sector": "Properties & Real Estate"
-  },
   "SMRU.JK": {
     "company_name": "SMR Utama Tbk",
     "sector": "Energy",
     "sub_sector": "Oil, Gas & Coal"
   },
-  "SMSM.JK": {
-    "company_name": "Selamat Sempurna Tbk",
-    "sector": "Consumer Cyclicals",
-    "sub_sector": "Automobiles & Components"
-  },
-  "SNLK.JK": {
-    "company_name": "PT Sunter Lakeside Hotel Tbk.",
-    "sector": "Consumer Cyclicals",
-    "sub_sector": "Consumer Services"
-  },
-  "SOCI.JK": {
-    "company_name": "PT Soechi Lines Tbk.",
-    "sector": "Energy",
-    "sub_sector": "Oil, Gas & Coal"
-  },
-  "SOFA.JK": {
-    "company_name": "PT Boston Furniture Industries Tbk..",
-    "sector": "Consumer Cyclicals",
-    "sub_sector": "Household Goods"
-  },
-  "SOHO.JK": {
-    "company_name": "PT Soho Global Health Tbk",
-    "sector": "Healthcare",
-    "sub_sector": "Pharmaceuticals & Health Care Research"
-  },
   "SOLA.JK": {
     "company_name": "PT Xolare RCR Energy Tbk",
     "sector": "Basic Materials",
     "sub_sector": "Basic Materials"
-  },
-  "SONA.JK": {
-    "company_name": "Sona Topas Tourism Industry Tbk",
-    "sector": "Consumer Cyclicals",
-    "sub_sector": "Retailing"
-  },
-  "SOSS.JK": {
-    "company_name": "PT Shield On Service Tbk.",
-    "sector": "Industrials",
-    "sub_sector": "Industrial Services"
   },
   "SOTS.JK": {
     "company_name": "PT Satria Mega Kencana Tbk.",
@@ -4089,11 +3789,6 @@
     "sector": "Consumer Non-Cyclicals",
     "sub_sector": "Food & Beverage"
   },
-  "SPMA.JK": {
-    "company_name": "Suparma Tbk",
-    "sector": "Basic Materials",
-    "sub_sector": "Basic Materials"
-  },
   "SPRE.JK": {
     "company_name": "PT Soraya Berjaya Indonesia Tbk",
     "sector": "Consumer Cyclicals",
@@ -4104,110 +3799,35 @@
     "sector": "Industrials",
     "sub_sector": "Industrial Goods"
   },
-  "SQMI.JK": {
-    "company_name": "Wilton Makmur Indonesia Tbk",
-    "sector": "Basic Materials",
-    "sub_sector": "Basic Materials"
-  },
-  "SRAJ.JK": {
-    "company_name": "Sejahteraraya Anugrahjaya Tbk",
-    "sector": "Healthcare",
-    "sub_sector": "Healthcare Equipment & Providers"
-  },
-  "SRIL.JK": {
-    "company_name": "PT Sri Rejeki Isman Tbk",
-    "sector": "Consumer Cyclicals",
-    "sub_sector": "Apparel & Luxury Goods"
-  },
   "SRSN.JK": {
     "company_name": "Indo Acidatama Tbk",
     "sector": "Basic Materials",
     "sub_sector": "Basic Materials"
-  },
-  "SRTG.JK": {
-    "company_name": "PT Saratoga Investama Sedaya Tbk.",
-    "sector": "Financials",
-    "sub_sector": "Holding & Investment Companies"
   },
   "SSIA.JK": {
     "company_name": "PT Surya Semesta Internusa Tbk",
     "sector": "Infrastructures",
     "sub_sector": "Heavy Constructions & Civil Engineering"
   },
-  "SSMS.JK": {
-    "company_name": "PT Sawit Sumbermas Sarana Tbk.",
-    "sector": "Consumer Non-Cyclicals",
-    "sub_sector": "Food & Beverage"
-  },
   "SSTM.JK": {
     "company_name": "Sunson Textile Manufacturer Tbk",
     "sector": "Consumer Cyclicals",
     "sub_sector": "Apparel & Luxury Goods"
-  },
-  "STAA.JK": {
-    "company_name": "PT Sumber Tani Agung Resources Tbk",
-    "sector": "Consumer Non-Cyclicals",
-    "sub_sector": "Food & Beverage"
-  },
-  "STAR.JK": {
-    "company_name": "PT Buana Artha Anugerah Tbk.",
-    "sector": "Financials",
-    "sub_sector": "Holding & Investment Companies"
   },
   "STRK.JK": {
     "company_name": "PT Lovina Beach Brewery Tbk.",
     "sector": "Consumer Non-Cyclicals",
     "sub_sector": "Food & Beverage"
   },
-  "STTP.JK": {
-    "company_name": "PT Siantar Top Tbk",
-    "sector": "Consumer Non-Cyclicals",
-    "sub_sector": "Food & Beverage"
-  },
-  "SUGI.JK": {
-    "company_name": "Sugih Energy Tbk",
-    "sector": "Energy",
-    "sub_sector": "Oil, Gas & Coal"
-  },
   "SULI.JK": {
     "company_name": "PT SLJ Global Tbk",
     "sector": "Basic Materials",
     "sub_sector": "Basic Materials"
   },
-  "SUNI.JK": {
-    "company_name": "PT Sunindo Pratama Tbk",
-    "sector": "Energy",
-    "sub_sector": "Oil, Gas & Coal"
-  },
   "SUPR.JK": {
     "company_name": "Solusi Tunas Pratama Tbk",
     "sector": "Infrastructures",
     "sub_sector": "Telecommunication"
-  },
-  "SURE.JK": {
-    "company_name": "PT Super Energy Tbk.",
-    "sector": "Energy",
-    "sub_sector": "Oil, Gas & Coal"
-  },
-  "SURI.JK": {
-    "company_name": "PT Maja Agung Latexindo Tbk.",
-    "sector": "Healthcare",
-    "sub_sector": "Healthcare Equipment & Providers"
-  },
-  "SWAT.JK": {
-    "company_name": "PT Sriwahana Adityakarta Tbk.",
-    "sector": "Basic Materials",
-    "sub_sector": "Basic Materials"
-  },
-  "SWID.JK": {
-    "company_name": "PT Saraswanti Indoland Development Tbk",
-    "sector": "Properties & Real Estate",
-    "sub_sector": "Properties & Real Estate"
-  },
-  "TALF.JK": {
-    "company_name": "PT Tunas Alfin Tbk",
-    "sector": "Basic Materials",
-    "sub_sector": "Basic Materials"
   },
   "TAMA.JK": {
     "company_name": "PT Lancartama Sejati Tbk.",
@@ -4219,21 +3839,6 @@
     "sector": "Energy",
     "sub_sector": "Oil, Gas & Coal"
   },
-  "TAPG.JK": {
-    "company_name": "PT Triputra Agro Persada Tbk.",
-    "sector": "Consumer Non-Cyclicals",
-    "sub_sector": "Food & Beverage"
-  },
-  "TARA.JK": {
-    "company_name": "PT Agung Semesta Sejahtera Tbk",
-    "sector": "Properties & Real Estate",
-    "sub_sector": "Properties & Real Estate"
-  },
-  "TAXI.JK": {
-    "company_name": "Express Transindo Utama Tbk",
-    "sector": "Transportation & Logistic",
-    "sub_sector": "Transportation"
-  },
   "TAYS.JK": {
     "company_name": "PT Jaya Swarasa Agung Tbk",
     "sector": "Consumer Non-Cyclicals",
@@ -4244,40 +3849,15 @@
     "sector": "Infrastructures",
     "sub_sector": "Telecommunication"
   },
-  "TBLA.JK": {
-    "company_name": "Tunas Baru Lampung Tbk",
-    "sector": "Consumer Non-Cyclicals",
-    "sub_sector": "Food & Beverage"
-  },
-  "TBMS.JK": {
-    "company_name": "Tembaga Mulia Semanan Tbk",
-    "sector": "Basic Materials",
-    "sub_sector": "Basic Materials"
-  },
   "TCID.JK": {
     "company_name": "Mandom Indonesia Tbk",
     "sector": "Consumer Non-Cyclicals",
     "sub_sector": "Nondurable Household Products"
   },
-  "TCPI.JK": {
-    "company_name": "PT Transcoal Pacific Tbk.",
-    "sector": "Energy",
-    "sub_sector": "Oil, Gas & Coal"
-  },
-  "TDPM.JK": {
-    "company_name": "PT Tianrong Chemicals Industry Tbk",
-    "sector": "Basic Materials",
-    "sub_sector": "Basic Materials"
-  },
   "TEBE.JK": {
     "company_name": "PT Dana Brata Luhur Tbk.",
     "sector": "Energy",
     "sub_sector": "Oil, Gas & Coal"
-  },
-  "TECH.JK": {
-    "company_name": "PT Indosterling Technomedia Tbk",
-    "sector": "Technology",
-    "sub_sector": "Software & IT Services"
   },
   "TELE.JK": {
     "company_name": "PT Omni Inovasi Indonesia Tbk",
@@ -4289,23 +3869,8 @@
     "sector": "Technology",
     "sub_sector": "Software & IT Services"
   },
-  "TFCO.JK": {
-    "company_name": "Tifico Fiber Indonesia Tbk",
-    "sector": "Consumer Cyclicals",
-    "sub_sector": "Apparel & Luxury Goods"
-  },
   "TGKA.JK": {
     "company_name": "Tigaraksa Satria Tbk",
-    "sector": "Consumer Non-Cyclicals",
-    "sub_sector": "Food & Beverage"
-  },
-  "TGRA.JK": {
-    "company_name": "PT Terregra Asia Energy",
-    "sector": "Infrastructures",
-    "sub_sector": "Utilities"
-  },
-  "TGUK.JK": {
-    "company_name": "PT Platinum Wahab Nusantara Tbk.",
     "sector": "Consumer Non-Cyclicals",
     "sub_sector": "Food & Beverage"
   },
@@ -4319,21 +3884,6 @@
     "sector": "Basic Materials",
     "sub_sector": "Basic Materials"
   },
-  "TIRA.JK": {
-    "company_name": "Tira Austenite Tbk",
-    "sector": "Industrials",
-    "sub_sector": "Industrial Services"
-  },
-  "TIRT.JK": {
-    "company_name": "Tirta Mahakam Resources Tbk",
-    "sector": "Basic Materials",
-    "sub_sector": "Basic Materials"
-  },
-  "TKIM.JK": {
-    "company_name": "Pabrik Kertas Tjiwi Kimia Tbk",
-    "sector": "Basic Materials",
-    "sub_sector": "Basic Materials"
-  },
   "TLDN.JK": {
     "company_name": "PT Teladan Prima Agro Tbk",
     "sector": "Consumer Non-Cyclicals",
@@ -4343,11 +3893,6 @@
     "company_name": "PT Telkom Indonesia (Persero) Tbk",
     "sector": "Infrastructures",
     "sub_sector": "Telecommunication"
-  },
-  "TMAS.JK": {
-    "company_name": "PT Temas Tbk.",
-    "sector": "Transportation & Logistic",
-    "sub_sector": "Logistics & Deliveries"
   },
   "TMPO.JK": {
     "company_name": "Tempo Inti Media Tbk",
@@ -4364,11 +3909,6 @@
     "sector": "Energy",
     "sub_sector": "Oil, Gas & Coal"
   },
-  "TOOL.JK": {
-    "company_name": "PT Rohartindo Nusantara Luas Tbk",
-    "sector": "Consumer Cyclicals",
-    "sub_sector": "Retailing"
-  },
   "TOPS.JK": {
     "company_name": "PT Totalindo Eka Persada Tbk.",
     "sector": "Infrastructures",
@@ -4383,21 +3923,6 @@
     "company_name": "Total Bangun Persada Tbk",
     "sector": "Infrastructures",
     "sub_sector": "Heavy Constructions & Civil Engineering"
-  },
-  "TOTO.JK": {
-    "company_name": "Surya Toto Indonesia Tbk",
-    "sector": "Industrials",
-    "sub_sector": "Industrial Goods"
-  },
-  "TOWR.JK": {
-    "company_name": "Sarana Menara Nusantara Tbk",
-    "sector": "Infrastructures",
-    "sub_sector": "Telecommunication"
-  },
-  "TOYS.JK": {
-    "company_name": "PT Sunindo Adipersada Tbk.",
-    "sector": "Consumer Cyclicals",
-    "sub_sector": "Leisure Goods"
   },
   "TPIA.JK": {
     "company_name": "PT Chandra Asri Pacific Tbk",
@@ -4424,30 +3949,10 @@
     "sector": "Industrials",
     "sub_sector": "Industrial Services"
   },
-  "TRIM.JK": {
-    "company_name": "PT Trimegah Sekuritas Indonesia Tbk",
-    "sector": "Financials",
-    "sub_sector": "Investment Service"
-  },
-  "TRIN.JK": {
-    "company_name": "PT Perintis Triniti Properti Tbk",
-    "sector": "Properties & Real Estate",
-    "sub_sector": "Properties & Real Estate"
-  },
   "TRIO.JK": {
     "company_name": "Trikomsel Oke Tbk",
     "sector": "Consumer Cyclicals",
     "sub_sector": "Retailing"
-  },
-  "TRIS.JK": {
-    "company_name": "Trisula International Tbk",
-    "sector": "Consumer Cyclicals",
-    "sub_sector": "Apparel & Luxury Goods"
-  },
-  "TRJA.JK": {
-    "company_name": "PT Transkon Jaya Tbk.",
-    "sector": "Transportation & Logistic",
-    "sub_sector": "Transportation"
   },
   "TRON.JK": {
     "company_name": "PT Teknologi Karya Digital Nusa Tbk.",
@@ -4459,20 +3964,10 @@
     "sector": "Basic Materials",
     "sub_sector": "Basic Materials"
   },
-  "TRUE.JK": {
-    "company_name": "PT Triniti Dinamik Tbk",
-    "sector": "Properties & Real Estate",
-    "sub_sector": "Properties & Real Estate"
-  },
   "TRUK.JK": {
     "company_name": "PT Guna Timur Raya Tbk.",
     "sector": "Transportation & Logistic",
     "sub_sector": "Logistics & Deliveries"
-  },
-  "TRUS.JK": {
-    "company_name": "Trust Finance Indonesia Tbk",
-    "sector": "Financials",
-    "sub_sector": "Financing Service"
   },
   "TSPC.JK": {
     "company_name": "Tempo Scan Pacific Tbk",
@@ -4484,33 +3979,8 @@
     "sector": "Financials",
     "sub_sector": "Insurance"
   },
-  "TYRE.JK": {
-    "company_name": "PT King Tire Indonesia Tbk.",
-    "sector": "Consumer Cyclicals",
-    "sub_sector": "Automobiles & Components"
-  },
-  "UANG.JK": {
-    "company_name": "PT Pakuan Tbk",
-    "sector": "Properties & Real Estate",
-    "sub_sector": "Properties & Real Estate"
-  },
-  "UCID.JK": {
-    "company_name": "PT Uni-Charm Indonesia Tbk.",
-    "sector": "Consumer Non-Cyclicals",
-    "sub_sector": "Nondurable Household Products"
-  },
   "UDNG.JK": {
     "company_name": "PT Agro Bahari Nusantara Tbk",
-    "sector": "Consumer Non-Cyclicals",
-    "sub_sector": "Food & Beverage"
-  },
-  "UFOE.JK": {
-    "company_name": "PT Damai Sejahtera Abadi Tbk",
-    "sector": "Consumer Cyclicals",
-    "sub_sector": "Retailing"
-  },
-  "ULTJ.JK": {
-    "company_name": "PT Ultrajaya Milk Industry & Trading Company Tbk",
     "sector": "Consumer Non-Cyclicals",
     "sub_sector": "Food & Beverage"
   },
@@ -4524,65 +3994,10 @@
     "sector": "Energy",
     "sub_sector": "Oil, Gas & Coal"
   },
-  "UNIT.JK": {
-    "company_name": "Nusantara Inti Corpora Tbk",
-    "sector": "Consumer Cyclicals",
-    "sub_sector": "Apparel & Luxury Goods"
-  },
-  "UNSP.JK": {
-    "company_name": "Bakrie Sumatera Plantations Tbk",
-    "sector": "Consumer Non-Cyclicals",
-    "sub_sector": "Food & Beverage"
-  },
   "UNTD.JK": {
     "company_name": "PT Terang Dunia Internusa Tbk.",
     "sector": "Consumer Cyclicals",
     "sub_sector": "Leisure Goods"
-  },
-  "UNTR.JK": {
-    "company_name": "United Tractors Tbk",
-    "sector": "Industrials",
-    "sub_sector": "Industrial Goods"
-  },
-  "UNVR.JK": {
-    "company_name": "Unilever Indonesia Tbk",
-    "sector": "Consumer Non-Cyclicals",
-    "sub_sector": "Nondurable Household Products"
-  },
-  "URBN.JK": {
-    "company_name": "PT Urban Jakarta Propertindo Tbk.",
-    "sector": "Properties & Real Estate",
-    "sub_sector": "Properties & Real Estate"
-  },
-  "UVCR.JK": {
-    "company_name": "PT Trimegah Karya Pratama Tbk.",
-    "sector": "Technology",
-    "sub_sector": "Software & IT Services"
-  },
-  "VAST.JK": {
-    "company_name": "PT Vastland Indonesia Tbk",
-    "sector": "Properties & Real Estate",
-    "sub_sector": "Properties & Real Estate"
-  },
-  "VERN.JK": {
-    "company_name": "PT Verona Indah Pictures Tbk",
-    "sector": "Consumer Cyclicals",
-    "sub_sector": "Media & Entertainment"
-  },
-  "VICI.JK": {
-    "company_name": "PT Victoria Care Indonesia Tbk",
-    "sector": "Consumer Non-Cyclicals",
-    "sub_sector": "Nondurable Household Products"
-  },
-  "VICO.JK": {
-    "company_name": "PT Victoria Investama Tbk.",
-    "sector": "Financials",
-    "sub_sector": "Holding & Investment Companies"
-  },
-  "VINS.JK": {
-    "company_name": "PT Victoria Insurance Tbk.",
-    "sector": "Financials",
-    "sub_sector": "Insurance"
   },
   "VISI.JK": {
     "company_name": "PT Satu Visi Putra Tbk.",
@@ -4599,18 +4014,8 @@
     "sector": "Consumer Cyclicals",
     "sub_sector": "Automobiles & Components"
   },
-  "VOKS.JK": {
-    "company_name": "Voksel Electric Tbk",
-    "sector": "Industrials",
-    "sub_sector": "Industrial Goods"
-  },
   "VRNA.JK": {
     "company_name": "PT Mizuho Leasing Indonesia Tbk",
-    "sector": "Financials",
-    "sub_sector": "Financing Service"
-  },
-  "VTNY.JK": {
-    "company_name": "PT Venteny Fortuna International Tbk",
     "sector": "Financials",
     "sub_sector": "Financing Service"
   },
@@ -4634,21 +4039,6 @@
     "sector": "Technology",
     "sub_sector": "Software & IT Services"
   },
-  "WICO.JK": {
-    "company_name": "Wicaksana Overseas International Tbk",
-    "sector": "Consumer Non-Cyclicals",
-    "sub_sector": "Food & Staples Retailing"
-  },
-  "WIDI.JK": {
-    "company_name": "PT Widiant Jaya Krenindo Tbk.",
-    "sector": "Industrials",
-    "sub_sector": "Industrial Goods"
-  },
-  "WIFI.JK": {
-    "company_name": "PT Solusi Sinergi Digital Tbk",
-    "sector": "Technology",
-    "sub_sector": "Software & IT Services"
-  },
   "WIIM.JK": {
     "company_name": "Wismilak Inti Makmur Tbk",
     "sector": "Consumer Non-Cyclicals",
@@ -4659,45 +4049,20 @@
     "sector": "Infrastructures",
     "sub_sector": "Heavy Constructions & Civil Engineering"
   },
-  "WINE.JK": {
-    "company_name": "PT Hatten Bali Tbk",
-    "sector": "Consumer Non-Cyclicals",
-    "sub_sector": "Food & Beverage"
-  },
   "WINR.JK": {
     "company_name": "PT Winner Nusantara Jaya Tbk",
     "sector": "Properties & Real Estate",
     "sub_sector": "Properties & Real Estate"
-  },
-  "WINS.JK": {
-    "company_name": "Wintermar Offshore Marine Tbk",
-    "sector": "Energy",
-    "sub_sector": "Oil, Gas & Coal"
   },
   "WIRG.JK": {
     "company_name": "PT Wir Asia Tbk",
     "sector": "Technology",
     "sub_sector": "Software & IT Services"
   },
-  "WMPP.JK": {
-    "company_name": "PT Widodo Makmur Perkasa Tbk",
-    "sector": "Consumer Non-Cyclicals",
-    "sub_sector": "Food & Beverage"
-  },
   "WMUU.JK": {
     "company_name": "PT Widodo Makmur Unggas Tbk",
     "sector": "Consumer Non-Cyclicals",
     "sub_sector": "Food & Beverage"
-  },
-  "WOMF.JK": {
-    "company_name": "PT Wahana Ottomitra Multiartha Tbk",
-    "sector": "Financials",
-    "sub_sector": "Financing Service"
-  },
-  "WOOD.JK": {
-    "company_name": "PT Integra Indocabinet Tbk",
-    "sector": "Consumer Cyclicals",
-    "sub_sector": "Household Goods"
   },
   "WOWS.JK": {
     "company_name": "PT Ginting Jaya Energi Tbk",
@@ -4744,29 +4109,664 @@
     "sector": "Consumer Non-Cyclicals",
     "sub_sector": "Food & Beverage"
   },
-  "ZATA.JK": {
-    "company_name": "PT Bersama Zatta Jaya Tbk",
-    "sector": "Consumer Cyclicals",
-    "sub_sector": "Retailing"
-  },
-  "ZBRA.JK": {
-    "company_name": "PT Dosni Roha Indonesia Tbk",
-    "sector": "Industrials",
-    "sub_sector": "Multi-sector Holdings"
-  },
-  "ZINC.JK": {
-    "company_name": "PT Kapuas Prima Coal Tbk",
-    "sector": "Basic Materials",
-    "sub_sector": "Basic Materials"
-  },
   "ZONE.JK": {
     "company_name": "PT Mega Perintis Tbk.",
     "sector": "Consumer Cyclicals",
     "sub_sector": "Retailing"
   },
-  "ZYRX.JK": {
-    "company_name": "PT Zyrexindo Mandiri Buana Tbk",
+  "ABBA.JK": {
+    "company_name": "Mahaka Media Tbk",
+    "sector": "Consumer Cyclicals",
+    "sub_sector": "Media & Entertainment"
+  },
+  "ABDA.JK": {
+    "company_name": "Asuransi Bina Dana Arta Tbk",
+    "sector": "Financials",
+    "sub_sector": "Insurance"
+  },
+  "ACST.JK": {
+    "company_name": "PT Acset Indonusa Tbk.",
+    "sector": "Infrastructures",
+    "sub_sector": "Heavy Constructions & Civil Engineering"
+  },
+  "ADES.JK": {
+    "company_name": "Akasha Wira International Tbk  Tbk",
+    "sector": "Consumer Non-Cyclicals",
+    "sub_sector": "Food & Beverage"
+  },
+  "ADMG.JK": {
+    "company_name": "Polychem Indonesia Tbk",
+    "sector": "Basic Materials",
+    "sub_sector": "Basic Materials"
+  },
+  "ADMR.JK": {
+    "company_name": "PT Adaro Minerals Indonesia Tbk",
+    "sector": "Energy",
+    "sub_sector": "Oil, Gas & Coal"
+  },
+  "ADRO.JK": {
+    "company_name": "Alamtri Resources Indonesia Tbk",
+    "sector": "Energy",
+    "sub_sector": "Oil, Gas & Coal"
+  },
+  "AGAR.JK": {
+    "company_name": "PT Asia Sejahtera Mina Tbk",
+    "sector": "Consumer Non-Cyclicals",
+    "sub_sector": "Food & Beverage"
+  },
+  "AGRO.JK": {
+    "company_name": "PT Bank Raya Indonesia Tbk",
+    "sector": "Financials",
+    "sub_sector": "Banks"
+  },
+  "AISA.JK": {
+    "company_name": "PT FKS Food Sejahtera Tbk",
+    "sector": "Consumer Non-Cyclicals",
+    "sub_sector": "Food & Beverage"
+  },
+  "AKKU.JK": {
+    "company_name": "PT Anugerah Kagum Karya Utama Tbk",
+    "sector": "Consumer Cyclicals",
+    "sub_sector": "Consumer Services"
+  },
+  "AKRA.JK": {
+    "company_name": "PT AKR Corporindo Tbk.",
+    "sector": "Energy",
+    "sub_sector": "Oil, Gas & Coal"
+  },
+  "AKSI.JK": {
+    "company_name": "PT Mineral Sumberdaya Mandiri Tbk",
+    "sector": "Transportation & Logistic",
+    "sub_sector": "Logistics & Deliveries"
+  },
+  "ALII.JK": {
+    "company_name": "PT Ancara Logistics Indonesia Tbk",
+    "sector": "Energy",
+    "sub_sector": "Oil, Gas & Coal"
+  },
+  "ALKA.JK": {
+    "company_name": "Alakasa Industrindo Tbk",
+    "sector": "Basic Materials",
+    "sub_sector": "Basic Materials"
+  },
+  "ALMI.JK": {
+    "company_name": "Alumindo Light Metal Industry Tbk",
+    "sector": "Basic Materials",
+    "sub_sector": "Basic Materials"
+  },
+  "ALTO.JK": {
+    "company_name": "Tri Banyan Tirta Tbk",
+    "sector": "Consumer Non-Cyclicals",
+    "sub_sector": "Food & Beverage"
+  },
+  "AMAG.JK": {
+    "company_name": "Asuransi Multi Artha Guna Tbk",
+    "sector": "Financials",
+    "sub_sector": "Insurance"
+  },
+  "AMAN.JK": {
+    "company_name": "PT Makmur Berkah Amanda Tbk.",
+    "sector": "Properties & Real Estate",
+    "sub_sector": "Properties & Real Estate"
+  },
+  "AMFG.JK": {
+    "company_name": "Asahimas Flat Glass Tbk",
+    "sector": "Industrials",
+    "sub_sector": "Industrial Goods"
+  },
+  "AMMS.JK": {
+    "company_name": "PT Agung Menjangan Mas Tbk",
+    "sector": "Consumer Non-Cyclicals",
+    "sub_sector": "Food & Beverage"
+  },
+  "AMOR.JK": {
+    "company_name": "PT Ashmore Asset Management Indonesia Tbk.",
+    "sector": "Financials",
+    "sub_sector": "Investment Service"
+  },
+  "AMRT.JK": {
+    "company_name": "PT Sumber Alfaria Trijaya Tbk.",
+    "sector": "Consumer Non-Cyclicals",
+    "sub_sector": "Food & Staples Retailing"
+  },
+  "ANDI.JK": {
+    "company_name": "PT Andira Agro Tbk",
+    "sector": "Consumer Non-Cyclicals",
+    "sub_sector": "Food & Beverage"
+  },
+  "ANJT.JK": {
+    "company_name": "PT Austindo Nusantara Jaya Tbk.",
+    "sector": "Consumer Non-Cyclicals",
+    "sub_sector": "Food & Beverage"
+  },
+  "APEX.JK": {
+    "company_name": "Apexindo Pratama Duta Tbk",
+    "sector": "Energy",
+    "sub_sector": "Oil, Gas & Coal"
+  },
+  "APIC.JK": {
+    "company_name": "Pacific Strategic Financial Tbk",
+    "sector": "Financials",
+    "sub_sector": "Holding & Investment Companies"
+  },
+  "APLI.JK": {
+    "company_name": "Asiaplast Industries Tbk",
+    "sector": "Basic Materials",
+    "sub_sector": "Basic Materials"
+  },
+  "APLN.JK": {
+    "company_name": "PT Agung Podomoro Land Tbk.",
+    "sector": "Properties & Real Estate",
+    "sub_sector": "Properties & Real Estate"
+  },
+  "ARGO.JK": {
+    "company_name": "Argo Pantes Tbk",
+    "sector": "Consumer Cyclicals",
+    "sub_sector": "Apparel & Luxury Goods"
+  },
+  "ARII.JK": {
+    "company_name": "Atlas Resources Tbk",
+    "sector": "Energy",
+    "sub_sector": "Oil, Gas & Coal"
+  },
+  "ARKA.JK": {
+    "company_name": "PT Arkha Jayanti Persada Tbk.",
+    "sector": "Industrials",
+    "sub_sector": "Industrial Goods"
+  },
+  "ARNA.JK": {
+    "company_name": "Arwana Citramulia Tbk",
+    "sector": "Industrials",
+    "sub_sector": "Industrial Goods"
+  },
+  "ARTA.JK": {
+    "company_name": "Arthavest Tbk",
+    "sector": "Consumer Cyclicals",
+    "sub_sector": "Consumer Services"
+  },
+  "ARTI.JK": {
+    "company_name": "Ratu Prabu Energi Tbk",
+    "sector": "Energy",
+    "sub_sector": "Oil, Gas & Coal"
+  },
+  "ASGR.JK": {
+    "company_name": "Astra Graphia Tbk",
+    "sector": "Industrials",
+    "sub_sector": "Industrial Services"
+  },
+  "ASII.JK": {
+    "company_name": "Astra International Tbk",
+    "sector": "Industrials",
+    "sub_sector": "Multi-sector Holdings"
+  },
+  "ASJT.JK": {
+    "company_name": "Asuransi Jasa Tania Tbk",
+    "sector": "Financials",
+    "sub_sector": "Insurance"
+  },
+  "ASRI.JK": {
+    "company_name": "Alam Sutera Realty Tbk",
+    "sector": "Properties & Real Estate",
+    "sub_sector": "Properties & Real Estate"
+  },
+  "ASSA.JK": {
+    "company_name": "Adi Sarana Armada Tbk",
+    "sector": "Transportation & Logistic",
+    "sub_sector": "Transportation"
+  },
+  "AWAN.JK": {
+    "company_name": "PT Era Digital Media Tbk",
     "sector": "Technology",
-    "sub_sector": "Technology Hardware & Equipment"
+    "sub_sector": "Software & IT Services"
+  },
+  "AYAM.JK": {
+    "company_name": "PT Janu Putra Sejahtera Tbk.",
+    "sector": "Consumer Non-Cyclicals",
+    "sub_sector": "Food & Beverage"
+  },
+  "BABP.JK": {
+    "company_name": "PT Bank MNC Internasional Tbk.",
+    "sector": "Financials",
+    "sub_sector": "Banks"
+  },
+  "BABY.JK": {
+    "company_name": "PT Multitrend Indo Tbk.",
+    "sector": "Consumer Cyclicals",
+    "sub_sector": "Retailing"
+  },
+  "BACA.JK": {
+    "company_name": "PT Bank Capital Indonesia Tbk",
+    "sector": "Financials",
+    "sub_sector": "Banks"
+  },
+  "BALI.JK": {
+    "company_name": "PT Bali Towerindo Sentra Tbk.",
+    "sector": "Infrastructures",
+    "sub_sector": "Telecommunication"
+  },
+  "BATA.JK": {
+    "company_name": "Sepatu Bata Tbk",
+    "sector": "Consumer Cyclicals",
+    "sub_sector": "Apparel & Luxury Goods"
+  },
+  "BBKP.JK": {
+    "company_name": "PT Bank KB Indonesia Tbk",
+    "sector": "Financials",
+    "sub_sector": "Banks"
+  },
+  "BBNI.JK": {
+    "company_name": "PT Bank Negara Indonesia (Persero) Tbk",
+    "sector": "Financials",
+    "sub_sector": "Banks"
+  },
+  "BBSI.JK": {
+    "company_name": "PT Krom Bank Indonesia Tbk",
+    "sector": "Financials",
+    "sub_sector": "Banks"
+  },
+  "BBSS.JK": {
+    "company_name": "PT Bumi Benowo Sukses Sejahtera Tbk",
+    "sector": "Properties & Real Estate",
+    "sub_sector": "Properties & Real Estate"
+  },
+  "BCIP.JK": {
+    "company_name": "Bumi Citra Permai Tbk",
+    "sector": "Properties & Real Estate",
+    "sub_sector": "Properties & Real Estate"
+  },
+  "BDKR.JK": {
+    "company_name": "PT Berdikari Pondasi Perkasa Tbk.",
+    "sector": "Infrastructures",
+    "sub_sector": "Heavy Constructions & Civil Engineering"
+  },
+  "BEBS.JK": {
+    "company_name": "PT Berkah Beton Sadaya Tbk",
+    "sector": "Basic Materials",
+    "sub_sector": "Basic Materials"
+  },
+  "BEER.JK": {
+    "company_name": "PT Jobubu Jarum Minahasa Tbk",
+    "sector": "Consumer Non-Cyclicals",
+    "sub_sector": "Food & Beverage"
+  },
+  "BELI.JK": {
+    "company_name": "PT Global Digital Niaga Tbk",
+    "sector": "Technology",
+    "sub_sector": "Software & IT Services"
+  },
+  "BELL.JK": {
+    "company_name": "PT Trisula Textile Industries Tbk",
+    "sector": "Consumer Cyclicals",
+    "sub_sector": "Apparel & Luxury Goods"
+  },
+  "BESS.JK": {
+    "company_name": "PT Batulicin Nusantara Maritim Tbk.",
+    "sector": "Energy",
+    "sub_sector": "Oil, Gas & Coal"
+  },
+  "BGTG.JK": {
+    "company_name": "PT Bank Ganesha Tbk.",
+    "sector": "Financials",
+    "sub_sector": "Banks"
+  },
+  "BHAT.JK": {
+    "company_name": "PT Bhakti Multi Artha Tbk.",
+    "sector": "Financials",
+    "sub_sector": "Insurance"
+  },
+  "BIKE.JK": {
+    "company_name": "PT Sepeda Bersama Indonesia Tbk",
+    "sector": "Consumer Cyclicals",
+    "sub_sector": "Leisure Goods"
+  },
+  "BIMA.JK": {
+    "company_name": "Primarindo Asia Infrastructure Tbk",
+    "sector": "Consumer Cyclicals",
+    "sub_sector": "Apparel & Luxury Goods"
+  },
+  "BINA.JK": {
+    "company_name": "PT Bank Ina Perdana Tbk.",
+    "sector": "Financials",
+    "sub_sector": "Banks"
+  },
+  "BIPI.JK": {
+    "company_name": "PT Astrindo Nusantara Infrastruktur Tbk.",
+    "sector": "Energy",
+    "sub_sector": "Oil, Gas & Coal"
+  },
+  "BIPP.JK": {
+    "company_name": "Bhuwanatala Indah Permai Tbk",
+    "sector": "Properties & Real Estate",
+    "sub_sector": "Properties & Real Estate"
+  },
+  "BIRD.JK": {
+    "company_name": "PT Blue Bird Tbk",
+    "sector": "Transportation & Logistic",
+    "sub_sector": "Transportation"
+  },
+  "BISI.JK": {
+    "company_name": "Bisi International Tbk",
+    "sector": "Consumer Non-Cyclicals",
+    "sub_sector": "Food & Beverage"
+  },
+  "BKDP.JK": {
+    "company_name": "Bukit Darmo Property Tbk",
+    "sector": "Properties & Real Estate",
+    "sub_sector": "Properties & Real Estate"
+  },
+  "BLES.JK": {
+    "company_name": "PT Superior Prima Sukses Tbk",
+    "sector": "Basic Materials",
+    "sub_sector": "Basic Materials"
+  },
+  "BLOG.JK": {
+    "company_name": "PT Trimitra Trans Persada Tbk",
+    "sector": "Transportation & Logistic",
+    "sub_sector": "Logistics & Deliveries"
+  },
+  "BLTA.JK": {
+    "company_name": "Berlian Laju Tanker Tbk",
+    "sector": "Transportation & Logistic",
+    "sub_sector": "Logistics & Deliveries"
+  },
+  "BMAS.JK": {
+    "company_name": "PT Bank Maspion Indonesia Tbk.",
+    "sector": "Financials",
+    "sub_sector": "Banks"
+  },
+  "BMBL.JK": {
+    "company_name": "PT Lavender Bina Cendikia Tbk",
+    "sector": "Consumer Cyclicals",
+    "sub_sector": "Consumer Services"
+  },
+  "BMRI.JK": {
+    "company_name": "PT Bank Mandiri (Persero) Tbk",
+    "sector": "Financials",
+    "sub_sector": "Banks"
+  },
+  "BMSR.JK": {
+    "company_name": "Bintang Mitra Semestaraya Tbk",
+    "sector": "Basic Materials",
+    "sub_sector": "Basic Materials"
+  },
+  "BNII.JK": {
+    "company_name": "PT Bank Maybank Indonesia Tbk",
+    "sector": "Financials",
+    "sub_sector": "Banks"
+  },
+  "BNLI.JK": {
+    "company_name": "Bank Permata Tbk",
+    "sector": "Financials",
+    "sub_sector": "Banks"
+  },
+  "BOAT.JK": {
+    "company_name": "PT Newport Marine Services Tbk",
+    "sector": "Energy",
+    "sub_sector": "Oil, Gas & Coal"
+  },
+  "BOGA.JK": {
+    "company_name": "PT Bintang Oto Global Tbk",
+    "sector": "Consumer Cyclicals",
+    "sub_sector": "Retailing"
+  },
+  "BOLT.JK": {
+    "company_name": "PT Garuda Metalindo Tbk.",
+    "sector": "Consumer Cyclicals",
+    "sub_sector": "Automobiles & Components"
+  },
+  "BPFI.JK": {
+    "company_name": "PT Woori Finance Indonesia Tbk",
+    "sector": "Financials",
+    "sub_sector": "Financing Service"
+  },
+  "BPII.JK": {
+    "company_name": "PT Batavia Prosperindo Internasional Tbk.",
+    "sector": "Financials",
+    "sub_sector": "Holding & Investment Companies"
+  },
+  "BPTR.JK": {
+    "company_name": "PT Batavia Prosperindo Trans Tbk.",
+    "sector": "Transportation & Logistic",
+    "sub_sector": "Transportation"
+  },
+  "PMUI.JK": {
+    "company_name": "PT Prima Multi Usaha Indonesia Tbk",
+    "sector": "Consumer Cyclicals",
+    "sub_sector": "Retailing"
+  },
+  "BRAM.JK": {
+    "company_name": "Indo Kordsa Tbk",
+    "sector": "Consumer Cyclicals",
+    "sub_sector": "Automobiles & Components"
+  },
+  "BRMS.JK": {
+    "company_name": "Bumi Resources Minerals Tbk",
+    "sector": "Basic Materials",
+    "sub_sector": "Basic Materials"
+  },
+  "BRPT.JK": {
+    "company_name": "Barito Pacific Tbk",
+    "sector": "Basic Materials",
+    "sub_sector": "Basic Materials"
+  },
+  "BRRC.JK": {
+    "company_name": "PT Raja Roti Cemerlang Tbk",
+    "sector": "Consumer Non-Cyclicals",
+    "sub_sector": "Food & Beverage"
+  },
+  "BSBK.JK": {
+    "company_name": "PT Wulandari Bangun Laksana Tbk",
+    "sector": "Properties & Real Estate",
+    "sub_sector": "Properties & Real Estate"
+  },
+  "BSIM.JK": {
+    "company_name": "Bank Sinarmas Tbk",
+    "sector": "Financials",
+    "sub_sector": "Banks"
+  },
+  "BSML.JK": {
+    "company_name": "PT Bintang Samudera Mandiri Lines Tbk",
+    "sector": "Energy",
+    "sub_sector": "Oil, Gas & Coal"
+  },
+  "BTEL.JK": {
+    "company_name": "Bakrie Telecom Tbk",
+    "sector": "Infrastructures",
+    "sub_sector": "Telecommunication"
+  },
+  "BUKA.JK": {
+    "company_name": "PT Bukalapak.com Tbk",
+    "sector": "Technology",
+    "sub_sector": "Software & IT Services"
+  },
+  "BUKK.JK": {
+    "company_name": "Bukaka Teknik Utama Tbk",
+    "sector": "Infrastructures",
+    "sub_sector": "Heavy Constructions & Civil Engineering"
+  },
+  "BULL.JK": {
+    "company_name": "PT Buana Lintas Lautan Tbk.",
+    "sector": "Energy",
+    "sub_sector": "Oil, Gas & Coal"
+  },
+  "BUMI.JK": {
+    "company_name": "Bumi Resources Tbk",
+    "sector": "Energy",
+    "sub_sector": "Oil, Gas & Coal"
+  },
+  "BUVA.JK": {
+    "company_name": "PT Bukit Uluwatu Villa Tbk",
+    "sector": "Consumer Cyclicals",
+    "sub_sector": "Consumer Services"
+  },
+  "BWPT.JK": {
+    "company_name": "Eagle High Plantations Tbk",
+    "sector": "Consumer Non-Cyclicals",
+    "sub_sector": "Food & Beverage"
+  },
+  "CAKK.JK": {
+    "company_name": "PT Cahayaputra Asa Keramik Tbk.",
+    "sector": "Industrials",
+    "sub_sector": "Industrial Goods"
+  },
+  "CANI.JK": {
+    "company_name": "PT Capitol Nusantara Indonesia Tbk.",
+    "sector": "Energy",
+    "sub_sector": "Oil, Gas & Coal"
+  },
+  "CARS.JK": {
+    "company_name": "PT Industri dan Perdagangan Bintraco Dharma Tbk",
+    "sector": "Consumer Cyclicals",
+    "sub_sector": "Retailing"
+  },
+  "CASH.JK": {
+    "company_name": "PT Cashlez Worldwide Indonesia Tbk.",
+    "sector": "Technology",
+    "sub_sector": "Software & IT Services"
+  },
+  "CASS.JK": {
+    "company_name": "PT Cahaya Aero Services Tbk",
+    "sector": "Infrastructures",
+    "sub_sector": "Transportation Infrastructure"
+  },
+  "CBRE.JK": {
+    "company_name": "PT Cakra Buana Resources Energi Tbk",
+    "sector": "Energy",
+    "sub_sector": "Oil, Gas & Coal"
+  },
+  "CCSI.JK": {
+    "company_name": "PT Communication Cable Systems Indonesia Tbk.",
+    "sector": "Industrials",
+    "sub_sector": "Industrial Goods"
+  },
+  "CEKA.JK": {
+    "company_name": "PT Wilmar Cahaya Indonesia Tbk.",
+    "sector": "Consumer Non-Cyclicals",
+    "sub_sector": "Food & Beverage"
+  },
+  "CGAS.JK": {
+    "company_name": "PT Citra Nusantara Gemilang Tbk.",
+    "sector": "Energy",
+    "sub_sector": "Oil, Gas & Coal"
+  },
+  "CHEM.JK": {
+    "company_name": "PT Chemstar Indonesia Tbk",
+    "sector": "Basic Materials",
+    "sub_sector": "Basic Materials"
+  },
+  "CITA.JK": {
+    "company_name": "Cita Mineral Investindo Tbk",
+    "sector": "Basic Materials",
+    "sub_sector": "Basic Materials"
+  },
+  "CLEO.JK": {
+    "company_name": "PT Sariguna Primatirta Tbk",
+    "sector": "Consumer Non-Cyclicals",
+    "sub_sector": "Food & Beverage"
+  },
+  "CLPI.JK": {
+    "company_name": "Colorpak Indonesia Tbk",
+    "sector": "Basic Materials",
+    "sub_sector": "Basic Materials"
+  },
+  "CMNT.JK": {
+    "company_name": "PT Cemindo Gemilang Tbk",
+    "sector": "Basic Materials",
+    "sub_sector": "Basic Materials"
+  },
+  "CMPP.JK": {
+    "company_name": "PT AirAsia Indonesia Tbk",
+    "sector": "Transportation & Logistic",
+    "sub_sector": "Transportation"
+  },
+  "CNKO.JK": {
+    "company_name": "Exploitasi Energi Indonesia Tbk",
+    "sector": "Energy",
+    "sub_sector": "Oil, Gas & Coal"
+  },
+  "CNMA.JK": {
+    "company_name": "PT Nusantara Sejahtera Raya Tbk",
+    "sector": "Consumer Cyclicals",
+    "sub_sector": "Consumer Services"
+  },
+  "COAL.JK": {
+    "company_name": "PT Black Diamond Resources Tbk",
+    "sector": "Energy",
+    "sub_sector": "Oil, Gas & Coal"
+  },
+  "COIN.JK": {
+    "company_name": "PT Indokripto Koin Semesta Tbk",
+    "sector": "Financials",
+    "sub_sector": "Holding & Investment Companies"
+  },
+  "CPIN.JK": {
+    "company_name": "Charoen Pokphand Indonesia Tbk",
+    "sector": "Consumer Non-Cyclicals",
+    "sub_sector": "Food & Beverage"
+  },
+  "CRAB.JK": {
+    "company_name": "PT Toba Surimi Industries Tbk",
+    "sector": "Consumer Non-Cyclicals",
+    "sub_sector": "Food & Beverage"
+  },
+  "CSIS.JK": {
+    "company_name": "PT Cahayasakti Investindo Sukses Tbk",
+    "sector": "Properties & Real Estate",
+    "sub_sector": "Properties & Real Estate"
+  },
+  "CSMI.JK": {
+    "company_name": "PT Cipta Selera Murni Tbk.",
+    "sector": "Consumer Cyclicals",
+    "sub_sector": "Consumer Services"
+  },
+  "CTRA.JK": {
+    "company_name": "Ciputra Development Tbk",
+    "sector": "Properties & Real Estate",
+    "sub_sector": "Properties & Real Estate"
+  },
+  "CTTH.JK": {
+    "company_name": "Citatah Tbk",
+    "sector": "Industrials",
+    "sub_sector": "Industrial Goods"
+  },
+  "CUAN.JK": {
+    "company_name": "PT Petrindo Jaya Kreasi Tbk",
+    "sector": "Energy",
+    "sub_sector": "Oil, Gas & Coal"
+  },
+  "DAAZ.JK": {
+    "company_name": "PT Daaz Bara Lestari Tbk",
+    "sector": "Basic Materials",
+    "sub_sector": "Basic Materials"
+  },
+  "MSIE.JK": {
+    "company_name": "PT Multisarana Intan Eduka Tbk",
+    "sector": "Properties & Real Estate",
+    "sub_sector": "Properties & Real Estate"
+  },
+  "ASPR.JK": {
+    "company_name": "PT Asia Pramulia Tbk",
+    "sector": "Basic Materials",
+    "sub_sector": "Basic Materials"
+  },
+  "CDIA.JK": {
+    "company_name": "PT Chandra Daya Investasi Tbk",
+    "sector": "Infrastructures",
+    "sub_sector": "Utilities"
+  },
+  "SUGI.JK": {
+    "company_name": "Sugih Energy Tbk",
+    "sector": "Energy",
+    "sub_sector": "Oil, Gas & Coal"
+  },
+  "SIMA.JK": {
+    "company_name": "Siwani Makmur Tbk",
+    "sector": "Basic Materials",
+    "sub_sector": "Basic Materials"
+  },
+  "UNIT.JK": {
+    "company_name": "Nusantara Inti Corpora Tbk",
+    "sector": "Consumer Cyclicals",
+    "sub_sector": "Apparel & Luxury Goods"
   }
 }

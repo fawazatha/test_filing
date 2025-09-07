@@ -17,20 +17,33 @@ logger = logging.getLogger(__name__)
 class BaseParser(ABC):
     """Base class for PDF parsers."""
 
-    def __init__(self, pdf_folder: str, output_file: str, announcement_json: Optional[str] = None):
+    def __init__(
+        self,
+        pdf_folder: str,
+        output_file: str,
+        announcement_json: Optional[str] = None,
+        alerts_file: Optional[str] = None,
+        alerts_not_inserted_file: Optional[str] = None,
+    ):
         self.pdf_folder = pdf_folder
         self.output_file = output_file
         self.announcement_json = announcement_json
+
+        alerts_file = alerts_file or "alerts/alerts_idx.json"
+        alerts_not_inserted_file = alerts_not_inserted_file or "alerts/alerts_not_inserted.json"
+
+        os.makedirs(os.path.dirname(self.output_file), exist_ok=True)
+        os.makedirs(os.path.dirname(alerts_file), exist_ok=True)
+        os.makedirs(os.path.dirname(alerts_not_inserted_file), exist_ok=True)
+
         self.alert_manager = AlertManager(
-            alert_file="alerts/alerts_idx.json",
+            alert_file=alerts_file,
             preload_existing=False
         )
         self.alert_manager_not_inserted = AlertManager(
-            alert_file="alerts/alerts_not_inserted.json",
+            alert_file=alerts_not_inserted_file,
             preload_existing=False
         )
-
-        os.makedirs(os.path.dirname(output_file), exist_ok=True)
 
         self.symbol_to_name: Dict[str, str] = load_symbol_to_name_from_file() or {}
         self.rev_company_map: Dict[str, List[str]] = build_reverse_map(self.symbol_to_name)
@@ -42,6 +55,7 @@ class BaseParser(ABC):
             logger.info(f"Loaded {len(self.company_names)} company names from company_map.json")
         else:
             logger.warning("No company names loaded. Check data/company/company_map.json or env COMPANY_MAP_FILE")
+
 
     def build_pdf_mapping(self) -> Dict[str, Any]:
         """Build mapping from PDF files to announcement metadata."""

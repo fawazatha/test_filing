@@ -18,9 +18,26 @@ from .utils.company_resolver import (
     resolve_symbol_from_emiten,
     normalize_company_name,
 )
-from .utils.company_resolver import KNOWN_EMITEN_SYNONYMS as _RAW_EMITEN_SYNONYMS
+# from .utils.company_resolver import KNOWN_EMITEN_SYNONYMS as _RAW_EMITEN_SYNONYMS
 
 logger = logging.getLogger(__name__)
+
+class NonIDXParser(BaseParser):
+    def __init__(
+        self,
+        pdf_folder: str = "downloads/non-idx-format",
+        output_file: str = "data/parsed_non_idx_output.json",
+        announcement_json: str = "data/idx_announcements.json",
+    ):
+        super().__init__(
+            pdf_folder,
+            output_file,
+            announcement_json,
+            alerts_file=os.getenv("ALERTS_NON_IDX", "alerts/alerts_non_idx.json"),
+            alerts_not_inserted_file=os.getenv("ALERTS_NOT_INSERTED_NON_IDX", "alerts/alerts_not_inserted_non_idx.json"),
+        )
+        # ... sisa init NonIDXParser kamu ...
+
 
 
 class NonIDXParser(BaseParser):
@@ -32,9 +49,15 @@ class NonIDXParser(BaseParser):
     def __init__(self,
                  pdf_folder: str = "downloads/non-idx-format",
                  output_file: str = "data/parsed_non_idx_output.json",
-                 announcement_json: str = "data/idx_announcements.json"):
-        super().__init__(pdf_folder, output_file, announcement_json)
-        self.alert_manager.alert_file = "alerts/alerts_non_idx.json"
+                 announcement_json: str = "data/idx_announcements.json",
+    ):
+        super().__init__(
+            pdf_folder,
+            output_file,
+            announcement_json,
+            alerts_file=os.getenv("ALERTS_NON_IDX", "alerts/alerts_non_idx.json"),
+            alerts_not_inserted_file=os.getenv("ALERTS_NOT_INSERTED_NON_IDX", "alerts/alerts_not_inserted_non_idx.json"),
+        )
 
         self.excluded_names = {"Masyarakat lainnya yang dibawah 5%"}
 
@@ -236,18 +259,18 @@ class NonIDXParser(BaseParser):
                     logger.info("[nonidx-resolve] token-scan hit cand=%s", cand)
                 return cand
 
-        if self._synonym_enable:
-            syn = _RAW_EMITEN_SYNONYMS.get(norm_query)
-            if syn:
-                if self._debug_trace:
-                    logger.info("[nonidx-resolve] synonym-fallback norm='%s' -> %s", norm_query, syn)
-                return syn
+        # if self._synonym_enable:
+        #     syn = _RAW_EMITEN_SYNONYMS.get(norm_query)
+        #     if syn:
+        #         if self._debug_trace:
+        #             logger.info("[nonidx-resolve] synonym-fallback norm='%s' -> %s", norm_query, syn)
+        #         return syn
 
         try:
             if self._debug_trace:
                 self.alert_manager.log_alert(
                     "symbol_resolve_trace",
-                    f"symbol_not_resolved (min_score={min_score})",
+                    f"Symbol Not Resolved (min_score={min_score})",
                     {"query": query, "normalized": norm_query}
                 )
         except Exception:
@@ -389,11 +412,11 @@ class NonIDXParser(BaseParser):
                 # NON-BLOCKING: ke alerts_non_idx.json
                 self.alert_manager.log_alert(
                     source_name,
-                    "symbol_not_resolved",
+                    "Symbol Not Resolved",
                     payload
                 )
             except Exception:
-                logger.warning(f"[alert] symbol_not_resolved for {source_name} (emiten='{emiten_name}')")
+                logger.warning(f"[alert] Symbol Not Resolved for {source_name} (emiten='{emiten_name}')")
 
         return filing
 

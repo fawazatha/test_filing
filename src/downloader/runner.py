@@ -1,5 +1,6 @@
 import os
 import json
+import shutil  # NEW
 from pathlib import Path
 from typing import List, Any, Optional
 
@@ -38,10 +39,11 @@ def download_pdfs(
     out_non_idx: str,
     meta_out: str,
     alerts_out: str,
-    retries: int = 3,          # kept for CLI compatibility (not used by minimal GET)
+    retries: int = 3,          
     min_similarity: int = 80,
     dry_run: bool = False,
     verbose: bool = False,
+    clean_out: bool = False,   
 ):
     """
     Main downloader:
@@ -56,6 +58,24 @@ def download_pdfs(
         {ticker, title, url, filename, timestamp}
     """
     logger = get_logger("downloader", verbose)
+
+    # --- NEW: optional bersihkan output lebih dulu ---
+    if clean_out:
+        for d in (out_idx, out_non_idx):
+            try:
+                if os.path.isdir(d):
+                    shutil.rmtree(d)
+                    logger.info("Cleaned output folder: %s", d)
+            except Exception as e:
+                logger.warning("Failed to remove folder %s: %s", d, e)
+        for f in (meta_out, alerts_out):
+            try:
+                os.remove(f)
+                logger.info("Removed file: %s", f)
+            except FileNotFoundError:
+                pass
+            except Exception as e:
+                logger.warning("Failed to remove file %s: %s", f, e)
 
     # Initialize HTTP behavior (verify=False, silence SSL warnings)
     init_http(insecure=True, silence_warnings=True)

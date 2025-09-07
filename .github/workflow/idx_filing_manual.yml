@@ -1,0 +1,169 @@
+name: IDX Filings — Manual
+
+on:
+  workflow_dispatch:
+    inputs:
+      mode:
+        description: "Run mode"
+        type: choice
+        required: true
+        default: lookback
+        options: [single_day, range, lookback]
+      # single_day (minute precision, WIB). Bisa cross-midnight (contoh 23:00 → 01:00)
+      date:
+        description: "YYYYMMDD (single_day)"
+        required: false
+      start_hhmm:
+        description: "HH:MM WIB (single_day)"
+        required: false
+      end_hhmm:
+        description: "HH:MM WIB (single_day)"
+        required: false
+      # range (full days)
+      from_date:
+        description: "YYYYMMDD (range)"
+        required: false
+      to_date:
+        description: "YYYYMMDD (range)"
+        required: false
+      # lookback (minutes)
+      window_minutes:
+        description: "Lookback minutes (lookback)"
+        required: false
+        default: "120"
+      # controls
+      include_pdfs:
+        description: "Include PDFs inside artifact zip?"
+        type: boolean
+        default: false
+      clean:
+        description: "Clean outputs before run?"
+        type: boolean
+        default: true
+      verbose:
+        description: "Verbose logs?"
+        type: boolean
+        default: true
+      upload_to_supabase:
+        description: "Upload filings to Supabase? (needs secrets)"
+        type: boolean
+        default: false
+      table:
+        description: "Supabase table (if uploading)"
+        required: false
+        default: "idx_filings"
+      artifact_prefix:
+        description: "Artifact filename prefix"
+        required: false
+        default: "filings"
+
+env:
+  PYTHONPATH: src
+  TZ: Asia/Jakarta
+
+concurrency:
+  group: idx-filings-manual
+  cancel-in-progress: true
+
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.10"
+          cache: "pip"
+
+      - name: Install dependencies
+        run: |
+          python -m pip install -U pip
+          pip install -r requirements.txt
+
+      - name: Pre-clean (optional)
+        if: ${{ inputs.clean }}
+        run: |
+          rm -rf downloads/idx-format downloads/non-idx-format || true
+          rm -rf data/*.json alerts/*.json alerts_inserted alerts_not_inserted artifacts/*.zip || true
+          mkdir -p downloads/idx-format downloads/non-idx-format data alerts artifacts
+
+      - name: Build orchestrator args
+        id: args
+        env:
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_KEY: ${{ secrets.SUPABASE_KEY }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          ARGS=""
+          # verbosity
+          if [[ "${{ inputs.verbose }}" == "true" ]]; then ARGS="$ARGS -v"; fi
+          # artifacts
+          ARGS="$ARGS --zip-artifacts --artifact-prefix '${{ inputs.artifact_prefix }}'"
+          if [[ "${{ inputs.include_pdfs }}" == "true" ]]; then
+            ARGS="$ARGS --artifact-with-pdfs"
+          fi
+
+          case "${{ inputs.mode }}" in
+            single_day)
+              if [[ -z "${{ inputs.date }}" || -z "${{ inputs.start_hhmm }}" || -z "${{ inputs.end_hhmm }}" ]]; then
+                echo "::error::single_day mode requires date, start_hhmm, end_hhmm"; exit 1
+              fi
+              ARGS="$ARGS --date '${{ inputs.date }}' --start-hhmm '${{ inputs.start_hhmm }}' --end-hhmm '${{ inputs.end_hhmm }}'"
+              ;;
+            range)
+              if [[ -z "${{ inputs.from_date }}" || -z "${{ inputs.to_date }}" ]]; then
+                echo "::error::range mode requires from_date and to_date"; exit 1
+              fi
+              ARGS="$ARGS --from-date '${{ inputs.from_date }}' --to-date '${{ inputs.to_date }}'"
+              ;;
+            lookback)
+              WIN="${{ inputs.window_minutes }}"
+              [[ -z "$WIN" ]] && WIN="120"
+              ARGS="$ARGS --window-minutes $WIN"
+              ;;
+          esac
+
+          # optional upload, only if secrets exist
+          if [[ "${{ inputs.upload_to_supabase }}" == "true" ]]; then
+            if [[ -n "${SUPABASE_URL:-}" && -n "${SUPABASE_KEY:-}" ]]; then
+              ARGS="$ARGS --upload --table '${{ inputs.table }}'"
+            else
+              echo "::warning::upload_to_supabase=true, but SUPABASE_URL/KEY secrets missing. Skipping upload flag."
+            fi
+          fi
+
+          # optional clean first
+          if [[ "${{ inputs.clean }}" == "true" ]]; then
+            ARGS="--clean $ARGS"
+          fi
+
+          echo "args=$ARGS"
+          echo "args=$ARGS" >> "$GITHUB_OUTPUT"
+
+      - name: Run orchestrator
+        env:
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_KEY: ${{ secrets.SUPABASE_KEY }}
+        run: |
+          echo "python -m pipeline.orchestrator ${{ steps.args.outputs.args }}"
+          python -m pipeline.orchestrator ${{ steps.args.outputs.args }}
+
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: filings-manual-${{ github.run_number }}
+          path: |
+            artifacts/*.zip
+            data/*.json
+            alerts/*.json
+            alerts_inserted/*.json
+            alerts_not_inserted/*.json
+          if-no-files-found: warn
+          retention-days: 14
+          compression-level: 6

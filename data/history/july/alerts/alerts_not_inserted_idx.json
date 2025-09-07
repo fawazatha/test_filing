@@ -1,0 +1,47 @@
+[
+  {
+    "error_filename": "f058e3fb67_1ab6d22dda.pdf",
+    "error_reason": "symbol_not_resolved_from_name",
+    "timestamp": "2025-09-03T00:09:00.759979Z",
+    "company_name_raw": "PT Chandra Asri Petrochemical Tbk",
+    "normalized_key": "CHANDRA ASRI PETROCHEMICAL",
+    "missing_in_company_map": true,
+    "suggestions": [
+      {
+        "symbol": "TPIA.JK",
+        "company_name": "PT Chandra Asri Pacific Tbk",
+        "score": "74",
+        "normalized_key": "CHANDRA ASRI PACIFIC"
+      },
+      {
+        "symbol": "CASS.JK",
+        "company_name": "PT Cahaya Aero Services Tbk",
+        "score": "52",
+        "normalized_key": "CAHAYA AERO SERVICES"
+      },
+      {
+        "symbol": "BAPA.JK",
+        "company_name": "Bekasi Asri Pemula Tbk",
+        "score": "50",
+        "normalized_key": "BEKASI ASRI PEMULA"
+      }
+    ],
+    "announcement": {
+      "date": "2025-07-02T16:43:42",
+      "title": "Ownership Report or Any Changes in Ownership of Public Company Shares",
+      "company_name": "TPIA",
+      "main_link": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_EREP/202507/f058e3fb67_1ab6d22dda.pdf",
+      "attachments": [
+        {
+          "filename": "20250701_TPIA_Laporan Kepemilikan atau Setiap Perubahan Kepemilikan Saham Perusahaan Terbuka_31910575_lamp1.pdf",
+          "url": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_EREP/202507/5a3e5ce37b_cb2ae891d5.pdf"
+        }
+      ],
+      "attachment_count": 1,
+      "category": "Ownership Report",
+      "description": "Ownership report for TPIA",
+      "link": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_EREP/202507/f058e3fb67_1ab6d22dda.pdf",
+      "scraped_at": "2025-08-28T06:33:48.745123+07:00"
+    }
+  }
+]

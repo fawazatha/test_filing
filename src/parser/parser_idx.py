@@ -2,7 +2,7 @@ import os
 import re
 import logging
 from pathlib import Path
-from typing import Dict, Any, Optional, List
+from typing import Dict, Any, Optional, List, Tuple
 
 from .core.base_parser import BaseParser
 from .utils.text_extractor import TextExtractor
@@ -35,14 +35,24 @@ class IDXParser(BaseParser):
         output_file: str = "data/parsed_idx_output.json",
         announcement_json: str = "data/idx_announcements.json",
     ):
-        super().__init__(pdf_folder, output_file, announcement_json)
-        self.alert_manager.alert_file = "alerts/alerts_idx.json"
+        super().__init__(
+            pdf_folder,
+            output_file,
+            announcement_json,
+            alerts_file=os.getenv("ALERTS_IDX", "alerts/alerts_idx.json"),
+            alerts_not_inserted_file=os.getenv("ALERTS_NOT_INSERTED_IDX", "alerts/alerts_not_inserted_idx.json"),
+        )
         self._current_alert_context: Optional[Dict[str, Any]] = None
-        self.company_map = self._load_company_mapping()
+
+        self.company_map = self._load_company_mapping() or self.symbol_to_name or {}
         self._rev_company_map = build_reverse_map(self.company_map)
         self.company_names = set(self.company_map.values())
 
     def _load_company_mapping(self) -> Dict[str, Any]:
+        """Load local company map and normalize keys:
+           - dukung struktur dict maupun list
+           - simpan versi base (ABCD) dan full (ABCD.JK) -> nama
+        """
         try:
             import json
             path = os.getenv("COMPANY_MAP_FILE", "data/company/company_map.json")
@@ -60,11 +70,12 @@ class IDXParser(BaseParser):
                 n = str(nm).strip()
                 if not s or not n:
                     return
-                out[s] = n
-
+                # simpan keduanya (full & base)
                 if s.endswith(".JK"):
+                    out[s] = n
                     out[s[:-3]] = n
                 else:
+                    out[s] = n
                     out[f"{s}.JK"] = n
 
             if isinstance(raw, dict):
@@ -125,6 +136,7 @@ class IDXParser(BaseParser):
         ex = TextExtractor(text)
         res: Dict[str, Any] = {"lang": "en"}
 
+        # Header-ish fields: (sesuai pola dokumen IDX EN)
         res["issuer_code"] = (
             ex.find_table_value("Issuer Name")
             or ex.find_value_in_line("Issuer Name")
@@ -155,7 +167,7 @@ class IDXParser(BaseParser):
         if issuer_name_raw:
             token = issuer_name_raw.strip().upper()
 
-            # Case A: ticker and exist in mapping → symbol
+            # Case A: token adalah ticker dan ada di mapping → pakai sebagai simbol
             if SYMBOL_TOKEN_RE.fullmatch(token) and (
                 token in self.company_map or f"{token}.JK" in self.company_map
             ):
@@ -167,14 +179,15 @@ class IDXParser(BaseParser):
                     canonical_name_for_symbol(self.company_map, sym) or issuer_name_raw
                 )
 
-            # Case B: not ticker → resolve from emiten name (noisy OK)
+            # Case B: bukan ticker → resolve dari nama emiten (fuzzy)
             if not sym:
+                min_score = int(os.getenv("COMPANY_RESOLVE_MIN_SCORE", "80"))
                 sym2, _k, _t = resolve_symbol_from_emiten(
                     issuer_name_raw,
                     symbol_to_name=self.company_map,
                     rev_map=self._rev_company_map,
                     fuzzy=True,
-                    min_score=int(os.getenv("COMPANY_RESOLVE_MIN_SCORE", "90")),
+                    min_score=min_score,
                 )
                 if sym2:
                     sym2 = sym2.upper()
@@ -185,6 +198,7 @@ class IDXParser(BaseParser):
                         canonical_name_for_symbol(self.company_map, sym) or issuer_name_raw
                     )
 
+        # Jika tetap tidak dapat symbol → alert ke alerts_not_inserted + tandai skip_filing
         if issuer_name_raw and not sym:
             norm_key = normalize_company_name(issuer_name_raw)
             suggestions = suggest_symbols(
@@ -194,17 +208,22 @@ class IDXParser(BaseParser):
                 top_k=int(os.getenv("COMPANY_SUGGEST_TOPK", "3")),
             )
 
-            self.alert_manager.log_alert(
+            self.alert_manager_not_inserted.log_alert(
                 filename,
-                "symbol_not_resolved_from_name",
+                "Symbol Not Resolved from Name",
                 {
                     "company_name_raw": issuer_name_raw,
                     "normalized_key": norm_key,
                     "missing_in_company_map": norm_key not in (self._rev_company_map or {}),
-                    "suggestions": suggestions,  
+                    "suggestions": suggestions,
                     "announcement": self._current_alert_context,
                 },
             )
+
+            # Tetap tulis hasil parsing, tetapi beri flag untuk di-skip saat filings
+            res["skip_filing"] = True
+            res["skip_reason"] = "Symbol Not Resolved from Name"
+            res.setdefault("parse_warnings", []).append("Symbol Not Resolved from Name")
 
         # Persist company fields
         res["company_name_raw"] = issuer_name_raw or ""
@@ -266,7 +285,7 @@ class IDXParser(BaseParser):
                 symbol_to_name=self.company_map,
                 rev_map=self._rev_company_map,
                 fuzzy=True,
-                min_score=int(os.getenv("COMPANY_RESOLVE_MIN_SCORE", "90")),
+                min_score=int(os.getenv("COMPANY_RESOLVE_MIN_SCORE", "80")),
             )
             res["holder_name_raw"] = holder_name_raw
             res["holder_name"] = canonical_name_for_symbol(self.company_map, hsym) or cleaned
@@ -293,7 +312,7 @@ class IDXParser(BaseParser):
             (res.get("share_percentage_after") or 0.0) - (res.get("share_percentage_before") or 0.0)
         )
 
-        # TODO: telpehone number wrong
+        # Address (fallback heuristik)
         addr = (
             ex.find_value_in_line("Address")
             or ex.find_value_after_keyword("Address")
@@ -323,18 +342,19 @@ class IDXParser(BaseParser):
         self._flag_type_mismatch_if_any(res, filename)
         return res
 
-
+    # in IDXParser._extract_transactions_en
     def _extract_transactions_en(self, ex: TextExtractor, res: Dict[str, Any]) -> None:
+        # Doc-level declared type (termasuk transfer)
         for i, line in enumerate(ex.lines or []):
             if "transaction type" in (line or "").lower():
-                for j in range(i + 1, min(i + 5, len(ex.lines))):
+                for j in range(i + 1, min(i + 8, len(ex.lines))):
                     t = (ex.lines[j] or "").lower()
                     if "buy" in t:
-                        res["transaction_type"] = "buy"
-                        break
+                        res["transaction_type"] = "buy"; break
                     if "sell" in t:
-                        res["transaction_type"] = "sell"
-                        break
+                        res["transaction_type"] = "sell"; break
+                    if "transfer" in t:
+                        res["transaction_type"] = "transfer"; break
                 break
 
         full_text = "\n".join(ex.lines or [])
@@ -347,26 +367,29 @@ class IDXParser(BaseParser):
     def _parse_transactions_text_en(self, text: str) -> List[Dict[str, Any]]:
         if not text:
             return []
-
         pat = re.compile(
-            rf"Type of Transaction:\s*(?P<typ>Buy|Sell)\s*.*?"
+            rf"Type of Transaction:\s*(?P<typ>Buy|Sell|Transfer)\s*.*?"
             rf"Transaction Price:\s*(?P<price>[\d\.,]+)\s*.*?"
             rf"Transaction Date:\s*(?P<date>{EN_DATE_PATTERN})\s*.*?"
             rf"Number of Shares Transacted:\s*(?P<amount>[\d\.,]+)",
             flags=re.I | re.S,
         )
-
         out: List[Dict[str, Any]] = []
         for m in pat.finditer(text):
-            typ = (m.group("typ") or "").lower()
+            typ_raw = (m.group("typ") or "").strip().lower()
+            if typ_raw.startswith("b"):
+                typ = "buy"
+            elif typ_raw.startswith("s"):
+                typ = "sell"
+            else:
+                typ = "transfer"
             price = NumberParser.parse_number(m.group("price")) or 0.0
             amt = NumberParser.parse_number(m.group("amount")) or 0
-            date = m.group("date")
             out.append({
-                "type": "buy" if typ.startswith("b") else "sell",
+                "type": typ,
                 "price": price,
                 "amount": amt,
-                "date": date,
+                "date": m.group("date"),
                 "value": price * amt,
             })
         return out
@@ -374,22 +397,26 @@ class IDXParser(BaseParser):
     def _parse_transactions_lines_en(self, lines: List[str]) -> List[Dict[str, Any]]:
         if not lines:
             return []
-
         row_re = re.compile(
-            rf"\b(?P<typ>Buy|Sell)\b\s+(?P<price>[\d\.,]+)\s+(?P<date>{EN_DATE_PATTERN})\s+(?P<amount>[\d\.,]+)",
+            rf"\b(?P<typ>Buy|Sell|Transfer)\b\s+(?P<price>[\d\.,]+)\s+(?P<date>{EN_DATE_PATTERN})\s+(?P<amount>[\d\.,]+)",
             flags=re.I,
         )
-
         out: List[Dict[str, Any]] = []
         for raw in lines:
             m = row_re.search(raw or "")
             if not m:
                 continue
-            typ = (m.group("typ") or "").lower()
+            typ_raw = (m.group("typ") or "").lower()
+            if typ_raw.startswith("b"):
+                typ = "buy"
+            elif typ_raw.startswith("s"):
+                typ = "sell"
+            else:
+                typ = "transfer"
             price = NumberParser.parse_number(m.group("price")) or 0.0
             amt = NumberParser.parse_number(m.group("amount")) or 0
             out.append({
-                "type": "buy" if typ.startswith("b") else "sell",
+                "type": typ,
                 "price": price,
                 "amount": amt,
                 "date": m.group("date"),
@@ -399,32 +426,40 @@ class IDXParser(BaseParser):
 
     def _postprocess_transactions(self, res: Dict[str, Any]) -> None:
         txs = res.get("transactions") or []
-        res["amount_transacted"] = sum(t.get("amount", 0) for t in txs)
-        res["transaction_value"] = sum(t.get("value", 0.0) for t in txs)
 
+        buy_sell = [t for t in txs if t.get("type") in {"buy", "sell"}]
+        transfers = [t for t in txs if t.get("type") == "transfer"]
+
+        # Totals for BUY/SELL only (kept as before)
+        res["amount_transacted"] = sum(t.get("amount", 0) for t in buy_sell)
+        res["transaction_value"] = sum(t.get("value", 0.0) for t in buy_sell)
+
+        # Track transfer separately
+        res["has_transfer"] = bool(transfers)
+        res["amount_transferred"] = sum(t.get("amount", 0) for t in transfers)
+        res["value_transferred"] = sum(t.get("value", 0.0) for t in transfers)
+
+        # Doc-level type if not declared
         if not res.get("transaction_type"):
-            types = {t.get("type") for t in txs if t.get("type") in {"buy", "sell"}}
-            if len(types) == 1:
-                res["transaction_type"] = list(types)[0]
+            kinds = {t.get("type") for t in txs}
+            if kinds == {"transfer"}:
+                res["transaction_type"] = "transfer"
+            elif kinds <= {"buy", "sell"} and len({t["type"] for t in buy_sell}) == 1:
+                res["transaction_type"] = buy_sell[0]["type"]
 
-        total_amt = sum(t.get("amount", 0) for t in txs if t.get("amount", 0) > 0)
+        # Weighted avg price for BUY/SELL only
+        total_amt = sum(t.get("amount", 0) for t in buy_sell if t.get("amount", 0) > 0)
         if total_amt:
-            wavg = sum(
-                (t.get("price", 0.0) * t.get("amount", 0))
-                for t in txs if t.get("amount", 0) > 0
-            ) / total_amt
+            wavg = sum((t.get("price", 0.0) * t.get("amount", 0)) for t in buy_sell) / total_amt
             res["price"] = round(wavg, 2)
 
         res["price_transaction"] = {
-            "prices": [t.get("price", 0.0) for t in txs if t.get("amount", 0) > 0],
-            "amount_transacted": [t.get("amount", 0) for t in txs if t.get("amount", 0) > 0],
+            "prices": [t.get("price", 0.0) for t in buy_sell if t.get("amount", 0) > 0],
+            "amount_transacted": [t.get("amount", 0) for t in buy_sell if t.get("amount", 0) > 0],
         }
 
-        hb = res.get("holding_before")
-        ha = res.get("holding_after")
-        is_zero_hb = isinstance(hb, (int, float)) and hb == 0
-        is_zero_ha = isinstance(ha, (int, float)) and ha == 0
-        res["is_transfer"] = bool(is_zero_hb or is_zero_ha)
+        # Mark transfer presence explicitly
+        res["is_transfer"] = res.get("is_transfer", False) or res["has_transfer"]
 
     def _flag_type_mismatch_if_any(self, res: Dict[str, Any], filename: str) -> None:
         doc_type = (res.get("transaction_type") or "").lower()
@@ -448,21 +483,21 @@ class IDXParser(BaseParser):
             pb = res.get("share_percentage_before")
             pa = res.get("share_percentage_after")
 
-            delta_h = None
+            delta_h: Optional[float] = None
             try:
                 if isinstance(hb, (int, float)) and isinstance(ha, (int, float)):
                     delta_h = ha - hb
             except Exception:
                 pass
 
-            delta_p = None
+            delta_p: Optional[float] = None
             try:
                 if isinstance(pb, (int, float)) and isinstance(pa, (int, float)):
                     delta_p = round(pa - pb, 6)
             except Exception:
                 pass
 
-            bits = []
+            bits: List[str] = []
             if delta_h is not None:
                 bits.append(f"holdings d={delta_h:+}")
             if delta_p is not None:

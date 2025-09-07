@@ -10,7 +10,7 @@ def generate_filings(
     parsed_files: Optional[List[str]] = None,
     downloads_file: str = "data/downloaded_pdfs.json",
     output_file: str = "data/filings_data.json",
-    alerts_file: str = "alerts/inconsistent_alerts.json",
+    alerts_file: str = "alerts/suspicious_alerts.json",
 ) -> int:
     parsed_files = parsed_files or ["data/parsed_non_idx_output.json", "data/parsed_idx_output.json"]
     logger.info("Starting filings generation...")

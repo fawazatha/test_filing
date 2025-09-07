@@ -1,0 +1,31 @@
+[
+  {
+    "reason": "Suspicious price deviation (>50%) from latest market price",
+    "holder_name": "PT Vina Nauli Jordania",
+    "transaction_type": "sell",
+    "holding_before": 613580144,
+    "holding_after": 563580144,
+    "share_percentage_before": 48.97,
+    "share_percentage_after": 44.98,
+    "UID": null,
+    "source": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_EREP/202509/aa65c69aed_3ef1b0949d.pdf",
+    "timestamp": "2025-09-02 21:27:31",
+    "company": "PT Sumber Mas Konstruksi Tbk",
+    "inferred_price": 37.0,
+    "latest_price": 155.0,
+    "deviation": "76.13%",
+    "amount_transacted": 50000000,
+    "transaction_value": 1850000000.0,
+    "price_transaction": {
+      "type": [
+        "sell"
+      ],
+      "prices": [
+        37.0
+      ],
+      "amount_transacted": [
+        50000000
+      ]
+    }
+  }
+]
