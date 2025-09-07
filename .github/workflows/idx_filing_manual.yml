@@ -80,11 +80,16 @@ jobs:
         env:
           SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
           SUPABASE_KEY: ${{ secrets.SUPABASE_KEY }}
+          # ===== PROXY from single secret =====
+          HTTP_PROXY:  ${{ secrets.PROXY }}
+          HTTPS_PROXY: ${{ secrets.PROXY }}
+          http_proxy:  ${{ secrets.PROXY }}
+          https_proxy: ${{ secrets.PROXY }}
+          NO_PROXY: "localhost,127.0.0.1"
         shell: bash
         run: |
           set -euo pipefail
 
-          # base args: zip artifacts, fixed prefix, clean already done
           ARGS=( "--zip-artifacts" "--artifact-prefix" "filings" )
           if [[ "${{ inputs.verbose }}" == "true" ]]; then ARGS+=("-v"); fi
 
@@ -107,7 +112,6 @@ jobs:
               ;;
           esac
 
-          # optional upload (aman: hanya jika secrets ada)
           if [[ "${{ inputs.upload_to_supabase }}" == "true" ]]; then
             if [[ -n "${SUPABASE_URL:-}" && -n "${SUPABASE_KEY:-}" ]]; then
               ARGS+=( "--upload" "--table" "${{ inputs.table }}" )
