@@ -87,7 +87,7 @@ jobs:
         env:
           # Supabase (pakai service_role untuk bypass RLS)
           SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
-          SUPABASE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE }}
+          SUPABASE_KEY: ${{ secrets.SUPABASE_KEY }}
           # Penting: JANGAN lewat proxy untuk IDX & Supabase
           HTTP_PROXY: ""
           HTTPS_PROXY: ""
