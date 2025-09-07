@@ -93,9 +93,6 @@ jobs:
         env:
           HTTP_PROXY:  ${{ secrets.PROXY }}
           HTTPS_PROXY: ${{ secrets.PROXY }}
-          NO_PROXY: >-
-            localhost,127.0.0.1,github.com,api.github.com,raw.githubusercontent.com,
-            githubusercontent.com,objects.githubusercontent.com,codeload.github.com
           SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
           SUPABASE_KEY: ${{ secrets.SUPABASE_KEY }}
         shell: bash
