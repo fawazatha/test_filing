@@ -2,7 +2,7 @@ name: IDX Filings
 
 on:
   schedule:
-    - cron: "0 */2 * * *"  
+    - cron: "0 */2 * * *"
   workflow_dispatch:
     inputs:
       mode:
@@ -46,7 +46,7 @@ on:
 env:
   PYTHONPATH: src
   TZ: Asia/Jakarta
-  OVERLAP_MINUTES: "1"   # buffer 1 menit untuk run terjadwal
+  OVERLAP_MINUTES: "1"
 
 concurrency:
   group: idx-filings-manual
@@ -71,56 +71,47 @@ jobs:
           python -m pip install -U pip
           pip install -r requirements.txt
 
-      # Pre-clean SELALU ON agar idempotent
       - name: Pre-clean
         run: |
           rm -rf downloads/idx-format downloads/non-idx-format || true
           rm -rf data/*.json alerts/*.json alerts_inserted alerts_not_inserted artifacts/*.zip || true
           mkdir -p downloads/idx-format downloads/non-idx-format data alerts artifacts
 
-      # Timestamp WIB untuk nama artifact
       - name: Compute run timestamp (WIB)
         id: ts
         run: echo "stamp=$(date +'%Y%m%d-%H%M%S')" >> "$GITHUB_OUTPUT"
 
       - name: Run orchestrator
         env:
-          # Supabase (pakai service_role untuk bypass RLS)
+          # Supabase: service role (biar tidak kena RLS)
           SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
-          SUPABASE_KEY: ${{ secrets.SUPABASE_KEY }}
-          # Penting: JANGAN lewat proxy untuk IDX & Supabase
-          HTTP_PROXY: ""
-          HTTPS_PROXY: ""
-          NO_PROXY: "localhost,127.0.0.1,idx.co.id,.idx.co.id,supabase.co,.supabase.co"
+          SUPABASE_KEY: ${{ secrets.SUPABASE_KEY}}
+
+          # IDX fetch via proxy (ISI secret ini dengan URL proxy: http://user:pass@host:port)
+          HTTP_PROXY:  ${{ secrets.PROXY }}
+          HTTPS_PROXY: ${{ secrets.PROXY }}
+
+          # Upload Supabase TIDAK lewat proxy
+          NO_PROXY: "localhost,127.0.0.1,supabase.co,.supabase.co"
         shell: bash
         run: |
           set -euo pipefail
 
           ARGS=( "--zip-artifacts" "--artifact-prefix" "filings" )
-
-          # Verbose saat schedule atau jika input verbose=true
-          if [[ "${{ inputs.verbose }}" == "true" || "${{ github.event_name }}" == "schedule" ]]; then
-            ARGS+=("-v")
-          fi
+          if [[ "${{ inputs.verbose }}" == "true" || "${{ github.event_name }}" == "schedule" ]]; then ARGS+=("-v"); fi
 
           if [[ "${{ github.event_name }}" == "schedule" ]]; then
-            # TERJADWAL: lookback 120 + buffer 1 menit, dan force upload
             WIN=$(( 120 + ${OVERLAP_MINUTES:-1} ))
             ARGS+=( "--window-minutes" "$WIN" "--upload" "--table" "idx_filings" )
           else
-            # MANUAL: hormati input pengguna
             MODE="${{ inputs.mode }}"
             case "$MODE" in
               single_day)
-                if [[ -z "${{ inputs.date }}" || -z "${{ inputs.start_hhmm }}" || -z "${{ inputs.end_hhmm }}" ]]; then
-                  echo "::error::single_day mode requires date, start_hhmm, end_hhmm"; exit 1
-                fi
+                [[ -z "${{ inputs.date }}" || -z "${{ inputs.start_hhmm }}" || -z "${{ inputs.end_hhmm }}" ]] && { echo "::error::single_day requires date/start/end"; exit 1; }
                 ARGS+=( "--date" "${{ inputs.date }}" "--start-hhmm" "${{ inputs.start_hhmm }}" "--end-hhmm" "${{ inputs.end_hhmm }}" )
                 ;;
               range)
-                if [[ -z "${{ inputs.from_date }}" || -z "${{ inputs.to_date }}" ]]; then
-                  echo "::error::range mode requires from_date and to_date"; exit 1
-                fi
+                [[ -z "${{ inputs.from_date }}" || -z "${{ inputs.to_date }}" ]] && { echo "::error::range requires from_date/to_date"; exit 1; }
                 ARGS+=( "--from-date" "${{ inputs.from_date }}" "--to-date" "${{ inputs.to_date }}" )
                 ;;
               lookback|*)
@@ -128,8 +119,6 @@ jobs:
                 ARGS+=( "--window-minutes" "$WIN" )
                 ;;
             esac
-
-            # Upload hanya jika diminta saat manual
             if [[ "${{ inputs.upload_to_supabase }}" == "true" ]]; then
               ARGS+=( "--upload" "--table" "${{ inputs.table }}" )
             fi
