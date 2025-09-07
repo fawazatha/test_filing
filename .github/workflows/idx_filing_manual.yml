@@ -83,8 +83,6 @@ jobs:
           # ===== PROXY from single secret =====
           HTTP_PROXY:  ${{ secrets.PROXY }}
           HTTPS_PROXY: ${{ secrets.PROXY }}
-          http_proxy:  ${{ secrets.PROXY }}
-          https_proxy: ${{ secrets.PROXY }}
           NO_PROXY: "localhost,127.0.0.1"
         shell: bash
         run: |
