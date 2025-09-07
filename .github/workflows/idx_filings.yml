@@ -1,8 +1,8 @@
-name: IDX Filings 
+name: IDX Filings
 
 on:
   schedule:
-    - cron: "0 */2 * * *"   
+    - cron: "0 */2 * * *"  
   workflow_dispatch:
     inputs:
       mode:
@@ -85,11 +85,13 @@ jobs:
 
       - name: Run orchestrator
         env:
+          # Supabase (pakai service_role untuk bypass RLS)
           SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
-          SUPABASE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE }}  # gunakan service_role untuk insert
-          HTTP_PROXY:  ${{ secrets.PROXY }}
-          HTTPS_PROXY: ${{ secrets.PROXY }}
-          NO_PROXY: "localhost,127.0.0.1"
+          SUPABASE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE }}
+          # Penting: JANGAN lewat proxy untuk IDX & Supabase
+          HTTP_PROXY: ""
+          HTTPS_PROXY: ""
+          NO_PROXY: "localhost,127.0.0.1,idx.co.id,.idx.co.id,supabase.co,.supabase.co"
         shell: bash
         run: |
           set -euo pipefail
