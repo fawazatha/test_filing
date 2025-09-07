@@ -1,6 +1,8 @@
-name: IDX Filings — Manual
+name: IDX Filings 
 
 on:
+  schedule:
+    - cron: "0 */2 * * *"   
   workflow_dispatch:
     inputs:
       mode:
@@ -44,6 +46,7 @@ on:
 env:
   PYTHONPATH: src
   TZ: Asia/Jakarta
+  OVERLAP_MINUTES: "1"   # buffer 1 menit untuk run terjadwal
 
 concurrency:
   group: idx-filings-manual
@@ -68,12 +71,14 @@ jobs:
           python -m pip install -U pip
           pip install -r requirements.txt
 
+      # Pre-clean SELALU ON agar idempotent
       - name: Pre-clean
         run: |
           rm -rf downloads/idx-format downloads/non-idx-format || true
           rm -rf data/*.json alerts/*.json alerts_inserted alerts_not_inserted artifacts/*.zip || true
           mkdir -p downloads/idx-format downloads/non-idx-format data alerts artifacts
 
+      # Timestamp WIB untuk nama artifact
       - name: Compute run timestamp (WIB)
         id: ts
         run: echo "stamp=$(date +'%Y%m%d-%H%M%S')" >> "$GITHUB_OUTPUT"
@@ -81,7 +86,7 @@ jobs:
       - name: Run orchestrator
         env:
           SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
-          SUPABASE_KEY: ${{ secrets.SUPABASE_KEY }}
+          SUPABASE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE }}  # gunakan service_role untuk insert
           HTTP_PROXY:  ${{ secrets.PROXY }}
           HTTPS_PROXY: ${{ secrets.PROXY }}
           NO_PROXY: "localhost,127.0.0.1"
@@ -90,32 +95,41 @@ jobs:
           set -euo pipefail
 
           ARGS=( "--zip-artifacts" "--artifact-prefix" "filings" )
-          if [[ "${{ inputs.verbose }}" == "true" ]]; then ARGS+=("-v"); fi
 
-          case "${{ inputs.mode }}" in
-            single_day)
-              if [[ -z "${{ inputs.date }}" || -z "${{ inputs.start_hhmm }}" || -z "${{ inputs.end_hhmm }}" ]]; then
-                echo "::error::single_day mode requires date, start_hhmm, end_hhmm"; exit 1
-              fi
-              ARGS+=( "--date" "${{ inputs.date }}" "--start-hhmm" "${{ inputs.start_hhmm }}" "--end-hhmm" "${{ inputs.end_hhmm }}" )
-              ;;
-            range)
-              if [[ -z "${{ inputs.from_date }}" || -z "${{ inputs.to_date }}" ]]; then
-                echo "::error::range mode requires from_date and to_date"; exit 1
-              fi
-              ARGS+=( "--from-date" "${{ inputs.from_date }}" "--to-date" "${{ inputs.to_date }}" )
-              ;;
-            lookback)
-              WIN="${{ inputs.window_minutes }}"; [[ -z "$WIN" ]] && WIN="120"
-              ARGS+=( "--window-minutes" "$WIN" )
-              ;;
-          esac
+          # Verbose saat schedule atau jika input verbose=true
+          if [[ "${{ inputs.verbose }}" == "true" || "${{ github.event_name }}" == "schedule" ]]; then
+            ARGS+=("-v")
+          fi
 
-          if [[ "${{ inputs.upload_to_supabase }}" == "true" ]]; then
-            if [[ -n "${SUPABASE_URL:-}" && -n "${SUPABASE_KEY:-}" ]]; then
+          if [[ "${{ github.event_name }}" == "schedule" ]]; then
+            # TERJADWAL: lookback 120 + buffer 1 menit, dan force upload
+            WIN=$(( 120 + ${OVERLAP_MINUTES:-1} ))
+            ARGS+=( "--window-minutes" "$WIN" "--upload" "--table" "idx_filings" )
+          else
+            # MANUAL: hormati input pengguna
+            MODE="${{ inputs.mode }}"
+            case "$MODE" in
+              single_day)
+                if [[ -z "${{ inputs.date }}" || -z "${{ inputs.start_hhmm }}" || -z "${{ inputs.end_hhmm }}" ]]; then
+                  echo "::error::single_day mode requires date, start_hhmm, end_hhmm"; exit 1
+                fi
+                ARGS+=( "--date" "${{ inputs.date }}" "--start-hhmm" "${{ inputs.start_hhmm }}" "--end-hhmm" "${{ inputs.end_hhmm }}" )
+                ;;
+              range)
+                if [[ -z "${{ inputs.from_date }}" || -z "${{ inputs.to_date }}" ]]; then
+                  echo "::error::range mode requires from_date and to_date"; exit 1
+                fi
+                ARGS+=( "--from-date" "${{ inputs.from_date }}" "--to-date" "${{ inputs.to_date }}" )
+                ;;
+              lookback|*)
+                WIN="${{ inputs.window_minutes || '120' }}"
+                ARGS+=( "--window-minutes" "$WIN" )
+                ;;
+            esac
+
+            # Upload hanya jika diminta saat manual
+            if [[ "${{ inputs.upload_to_supabase }}" == "true" ]]; then
               ARGS+=( "--upload" "--table" "${{ inputs.table }}" )
-            else
-              echo "::warning::upload_to_supabase=true, but SUPABASE_URL/KEY secrets missing. Skipping upload."
             fi
           fi
 
