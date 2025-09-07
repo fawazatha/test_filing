@@ -68,14 +68,16 @@ jobs:
           python -m pip install -U pip
           pip install -r requirements.txt
 
-      # Pre-clean SELALU ON agar idempotent
       - name: Pre-clean
         run: |
           rm -rf downloads/idx-format downloads/non-idx-format || true
           rm -rf data/*.json alerts/*.json alerts_inserted alerts_not_inserted artifacts/*.zip || true
           mkdir -p downloads/idx-format downloads/non-idx-format data alerts artifacts
 
-          
+      - name: Compute run timestamp (WIB)
+        id: ts
+        run: echo "stamp=$(date +'%Y%m%d-%H%M%S')" >> "$GITHUB_OUTPUT"
+
       - name: Run orchestrator
         env:
           SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
@@ -123,7 +125,7 @@ jobs:
       - name: Upload artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: filings-manual-${{ github.run_number }}
+          name: filings-manual-${{ steps.ts.outputs.stamp }}-run${{ github.run_number }}
           path: |
             artifacts/*.zip
             data/*.json
