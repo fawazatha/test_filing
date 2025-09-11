@@ -152,6 +152,11 @@ def _is_transfer_row(t: Dict[str, Any]) -> bool:
     typ = str(t.get("type") or "").strip().lower()
     return typ in {"transfer"}  # add synonyms if needed
 
+def _holder_text(item: Dict[str, Any]) -> str:
+    """Prefer holder_name_raw; fallback ke holder_name. Rapikan newline & spasi."""
+    return (item.get("holder_name_raw") or item.get("holder_name") or "")\
+        .replace("\n", " ").strip()
+
 
 def normalize_price_transaction(
     item: Dict[str, Any],
@@ -272,7 +277,7 @@ def enrich_and_filter_items(
             )
         else:
             if not symbol_full:
-                logger.debug("Skip item without symbol: %s", item.get("holder_name"))
+                logger.debug("Skip item without symbol: %s", _holder_text(item))
                 continue
             row = get_company_info(symbol_full)
             company_row = row or CompanyInfo(
@@ -289,7 +294,7 @@ def enrich_and_filter_items(
                 "title": doc_title,
                 "company": company_name,
                 "symbol": symbol_full,
-                "holder_name": (item.get("holder_name") or "").strip(),
+                "holder_name": _holder_text(item),
                 "UID": item.get("UID"),
                 "source": url,
                 "timestamp": None,
@@ -352,7 +357,7 @@ def enrich_and_filter_items(
             tr_amt = sum(safe_int(t.get("amount")) for t in transfer_txs)
             bs_val = sum((safe_float(t.get("price")) or 0.0) * safe_int(t.get("amount")) for t in buy_sell_txs)
             tr_val = sum((safe_float(t.get("price")) or 0.0) * safe_int(t.get("amount")) for t in transfer_txs)
-            holder_for_alert = (item.get("holder_name") or "").replace("\n", " ").strip()
+            holder_for_alert = _holder_text(item)
             mix_transfer_alerts.append({
                 "reason": "mix_transfer",
                 "symbol": symbol_full,
@@ -380,7 +385,7 @@ def enrich_and_filter_items(
             if passes_threshold and deviation > PRICE_DEVIATION_THRESHOLD:
                 alerts.append({
                     "reason": "Suspicious price deviation (>50%) from latest market price",
-                    "holder_name": (item.get("holder_name") or "").strip(),
+                    "holder_name": _holder_text(item),
                     "transaction_type": tx_type,
                     "holding_before": hb,
                     "holding_after": ha,
@@ -403,7 +408,7 @@ def enrich_and_filter_items(
         if (item.get("is_transfer") is True) and not uid and symbol_full:
             uid = maybe_generate_uid(symbol_full, ts_primary, parsed_price, amount_transacted)
 
-        holder = (item.get("holder_name") or "").replace("\n", " ").strip()
+        holder = _holder_text(item)
         tx_verb = ({"buy": "bought", "sell": "sold", "transfer": "transferred", "other": "transferred"}
                    .get(tx_type, f"{tx_type}ed")).lower()
 

@@ -13,6 +13,7 @@ logger = logging.getLogger(__name__)
 
 DEFAULT_MAP_PATH = Path(os.getenv("COMPANY_MAP_FILE", "data/company/company_map.json"))
 
+# Tokens to drop when building normalized keys for matching
 _CORP_STOPWORDS = {
     "PT", "P.T", "PERSEROAN", "TERBATAS",
     "TBK", "TBK.", "TBK,", "TBK)", "(TBK",
@@ -20,8 +21,14 @@ _CORP_STOPWORDS = {
 }
 
 _TOKEN_SPLIT = re.compile(r"[^A-Z0-9]+", re.UNICODE)
-
 _SPLIT_RE = re.compile(r"[^A-Za-z0-9]+", re.UNICODE)
+
+# Tokens to keep uppercased when formatting display names
+_COMMON_UPPER = {
+    "PT", "CV", "UD", "LLC", "LLP", "INC", "NV", "BV", "GMBH", "BHD", "PLC", "RI",
+    "OJK", "KPK", "BPK", "BPKP"
+}
+
 
 def _strip_diacritics(s: str) -> str:
     return unicodedata.normalize("NFKD", s or "").encode("ascii", "ignore").decode("ascii")
@@ -29,34 +36,35 @@ def _strip_diacritics(s: str) -> str:
 
 def normalize_company_name(s: str) -> str:
     """
-    for robust matching:
+    Build a robust, normalized key for matching:
     - remove diacritics
     - uppercase
     - '&' → ' AND '
     - drop corporate stopwords
-    - collapse spaces
+    - collapse spaces and non-alnum
     """
     s = _strip_diacritics(s).upper().replace("&", " AND ")
     tokens = [t for t in _TOKEN_SPLIT.split(s) if t]
     tokens = [t for t in tokens if t not in _CORP_STOPWORDS]
     return " ".join(tokens).strip()
 
+
 def _normalize_name(s: str) -> str:
+    """Lowercase key used by _load_local_company_map() for quick exact lookups."""
     if not s:
         return ""
     s = s.strip()
-    
     tokens = [t for t in _SPLIT_RE.split(s.lower()) if t]
     tokens = [t for t in tokens if t.upper() not in _CORP_STOPWORDS]
     return " ".join(tokens).strip()
+
 
 def _load_local_company_map(self):
     """Read data/company/company_map.json (symbol -> company_name)."""
     try:
         if DEFAULT_MAP_PATH.exists():
             data = json.loads(DEFAULT_MAP_PATH.read_text(encoding="utf-8"))
-
-            self._symbol_to_name = { (k or "").upper(): (v or "") for k, v in data.items() if k and v }
+            self._symbol_to_name = {(k or "").upper(): (v or "") for k, v in data.items() if k and v}
             self._name_to_symbol = {}
             for sym, raw_name in self._symbol_to_name.items():
                 key = _normalize_name(raw_name)
@@ -70,6 +78,12 @@ def _load_local_company_map(self):
 
 
 def load_symbol_to_name_from_file(path: Path = DEFAULT_MAP_PATH) -> Optional[Dict[str, str]]:
+    """
+    Load company map from JSON. Accepts either:
+      { "ABCD": "PT Alpha Beta Tbk", ... }
+      or      { "ABCD": {"company_name": "...", ...}, ... }
+    Adds both BASE and BASE.JK aliases.
+    """
     try:
         if not path.exists():
             logger.warning(f"Company map not found: {path}")
@@ -126,6 +140,7 @@ def build_reverse_map(symbol_to_name: Dict[str, str]) -> Dict[str, List[str]]:
 
 
 def canonical_name_for_symbol(symbol_to_name: Dict[str, str], symbol: str) -> Optional[str]:
+    """Return canonical company name for a given symbol (handles BASE and BASE.JK)."""
     s = (symbol or "").strip().upper()
     if not s:
         return None
@@ -136,7 +151,17 @@ def canonical_name_for_symbol(symbol_to_name: Dict[str, str], symbol: str) -> Op
     return symbol_to_name.get(f"{s}.JK")
 
 
-def resolve_symbol_from_emiten(emiten_raw: str, symbol_to_name: Dict[str, str], rev_map: Optional[Dict[str, List[str]]] = None, fuzzy: bool = True, min_score: int = 90) -> Tuple[Optional[str], str, List[str]]:
+def resolve_symbol_from_emiten(
+    emiten_raw: str,
+    symbol_to_name: Dict[str, str],
+    rev_map: Optional[Dict[str, List[str]]] = None,
+    fuzzy: bool = True,
+    min_score: int = 90
+) -> Tuple[Optional[str], str, List[str]]:
+    """
+    Try to resolve a symbol from a raw company/emiten string.
+    Returns (symbol|None, normalized_query_key, tried_list).
+    """
     tried: List[str] = []
     if not symbol_to_name:
         return None, "", tried
@@ -147,13 +172,15 @@ def resolve_symbol_from_emiten(emiten_raw: str, symbol_to_name: Dict[str, str], 
     q = normalize_company_name(emiten_raw)
     tried.append(q)
 
+    # Exact normalized-key match
     syms = rev_map.get(q)
     if syms:
         for s in syms:
             if normalize_company_name(symbol_to_name.get(s, "")) == q:
                 return s, q, tried
-        return syms[0], q, tried  
+        return syms[0], q, tried  # fallback first
 
+    # Fuzzy key match
     if fuzzy and rev_map:
         best_key = None
         best_score = -1.0
@@ -174,7 +201,16 @@ def resolve_symbol_from_emiten(emiten_raw: str, symbol_to_name: Dict[str, str], 
     return None, q, tried
 
 
-def suggest_symbols(emiten_raw: str, symbol_to_name: Dict[str, str], rev_map: Optional[Dict[str, List[str]]] = None, top_k: int = 3) -> List[Dict[str, str]]:
+def suggest_symbols(
+    emiten_raw: str,
+    symbol_to_name: Dict[str, str],
+    rev_map: Optional[Dict[str, List[str]]] = None,
+    top_k: int = 3
+) -> List[Dict[str, str]]:
+    """
+    Suggest top-K symbols based on normalized-key similarity.
+    Returns list of {symbol, company_name, score, normalized_key}.
+    """
     if not emiten_raw or not symbol_to_name:
         return []
     if rev_map is None:
@@ -212,3 +248,62 @@ def suggest_symbols(emiten_raw: str, symbol_to_name: Dict[str, str], rev_map: Op
                 return out
 
     return out
+
+def pretty_company_name(raw: str) -> str:
+    """
+    Human-friendly fallback formatter for company names:
+    - Standardize 'PT' variants and 'Tbk'
+    - Keep common acronyms uppercase (PT, LLC, INC, etc.)
+    - Title-case the rest (hyphen-aware)
+    - Preserve spacing and punctuation (& , ( ) . -)
+    """
+    if not raw:
+        return ""
+    s = _strip_diacritics(raw).strip()
+
+    # Standardize PT variants and TBK spelling
+    s = re.sub(r"\bP\.?\s*T\.?\b", "PT", s, flags=re.I)
+    s = re.sub(r"\bTBK\.?\b", "Tbk", s, flags=re.I)
+
+    # Split but keep separators
+    parts = re.split(r"(\s+|[&(),.-])", s)
+
+    def fmt(tok: str) -> str:
+        if not tok or tok.isspace() or tok in "&(),.-":
+            return tok
+        up = tok.upper()
+        if up in _COMMON_UPPER:
+            return up
+        if up == "TBK":
+            return "Tbk"
+        # hyphenated: "multi-purpose" -> "Multi-Purpose"
+        if "-" in tok:
+            return "-".join(p[:1].upper() + p[1:].lower() if p else p for p in tok.split("-"))
+        return tok[:1].upper() + tok[1:].lower()
+
+    out = "".join(fmt(t) for t in parts)
+    out = re.sub(r"\s+", " ", out).strip(" ,.;-")
+    out = out.replace(" ,", ",").replace(" .", ".")
+    return out
+
+def resolve_symbol_and_name(
+    emiten_raw: str,
+    symbol_to_name: Dict[str, str],
+    rev_map: Optional[Dict[str, List[str]]] = None,
+    fuzzy: bool = True,
+    min_score: int = 90
+) -> Tuple[Optional[str], str, str, List[str]]:
+    """
+    Try to resolve symbol; if found, return canonical mapped name.
+    If not found, return pretty formatted fallback name.
+
+    Returns:
+      (symbol|None, display_name, matched_key, tried_list)
+    """
+    sym, key, tried = resolve_symbol_from_emiten(
+        emiten_raw, symbol_to_name, rev_map=rev_map, fuzzy=fuzzy, min_score=min_score
+    )
+    if sym:
+        disp = canonical_name_for_symbol(symbol_to_name, sym) or pretty_company_name(emiten_raw)
+        return sym, disp, key, tried
+    return None, pretty_company_name(emiten_raw), key, tried

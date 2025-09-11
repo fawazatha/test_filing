@@ -15,6 +15,8 @@ from .utils.company_resolver import (
     canonical_name_for_symbol,
     normalize_company_name,
     suggest_symbols,
+    resolve_symbol_and_name,   # <-- NEW
+    pretty_company_name,       # <-- NEW
 )
 
 logger = logging.getLogger(__name__)
@@ -181,7 +183,7 @@ class IDXParser(BaseParser):
 
             # Case B: bukan ticker → resolve dari nama emiten (fuzzy)
             if not sym:
-                min_score = int(os.getenv("COMPANY_RESOLVE_MIN_SCORE", "80"))
+                min_score = int(os.getenv("COMPANY_RESOLVE_MIN_SCORE", "90"))
                 sym2, _k, _t = resolve_symbol_from_emiten(
                     issuer_name_raw,
                     symbol_to_name=self.company_map,
@@ -224,6 +226,9 @@ class IDXParser(BaseParser):
             res["skip_filing"] = True
             res["skip_reason"] = "Symbol Not Resolved from Name"
             res.setdefault("parse_warnings", []).append("Symbol Not Resolved from Name")
+
+            # NEW: tetap tampilkan nama perusahaan yang 'rapi' agar enak dibaca
+            company_name_out = pretty_company_name(issuer_name_raw)
 
         # Persist company fields
         res["company_name_raw"] = issuer_name_raw or ""
@@ -268,30 +273,33 @@ class IDXParser(BaseParser):
             or ""
         ).strip()
 
-        # Holder
+        # ===========================
+        # Holder (DROP-IN UPDATED)
+        # ===========================
         holder_name_raw = (
             ex.find_table_value("Name of Shareholder")
             or ex.find_value_in_line("Name of Shareholder")
             or ""
         ).strip()
 
+        res["holder_name_raw"] = holder_name_raw
+
         holder_type = NameCleaner.classify_holder_type(holder_name_raw)
         res["holder_type"] = holder_type
+
         if holder_type == "institution":
-            matched = NameCleaner.match_holder_name_to_company(holder_name_raw, self.company_names)
-            cleaned = matched or NameCleaner.clean_holder_name(holder_name_raw, "institution")
-            hsym, _k, _t = resolve_symbol_from_emiten(
-                cleaned,
-                symbol_to_name=self.company_map,
+            # Coba resolve simbol; jika gagal, tetap pulangin nama institusi yang sudah 'rapi'
+            hsym, disp, _key, _tried = resolve_symbol_and_name(
+                holder_name_raw,
+                self.company_map,
                 rev_map=self._rev_company_map,
                 fuzzy=True,
                 min_score=int(os.getenv("COMPANY_RESOLVE_MIN_SCORE", "80")),
             )
-            res["holder_name_raw"] = holder_name_raw
-            res["holder_name"] = canonical_name_for_symbol(self.company_map, hsym) or cleaned
-            res["holder_symbol"] = hsym
+            res["holder_name"] = disp
+            res["holder_symbol"] = hsym  # bisa None jika tidak ketemu
         else:
-            res["holder_name_raw"] = holder_name_raw
+            # Insider (perorangan): bersihkan nama, tanpa simbol
             res["holder_name"] = NameCleaner.clean_holder_name(holder_name_raw, "insider")
             res["holder_symbol"] = None
 
@@ -430,16 +438,31 @@ class IDXParser(BaseParser):
         buy_sell = [t for t in txs if t.get("type") in {"buy", "sell"}]
         transfers = [t for t in txs if t.get("type") == "transfer"]
 
-        # Totals for BUY/SELL only (kept as before)
-        res["amount_transacted"] = sum(t.get("amount", 0) for t in buy_sell)
-        res["transaction_value"] = sum(t.get("value", 0.0) for t in buy_sell)
+        # --- Totals (rows vs holdings delta) ---
+        rows_amt = sum(t.get("amount", 0) for t in buy_sell)             # hanya BUY/SELL
+        rows_val = sum(t.get("value", 0.0) for t in buy_sell)
 
-        # Track transfer separately
+        # Delta holdings (utamakan ini untuk amount_transacted)
+        hb = res.get("holding_before")
+        ha = res.get("holding_after")
+        delta_amt = None
+        try:
+            if isinstance(hb, (int, float)) and isinstance(ha, (int, float)):
+                delta_amt = abs(int(ha) - int(hb))
+        except Exception:
+            delta_amt = None
+
+        # Set field utama
+        res["amount_transacted_rows"] = rows_amt                    # referensi/debug
+        res["amount_transacted"] = (delta_amt if (delta_amt is not None) else rows_amt)
+        res["transaction_value"] = rows_val                         # nilai dari baris BUY/SELL (tetap)
+
+        # Transfer-only metrics (tetap dipisah)
         res["has_transfer"] = bool(transfers)
         res["amount_transferred"] = sum(t.get("amount", 0) for t in transfers)
         res["value_transferred"] = sum(t.get("value", 0.0) for t in transfers)
 
-        # Doc-level type if not declared
+        # Doc-level type jika belum ada
         if not res.get("transaction_type"):
             kinds = {t.get("type") for t in txs}
             if kinds == {"transfer"}:
@@ -447,19 +470,21 @@ class IDXParser(BaseParser):
             elif kinds <= {"buy", "sell"} and len({t["type"] for t in buy_sell}) == 1:
                 res["transaction_type"] = buy_sell[0]["type"]
 
-        # Weighted avg price for BUY/SELL only
+        # Weighted average price untuk BUY/SELL saja (tidak untuk transfer)
         total_amt = sum(t.get("amount", 0) for t in buy_sell if t.get("amount", 0) > 0)
         if total_amt:
             wavg = sum((t.get("price", 0.0) * t.get("amount", 0)) for t in buy_sell) / total_amt
             res["price"] = round(wavg, 2)
 
+        # Simpan rincian price_transaction (BUY/SELL only)
         res["price_transaction"] = {
             "prices": [t.get("price", 0.0) for t in buy_sell if t.get("amount", 0) > 0],
             "amount_transacted": [t.get("amount", 0) for t in buy_sell if t.get("amount", 0) > 0],
         }
 
-        # Mark transfer presence explicitly
+        # Tanda transfer
         res["is_transfer"] = res.get("is_transfer", False) or res["has_transfer"]
+
 
     def _flag_type_mismatch_if_any(self, res: Dict[str, Any], filename: str) -> None:
         doc_type = (res.get("transaction_type") or "").lower()
