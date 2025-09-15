@@ -269,8 +269,6 @@ def enrich_and_filter_items(
         insider_bypass = (holder_type_norm == "insider" and not symbol_full)
 
         # Company info:
-        # - Insider without symbol: DO NOT lookup; use item-level company_name.
-        # - Non-insider without symbol: skip (legacy behavior to avoid bad data/crash).
         if insider_bypass:
             company_row = CompanyInfo(
                 company_name=item.get("company_name") or item.get("company_name_raw") or ""
@@ -309,8 +307,13 @@ def enrich_and_filter_items(
         if not tx_type and txs:
             tx_type, net_value, main_txs = determine_transaction_type_from_list(txs)
             parsed_tx_value = parsed_tx_value or net_value
-            item["amount_transacted"] = sum(safe_int(t.get("amount")) for t in main_txs)
-            parsed_price = average_price(main_txs) if item["amount_transacted"] else 0.0
+
+            # === unified with DB field name ===
+            amt_from_txs = sum(safe_int(t.get("amount")) for t in main_txs)
+            item["amount_transaction"] = amt_from_txs
+            parsed_price = average_price(main_txs) if amt_from_txs else 0.0
+
+            # propagate before/after snapshots
             item["holding_before"] = txs[0].get("holding_before", item.get("holding_before"))
             item["holding_after"] = txs[-1].get("holding_after", item.get("holding_after"))
             item["share_percentage_before"] = txs[0].get("share_percentage_before", item.get("share_percentage_before"))
@@ -319,7 +322,10 @@ def enrich_and_filter_items(
         hb = safe_int(item.get("holding_before"))
         ha = safe_int(item.get("holding_after"))
 
-        amount_transacted = safe_int(item.get("amount_transacted"))
+        # read amount with backward-compat fallback
+        amount_transacted = safe_int(
+            item.get("amount_transaction") or item.get("amount_transacted")
+        )
         if amount_transacted == 0:
             amount_transacted = abs(ha - hb)
 
@@ -329,7 +335,8 @@ def enrich_and_filter_items(
         before_pct = safe_float(item.get("share_percentage_before"))
         after_pct = safe_float(item.get("share_percentage_after"))
         pct_tx = abs(after_pct - before_pct)
-        tags = get_tags(tx_type, before_pct, after_pct)
+        # tags kept for body/text; actual stored tags are recomputed below
+        # tags = get_tags(tx_type, before_pct, after_pct)
 
         # price/value estimation
         latest_price = None if insider_bypass else get_latest_price(symbol_full)
@@ -398,6 +405,8 @@ def enrich_and_filter_items(
                     "inferred_price": round(inferred_price, 2),
                     "latest_price": latest_price,
                     "deviation": f"{deviation:.2%}",
+                    # keep both keys for compatibility; DB doesn't read alerts anyway
+                    "amount_transaction": amount_transacted,
                     "amount_transacted": amount_transacted,
                     "transaction_value": estimated_value,
                     "price_transaction": pt_norm,
@@ -426,6 +435,7 @@ def enrich_and_filter_items(
             "transaction_type": tx_type or None,
             "holding_before": str(hb),
             "holding_after": str(ha),
+            # === DB field name ===
             "amount_transaction": str(amount_transacted),
             "holder_type": item.get("holder_type"),
             "holder_name": holder,
@@ -451,3 +461,4 @@ def enrich_and_filter_items(
     _write_mix_transfer_alerts(mix_transfer_alerts)
 
     return results, alerts
+
