@@ -156,7 +156,7 @@ def resolve_symbol_from_emiten(
     symbol_to_name: Dict[str, str],
     rev_map: Optional[Dict[str, List[str]]] = None,
     fuzzy: bool = True,
-    min_score: int = 90
+    min_score: int = 85
 ) -> Tuple[Optional[str], str, List[str]]:
     """
     Try to resolve a symbol from a raw company/emiten string.
@@ -291,7 +291,7 @@ def resolve_symbol_and_name(
     symbol_to_name: Dict[str, str],
     rev_map: Optional[Dict[str, List[str]]] = None,
     fuzzy: bool = True,
-    min_score: int = 90
+    min_score: int = 85
 ) -> Tuple[Optional[str], str, str, List[str]]:
     """
     Try to resolve symbol; if found, return canonical mapped name.

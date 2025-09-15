@@ -1,0 +1,47 @@
+[
+  {
+    "error_filename": "c752d5768d_ad860d12da.pdf",
+    "error_reason": "Symbol Not Resolved from Name",
+    "timestamp": "2025-09-15T07:48:50.570114Z",
+    "company_name_raw": "PT Bank BTPN Syariah Tbk (BTPS)",
+    "normalized_key": "BANK BTPN SYARIAH BTPS",
+    "missing_in_company_map": true,
+    "suggestions": [
+      {
+        "symbol": "BTPS.JK",
+        "company_name": "PT Bank BTPN Syariah Tbk.",
+        "score": "87",
+        "normalized_key": "BANK BTPN SYARIAH"
+      },
+      {
+        "symbol": "BANK.JK",
+        "company_name": "PT Bank Aladin Syariah Tbk",
+        "score": "68",
+        "normalized_key": "BANK ALADIN SYARIAH"
+      },
+      {
+        "symbol": "BRIS.JK",
+        "company_name": "PT Bank Syariah Indonesia Tbk",
+        "score": "64",
+        "normalized_key": "BANK SYARIAH INDONESIA"
+      }
+    ],
+    "announcement": {
+      "date": "2025-09-12T14:06:52",
+      "title": "Ownership Report or Any Changes in Ownership of Public Company Shares",
+      "company_name": "BTPS",
+      "main_link": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_EREP/202509/c752d5768d_ad860d12da.pdf",
+      "attachments": [
+        {
+          "filename": "20250912_BTPS_Laporan Kepemilikan atau Setiap Perubahan Kepemilikan Saham Perusahaan Terbuka_31939726_lamp1.pdf",
+          "url": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_EREP/202509/9fadfcfbc7_3689c8ba07.pdf"
+        }
+      ],
+      "attachment_count": 1,
+      "category": "Ownership Report",
+      "description": "Ownership report for BTPS",
+      "link": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_EREP/202509/c752d5768d_ad860d12da.pdf",
+      "scraped_at": "2025-09-15T07:46:54.753490+07:00"
+    }
+  }
+]

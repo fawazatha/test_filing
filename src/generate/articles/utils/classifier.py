@@ -1,611 +1,213 @@
-"""
-Script to classify the tags, subsector, tickers, and sentiment of the news article
-"""
-
-import dotenv
-import json
+from __future__ import annotations
 import os
-import string
-import asyncio
-from datetime import datetime
-from typing import List, Dict, Optional, Union, Tuple
+from typing import Dict, Any, List, Optional
 
-import nltk
-from nltk.tokenize import word_tokenize
-from nltk.corpus import stopwords
-from nltk.stem import WordNetLemmatizer
-from supabase import create_client, Client
-from langchain.prompts import ChatPromptTemplate
-from langchain_core.output_parsers import JsonOutputParser
-from pydantic import BaseModel, Field
+from .io_utils import get_logger
+log = get_logger(__name__)
 
-from model.llm_collection import LLMCollection
+# ----------------------------
+# Heuristic sets
+# ----------------------------
+BUY = {"buy", "pembelian", "acquire", "acquisition", "pembelian saham"}
+SELL = {"sell", "penjualan", "dispose", "divest", "penjualan saham"}
+TRANSFER = {"transfer", "pengalihan", "alih", "off-market transfer"}
 
-dotenv.load_dotenv()
+# ----------------------------
+# Model normalization helpers
+# ----------------------------
+# Map deprecated -> recommended
+DEPRECATED_MAP = {
+    "llama-3.1-70b-versatile": "llama-3.3-70b-versatile",
+    "llama3-70b-8192": "llama-3.3-70b-versatile",
+    "llama3-8b-8192": "llama-3.1-8b-instant",
+}
 
+# Friendly aliases for Groq models
+GROQ_ALIAS = {
+    "compound": "groq/compound",
+    "compound-mini": "groq/compound-mini",
+    "groq/compound-mini": "groq/compound-mini",
+    "groq/compound": "groq/compound",
+}
 
-class NewsClassifier:
+def _env(key: str, default: str = "") -> str:
+    v = os.getenv(key)
+    if v is None:
+        return default
+    return v.strip().strip('"').strip("'")
+
+def _pick_provider(explicit: Optional[str]) -> str:
     """
-    A class to handle news article classification including tags, subsectors, tickers, and sentiment.
+    Resolve provider priority:
+    1) explicit arg
+    2) LLM_PROVIDERS (first item) or LLM_PROVIDER env
+    3) if GROQ_API_KEY exists -> groq, elif OPENAI_API_KEY -> openai, else openai
     """
+    if explicit:
+        return explicit.lower().strip().strip('"').strip("'")
 
-    def __init__(self):
-        """Initialize the NewsClassifier with required dependencies."""
-        # NLTK setup
-        nltk.data.path.append("./nltk_data")
+    env_list = (_env("LLM_PROVIDERS") or "")
+    if env_list:
+        return env_list.split(",")[0].strip().lower()
 
-        # Supabase setup
-        self.supabase: Client = create_client(
-            os.getenv("SUPABASE_URL", ""), os.getenv("SUPABASE_KEY", "")
-        )
+    env = _env("LLM_PROVIDER").lower()
+    if env in {"openai", "groq"}:
+        return env
 
-        # LLM setup
-        self.llm_collection = LLMCollection()
+    return "groq" if _env("GROQ_API_KEY") else ("openai" if _env("OPENAI_API_KEY") else "openai")
 
-        # Cache for loaded data
-        self._subsectors_cache: Optional[Dict[str, str]] = None
-        self._tags_cache: Optional[List[str]] = None
-        self._company_cache: Optional[Dict[str, Dict[str, str]]] = None
-        self._prompts_cache: Optional[Dict] = None
+def _normalize_model(provider: str, name: Optional[str]) -> str:
+    """
+    Keep caller intent:
+    - If name is provided and recognized as deprecated, upgrade via DEPRECATED_MAP.
+    - If name is provided and NOT deprecated, keep it as-is.
+    - If name is missing, use sensible provider-specific default.
+    - For Groq, also accept friendly aliases ("compound" -> "groq/compound").
+    - For OpenAI, if user mistakenly passes a llama-* name, swap to gpt-4.1-mini.
+    """
+    provider = (provider or "").strip().lower()
+    raw = (name or "").strip()
 
-    def _load_prompts(self) -> Dict:
-        """
-        Load prompts from JSON config file.
+    if provider == "openai":
+        if not raw:
+            return "gpt-4.1-mini"
+        # prevent llama-* under openai
+        if raw.startswith("llama-"):
+            return "gpt-4.1-mini"
+        # keep user-provided non-llama model
+        return raw
 
-        Returns:
-            Dict: Dictionary containing all prompts
-        """
-        if self._prompts_cache is not None:
-            return self._prompts_cache
+    if provider == "groq":
+        if not raw:
+            return "llama-3.3-70b-versatile"
+        # expand alias if any
+        if raw in GROQ_ALIAS:
+            raw = GROQ_ALIAS[raw]
+        # upgrade deprecated ids, otherwise keep as-is
+        return DEPRECATED_MAP.get(raw, raw)
 
-        with open("./config/prompts.json", "r") as f:
-            prompts = json.load(f)
+    # unknown provider -> return what we got or empty
+    return raw or ""
 
-        self._prompts_cache = prompts
-        return prompts
+def _init_llm(provider: str, model_name: str):
+    """
+    Create a LangChain chat model bound to the requested provider/model.
+    Honors env overrides and fails back gracefully.
+    """
+    eff_model = _normalize_model(provider, model_name)
 
-    def _get_prompt(self, category: str, **kwargs) -> str:
-        """
-        Get formatted prompt for a specific category.
+    if provider == "openai":
+        from langchain_openai import ChatOpenAI
+        key = _env("OPENAI_API_KEY")
+        if not key:
+            raise EnvironmentError("OPENAI_API_KEY missing for classifier LLM.")
+        try:
+            llm = ChatOpenAI(model=eff_model or "gpt-4.1-mini", temperature=0.0, api_key=key)
+        except TypeError:
+            # older langchain_openai signatures
+            llm = ChatOpenAI(model=eff_model or "gpt-4.1-mini", temperature=0.0)
+        return llm, (eff_model or "gpt-4.1-mini")
 
-        Args:
-            category (str): Category of the prompt (tags, tickers, subsectors, sentiment, dimension)
-            **kwargs: Format parameters for the prompt template
+    elif provider == "groq":
+        from langchain_groq import ChatGroq
+        key = _env("GROQ_API_KEY")
+        if not key:
+            raise EnvironmentError("GROQ_API_KEY missing for classifier LLM.")
 
-        Returns:
-            str: Formatted prompt
-        """
-        prompts = self._load_prompts()
-        if category not in prompts:
-            raise ValueError(f"Unknown prompt category: {category}")
-
-        prompt_data = prompts[category]
-        template = prompt_data["template"]
-        return template.format(**kwargs)
-
-    def _load_subsector_data(self) -> Dict[str, str]:
-        """
-        Load subsector data from Supabase or cache.
-
-        Returns:
-            Dict[str, str]: Dictionary mapping subsector slugs to descriptions
-        """
-        if self._subsectors_cache is not None:
-            return self._subsectors_cache
-
-        if datetime.today().day in [1, 15]:
-            response = (
-                self.supabase.table("idx_subsector_metadata")
-                .select("slug, description")
-                .execute()
-            )
-
-            subsectors = {row["slug"]: row["description"] for row in response.data}
-
-            with open("./data/subsectors_data.json", "w") as f:
-                json.dump(subsectors, f)
-        else:
-            with open("./data/subsectors_data.json", "r") as f:
-                subsectors = json.load(f)
-
-        self._subsectors_cache = subsectors
-        return subsectors
-
-    def _load_tag_data(self) -> List[str]:
-        """
-        Load tag data from JSON file.
-
-        Returns:
-            List[str]: List of available tags
-        """
-        if self._tags_cache is not None:
-            return self._tags_cache
-
-        with open("./data/unique_tags.json", "r") as f:
-            tags = json.load(f)
-
-        self._tags_cache = tags
-        return tags
-
-    def _load_company_data(self) -> Dict[str, Dict[str, str]]:
-        """
-        Load company data from Supabase or cache.
-
-        Returns:
-            Dict[str, Dict[str, str]]: Dictionary mapping company symbols to their details
-        """
-        if self._company_cache is not None:
-            return self._company_cache
-
-        if datetime.today().day in [1, 15]:
-            response = (
-                self.supabase.table("idx_company_profile")
-                .select("symbol, company_name, sub_sector_id")
-                .execute()
-            )
-
-            subsector_response = (
-                self.supabase.table("idx_subsector_metadata")
-                .select("sub_sector_id, sub_sector")
-                .execute()
-            )
-
-            subsector_data = {
-                row["sub_sector_id"]: row["sub_sector"]
-                for row in subsector_response.data
-            }
-
-            company = {}
-            for row in response.data:
-                company[row["symbol"]] = {
-                    "symbol": row["symbol"],
-                    "name": row["company_name"],
-                    "sub_sector": subsector_data[row["sub_sector_id"]],
-                }
-
-            for attr in company:
-                company[attr]["sub_sector"] = (
-                    company[attr]["sub_sector"]
-                    .replace("&", "")
-                    .replace(",", "")
-                    .replace("  ", " ")
-                    .replace(" ", "-")
-                    .lower()
-                )
-
-            with open("./data/companies.json", "w") as f:
-                json.dump(company, f, indent=2)
-        else:
-            with open("./data/companies.json", "r") as f:
-                company = json.load(f)
-
-        self._company_cache = company
-        return company
-
-    def _preprocess_text(self, text: str) -> str:
-        """
-        Preprocess text by tokenizing, removing stopwords, and lemmatizing.
-
-        Args:
-            text (str): Input text to preprocess
-
-        Returns:
-            str: Preprocessed text
-        """
-        tokens = word_tokenize(text.lower())
-        table = str.maketrans("", "", string.punctuation)
-        tokens = [word.translate(table) for word in tokens]
-        tokens = [word for word in tokens if word.isalpha()]
-        stop_words = set(stopwords.words("english"))
-        tokens = [word for word in tokens if word not in stop_words]
-        lemmatizer = WordNetLemmatizer()
-        tokens = [lemmatizer.lemmatize(word) for word in tokens]
-        return " ".join(tokens)
-
-    def _classify_llama(
-        self, body: str, category: str, title: str = ""
-    ) -> Union[List[str], str]:
-        """
-        Synchronous wrapper for _classify_llama_async.
-
-        Args:
-            body (str): Text to classify
-            category (str): Category to classify into
-            title (str): Article title (required for dimension category)
-
-        Returns:
-            Union[List[str], str]: Classification results
-        """
-        import asyncio
+        # Optional: allow base URL override if your environment uses a proxy or custom gateway.
+        # ChatGroq currently ignores base_url in most versions, but we pass it if supported.
+        base_url = _env("GROQ_BASE_URL", "")
+        kwargs = dict(model=eff_model, temperature=0.0)
+        if base_url:
+            kwargs["base_url"] = base_url
 
         try:
-            # Check if there's already a running event loop
-            loop = asyncio.get_running_loop()
-            # If we're in an async context, create a new thread to run the async code
-            import concurrent.futures
-            import threading
+            llm = ChatGroq(groq_api_key=key, **kwargs)
+        except TypeError:
+            # older langchain_groq signatures
+            llm = ChatGroq(api_key=key, **kwargs)
 
-            def run_async():
-                new_loop = asyncio.new_event_loop()
-                asyncio.set_event_loop(new_loop)
-                try:
-                    return new_loop.run_until_complete(
-                        self._classify_llama_async(body, category, title)
-                    )
-                finally:
-                    new_loop.close()
+        return llm, eff_model
 
-            with concurrent.futures.ThreadPoolExecutor() as executor:
-                future = executor.submit(run_async)
-                return future.result()
+    else:
+        raise ValueError(f"Unknown provider: {provider}")
 
-        except RuntimeError:
-            # No event loop running, we can create one
-            loop = asyncio.new_event_loop()
-            asyncio.set_event_loop(loop)
+class Classifier:
+    """
+    Heuristics-first classifier with optional LLM refinement.
+    By default, respects the CLI's --provider and --model.
+    You can override the model via env: CLASSIFIER_MODEL
+    """
+    def __init__(self, use_llm: bool = False, model_name: str = "gpt-4.1-mini", provider: Optional[str] = None):
+        self.use_llm = use_llm
+        self.provider = _pick_provider(provider)
+
+        # Allow environment override, but keep CLI as the base.
+        env_override = _env("CLASSIFIER_MODEL") or None
+        chosen_model = env_override if env_override else model_name
+
+        self.model_name = chosen_model
+        self._llm = None
+
+        if self.use_llm:
             try:
-                return loop.run_until_complete(
-                    self._classify_llama_async(body, category, title)
+                self._llm, eff_model = _init_llm(self.provider, self.model_name)
+                log.info(f"Classifier using {self.provider} model: {eff_model}")
+            except Exception as e:
+                log.warning(f"Classifier LLM init failed; fallback to heuristics. {e}")
+                self.use_llm = False
+
+    # ----------------------------
+    # Tag inference
+    # ----------------------------
+    def infer_tags(self, facts: Dict[str, Any], text_hint: Optional[str]) -> List[str]:
+        tx = (facts.get("transaction_type") or "").lower()
+        tags = ["insider-trading"]
+        if tx in ("buy", "sell", "transfer"):
+            tags.append(tx)
+
+        # Optional LLM refinement
+        if self.use_llm and self._llm:
+            try:
+                base = (
+                    "Suggest up to 3 concise tags (comma-separated), lowercase, "
+                    "avoid duplicates of 'insider-trading', and avoid very generic terms.\n\n"
+                    f"Facts: {str({k: v for k, v in facts.items() if k in ['company_name','symbol','holder_name','transaction_type','prices','amount_transacted','holdings_before','holdings_after','reason']})}\n"
                 )
-            finally:
-                loop.close()
-
-    async def _classify_llama_async(
-        self, body: str, category: str, title: str = ""
-    ) -> Union[List[str], str]:
-        """
-        Asynchronously classify text using LLM based on the specified category.
-
-        Args:
-            body (str): Text to classify
-            category (str): Category to classify into (tags, tickers, subsectors, sentiment, dimension)
-            title (str): Article title (required for dimension category)
-
-        Returns:
-            Union[List[str], str]: Classification results
-        """
-        # Load required data
-        tags = self._load_tag_data()
-        company = self._load_company_data()
-        subsectors = self._load_subsector_data()
-
-        # Prepare prompt parameters based on category
-        if category == "dimension":
-            prompt_params = {
-                "title": title,
-                "article": body,
-            }
-        else:
-            prompt_params = {
-                "tags": ", ".join(tags),
-                "tickers": ", ".join(company.keys()),
-                "subsectors": ", ".join(subsectors.keys()),
-                "body": body,
-            }
-
-        # Get formatted prompt
-        prompt = self._get_prompt(category, **prompt_params)
-
-        # Process with LLM
-        for llm in self.llm_collection.get_llms():
-            try:
-                outputs = await llm.ainvoke(prompt)
-                outputs = outputs.content
-
-                # Remove think tags and their content
-                if "<think>" in outputs:
-                    # Find the last occurrence of </think>
-                    last_think_end = outputs.rfind("</think>")
-                    if last_think_end != -1:
-                        # Remove everything from <think> to </think>
-                        outputs = outputs[last_think_end + 9 :].strip()
-                    else:
-                        # If no closing tag, remove from <think> to end
-                        outputs = outputs[outputs.find("<think>") + 7 :].strip()
-
-                # Clean up any remaining whitespace and newlines
-                outputs = outputs.strip()
-
-                # Handle dimension category differently (returns dict, not list)
-                if category == "dimension":
-                    result = {
-                        "valuation": None,
-                        "future": None,
-                        "technical": None,
-                        "financials": None,
-                        "dividend": None,
-                        "management": None,
-                        "ownership": None,
-                        "sustainability": None,
-                    }
-
-                    for line in outputs.splitlines():
-                        if ":" in line:
-                            parts = line.split(":")
-                            if len(parts) >= 2:
-                                key = parts[0].strip()
-                                try:
-                                    value = int(parts[1].strip())
-                                    if key in result:
-                                        result[key] = value
-                                except ValueError:
-                                    pass
-                    return result
-                else:
-                    # Split by comma and clean up each item
-                    outputs = str(outputs).split(",")
-                    outputs = [out.strip() for out in outputs if out.strip()]
-
-                    if category == "tags":
-                        seen = set()
-                        outputs = [
-                            e
-                            for e in outputs
-                            if e in tags and not (e in seen or seen.add(e))
-                        ]
-
-                    return outputs
+                if text_hint:
+                    base += f"\nText hint:\n{text_hint[:800]}"
+                resp = self._llm.invoke(base)
+                content = (getattr(resp, "content", "") or "").strip().lower()
+                for t in [x.strip() for x in content.replace("\n", " ").split(",")]:
+                    if t and t not in tags and len(tags) < 5:
+                        tags.append(t)
             except Exception as e:
-                print(f"[ERROR] LLM failed with error: {e}")
+                log.debug(f"LLM tags failed: {e}")
+        return tags
 
-        # Return appropriate default based on category
-        if category == "dimension":
-            return {
-                "valuation": None,
-                "future": None,
-                "technical": None,
-                "financials": None,
-                "dividend": None,
-                "management": None,
-                "ownership": None,
-                "sustainability": None,
-            }
-        else:
-            return []
+    # ----------------------------
+    # Sentiment inference
+    # ----------------------------
+    def infer_sentiment(self, facts: Dict[str, Any], text_hint: Optional[str]) -> str:
+        tx = (facts.get("transaction_type") or "").lower()
+        if tx in BUY:
+            return "positive"
+        if tx in SELL:
+            return "negative"
+        if tx in TRANSFER:
+            return "neutral"
 
-    async def classify_article_async(
-        self, title: str, body: str
-    ) -> Tuple[List[str], List[str], str, str, Dict[str, Optional[int]]]:
-        """
-        Asynchronously classify an article's tags, tickers, subsector, sentiment, and dimensions.
-
-        Args:
-            title (str): Article title
-            body (str): Article content
-
-        Returns:
-            Tuple[List[str], List[str], str, str, Dict[str, Optional[int]]]:
-                (tags, tickers, subsector, sentiment, dimensions)
-        """
-        # Run all classifications concurrently
-        tasks = [
-            self._classify_llama_async(body, "tags", title),
-            self._classify_llama_async(body, "tickers", title),
-            self._classify_llama_async(body, "subsectors", title),
-            self._classify_llama_async(body, "sentiment", title),
-            self._classify_llama_async(body, "dimension", title),
-        ]
-
-        results = await asyncio.gather(*tasks)
-        tags, tickers, subsector, sentiment, dimension = results
-
-        return tags, tickers, subsector, sentiment, dimension
-
-    def get_tickers(self, text: str) -> List[str]:
-        """
-        Extract tickers from text.
-
-        Args:
-            text (str): Input text
-
-        Returns:
-            List[str]: List of identified tickers
-        """
-        company_names = self._identify_company_names(text)
-        company = self._load_company_data()
-        return self._match_ticker_codes(company_names, company)
-
-    def get_tags(self, text: str, preprocess: bool = True) -> List[str]:
-        """
-        Extract tags from text.
-
-        Args:
-            text (str): Input text
-            preprocess (bool): Whether to preprocess the text
-
-        Returns:
-            List[str]: List of identified tags
-        """
-        if preprocess:
-            text = self._preprocess_text(text)
-        return self._classify_llama(text, "tags")
-
-    def get_subsector(self, text: str) -> str:
-        """
-        Extract subsector from text.
-
-        Args:
-            text (str): Input text
-
-        Returns:
-            str: Identified subsector
-        """
-        text = self._preprocess_text(text)
-        return self._classify_llama(text, "subsectors")
-
-    def get_sentiment(self, text: str) -> str:
-        """
-        Extract sentiment from text.
-
-        Args:
-            text (str): Input text
-
-        Returns:
-            str: Identified sentiment
-        """
-        text = self._preprocess_text(text)
-        return self._classify_llama(text, "sentiment")
-
-    def _identify_company_names(self, body: str) -> List[str]:
-        """
-        Identify company names in text.
-
-        Args:
-            body (str): Input text
-
-        Returns:
-            List[str]: List of identified company names
-        """
-
-        class CompanyNamesOutput(BaseModel):
-            company_names: List[str] = Field(
-                description="List of company names extracted from the article"
-            )
-
-        parser = JsonOutputParser(pydantic_object=CompanyNamesOutput)
-        template = """
-        ### **Company Name Extraction**
-        Identify all company names that are explicitly mentioned in the article.
-
-        ### **Extraction Rules:**
-        - Extract full company names without abbreviations.
-        - If a company name includes **"PT."**, omit **"PT."** and return only the full company name.
-        - If a company name includes **"Tbk"**, omit **"Tbk"** and return only the full company name.
-        - Example: **PT. Antara Business Service Tbk (ABS)** → `"Antara Business Service"`
-        - If no company names are found, return an empty list.
-
-        ### **Response Format:**
-        {format_instructions}
-
-        ---
-        #### **Article Content:**
-        {body}
-        """
-
-        prompt = ChatPromptTemplate.from_template(template=template)
-        messages = prompt.format_messages(
-            body=body, format_instructions=parser.get_format_instructions()
-        )
-
-        for llm in self.llm_collection.get_llms():
+        # Optional LLM refinement from text_hint
+        if self.use_llm and self._llm and text_hint:
             try:
-                output = llm.invoke(messages[0].content)
-                parsed_output = parser.parse(output.content)
-                return parsed_output["company_names"]
+                prompt = (
+                    "Classify sentiment strictly as one of: positive, negative, or neutral, "
+                    "based only on the text:\n" + text_hint[:800]
+                )
+                msg = self._llm.invoke(prompt)
+                s = (getattr(msg, "content", "") or "").strip().lower()
+                if s in ("positive", "negative", "neutral"):
+                    return s
             except Exception as e:
-                print(f"[ERROR] LLM failed: {e}")
-                continue
-
-        return []
-
-    def _match_ticker_codes(
-        self, company_names: List[str], company_data: Dict[str, Dict[str, str]]
-    ) -> List[str]:
-        """
-        Match company names to ticker codes.
-
-        Args:
-            company_names (List[str]): List of company names
-            company_data (Dict[str, Dict[str, str]]): Company data dictionary
-
-        Returns:
-            List[str]: List of matched ticker codes
-        """
-        matched_tickers = []
-        for name in company_names:
-            if name:
-                for ticker, info in company_data.items():
-                    if (
-                        name.lower() in info["name"].lower()
-                        or name.lower() == ticker.split()[0].lower()
-                    ):
-                        if ticker not in matched_tickers:
-                            matched_tickers.append(ticker)
-        return matched_tickers
-
-    def predict_dimension(self, title: str, article: str) -> Dict[str, Optional[int]]:
-        """
-        Predict dimensions of the article.
-
-        Args:
-            title (str): Article title
-            article (str): Article content
-
-        Returns:
-            Dict[str, Optional[int]]: Dictionary of dimension predictions
-        """
-        prompt = self._get_prompt("dimension", title=title, article=article)
-
-        result = {
-            "valuation": None,
-            "future": None,
-            "technical": None,
-            "financials": None,
-            "dividend": None,
-            "management": None,
-            "ownership": None,
-            "sustainability": None,
-        }
-
-        for llm in self.llm_collection.get_llms():
-            try:
-                outputs = llm.invoke(prompt).content
-                for line in outputs.splitlines():
-                    item = line.split(":")
-                    key = item[0].strip()
-                    try:
-                        value = int(item[1])
-                        if key in result:
-                            result[key] = value
-                    except:
-                        pass
-                return result
-            except Exception as e:
-                print(f"[ERROR] LLM failed with error: {e}")
-        return result
-
-
-# Create a singleton instance
-classifier = NewsClassifier()
-
-
-# Public interface functions
-def get_tickers(text: str) -> List[str]:
-    """Get tickers from text."""
-    return classifier.get_tickers(text)
-
-
-def get_tags_chat(text: str, preprocess: bool = True) -> List[str]:
-    """Get tags from text."""
-    return classifier.get_tags(text, preprocess)
-
-
-def get_subsector_chat(text: str) -> str:
-    """Get subsector from text."""
-    return classifier.get_subsector(text)
-
-
-def get_sentiment_chat(text: str) -> str:
-    """Get sentiment from text."""
-    return classifier.get_sentiment(text)
-
-
-def predict_dimension(title: str, article: str) -> Dict[str, Optional[int]]:
-    """Predict dimensions of the article."""
-    return classifier.predict_dimension(title, article)
-
-
-# Backward compatibility functions
-def load_company_data() -> Dict[str, Dict[str, str]]:
-    """Load company data from Supabase or cache."""
-    return classifier._load_company_data()
-
-
-def load_subsector_data() -> Dict[str, str]:
-    """Load subsector data from Supabase or cache."""
-    return classifier._load_subsector_data()
-
-
-def load_tag_data() -> List[str]:
-    """Load tag data from JSON file."""
-    return classifier._load_tag_data()
+                log.debug(f"LLM sentiment failed: {e}")
+        return "neutral"

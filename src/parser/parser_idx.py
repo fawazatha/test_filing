@@ -183,7 +183,7 @@ class IDXParser(BaseParser):
 
             # Case B: bukan ticker → resolve dari nama emiten (fuzzy)
             if not sym:
-                min_score = int(os.getenv("COMPANY_RESOLVE_MIN_SCORE", "90"))
+                min_score = int(os.getenv("COMPANY_RESOLVE_MIN_SCORE", "85"))
                 sym2, _k, _t = resolve_symbol_from_emiten(
                     issuer_name_raw,
                     symbol_to_name=self.company_map,

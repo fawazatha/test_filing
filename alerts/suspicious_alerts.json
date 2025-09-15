@@ -1,0 +1,34 @@
+[
+  {
+    "reason": "Suspicious price deviation (>50%) from latest market price",
+    "holder_name": "Robin Sunyoto",
+    "transaction_type": "buy",
+    "holding_before": 12730000,
+    "holding_after": 13225000,
+    "share_percentage_before": 0.19,
+    "share_percentage_after": 0.2,
+    "UID": null,
+    "source": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_EREP/202509/fd72d7cf49_b24c21abd7.pdf",
+    "timestamp": "2025-09-12 22:33:15",
+    "company": "PT Hero Global Investment Tbk",
+    "inferred_price": 64864898.99,
+    "latest_price": 147.0,
+    "deviation": "44125681.63%",
+    "amount_transacted": 495000,
+    "transaction_value": 32108125000000.0,
+    "price_transaction": {
+      "type": [
+        "buy",
+        "buy"
+      ],
+      "prices": [
+        68125000.0,
+        3575000.0
+      ],
+      "amount_transacted": [
+        470000,
+        25000
+      ]
+    }
+  }
+]
