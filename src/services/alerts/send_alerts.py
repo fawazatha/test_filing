@@ -168,7 +168,7 @@ def main():
     ap.add_argument("--bcc-inserted", default=os.getenv("ALERT_BCC_EMAIL_INSERTED", ""))
     ap.add_argument("--bcc-not-inserted", default=os.getenv("ALERT_BCC_EMAIL_NOT_INSERTED", ""))
 
-    ap.add_argument("--title-inserted", default=os.getenv("ALERT_TITLE_INSERTED", "IDX Alerts — Inserted (DB OK)"))
+    ap.add_argument("--title-inserted", default=os.getenv("ALERT_TITLE_INSERTED", "IDX Alerts — Inserted to DB (Checking Needed)"))
     ap.add_argument("--title-not-inserted", default=os.getenv("ALERT_TITLE_NOT_INSERTED", "IDX Alerts — Not Inserted (Action Needed)"))
 
     ap.add_argument("--region", default=os.getenv("AWS_REGION") or os.getenv("SES_REGION") or "ap-southeast-3")

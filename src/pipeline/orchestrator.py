@@ -10,11 +10,10 @@ from datetime import datetime, timedelta
 from pathlib import Path
 from typing import List, Dict, Any, Optional, Tuple
 
-
 try:
     import zoneinfo
     JKT = zoneinfo.ZoneInfo("Asia/Jakarta")
-except Exception: 
+except Exception:
     JKT = None
 
 from scripts.company_map_hybrid import get_company_map
@@ -37,6 +36,10 @@ from services.io.artifacts import make_artifact_zip
 # --- Upload (optional) ---
 from services.upload.supabase import SupabaseUploader
 from services.transform.filings_schema import clean_rows, ALLOWED_COLUMNS, REQUIRED_COLUMNS
+
+# --- Email alerts ---
+from services.alerts.ses_email import send_attachments
+from services.alerts.alerts_mailer import _render_email_content
 
 LOG = logging.getLogger("orchestrator")
 
@@ -190,7 +193,7 @@ def step_download_pdfs(
         min_similarity=min_similarity,
         dry_run=dry_run,
         verbose=verbose,
-        clean_out=False, 
+        clean_out=False,
     )
 
 
@@ -212,7 +215,7 @@ def step_parse_pdfs(
     LOG.info("[PARSER] IDXParser = %s", idx_parser.__class__.__name__)
     idx_parser.parse_folder()
 
-  
+    # Non-IDX
     NonIDXClass = getattr(parser_non_idx_mod, "NonIDXParser", None)
     nonidx_parser = NonIDXClass(
         pdf_folder=str(non_idx_folder),
@@ -249,6 +252,118 @@ def step_bucketize_alerts(
 ) -> None:
     stats = bucketize_alerts(from_dir=from_dir, inserted_dir=inserted_dir, not_inserted_dir=not_inserted_dir)
     LOG.info("[BUCKETIZE] inserted=%d not_inserted=%d", stats["inserted"], stats["not_inserted"])
+
+
+# ===== Email helpers & step =====
+def _gather_json_files(dir_path: Path) -> List[Path]:
+    if not dir_path.exists() or not dir_path.is_dir():
+        return []
+    return sorted([p for p in dir_path.glob("*.json") if p.is_file()])
+
+
+def _coerce_alerts(obj: Any) -> List[Dict[str, Any]]:
+    if isinstance(obj, list):
+        return [x for x in obj if isinstance(x, dict)]
+    if isinstance(obj, dict):
+        for k in ("alerts", "data", "items", "results", "rows"):
+            if k in obj and isinstance(obj[k], list):
+                return [x for x in obj[k] if isinstance(x, dict)]
+        return [obj]
+    return []
+
+
+def _load_alerts_from_files(files: List[Path]) -> List[Dict[str, Any]]:
+    alerts: List[Dict[str, Any]] = []
+    for fp in files:
+        try:
+            data = json.loads(fp.read_text(encoding="utf-8"))
+            alerts.extend(_coerce_alerts(data))
+        except Exception as e:
+            LOG.warning("[EMAIL] failed reading %s: %s (skipped)", fp, e)
+    return alerts
+
+
+def _pick_attachments(paths: List[Path], max_bytes: int) -> Tuple[List[Path], int, List[Path]]:
+    files: List[Tuple[Path, int]] = []
+    for p in paths:
+        try:
+            files.append((p, p.stat().st_size))
+        except Exception:
+            LOG.warning("[EMAIL] cannot stat %s (skipped)", p)
+    files.sort(key=lambda t: t[1])  # kecil dulu
+    picked: List[Path] = []
+    total = 0
+    for p, sz in files:
+        if total + sz <= max_bytes:
+            picked.append(p)
+            total += sz
+    picked_set = set(picked)
+    skipped = [p for p, _ in files if p not in picked_set]
+    return picked, total, skipped
+
+
+def step_email_alerts(
+    *,
+    inserted_dir: Path = Path("alerts_inserted"),
+    not_inserted_dir: Path = Path("alerts_not_inserted"),
+    to_inserted: Optional[str] = None,
+    to_not_inserted: Optional[str] = None,
+    cc_inserted: Optional[str] = None,
+    cc_not_inserted: Optional[str] = None,
+    bcc_inserted: Optional[str] = None,
+    bcc_not_inserted: Optional[str] = None,
+    title_inserted: str = "IDX Alerts — Inserted (DB OK)",
+    title_not_inserted: str = "IDX Alerts — Not Inserted (Action Needed)",
+    aws_region: Optional[str] = None,
+    attach_budget_bytes: int = 7_500_000,  # ~7.5MB for safety under 10MB raw limit
+) -> None:
+    """
+    Kirim 2 email terpisah (inserted & not_inserted) dengan melampirkan file JSON sumber.
+    Tidak mengirim jika folder tidak ada / tidak ada file / tidak ada alert.
+    """
+    def _send_one(group_title: str, folder: Path, to_csv: Optional[str],
+                  cc_csv: Optional[str], bcc_csv: Optional[str]) -> None:
+        files = _gather_json_files(folder)
+        if not files:
+            LOG.info("[EMAIL] '%s' skipped: folder %s missing or empty", group_title, folder)
+            return
+        alerts = _load_alerts_from_files(files)
+        if not alerts:
+            LOG.info("[EMAIL] '%s' skipped: no alerts parsed from %s", group_title, folder)
+            return
+        picked, total_bytes, skipped = _pick_attachments(files, attach_budget_bytes)
+        if skipped:
+            LOG.warning("[EMAIL] '%s' some attachments skipped due to size: %s",
+                        group_title, ", ".join(s.name for s in skipped))
+
+        subject, body_text, body_html = _render_email_content(alerts, title=group_title)
+        if picked:
+            body_text += "\n\nAttached files:\n" + "\n".join(f"- {p.name}" for p in picked)
+
+        to_list  = [s.strip() for s in (to_csv or "").split(",") if s.strip()]
+        cc_list  = [s.strip() for s in (cc_csv or "").split(",") if s.strip()] or None
+        bcc_list = [s.strip() for s in (bcc_csv or "").split(",") if s.strip()] or None
+        if not to_list:
+            LOG.info("[EMAIL] '%s' skipped: no recipients configured", group_title)
+            return
+
+        LOG.info("[EMAIL] sending '%s' to=%s attach=%d (~%d bytes)",
+                 group_title, to_list, len(picked), total_bytes)
+
+        res = send_attachments(
+            to=to_list,
+            subject=subject,
+            body_text=body_text,
+            body_html=body_html,
+            files=[str(p) for p in picked],
+            cc=cc_list,
+            bcc=bcc_list,
+            aws_region=aws_region,
+        )
+        LOG.info("[EMAIL] result '%s': %s", group_title, res)
+
+    _send_one(title_inserted, inserted_dir, to_inserted, cc_inserted, bcc_inserted)
+    _send_one(title_not_inserted, not_inserted_dir, to_not_inserted, cc_not_inserted, bcc_not_inserted)
 
 
 def step_zip_artifacts(
@@ -363,6 +478,27 @@ def build_argparser() -> argparse.ArgumentParser:
     p.add_argument("--artifact-dir", default="artifacts")
     p.add_argument("--artifact-with-pdfs", action="store_true")
 
+    # Email alerts
+    p.add_argument("--email-alerts", action="store_true",
+                   help="Send inserted/not_inserted alert emails if available")
+    p.add_argument("--email-to-inserted",
+                   default=os.getenv("ALERT_TO_EMAIL_INSERTED") or os.getenv("ALERT_TO_EMAIL"),
+                   help="Comma-separated recipients for INSERTED alerts")
+    p.add_argument("--email-to-not-inserted",
+                   default=os.getenv("ALERT_TO_EMAIL_NOT_INSERTED") or os.getenv("ALERT_TO_EMAIL"),
+                   help="Comma-separated recipients for NOT_INSERTED alerts")
+    p.add_argument("--email-cc-inserted", default=os.getenv("ALERT_CC_EMAIL_INSERTED"))
+    p.add_argument("--email-cc-not-inserted", default=os.getenv("ALERT_CC_EMAIL_NOT_INSERTED"))
+    p.add_argument("--email-bcc-inserted", default=os.getenv("ALERT_BCC_EMAIL_INSERTED"))
+    p.add_argument("--email-bcc-not-inserted", default=os.getenv("ALERT_BCC_EMAIL_NOT_INSERTED"))
+    p.add_argument("--email-title-inserted",
+                   default=os.getenv("ALERT_TITLE_INSERTED", "IDX Alerts — Inserted (DB OK)"))
+    p.add_argument("--email-title-not-inserted",
+                   default=os.getenv("ALERT_TITLE_NOT_INSERTED", "IDX Alerts — Not Inserted (Action Needed)"))
+    p.add_argument("--email-region", default=os.getenv("AWS_REGION") or os.getenv("SES_REGION"))
+    p.add_argument("--email-attach-budget", type=int,
+                   default=int(os.getenv("ATTACH_BUDGET_BYTES", "7500000")),
+                   help="Total attachment size budget in bytes (default ~7.5MB)")
     return p
 
 
@@ -461,7 +597,24 @@ def main():
     # 5) Bucketize alerts → alerts_inserted / alerts_not_inserted
     step_bucketize_alerts()
 
-    # 6) Artifacts (zip)
+    # 6) Email alerts (attach original files). Skip if folders missing/empty/no alerts.
+    if args.email_alerts:
+        step_email_alerts(
+            inserted_dir=Path("alerts_inserted"),
+            not_inserted_dir=Path("alerts_not_inserted"),
+            to_inserted=args.email_to_inserted,
+            to_not_inserted=args.email_to_not_inserted,
+            cc_inserted=args.email_cc_inserted,
+            cc_not_inserted=args.email_cc_not_inserted,
+            bcc_inserted=args.email_bcc_inserted,
+            bcc_not_inserted=args.email_bcc_not_inserted,
+            title_inserted=args.email_title_inserted,
+            title_not_inserted=args.email_title_not_inserted,
+            aws_region=args.email_region,
+            attach_budget_bytes=args.email_attach_budget,
+        )
+
+    # 7) Artifacts (zip)
     if args.zip_artifacts:
         step_zip_artifacts(
             prefix=args.artifact_prefix,
@@ -469,7 +622,7 @@ def main():
             artifact_dir=Path(args.artifact_dir),
         )
 
-    # 7) Optional upload to Supabase
+    # 8) Optional upload to Supabase
     if args.upload:
         step_upload_supabase(
             input_json=filings_out,

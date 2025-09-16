@@ -83,16 +83,33 @@ jobs:
 
       - name: Run orchestrator
         env:
-          # Supabase: service role (biar tidak kena RLS)
+          # ===== App secrets =====
           SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
-          SUPABASE_KEY: ${{ secrets.SUPABASE_KEY}}
+          SUPABASE_KEY: ${{ secrets.SUPABASE_KEY }}
 
-          # IDX fetch via proxy (ISI secret ini dengan URL proxy: http://user:pass@host:port)
+          # (Optional) HTTP proxy just for IDX fetch/downloader
           HTTP_PROXY:  ${{ secrets.PROXY }}
           HTTPS_PROXY: ${{ secrets.PROXY }}
 
-          # Upload Supabase TIDAK lewat proxy
-          NO_PROXY: "localhost,127.0.0.1,supabase.co,.supabase.co"
+          # IMPORTANT: don't proxy Supabase & AWS (SES/S3/etc.)
+          NO_PROXY: "localhost,127.0.0.1,supabase.co,.supabase.co,amazonaws.com,.amazonaws.com"
+
+          # ===== AWS / SES (for emailing alerts) =====
+          AWS_ACCESS_KEY_ID:     ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          AWS_REGION:            ${{ secrets.AWS_REGION }}           # e.g. ap-southeast-3
+          SES_FROM_EMAIL:        ${{ secrets.SES_FROM_EMAIL }}       # e.g. "Ops Bot <no-reply@yourdomain.com>"
+
+          # Recipients (comma-separated). Must be verified if SES is sandbox.
+          ALERT_TO_EMAIL_INSERTED:     ${{ secrets.ALERT_TO_EMAIL }}
+          ALERT_TO_EMAIL_NOT_INSERTED: ${{ secrets.ALERT_TO_EMAIL }}
+          # (Optional)
+          # ALERT_CC_EMAIL_INSERTED: ""
+          # ALERT_CC_EMAIL_NOT_INSERTED: ""
+          # ALERT_BCC_EMAIL_INSERTED: ""
+          # ALERT_BCC_EMAIL_NOT_INSERTED: ""
+          # ALERT_TITLE_INSERTED: "IDX Alerts — Inserted (DB OK)"
+          # ALERT_TITLE_NOT_INSERTED: "IDX Alerts — Not Inserted (Action Needed)"
         shell: bash
         run: |
           set -euo pipefail
@@ -123,6 +140,11 @@ jobs:
               ARGS+=( "--upload" "--table" "${{ inputs.table }}" )
             fi
           fi
+
+          # Turn on emailing step (will auto-skip if folders empty / no recipients)
+          ARGS+=( "--email-alerts" )
+          # Optional: attachment budget (raw SES limit 10MB; keep headroom for headers/body)
+          # ARGS+=( "--email-attach-budget" "7500000" )
 
           echo "python -m pipeline.orchestrator ${ARGS[*]}"
           python -m pipeline.orchestrator "${ARGS[@]}"
