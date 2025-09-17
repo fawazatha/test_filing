@@ -13,6 +13,75 @@ from ..utils.company_resolver import (
 
 logger = logging.getLogger(__name__)
 
+# ============================================================
+# PDFMiner noise control (drop-in)
+# ============================================================
+
+# Logger pdfminer yang sering memunculkan noise (seek/xref/nextline/nexttoken)
+_PDFMINER_LOGGERS = [
+    "pdfminer",
+    "pdfminer.psparser",
+    "pdfminer.pdfparser",
+    "pdfminer.pdfdocument",
+    "pdfminer.pdfinterp",
+    "pdfminer.pdfpage",
+    "pdfminer.cmapdb",
+    "pdfminer.layout",
+    "pdfminer.image",
+    "pdfminer.converter",
+    "pdfminer.pdfdevice",
+    "pdfminer.utils",
+]
+
+def _basic_root_config():
+    """Set root logging jika belum ada handler (hindari double config)."""
+    root = logging.getLogger()
+    if not root.handlers:
+        logging.basicConfig(
+            level=os.getenv("LOG_LEVEL", "INFO"),
+            format="%(asctime)s [%(levelname)s] %(name)s: %(message)s",
+        )
+
+def silence_pdfminer(level: int = logging.WARNING) -> None:
+    """Turunkan level logger pdfminer & matikan propagate agar tidak naik ke root."""
+    for name in _PDFMINER_LOGGERS:
+        lg = logging.getLogger(name)
+        lg.setLevel(level)
+        lg.propagate = False
+
+class _PdfMinerChatterFilter(logging.Filter):
+    """Filter isi pesan pdfminer yang sangat remeh sebagai lapisan tambahan."""
+    NOISE = ("seek:", "find_xref", "xref found", "nextline:", "nexttoken:", "read_xref_from")
+    def filter(self, record: logging.LogRecord) -> bool:
+        try:
+            msg = record.getMessage()
+        except Exception:
+            return True
+        return not any(x in msg for x in self.NOISE)
+
+def init_logging(pdf_debug: Optional[bool] = None) -> None:
+    """
+    Inisialisasi logging dan kendalikan kebisingan pdfminer.
+    - Jika pdf_debug None, baca dari ENV PDF_DEBUG (1/true/on).
+    - Saat pdf_debug False (default), pdfminer dibisukan ke WARNING + filter isi.
+    """
+    _basic_root_config()
+
+    if pdf_debug is None:
+        env = os.getenv("PDF_DEBUG", "0").strip().lower()
+        pdf_debug = env in ("1", "true", "yes", "on")
+
+    if not pdf_debug:
+        silence_pdfminer(logging.WARNING)
+        logging.getLogger("pdfminer").addFilter(_PdfMinerChatterFilter())
+
+    # Reduksi kebisingan lib lain yang umum
+    logging.getLogger("urllib3").setLevel(logging.WARNING)
+    logging.getLogger("PIL").setLevel(logging.WARNING)
+
+# ============================================================
+# Base Parser
+# ============================================================
 
 class BaseParser(ABC):
     """Base class for PDF parsers."""
@@ -25,6 +94,9 @@ class BaseParser(ABC):
         alerts_file: Optional[str] = None,
         alerts_not_inserted_file: Optional[str] = None,
     ):
+        # Pastikan kontrol logging aktif sedini mungkin (honor PDF_DEBUG env)
+        init_logging(pdf_debug=None)
+
         self.pdf_folder = pdf_folder
         self.output_file = output_file
         self.announcement_json = announcement_json
@@ -55,7 +127,6 @@ class BaseParser(ABC):
             logger.info(f"Loaded {len(self.company_names)} company names from company_map.json")
         else:
             logger.warning("No company names loaded. Check data/company/company_map.json or env COMPANY_MAP_FILE")
-
 
     def build_pdf_mapping(self) -> Dict[str, Any]:
         """Build mapping from PDF files to announcement metadata."""
@@ -94,11 +165,17 @@ class BaseParser(ABC):
         try:
             with pdfplumber.open(filepath) as pdf:
                 logger.debug(f"Opened {filepath} with {len(pdf.pages)} pages")
-                text = "\n".join([
-                    page.extract_text() for page in pdf.pages
-                    if page.extract_text()
-                ])
-                return text.strip() if text.strip() else None
+                text_parts: List[str] = []
+                for page in pdf.pages:
+                    try:
+                        page_text = page.extract_text()
+                    except Exception as e:
+                        logger.warning(f"extract_text error on {os.path.basename(filepath)} page {page.page_number}: {e}")
+                        page_text = None
+                    if page_text:
+                        text_parts.append(page_text)
+                text = "\n".join(text_parts)
+                return text.strip() if text and text.strip() else None
         except Exception as e:
             logger.error(f"Error extracting text from {filepath}: {e}")
             return None
