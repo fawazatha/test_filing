@@ -1,145 +1,191 @@
+# utils/uploader.py
 from __future__ import annotations
-import os, json, time
-from typing import Any, Dict, List, Optional
-from .io_utils import read_json, read_jsonl
+import os
+import json
+from typing import Any, Dict, List, Optional, Iterable, Tuple, Union
+from datetime import datetime
+import pathlib
+
+from ..supabase import SupabaseUploader
 from .io_utils import get_logger
 
 log = get_logger(__name__)
 
-ALLOWED_NEWS_COLS = {
+# -------- helpers --------
+def _ensure_list(v: Any) -> Optional[List[Any]]:
+    if v is None:
+        return None
+    if isinstance(v, list):
+        return v
+    if isinstance(v, str):
+        s = v.strip()
+        if not s:
+            return None
+        # coba parse JSON list
+        try:
+            parsed = json.loads(s)
+            if isinstance(parsed, list):
+                return parsed
+        except Exception:
+            # fallback: treat as single item list
+            return [s]
+    return [v]
+
+def _ensure_str_list(v: Any) -> Optional[List[str]]:
+    lst = _ensure_list(v)
+    if lst is None:
+        return None
+    out: List[str] = []
+    for x in lst:
+        if x is None:
+            continue
+        out.append(str(x).strip())
+    return out or None
+
+def _first_str(seq: Optional[Iterable[Any]]) -> Optional[str]:
+    if not seq:
+        return None
+    for x in seq:
+        if x is None:
+            continue
+        s = str(x).strip()
+        if s:
+            return s
+    return None
+
+def _coerce_iso(ts: Optional[str]) -> Optional[str]:
+    if not ts:
+        return None
+    s = str(ts).strip()
+    if not s:
+        return None
+    # terima bentuk "YYYY-MM-DD HH:MM:SS" atau ISO
+    try:
+        if "T" in s:
+            try:
+                datetime.fromisoformat(s.replace("Z", "+00:00"))
+                return s
+            except Exception:
+                pass
+        for fmt in ("%Y-%m-%d %H:%M:%S", "%Y-%m-%d", "%Y/%m/%d %H:%M:%S"):
+            try:
+                dt = datetime.strptime(s, fmt)
+                return dt.isoformat()
+            except Exception:
+                continue
+        return s
+    except Exception:
+        return s
+
+
+_ALLOWED_COLS = {
     "title", "body", "source", "timestamp",
-    "sector", "sub_sector", "tags", "tickers",
-    "dimension", "votes", "score",
+    "company_name", "symbol", "sector", "sub_sector",
+    "tags", "dimension", "votes", "score",
+    "tickers", 
 }
 
-def _ensure_list(x):
-    if x is None:
-        return []
-    return x if isinstance(x, list) else [x]
+def _normalize_article_row(row: Dict[str, Any], prefer_symbol: bool = True) -> Dict[str, Any]:
+    r = dict(row) 
 
-def _parse_json_or(val, default=None):
-    if val is None:
-        return default
-    if isinstance(val, (dict, list)):
-        return val
-    if isinstance(val, str):
-        try:
-            return json.loads(val)
-        except Exception:
-            return default
-    return default
+    sym = (r.get("symbol") or "").strip()
+    tickers: Optional[List[str]] = _ensure_str_list(r.get("tickers"))
 
-def _get_supabase_client():
-    url = os.getenv("SUPABASE_URL")
-    key = os.getenv("SUPABASE_KEY") or os.getenv("SUPABASE_SERVICE_ROLE_KEY") or os.getenv("SUPABASE_ANON_KEY")
-    if not url or not key:
-        raise RuntimeError("SUPABASE_URL / SUPABASE_KEY env tidak tersedia.")
-
-    # Prefer library if installed, else fallback HTTP
-    try:
-        from supabase import create_client  # type: ignore
-        return ("lib", create_client(url, key))
-    except Exception:
-        import requests  # type: ignore
-        session = requests.Session()
-        session.headers.update({
-            "apikey": key,
-            "Authorization": f"Bearer {key}",
-            "Content-Type": "application/json",
-            "Prefer": "return=representation",
-        })
-        return ("http", (url, session))
-
-def _http_insert(url_base: str, session, table: str, row: Dict[str, Any], timeout: int = 30):
-    import requests
-    endpoint = f"{url_base}/rest/v1/{table}"
-    r = session.post(endpoint, data=json.dumps(row), timeout=timeout)
-    if r.status_code not in (200, 201):
-        raise RuntimeError(f"HTTP {r.status_code}: {r.text[:300]}")
-    return r.json() if r.text else {}
-
-def _read_news_items(input_path: str) -> List[Dict[str, Any]]:
-    items: List[Dict[str, Any]] = []
-    try_json = True
-    if input_path.lower().endswith(".jsonl"):
-        try_json = False
-    if try_json:
-        try:
-            obj = read_json(input_path)
-            if isinstance(obj, list):
-                items = obj
-            elif isinstance(obj, dict):
-                items = [obj]
-            else:
-                log.error("JSON tidak valid (bukan list/dict).")
-        except Exception:
-            # fallback ke JSONL
-            items = read_jsonl(input_path)
+    if prefer_symbol:
+        if not tickers and sym:
+            tickers = [sym]
     else:
-        items = read_jsonl(input_path)
-    return items
+        if not sym:
+            sym = _first_str(tickers) or ""
 
-def _sanitize_row(item: Dict[str, Any]) -> Dict[str, Any]:
-    row_full = {
-        "title": item.get("title"),
-        "body": item.get("body"),
-        "source": item.get("source"),
-        "timestamp": item.get("timestamp"),
-        "sector": item.get("sector"),
-        "sub_sector": _ensure_list(item.get("sub_sector")),
-        "tags": _ensure_list(item.get("tags")),
-        "tickers": _ensure_list(item.get("tickers")),
-        "dimension": _parse_json_or(item.get("dimension"), None),
-        "votes": _parse_json_or(item.get("votes"), None),
-        "score": item.get("score", None),
-    }
-    row = {k: v for k, v in row_full.items() if k in ALLOWED_NEWS_COLS}
-    return row
+    if not sym:
+        sym = _first_str(tickers) or ""
 
-def upload_news_items(items: List[Dict[str, Any]], table: str = "idx_news",
-                      dry_run: bool = False, timeout: int = 30) -> int:
-    if not items:
-        log.warning("Tidak ada items untuk diupload.")
-        return 0
+    r["symbol"] = sym or None
+    r["tickers"] = tickers 
+
+    r["sub_sector"] = _ensure_str_list(r.get("sub_sector"))
+    r["tags"] = _ensure_str_list(r.get("tags"))
+
+    r["timestamp"] = _coerce_iso(r.get("timestamp"))
+
+    if r.get("sentiment") is not None:
+        try:
+            r["sentiment"] = str(r["sentiment"]).strip().lower()
+        except Exception:
+            pass
+
+    r["dimension"] = None
+    r["votes"] = None
+    r["score"] = None
+
+    keep: Dict[str, Any] = {}
+    for k, v in r.items():
+        if k in _ALLOWED_COLS:
+            keep[k] = v
+    return keep
+
+def _read_json_or_jsonl(path: Union[str, pathlib.Path]) -> List[Dict[str, Any]]:
+    p = pathlib.Path(path)
+    if not p.exists():
+        raise FileNotFoundError(str(p))
+    if p.suffix.lower() == ".jsonl":
+        rows: List[Dict[str, Any]] = []
+        with p.open("r", encoding="utf-8") as f:
+            for line in f:
+                line = line.strip()
+                if not line:
+                    continue
+                rows.append(json.loads(line))
+        return rows
+    elif p.suffix.lower() == ".json":
+        data = json.loads(p.read_text(encoding="utf-8"))
+        if isinstance(data, list):
+            return data
+        if isinstance(data, dict):
+            return [data]
+        raise ValueError("Unsupported JSON structure: expected list or dict")
+    else:
+        raise ValueError("Only .json or .jsonl is supported")
+
+def upload_news_file_cli(
+    input_path: str,
+    table: str = "idx_news",
+    dry_run: bool = False,
+    timeout: int = 30,
+    prefer_symbol: bool = True,
+    supabase_url: Optional[str] = None,
+    supabase_key: Optional[str] = None,
+) -> Tuple[int, int]:
+    """
+    Upload file artikel (.json/.jsonl) ke tabel `table`.
+    Return: (success_count, fail_count)
+    """
+    rows = _read_json_or_jsonl(input_path)
+    normed = [_normalize_article_row(r, prefer_symbol=prefer_symbol) for r in rows]
+
+    log.info("Loaded %d rows from %s", len(normed), input_path)
 
     if dry_run:
-        for it in items[:3]:
-            log.info(f"[DRY-RUN] {json.dumps(_sanitize_row(it), ensure_ascii=False)}")
-        if len(items) > 3:
-            log.info(f"[DRY-RUN] ... {len(items)-3} rows lainnya")
-        return 0
+        preview = normed[0] if normed else {}
+        log.info("[DRY-RUN] sample row after normalization: %s", json.dumps(preview, ensure_ascii=False))
+        return (0, 0)
 
-    mode, client = _get_supabase_client()
-    inserted = 0
+    uploader = SupabaseUploader(
+        url=supabase_url or os.getenv("SUPABASE_URL", ""),
+        key=supabase_key or os.getenv("SUPABASE_KEY", ""),
+        default_table=table,
+        timeout=timeout,
+    )
 
-    if mode == "lib":
-        sb = client
-        for it in items:
-            row = _sanitize_row(it)
-            try:
-                resp = sb.table(table).insert(row).execute()
-                log.info(f"[INSERTED NEWS] {row.get('title')} → {str(resp)[:120]}")
-                inserted += 1
-            except Exception as e:
-                log.error(f"[ERROR] Insert failed for title={row.get('title')}: {e}")
+    res = uploader.insert_many(normed, table=table, stop_on_first_error=False)
+    ok = sum(1 for r in res if r.ok)
+    bad = sum(1 for r in res if not r.ok)
+    if bad:
+        log.warning("Some rows failed to insert: %d failed / %d total", bad, len(normed))
+        for i, r in enumerate(res):
+            if not r.ok:
+                log.error("Row %d insert failed: status=%s body=%s", i, r.status_code, r.body)
     else:
-        url_base, session = client
-        for it in items:
-            row = _sanitize_row(it)
-            try:
-                resp = _http_insert(url_base, session, table, row, timeout=timeout)
-                log.info(f"[INSERTED NEWS] {row.get('title')} → ok")
-                inserted += 1
-            except Exception as e:
-                log.error(f"[ERROR] Insert failed for title={row.get('title')}: {e}")
-
-    log.info(f"[DONE] Inserted {inserted} rows into {table}.")
-    return inserted
-
-def upload_news_file_cli(input_path: str, table: str = "idx_news",
-                         dry_run: bool = False, timeout: int = 30):
-    if not os.path.exists(input_path):
-        log.error(f"{input_path} not found.")
-        return
-    items = _read_news_items(input_path)
-    upload_news_items(items, table=table, dry_run=dry_run, timeout=timeout)
+        log.info("All rows inserted OK: %d", ok)
+    return (ok, bad)

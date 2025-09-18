@@ -1,3 +1,4 @@
+# orchestrator.py — end-to-end IDX filings + (optional) articles + upload news
 from __future__ import annotations
 import argparse
 import json
@@ -33,13 +34,20 @@ from generate.filings.runner import run as run_generate
 from services.alerts.bucketize import bucketize as bucketize_alerts
 from services.io.artifacts import make_artifact_zip
 
-# --- Upload (optional) ---
+# --- Upload (filings) ---
 from services.upload.supabase import SupabaseUploader
 from services.transform.filings_schema import clean_rows, ALLOWED_COLUMNS, REQUIRED_COLUMNS
 
 # --- Email alerts ---
 from services.alerts.ses_email import send_attachments
 from services.alerts.alerts_mailer import _render_email_content
+
+# --- NEW: Articles generate + upload news ---
+#   Pastikan paket ini ada sesuai struktur proyekmu:
+#   generate/articles/runner.py  -> run_from_filings(...)
+#   generate/articles/utils/uploader.py -> upload_news_file_cli(...)
+from generate.articles.runner import run_from_filings as run_articles_from_filings
+from generate.articles.utils.uploader import upload_news_file_cli
 
 LOG = logging.getLogger("orchestrator")
 
@@ -109,8 +117,18 @@ def _compute_window_from_minutes(window_minutes: int) -> Tuple[str, str, str, st
 
 
 def _save_json(obj: Any, path: Path) -> None:
-    path.parent.mkdir(parents=True, exist_ok=True)
+    path.parent.mkdir(parents=True, exist_ok=True
+    )
     path.write_text(json.dumps(obj, ensure_ascii=False, indent=2), encoding="utf-8")
+
+
+# NEW: write JSONL helper (untuk articles)
+def _write_jsonl(path: Path, rows: List[Dict[str, Any]]) -> None:
+    path.parent.mkdir(parents=True, exist_ok=True)
+    with path.open("w", encoding="utf-8") as f:
+        for r in rows:
+            f.write(json.dumps(r, ensure_ascii=False))
+            f.write("\n")
 
 
 def step_check_company_map(force: bool = False) -> None:
@@ -432,6 +450,37 @@ def step_upload_supabase(
         raise SystemExit(4)
 
 
+# NEW: generate articles dari filings_data.json
+def step_generate_articles(
+    *,
+    filings_json: Path,
+    articles_out: Path,
+    company_map_path: str,
+    latest_prices_path: str,
+    use_llm: bool,
+    provider: Optional[str],
+    model_name: Optional[str],
+    prefer_symbol: bool,
+) -> int:
+    data = json.loads(filings_json.read_text(encoding="utf-8"))
+    if not isinstance(data, list):
+        LOG.error("[ARTICLES] %s must be a JSON array", filings_json)
+        return 0
+
+    articles = run_articles_from_filings(
+        data,
+        company_map_path=company_map_path,
+        latest_prices_path=latest_prices_path,
+        use_llm=use_llm,
+        model_name=model_name,
+        provider=provider,
+        prefer_symbol=prefer_symbol,
+    )
+    _write_jsonl(articles_out, articles)
+    LOG.info("[ARTICLES] wrote %d articles → %s", len(articles), articles_out)
+    return len(articles)
+
+
 # CLI
 def build_argparser() -> argparse.ArgumentParser:
     p = argparse.ArgumentParser(description="IDX filings pipeline orchestrator")
@@ -464,7 +513,7 @@ def build_argparser() -> argparse.ArgumentParser:
     # Parser scope
     p.add_argument("--parser", choices=["idx", "non-idx", "both"], default="both")
 
-    # Upload
+    # Upload (filings)
     p.add_argument("--upload", action="store_true", help="Upload filings to Supabase (requires URL/KEY)")
     p.add_argument("--table", default="idx_filings")
     p.add_argument("--supabase-url", default=os.getenv("SUPABASE_URL"))
@@ -499,6 +548,33 @@ def build_argparser() -> argparse.ArgumentParser:
     p.add_argument("--email-attach-budget", type=int,
                    default=int(os.getenv("ATTACH_BUDGET_BYTES", "7500000")),
                    help="Total attachment size budget in bytes (default ~7.5MB)")
+
+    # === NEW: Articles generate & upload news ===
+    p.add_argument("--generate-articles", action="store_true",
+                   help="Generate articles.jsonl dari filings_data.json")
+    p.add_argument("--articles-out", default="data/articles.jsonl",
+                   help="Path output articles JSONL")
+    p.add_argument("--company-map", default="data/company/company_map.json",
+                   help="Path cache company_map untuk generator articles")
+    p.add_argument("--latest-prices", default="data/company/latest_prices.json",
+                   help="Path cache latest_prices untuk generator articles")
+    p.add_argument("--use-llm", action="store_true",
+                   help="Gunakan LLM untuk ringkasan/klasifikasi artikel")
+    p.add_argument("--llm-provider", default=os.getenv("LLM_PROVIDER") or "",
+                   help="groq|openai|gemini (kosongkan untuk autodetect via API key)")
+    p.add_argument("--llm-model", default=os.getenv("GROQ_MODEL") or os.getenv("OPENAI_MODEL") or os.getenv("GEMINI_MODEL") or "llama-3.3-70b-versatile",
+                   help="Nama model LLM (sesuaikan providernya)")
+    p.add_argument("--prefer-symbol", action="store_true",
+                   help="Jika ada tickers & symbol, utamakan 'symbol' (untuk articles & upload-news)")
+
+    p.add_argument("--upload-news", action="store_true",
+                   help="Upload articles JSON/JSONL ke Supabase (idx_news)")
+    p.add_argument("--news-table", default=os.getenv("SUPABASE_NEWS_TABLE", "idx_news"))
+    p.add_argument("--news-input", default=None,
+                   help="Path articles (override). Default = --articles-out")
+    p.add_argument("--news-dry-run", action="store_true")
+    p.add_argument("--news-timeout", type=int, default=int(os.getenv("SUPABASE_TIMEOUT", "30")))
+
     return p
 
 
@@ -594,6 +670,35 @@ def main():
         alerts_out=suspicious_out,
     )
 
+    # 4.5) (Opsional) Generate articles dari filings
+    if args.generate_articles:
+        step_generate_articles(
+            filings_json=filings_out,
+            articles_out=Path(args.articles_out),
+            company_map_path=args.company_map,
+            latest_prices_path=args.latest_prices,
+            use_llm=args.use_llm,
+            provider=(args.llm_provider or None),
+            model_name=args.llm_model,
+            prefer_symbol=args.prefer_symbol,
+        )
+
+    # 4.6) (Opsional) Upload news (articles) ke Supabase
+    if args.upload_news:
+        news_input = Path(args.news_input) if args.news_input else Path(args.articles_out)
+        if not news_input.exists():
+            LOG.warning("[UPLOAD-NEWS] %s not found; skip upload", news_input)
+        else:
+            LOG.info("[UPLOAD-NEWS] uploading %s → table=%s (dry_run=%s, timeout=%s)",
+                     news_input, args.news_table, args.news_dry_run, args.news_timeout)
+            upload_news_file_cli(
+                input_path=str(news_input),
+                table=args.news_table,
+                dry_run=args.news_dry_run,
+                timeout=args.news_timeout,
+                prefer_symbol=args.prefer_symbol,
+            )
+
     # 5) Bucketize alerts → alerts_inserted / alerts_not_inserted
     step_bucketize_alerts()
 
@@ -622,7 +727,7 @@ def main():
             artifact_dir=Path(args.artifact_dir),
         )
 
-    # 8) Optional upload to Supabase
+    # 8) Optional upload filings to Supabase
     if args.upload:
         step_upload_supabase(
             input_json=filings_out,

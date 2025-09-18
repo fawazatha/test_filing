@@ -58,6 +58,14 @@ def _extract_json(text: str) -> Dict[str, Any]:
     if not isinstance(out, dict): raise ValueError("Parsed JSON is not an object")
     return out
 
+def _lc_to_text(msgs) -> str:
+    parts = []
+    for m in msgs:
+        txt = getattr(m, "content", "") or ""
+        parts.append(str(txt))
+    return "\n\n".join(parts).strip()
+
+
 def _parse_providers(prefer: Optional[str] = None) -> List[str]:
     if prefer:
         return [prefer.lower().strip().strip('"').strip("'")]
@@ -65,14 +73,16 @@ def _parse_providers(prefer: Optional[str] = None) -> List[str]:
     if env_list:
         return [p.strip().lower() for p in env_list.split(",") if p.strip()]
     single = _env("LLM_PROVIDER").lower()
-    if single in {"openai","groq"}:
+    if single in {"openai","groq","gemini"}:
         return [single]
-    # default: kalau ada GROQ_API_KEY → groq dulu
+    order = []
     if _env("GROQ_API_KEY"):
-        return ["groq"] + (["openai"] if _env("OPENAI_API_KEY") else [])
+        order.append("groq")
     if _env("OPENAI_API_KEY"):
-        return ["openai"]
-    return []
+        order.append("openai")
+    if _env("GEMINI_API_KEY") or _env("GOOGLE_API_KEY"):
+        order.append("gemini")
+    return order
 
 # Alias untuk Groq
 _GROQ_ALIAS = {
@@ -92,6 +102,9 @@ def _normalize_model(provider: str, name: Optional[str]) -> str:
         if not name or name.startswith("llama-") or name.startswith("groq/"):
             return "gpt-4.1-mini"
         return name
+
+    if provider == "gemini":
+        return (name or "gemini-1.5-flash")
 
     if provider == "groq":
         deprecated = {
@@ -301,6 +314,29 @@ class Summarizer:
                 self._clients.append({"prov": "openai", "model": model, "llm": llm})
                 log.info(f"Summarizer provider ready: openai ({model})")
 
+            elif prov == "gemini":
+                key = _env("GEMINI_API_KEY") or _env("GOOGLE_API_KEY")
+                if not key:
+                    continue
+                try:
+                    from ..model.llm_gemini import GeminiLLM
+                except Exception as e:
+                    log.debug(f"Gemini adapter not available: {e}")
+                    continue
+                model = _normalize_model("gemini", self.model_hint)
+                gem_llm = None
+                try:
+                    gem_llm = GeminiLLM(api_key=key, model=model, temperature=self.temperature,
+                                        max_output_tokens=(self.max_tokens if self.max_tokens else 1024),
+                                        system=("You are a financial news writer. Return STRICT JSON with keys title and body."))
+                except Exception as e:
+                    log.debug(f"Gemini init warn: {e}")
+                    gem_llm = None
+                if gem_llm is None:
+                    continue
+                self._clients.append({"prov": "gemini", "model": model, "sdk": gem_llm})
+                log.info(f"Summarizer provider ready: gemini ({model})")
+
         if not self._clients:
             raise RuntimeError("No LLM clients available. Set GROQ_API_KEY or OPENAI_API_KEY.")
 
@@ -346,6 +382,25 @@ class Summarizer:
             for attempt in range(self.max_retries + 1):
                 try:
                     log.info(f"Summarizer invoking {prov} ({model})")
+
+                    if prov == "gemini":
+                        gem = c.get("sdk")
+                        prompt_text = _lc_to_text(msgs)
+                        msg = gem.invoke(prompt_text)
+                        raw = (getattr(msg, "content", "") or "").strip()
+                        out = _extract_json(raw)
+                        title = (out.get("title") or "").strip()
+                        body  = (out.get("body")  or "").strip()
+                        if not title or not body:
+                            raise ValueError("Empty title/body from Gemini.")
+                        banned = [
+                            "this disclosure is informational",
+                            "investment advice",
+                            "please refer to the official filing",
+                        ]
+                        if any(b in body.lower() for b in banned):
+                            body = "\n".join([ln for ln in body.splitlines() if not any(b in ln.lower() for b in banned)])
+                        return title, body
 
                     if prov == "groq":
                         if c.get("sdk") is not None:

@@ -51,7 +51,7 @@ def _pick_provider(explicit: Optional[str]) -> str:
         return env_list.split(",")[0].strip().lower()
 
     env = _env("LLM_PROVIDER").lower()
-    if env in {"openai", "groq"}:
+    if env in {"openai", "groq", "gemini"}:
         return env
 
     return "groq" if _env("GROQ_API_KEY") else ("openai" if _env("OPENAI_API_KEY") else "openai")
@@ -75,6 +75,11 @@ def _normalize_model(provider: str, name: Optional[str]) -> str:
         if raw.startswith("llama-"):
             return "gpt-4.1-mini"
         # keep user-provided non-llama model
+        return raw
+
+    if provider == "gemini":
+        if not raw:
+            return "gemini-1.5-flash"
         return raw
 
     if provider == "groq":
@@ -108,7 +113,12 @@ def _init_llm(provider: str, model_name: str):
             llm = ChatOpenAI(model=eff_model or "gpt-4.1-mini", temperature=0.0)
         return llm, (eff_model or "gpt-4.1-mini")
 
-    elif provider == "groq":
+    elif provider == "gemini":
+        if not raw:
+            return "gemini-1.5-flash"
+        return raw
+
+    if provider == "groq":
         from langchain_groq import ChatGroq
         key = _env("GROQ_API_KEY")
         if not key:
@@ -129,6 +139,14 @@ def _init_llm(provider: str, model_name: str):
 
         return llm, eff_model
 
+    elif provider == "gemini":
+        from ..model.llm_gemini import GeminiLLM
+        key = os.getenv("GEMINI_API_KEY") or os.getenv("GOOGLE_API_KEY")
+        if not key:
+            raise EnvironmentError("GEMINI_API_KEY/GOOGLE_API_KEY missing for classifier LLM.")
+        eff_model = _normalize_model(provider, model_name)
+        llm = GeminiLLM(api_key=key, model=eff_model, temperature=0.0, max_output_tokens=128)
+        return llm, eff_model
     else:
         raise ValueError(f"Unknown provider: {provider}")
 

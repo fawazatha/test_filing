@@ -38,6 +38,36 @@ on:
         description: "Supabase table (if uploading)"
         required: false
         default: "idx_filings"
+      # ==== NEW: Articles & News ====
+      generate_articles:
+        description: "Generate articles.jsonl from filings?"
+        type: boolean
+        default: true
+      upload_news:
+        description: "Upload articles to Supabase idx_news?"
+        type: boolean
+        default: true
+      news_table:
+        description: "Supabase news table"
+        required: false
+        default: "idx_news"
+      # ==== NEW: LLM ====
+      use_llm:
+        description: "Use LLM for summarization/classification (if API key present)"
+        type: boolean
+        default: true
+      llm_provider:
+        description: "LLM provider (auto if blank)"
+        required: false
+        default: ""
+      llm_model:
+        description: "LLM model name (optional)"
+        required: false
+        default: ""
+      prefer_symbol:
+        description: "Prefer 'symbol' over 'tickers' when both exist"
+        type: boolean
+        default: true
       verbose:
         description: "Verbose logs?"
         type: boolean
@@ -74,7 +104,7 @@ jobs:
       - name: Pre-clean
         run: |
           rm -rf downloads/idx-format downloads/non-idx-format || true
-          rm -rf data/*.json alerts/*.json alerts_inserted alerts_not_inserted artifacts/*.zip || true
+          rm -rf data/*.json data/*.jsonl alerts/*.json alerts_inserted alerts_not_inserted artifacts/*.zip || true
           mkdir -p downloads/idx-format downloads/non-idx-format data alerts artifacts
 
       - name: Compute run timestamp (WIB)
@@ -103,21 +133,29 @@ jobs:
           # Recipients (comma-separated). Must be verified if SES is sandbox.
           ALERT_TO_EMAIL_INSERTED:     ${{ secrets.ALERT_TO_EMAIL }}
           ALERT_TO_EMAIL_NOT_INSERTED: ${{ secrets.ALERT_TO_EMAIL }}
-          # (Optional)
-          # ALERT_CC_EMAIL_INSERTED: ""
-          # ALERT_CC_EMAIL_NOT_INSERTED: ""
-          # ALERT_BCC_EMAIL_INSERTED: ""
-          # ALERT_BCC_EMAIL_NOT_INSERTED: ""
-          # ALERT_TITLE_INSERTED: "IDX Alerts — Inserted (DB OK)"
-          # ALERT_TITLE_NOT_INSERTED: "IDX Alerts — Not Inserted (Action Needed)"
+
+          # ===== (Optional) LLM keys (any subset works) =====
+          GROQ_API_KEY:   ${{ secrets.GROQ_API_KEY }}
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          LLM_PROVIDER:   ${{ inputs.llm_provider }}
+          GROQ_MODEL:     ${{ inputs.llm_model }}
+          OPENAI_MODEL:   ${{ inputs.llm_model }}
+          GEMINI_MODEL:   ${{ inputs.llm_model }}
         shell: bash
         run: |
           set -euo pipefail
 
-          ARGS=( "--zip-artifacts" "--artifact-prefix" "filings" )
-          if [[ "${{ inputs.verbose }}" == "true" || "${{ github.event_name }}" == "schedule" ]]; then ARGS+=("-v"); fi
+          ARGS=( "--zip-artifacts" "--artifact-prefix" "filings" "--email-alerts" )
 
+          # Verbose?
+          if [[ "${{ inputs.verbose }}" == "true" || "${{ github.event_name }}" == "schedule" ]]; then
+            ARGS+=("-v")
+          fi
+
+          # Window selection
           if [[ "${{ github.event_name }}" == "schedule" ]]; then
+            # default scheduled run: lookback with slight overlap + upload filings
             WIN=$(( 120 + ${OVERLAP_MINUTES:-1} ))
             ARGS+=( "--window-minutes" "$WIN" "--upload" "--table" "idx_filings" )
           else
@@ -141,10 +179,45 @@ jobs:
             fi
           fi
 
-          # Turn on emailing step (will auto-skip if folders empty / no recipients)
-          ARGS+=( "--email-alerts" )
-          # Optional: attachment budget (raw SES limit 10MB; keep headroom for headers/body)
-          # ARGS+=( "--email-attach-budget" "7500000" )
+          # Prefer symbol?
+          if [[ "${{ inputs.prefer_symbol }}" == "true" ]]; then
+            ARGS+=( "--prefer-symbol" )
+          fi
+
+          # ==== NEW: Articles generation ====
+          GEN_ART="${{ inputs.generate_articles }}"
+          UP_NEWS="${{ inputs.upload_news }}"
+          if [[ "${{ github.event_name }}" == "schedule" ]]; then
+            # default on for schedule
+            GEN_ART="true"
+            UP_NEWS="true"
+          fi
+          if [[ "$GEN_ART" == "true" ]]; then
+            ARGS+=( "--generate-articles" "--articles-out" "data/articles.jsonl" )
+          fi
+
+          # ==== NEW: LLM toggling ====
+          USE_LLM="${{ inputs.use_llm }}"
+          # auto-enable if any key present and user allowed
+          if [[ "$USE_LLM" == "true" ]]; then
+            if [[ -n "${GROQ_API_KEY:-}" || -n "${OPENAI_API_KEY:-}" || -n "${GEMINI_API_KEY:-}" ]]; then
+              ARGS+=( "--use-llm" )
+              # pass provider/model if given (they are optional; orchestrator has defaults)
+              if [[ -n "${LLM_PROVIDER:-}" ]]; then ARGS+=( "--llm-provider" "${LLM_PROVIDER}" ); fi
+              if [[ -n "${GROQ_MODEL:-}" || -n "${OPENAI_MODEL:-}" || -n "${GEMINI_MODEL:-}" ]]; then
+                # prefer explicit llm_model input (wired above to all env names)
+                MODEL="${GROQ_MODEL:-${OPENAI_MODEL:-${GEMINI_MODEL:-}}}"
+                if [[ -n "$MODEL" ]]; then ARGS+=( "--llm-model" "$MODEL" ); fi
+              fi
+            else
+              echo "::notice::USE_LLM requested but no LLM API key found; continuing without LLM."
+            fi
+          fi
+
+          # ==== NEW: Upload news ====
+          if [[ "$UP_NEWS" == "true" ]]; then
+            ARGS+=( "--upload-news" "--news-table" "${{ inputs.news_table }}" )
+          fi
 
           echo "python -m pipeline.orchestrator ${ARGS[*]}"
           python -m pipeline.orchestrator "${ARGS[@]}"
@@ -156,6 +229,7 @@ jobs:
           path: |
             artifacts/*.zip
             data/*.json
+            data/*.jsonl
             alerts/*.json
             alerts_inserted/*.json
             alerts_not_inserted/*.json
