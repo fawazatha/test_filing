@@ -11,23 +11,14 @@ on:
         required: true
         default: lookback
         options: [single_day, range, lookback]
-      date:
-        description: "YYYYMMDD (single_day)"
-        required: false
-      start_hhmm:
-        description: "HH:MM WIB (single_day)"
-        required: false
-      end_hhmm:
-        description: "HH:MM WIB (single_day)"
-        required: false
-      from_date:
-        description: "YYYYMMDD (range)"
-        required: false
-      to_date:
-        description: "YYYYMMDD (range)"
+      time:
+        description: |
+          For single_day: YYYYMMDD|HH:MM|HH:MM
+          For range: YYYYMMDD..YYYYMMDD
+          For lookback: leave empty
         required: false
       window_minutes:
-        description: "Lookback minutes (lookback)"
+        description: "Lookback minutes (lookback mode only)"
         required: false
         default: "120"
       upload_to_supabase:
@@ -35,10 +26,9 @@ on:
         type: boolean
         default: false
       table:
-        description: "Supabase table (if uploading)"
+        description: "Supabase filings table"
         required: false
         default: "idx_filings"
-      # ==== NEW: Articles & News ====
       generate_articles:
         description: "Generate articles.jsonl from filings?"
         type: boolean
@@ -51,21 +41,8 @@ on:
         description: "Supabase news table"
         required: false
         default: "idx_news"
-      # ==== NEW: LLM ====
       use_llm:
-        description: "Use LLM for summarization/classification (if API key present)"
-        type: boolean
-        default: true
-      llm_provider:
-        description: "LLM provider (auto if blank)"
-        required: false
-        default: ""
-      llm_model:
-        description: "LLM model name (optional)"
-        required: false
-        default: ""
-      prefer_symbol:
-        description: "Prefer 'symbol' over 'tickers' when both exist"
+        description: "Use LLM if API key present"
         type: boolean
         default: true
       verbose:
@@ -117,31 +94,24 @@ jobs:
           SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
           SUPABASE_KEY: ${{ secrets.SUPABASE_KEY }}
 
-          # (Optional) HTTP proxy just for IDX fetch/downloader
+          # (Optional) HTTP proxy only for IDX fetch/downloader
           HTTP_PROXY:  ${{ secrets.PROXY }}
           HTTPS_PROXY: ${{ secrets.PROXY }}
-
-          # IMPORTANT: don't proxy Supabase & AWS (SES/S3/etc.)
           NO_PROXY: "localhost,127.0.0.1,supabase.co,.supabase.co,amazonaws.com,.amazonaws.com"
 
           # ===== AWS / SES (for emailing alerts) =====
           AWS_ACCESS_KEY_ID:     ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          AWS_REGION:            ${{ secrets.AWS_REGION }}           # e.g. ap-southeast-3
-          SES_FROM_EMAIL:        ${{ secrets.SES_FROM_EMAIL }}       # e.g. "Ops Bot <no-reply@yourdomain.com>"
+          AWS_REGION:            ${{ secrets.AWS_REGION }}
+          SES_FROM_EMAIL:        ${{ secrets.SES_FROM_EMAIL }}
 
-          # Recipients (comma-separated). Must be verified if SES is sandbox.
           ALERT_TO_EMAIL_INSERTED:     ${{ secrets.ALERT_TO_EMAIL }}
           ALERT_TO_EMAIL_NOT_INSERTED: ${{ secrets.ALERT_TO_EMAIL }}
 
-          # ===== (Optional) LLM keys (any subset works) =====
+          # ===== (Optional) LLM keys =====
           GROQ_API_KEY:   ${{ secrets.GROQ_API_KEY }}
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
-          LLM_PROVIDER:   ${{ inputs.llm_provider }}
-          GROQ_MODEL:     ${{ inputs.llm_model }}
-          OPENAI_MODEL:   ${{ inputs.llm_model }}
-          GEMINI_MODEL:   ${{ inputs.llm_model }}
         shell: bash
         run: |
           set -euo pipefail
@@ -153,21 +123,36 @@ jobs:
             ARGS+=("-v")
           fi
 
+          MODE="${{ inputs.mode }}"
+          TIME="${{ inputs.time }}"  # may be empty
           # Window selection
           if [[ "${{ github.event_name }}" == "schedule" ]]; then
             # default scheduled run: lookback with slight overlap + upload filings
             WIN=$(( 120 + ${OVERLAP_MINUTES:-1} ))
             ARGS+=( "--window-minutes" "$WIN" "--upload" "--table" "idx_filings" )
           else
-            MODE="${{ inputs.mode }}"
             case "$MODE" in
               single_day)
-                [[ -z "${{ inputs.date }}" || -z "${{ inputs.start_hhmm }}" || -z "${{ inputs.end_hhmm }}" ]] && { echo "::error::single_day requires date/start/end"; exit 1; }
-                ARGS+=( "--date" "${{ inputs.date }}" "--start-hhmm" "${{ inputs.start_hhmm }}" "--end-hhmm" "${{ inputs.end_hhmm }}" )
+                # Expect TIME as YYYYMMDD|HH:MM|HH:MM
+                if [[ -z "${TIME:-}" ]]; then
+                  echo "::error::For mode=single_day, 'time' must be 'YYYYMMDD|HH:MM|HH:MM'"; exit 1;
+                fi
+                IFS='|' read -r DATE SD ED <<< "$TIME"
+                if [[ -z "${DATE:-}" || -z "${SD:-}" || -z "${ED:-}" ]]; then
+                  echo "::error::Invalid 'time' format for single_day. Use YYYYMMDD|HH:MM|HH:MM"; exit 1;
+                fi
+                ARGS+=( "--date" "$DATE" "--start-hhmm" "$SD" "--end-hhmm" "$ED" )
                 ;;
               range)
-                [[ -z "${{ inputs.from_date }}" || -z "${{ inputs.to_date }}" ]] && { echo "::error::range requires from_date/to_date"; exit 1; }
-                ARGS+=( "--from-date" "${{ inputs.from_date }}" "--to-date" "${{ inputs.to_date }}" )
+                # Expect TIME as YYYYMMDD..YYYYMMDD
+                if [[ -z "${TIME:-}" ]]; then
+                  echo "::error::For mode=range, 'time' must be 'YYYYMMDD..YYYYMMDD'"; exit 1;
+                fi
+                IFS='..' read -r FROMD TOD <<< "$TIME"
+                if [[ -z "${FROMD:-}" || -z "${TOD:-}" ]]; then
+                  echo "::error::Invalid 'time' format for range. Use YYYYMMDD..YYYYMMDD"; exit 1;
+                fi
+                ARGS+=( "--from-date" "$FROMD" "--to-date" "$TOD" )
                 ;;
               lookback|*)
                 WIN="${{ inputs.window_minutes || '120' }}"
@@ -179,44 +164,21 @@ jobs:
             fi
           fi
 
-          # Prefer symbol?
-          if [[ "${{ inputs.prefer_symbol }}" == "true" ]]; then
-            ARGS+=( "--prefer-symbol" )
-          fi
-
-          # ==== NEW: Articles generation ====
-          GEN_ART="${{ inputs.generate_articles }}"
-          UP_NEWS="${{ inputs.upload_news }}"
-          if [[ "${{ github.event_name }}" == "schedule" ]]; then
-            # default on for schedule
-            GEN_ART="true"
-            UP_NEWS="true"
-          fi
-          if [[ "$GEN_ART" == "true" ]]; then
+          # ==== Articles generation & upload news ====
+          if [[ "${{ inputs.generate_articles }}" == "true" || "${{ github.event_name }}" == "schedule" ]]; then
             ARGS+=( "--generate-articles" "--articles-out" "data/articles.jsonl" )
           fi
-
-          # ==== NEW: LLM toggling ====
-          USE_LLM="${{ inputs.use_llm }}"
-          # auto-enable if any key present and user allowed
-          if [[ "$USE_LLM" == "true" ]]; then
-            if [[ -n "${GROQ_API_KEY:-}" || -n "${OPENAI_API_KEY:-}" || -n "${GEMINI_API_KEY:-}" ]]; then
-              ARGS+=( "--use-llm" )
-              # pass provider/model if given (they are optional; orchestrator has defaults)
-              if [[ -n "${LLM_PROVIDER:-}" ]]; then ARGS+=( "--llm-provider" "${LLM_PROVIDER}" ); fi
-              if [[ -n "${GROQ_MODEL:-}" || -n "${OPENAI_MODEL:-}" || -n "${GEMINI_MODEL:-}" ]]; then
-                # prefer explicit llm_model input (wired above to all env names)
-                MODEL="${GROQ_MODEL:-${OPENAI_MODEL:-${GEMINI_MODEL:-}}}"
-                if [[ -n "$MODEL" ]]; then ARGS+=( "--llm-model" "$MODEL" ); fi
-              fi
-            else
-              echo "::notice::USE_LLM requested but no LLM API key found; continuing without LLM."
-            fi
+          if [[ "${{ inputs.upload_news }}" == "true" || "${{ github.event_name }}" == "schedule" ]]; then
+            ARGS+=( "--upload-news" "--news-table" "${{ inputs.news_table }}" "--prefer-symbol" )
           fi
 
-          # ==== NEW: Upload news ====
-          if [[ "$UP_NEWS" == "true" ]]; then
-            ARGS+=( "--upload-news" "--news-table" "${{ inputs.news_table }}" )
+          # ==== LLM toggling (auto-enable only if key present) ====
+          if [[ "${{ inputs.use_llm }}" == "true" ]]; then
+            if [[ -n "${GROQ_API_KEY:-}" || -n "${OPENAI_API_KEY:-}" || -n "${GEMINI_API_KEY:-}" ]]; then
+              ARGS+=( "--use-llm" )
+            else
+              echo "::notice::USE_LLM=true but no API key found; continuing without LLM."
+            fi
           fi
 
           echo "python -m pipeline.orchestrator ${ARGS[*]}"
