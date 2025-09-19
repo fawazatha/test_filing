@@ -1,4 +1,3 @@
-# orchestrator.py — end-to-end IDX filings + (optional) articles + upload news
 from __future__ import annotations
 import argparse
 import json
@@ -43,9 +42,6 @@ from services.alerts.ses_email import send_attachments
 from services.alerts.alerts_mailer import _render_email_content
 
 # --- NEW: Articles generate + upload news ---
-#   Pastikan paket ini ada sesuai struktur proyekmu:
-#   generate/articles/runner.py  -> run_from_filings(...)
-#   generate/articles/utils/uploader.py -> upload_news_file_cli(...)
 from generate.articles.runner import run_from_filings as run_articles_from_filings
 from generate.articles.utils.uploader import upload_news_file_cli
 
@@ -117,8 +113,7 @@ def _compute_window_from_minutes(window_minutes: int) -> Tuple[str, str, str, st
 
 
 def _save_json(obj: Any, path: Path) -> None:
-    path.parent.mkdir(parents=True, exist_ok=True
-    )
+    path.parent.mkdir(parents=True, exist_ok=True)
     path.write_text(json.dumps(obj, ensure_ascii=False, indent=2), encoding="utf-8")
 
 
@@ -153,7 +148,7 @@ def step_fetch_announcements(
     sort_desc: bool = True,
 ) -> List[Dict[str, Any]]:
     """
-    Ambil announcements dengan dua mode:
+    Ambil announcements:
       - single-day + HH:MM window (minute-precision, cross-midnight ok)
       - full-day range (from..to)
     """
@@ -565,7 +560,7 @@ def build_argparser() -> argparse.ArgumentParser:
     p.add_argument("--llm-model", default=os.getenv("GROQ_MODEL") or os.getenv("OPENAI_MODEL") or os.getenv("GEMINI_MODEL") or "llama-3.3-70b-versatile",
                    help="Nama model LLM (sesuaikan providernya)")
     p.add_argument("--prefer-symbol", action="store_true",
-                   help="Jika ada tickers & symbol, utamakan 'symbol' (untuk articles & upload-news)")
+                   help="Jika ada tickers & symbol, utamakan 'symbol' (untuk articles)")
 
     p.add_argument("--upload-news", action="store_true",
                    help="Upload articles JSON/JSONL ke Supabase (idx_news)")
@@ -691,18 +686,18 @@ def main():
         else:
             LOG.info("[UPLOAD-NEWS] uploading %s → table=%s (dry_run=%s, timeout=%s)",
                      news_input, args.news_table, args.news_dry_run, args.news_timeout)
+            # ⚠️ FIX: jangan kirim prefer_symbol — fungsi tidak menerimanya & idx_news tidak punya 'symbol'
             upload_news_file_cli(
                 input_path=str(news_input),
                 table=args.news_table,
                 dry_run=args.news_dry_run,
                 timeout=args.news_timeout,
-                prefer_symbol=args.prefer_symbol,
             )
 
     # 5) Bucketize alerts → alerts_inserted / alerts_not_inserted
     step_bucketize_alerts()
 
-    # 6) Email alerts (attach original files). Skip if folders missing/empty/no alerts.
+    # 6) Email alerts
     if args.email_alerts:
         step_email_alerts(
             inserted_dir=Path("alerts_inserted"),
