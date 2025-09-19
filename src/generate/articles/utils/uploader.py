@@ -1,7 +1,8 @@
+# utils/uploader.py
 from __future__ import annotations
 import os
 import json
-from typing import Any, Dict, List, Optional, Iterable, Tuple, Union
+from typing import Any, Dict, List, Optional, Tuple, Union
 from datetime import datetime
 import pathlib
 import re
@@ -13,6 +14,7 @@ log = get_logger(__name__)
 
 # ---------- helpers ----------
 def _ensure_list(v: Any) -> Optional[List[Any]]:
+    """Coerce value to list (or None). Accept list, JSON-encoded list string, or scalar."""
     if v is None:
         return None
     if isinstance(v, list):
@@ -78,22 +80,6 @@ def _coerce_iso_with_z(ts: Optional[str]) -> Optional[str]:
     # fallback
     return s
 
-def _to_pg_array_literal(lst: Optional[List[str]]) -> Optional[str]:
-    """
-    Konversi list[str] → Postgres array literal: {"a","b"}.
-    - None   -> None (kirim NULL)
-    - []     -> '{}' (boleh juga None; pilih '{}' biar eksplisit kosong)
-    """
-    if lst is None:
-        return None
-    if len(lst) == 0:
-        return "{}"
-    # escape double quotes dan backslash sesuai sintaks array literal
-    def esc(s: str) -> str:
-        s = s.replace("\\", "\\\\").replace('"', '\\"')
-        return f'"{s}"'
-    return "{" + ",".join(esc(x) for x in lst) + "}"
-
 # ---------- kolom yang ADA di idx_news ----------
 _ALLOWED_COLS = {
     "title", "body", "source", "timestamp",
@@ -103,8 +89,8 @@ _ALLOWED_COLS = {
 
 def _normalize_article_row(row: Dict[str, Any]) -> Dict[str, Any]:
     """
-    Norm ke skema idx_news:
-    - tickers/tags/sub_sector -> array literal Postgres
+    Normalisasi ke skema idx_news:
+    - tickers/tags/sub_sector -> JSON array of text (atau NULL)
     - timestamp -> ISO (append 'Z' jika tanpa offset)
     - dimension/votes/score -> NULL
     - hanya kirim kolom di _ALLOWED_COLS
@@ -119,19 +105,15 @@ def _normalize_article_row(row: Dict[str, Any]) -> Dict[str, Any]:
     # waktu
     r["timestamp"] = _coerce_iso_with_z(r.get("timestamp") or r.get("date"))
 
-    # arrays → list[str] → array literal
-    tickers = _ensure_str_list(r.get("tickers"))
-    tags = _ensure_str_list(r.get("tags"))
-    sub_sector = _ensure_str_list(r.get("sub_sector"))
-
-    r["tickers"] = _to_pg_array_literal(tickers)
-    r["tags"] = _to_pg_array_literal(tags)
-    r["sub_sector"] = _to_pg_array_literal(sub_sector)
+    # arrays → JSON array (list[str]) sesuai tipe text[]/varchar[]
+    r["tickers"] = _ensure_str_list(r.get("tickers")) or None
+    r["tags"] = _ensure_str_list(r.get("tags")) or None
+    r["sub_sector"] = _ensure_str_list(r.get("sub_sector")) or None
 
     # optional: sector tetap string plain
     r["sector"] = (r.get("sector") or None)
 
-    # force NULLs
+    # force NULLs sesuai requirement
     r["dimension"] = None
     r["votes"] = None
     r["score"] = None
@@ -172,7 +154,7 @@ def upload_news_file_cli(
     input_path: str,
     table: str = "idx_news",
     dry_run: bool = False,
-    timeout: int = 30,  # dibiarkan untuk kompatibilitas; tidak dipakai
+    timeout: int = 30,  # dibiarkan untuk kompatibilitas; tidak dipakai di SupabaseUploader
     supabase_url: Optional[str] = None,
     supabase_key: Optional[str] = None,
 ) -> Tuple[int, int]:
