@@ -1,17 +1,17 @@
-# utils/uploader.py
 from __future__ import annotations
 import os
 import json
 from typing import Any, Dict, List, Optional, Iterable, Tuple, Union
 from datetime import datetime
 import pathlib
+import re
 
 from services.upload.supabase import SupabaseUploader
 from .io_utils import get_logger
 
 log = get_logger(__name__)
 
-# -------- helpers --------
+# ---------- helpers ----------
 def _ensure_list(v: Any) -> Optional[List[Any]]:
     if v is None:
         return None
@@ -21,7 +21,7 @@ def _ensure_list(v: Any) -> Optional[List[Any]]:
         s = v.strip()
         if not s:
             return None
-        # coba parse JSON list
+        # coba parse JSON list; kalau gagal, jadikan single-item list
         try:
             parsed = json.loads(s)
             if isinstance(parsed, list):
@@ -43,46 +43,71 @@ def _ensure_str_list(v: Any) -> Optional[List[str]]:
             out.append(s)
     return out or None
 
-def _coerce_iso(ts: Optional[str]) -> Optional[str]:
+_ISO_TZ_RE = re.compile(r".*T.*([+-]\d{2}:\d{2}|Z)$")
+
+def _coerce_iso_with_z(ts: Optional[str]) -> Optional[str]:
+    """
+    Normalisasi ke ISO8601. Jika tanpa offset, tambahkan 'Z' (UTC).
+    Terima format umum: ISO, 'YYYY-MM-DD HH:MM:SS', 'YYYY/MM/DD HH:MM:SS', 'YYYY-MM-DD'.
+    """
     if not ts:
         return None
     s = str(ts).strip()
     if not s:
         return None
-    # terima bentuk "YYYY-MM-DD HH:MM:SS" atau ISO
+
+    # Sudah ISO valid?
     try:
         if "T" in s:
-            try:
-                datetime.fromisoformat(s.replace("Z", "+00:00"))
-                return s
-            except Exception:
-                pass
-        for fmt in ("%Y-%m-%d %H:%M:%S", "%Y-%m-%d", "%Y/%m/%d %H:%M:%S"):
-            try:
-                dt = datetime.strptime(s, fmt)
-                return dt.isoformat()
-            except Exception:
-                continue
-        return s
+            datetime.fromisoformat(s.replace("Z", "+00:00"))
+            # tambah Z kalau belum ada offset & tidak diakhiri Z
+            if not _ISO_TZ_RE.match(s):
+                return s + "Z"
+            return s
     except Exception:
-        return s
+        pass
 
+    # Coba format lazim
+    for fmt in ("%Y-%m-%d %H:%M:%S", "%Y/%m/%d %H:%M:%S", "%Y-%m-%d"):
+        try:
+            dt = datetime.strptime(s, fmt)
+            return dt.isoformat() + "Z"  # asumsikan UTC
+        except Exception:
+            continue
 
+    # fallback
+    return s
+
+def _to_pg_array_literal(lst: Optional[List[str]]) -> Optional[str]:
+    """
+    Konversi list[str] → Postgres array literal: {"a","b"}.
+    - None   -> None (kirim NULL)
+    - []     -> '{}' (boleh juga None; pilih '{}' biar eksplisit kosong)
+    """
+    if lst is None:
+        return None
+    if len(lst) == 0:
+        return "{}"
+    # escape double quotes dan backslash sesuai sintaks array literal
+    def esc(s: str) -> str:
+        s = s.replace("\\", "\\\\").replace('"', '\\"')
+        return f'"{s}"'
+    return "{" + ",".join(esc(x) for x in lst) + "}"
+
+# ---------- kolom yang ADA di idx_news ----------
 _ALLOWED_COLS = {
     "title", "body", "source", "timestamp",
-    "company_name", "sector", "sub_sector",
-    "tags", "tickers", "sentiment",
+    "sector", "sub_sector", "tags", "tickers",
     "dimension", "votes", "score",
 }
 
 def _normalize_article_row(row: Dict[str, Any]) -> Dict[str, Any]:
     """
-    Normalisasi 1 row artikel agar cocok dengan skema idx_news:
-    - tickers -> array of text (atau NULL)
-    - sub_sector/tags -> array of text (atau NULL)
-    - timestamp -> ISO string
+    Norm ke skema idx_news:
+    - tickers/tags/sub_sector -> array literal Postgres
+    - timestamp -> ISO (append 'Z' jika tanpa offset)
     - dimension/votes/score -> NULL
-    - drop kolom lain di luar _ALLOWED_COLS
+    - hanya kirim kolom di _ALLOWED_COLS
     """
     r = dict(row)
 
@@ -92,37 +117,29 @@ def _normalize_article_row(row: Dict[str, Any]) -> Dict[str, Any]:
     r["source"] = (r.get("source") or "idx").strip() or "idx"
 
     # waktu
-    r["timestamp"] = _coerce_iso(r.get("timestamp") or r.get("date"))
+    r["timestamp"] = _coerce_iso_with_z(r.get("timestamp") or r.get("date"))
 
-    # arrays
-    r["tickers"] = _ensure_str_list(r.get("tickers"))
-    r["sub_sector"] = _ensure_str_list(r.get("sub_sector"))
-    r["tags"] = _ensure_str_list(r.get("tags"))
+    # arrays → list[str] → array literal
+    tickers = _ensure_str_list(r.get("tickers"))
+    tags = _ensure_str_list(r.get("tags"))
+    sub_sector = _ensure_str_list(r.get("sub_sector"))
 
-    # optional sentiment (lower-cased) jika ada kolomnya di DB
-    if r.get("sentiment") is not None:
-        try:
-            r["sentiment"] = str(r["sentiment"]).strip().lower() or None
-        except Exception:
-            r["sentiment"] = None
+    r["tickers"] = _to_pg_array_literal(tickers)
+    r["tags"] = _to_pg_array_literal(tags)
+    r["sub_sector"] = _to_pg_array_literal(sub_sector)
 
-    # kolom info perusahaan opsional
-    r["company_name"] = (r.get("company_name") or None)
+    # optional: sector tetap string plain
     r["sector"] = (r.get("sector") or None)
 
-    # force NULLs sesuai requirement
+    # force NULLs
     r["dimension"] = None
     r["votes"] = None
     r["score"] = None
 
-    # keep only allowed columns
+    # Buat payload hanya untuk kolom yg diperbolehkan
     keep: Dict[str, Any] = {}
     for k in _ALLOWED_COLS:
-        if k in r:
-            keep[k] = r[k]
-        else:
-            # pastikan key exist walau None untuk konsistensi payload (opsional)
-            keep[k] = None if k in {"dimension", "votes", "score"} else keep.get(k, None)
+        keep[k] = r.get(k, None)
     return keep
 
 def _read_json_or_jsonl(path: Union[str, pathlib.Path]) -> List[Dict[str, Any]]:
@@ -143,8 +160,10 @@ def _read_json_or_jsonl(path: Union[str, pathlib.Path]) -> List[Dict[str, Any]]:
         if isinstance(data, list):
             return data
         if isinstance(data, dict):
-            # izinkan format {"rows":[...]} juga
-            return data.get("rows", []) if isinstance(data.get("rows"), list) else [data]
+            # izinkan format {"rows":[...]}
+            if isinstance(data.get("rows"), list):
+                return data["rows"]
+            return [data]
         raise ValueError("Unsupported JSON structure: expected list, dict (or dict.rows)")
     else:
         raise ValueError("Only .json or .jsonl is supported")
@@ -153,7 +172,7 @@ def upload_news_file_cli(
     input_path: str,
     table: str = "idx_news",
     dry_run: bool = False,
-    # timeout: int = 30,
+    timeout: int = 30,  # dibiarkan untuk kompatibilitas; tidak dipakai
     supabase_url: Optional[str] = None,
     supabase_key: Optional[str] = None,
 ) -> Tuple[int, int]:
@@ -165,7 +184,6 @@ def upload_news_file_cli(
     normed = [_normalize_article_row(r) for r in rows]
 
     log.info("Loaded %d rows from %s", len(normed), input_path)
-
     if dry_run:
         preview = normed[0] if normed else {}
         log.info("[DRY-RUN] sample row after normalization: %s", json.dumps(preview, ensure_ascii=False))
@@ -181,7 +199,6 @@ def upload_news_file_cli(
         key=supabase_key,
     )
 
-    # Upload dengan filter kolom → aman walau input membawa extra keys
     res = uploader.upload_records(
         table=table,
         rows=normed,
