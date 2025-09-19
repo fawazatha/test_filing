@@ -16,7 +16,7 @@ def _ensure_list(v: Any) -> Optional[List[Any]]:
     if v is None:
         return None
     if isinstance(v, list):
-        return v
+        return v if v else None
     if isinstance(v, str):
         s = v.strip()
         if not s:
@@ -25,9 +25,8 @@ def _ensure_list(v: Any) -> Optional[List[Any]]:
         try:
             parsed = json.loads(s)
             if isinstance(parsed, list):
-                return parsed
+                return parsed if parsed else None
         except Exception:
-            # fallback: treat as single item list
             return [s]
     return [v]
 
@@ -39,19 +38,10 @@ def _ensure_str_list(v: Any) -> Optional[List[str]]:
     for x in lst:
         if x is None:
             continue
-        out.append(str(x).strip())
-    return out or None
-
-def _first_str(seq: Optional[Iterable[Any]]) -> Optional[str]:
-    if not seq:
-        return None
-    for x in seq:
-        if x is None:
-            continue
         s = str(x).strip()
         if s:
-            return s
-    return None
+            out.append(s)
+    return out or None
 
 def _coerce_iso(ts: Optional[str]) -> Optional[str]:
     if not ts:
@@ -80,49 +70,59 @@ def _coerce_iso(ts: Optional[str]) -> Optional[str]:
 
 _ALLOWED_COLS = {
     "title", "body", "source", "timestamp",
-    "company_name", "symbol", "sector", "sub_sector",
-    "tags", "dimension", "votes", "score",
-    "tickers", 
+    "company_name", "sector", "sub_sector",
+    "tags", "tickers", "sentiment",
+    "dimension", "votes", "score",
 }
 
-def _normalize_article_row(row: Dict[str, Any], prefer_symbol: bool = True) -> Dict[str, Any]:
-    r = dict(row) 
+def _normalize_article_row(row: Dict[str, Any]) -> Dict[str, Any]:
+    """
+    Normalisasi 1 row artikel agar cocok dengan skema idx_news:
+    - tickers -> array of text (atau NULL)
+    - sub_sector/tags -> array of text (atau NULL)
+    - timestamp -> ISO string
+    - dimension/votes/score -> NULL
+    - drop kolom lain di luar _ALLOWED_COLS
+    """
+    r = dict(row)
 
-    sym = (r.get("symbol") or "").strip()
-    tickers: Optional[List[str]] = _ensure_str_list(r.get("tickers"))
+    # teks dasar
+    r["title"] = (r.get("title") or "").strip()
+    r["body"] = (r.get("body") or "").strip()
+    r["source"] = (r.get("source") or "idx").strip() or "idx"
 
-    if prefer_symbol:
-        if not tickers and sym:
-            tickers = [sym]
-    else:
-        if not sym:
-            sym = _first_str(tickers) or ""
+    # waktu
+    r["timestamp"] = _coerce_iso(r.get("timestamp") or r.get("date"))
 
-    if not sym:
-        sym = _first_str(tickers) or ""
-
-    r["symbol"] = sym or None
-    r["tickers"] = tickers 
-
+    # arrays
+    r["tickers"] = _ensure_str_list(r.get("tickers"))
     r["sub_sector"] = _ensure_str_list(r.get("sub_sector"))
     r["tags"] = _ensure_str_list(r.get("tags"))
 
-    r["timestamp"] = _coerce_iso(r.get("timestamp"))
-
+    # optional sentiment (lower-cased) jika ada kolomnya di DB
     if r.get("sentiment") is not None:
         try:
-            r["sentiment"] = str(r["sentiment"]).strip().lower()
+            r["sentiment"] = str(r["sentiment"]).strip().lower() or None
         except Exception:
-            pass
+            r["sentiment"] = None
 
+    # kolom info perusahaan opsional
+    r["company_name"] = (r.get("company_name") or None)
+    r["sector"] = (r.get("sector") or None)
+
+    # force NULLs sesuai requirement
     r["dimension"] = None
     r["votes"] = None
     r["score"] = None
 
+    # keep only allowed columns
     keep: Dict[str, Any] = {}
-    for k, v in r.items():
-        if k in _ALLOWED_COLS:
-            keep[k] = v
+    for k in _ALLOWED_COLS:
+        if k in r:
+            keep[k] = r[k]
+        else:
+            # pastikan key exist walau None untuk konsistensi payload (opsional)
+            keep[k] = None if k in {"dimension", "votes", "score"} else keep.get(k, None)
     return keep
 
 def _read_json_or_jsonl(path: Union[str, pathlib.Path]) -> List[Dict[str, Any]]:
@@ -143,8 +143,9 @@ def _read_json_or_jsonl(path: Union[str, pathlib.Path]) -> List[Dict[str, Any]]:
         if isinstance(data, list):
             return data
         if isinstance(data, dict):
-            return [data]
-        raise ValueError("Unsupported JSON structure: expected list or dict")
+            # izinkan format {"rows":[...]} juga
+            return data.get("rows", []) if isinstance(data.get("rows"), list) else [data]
+        raise ValueError("Unsupported JSON structure: expected list, dict (or dict.rows)")
     else:
         raise ValueError("Only .json or .jsonl is supported")
 
@@ -153,16 +154,15 @@ def upload_news_file_cli(
     table: str = "idx_news",
     dry_run: bool = False,
     timeout: int = 30,
-    prefer_symbol: bool = True,
     supabase_url: Optional[str] = None,
     supabase_key: Optional[str] = None,
 ) -> Tuple[int, int]:
     """
-    Upload file artikel (.json/.jsonl) ke tabel `table`.
+    Upload file artikel (.json/.jsonl) ke tabel `table` (default: idx_news).
     Return: (success_count, fail_count)
     """
     rows = _read_json_or_jsonl(input_path)
-    normed = [_normalize_article_row(r, prefer_symbol=prefer_symbol) for r in rows]
+    normed = [_normalize_article_row(r) for r in rows]
 
     log.info("Loaded %d rows from %s", len(normed), input_path)
 
@@ -171,21 +171,32 @@ def upload_news_file_cli(
         log.info("[DRY-RUN] sample row after normalization: %s", json.dumps(preview, ensure_ascii=False))
         return (0, 0)
 
+    supabase_url = supabase_url or os.getenv("SUPABASE_URL", "")
+    supabase_key = supabase_key or os.getenv("SUPABASE_KEY", "")
+    if not supabase_url or not supabase_key:
+        raise RuntimeError("Missing SUPABASE_URL or SUPABASE_KEY in environment.")
+
     uploader = SupabaseUploader(
-        url=supabase_url or os.getenv("SUPABASE_URL", ""),
-        key=supabase_key or os.getenv("SUPABASE_KEY", ""),
-        default_table=table,
+        url=supabase_url,
+        key=supabase_key,
         timeout=timeout,
     )
 
-    res = uploader.insert_many(normed, table=table, stop_on_first_error=False)
-    ok = sum(1 for r in res if r.ok)
-    bad = sum(1 for r in res if not r.ok)
+    # Upload dengan filter kolom → aman walau input membawa extra keys
+    res = uploader.upload_records(
+        table=table,
+        rows=normed,
+        allowed_columns=list(_ALLOWED_COLS),
+        normalize_keys=False,
+        stop_on_first_error=False,
+    )
+    ok = res.inserted
+    bad = len(res.failed_rows)
+
     if bad:
         log.warning("Some rows failed to insert: %d failed / %d total", bad, len(normed))
-        for i, r in enumerate(res):
-            if not r.ok:
-                log.error("Row %d insert failed: status=%s body=%s", i, r.status_code, r.body)
+        for i, fr in enumerate(res.failed_rows[:5]):
+            log.error("Failed row %d: %s", i, fr)
     else:
         log.info("All rows inserted OK: %d", ok)
     return (ok, bad)
