@@ -25,10 +25,10 @@ on:
         description: "Upload filings to Supabase? (needs secrets)"
         type: boolean
         default: false
-      table:
-        description: "Supabase filings table"
-        required: false
-        default: "idx_filings"
+      send_alerts:
+        description: "Send SES email alerts?"
+        type: boolean
+        default: false
       generate_articles:
         description: "Generate articles.jsonl from filings?"
         type: boolean
@@ -116,7 +116,7 @@ jobs:
         run: |
           set -euo pipefail
 
-          ARGS=( "--zip-artifacts" "--artifact-prefix" "filings" "--email-alerts" )
+          ARGS=( "--zip-artifacts" "--artifact-prefix" "filings" )
 
           # Verbose?
           if [[ "${{ inputs.verbose }}" == "true" || "${{ github.event_name }}" == "schedule" ]]; then
@@ -127,10 +127,7 @@ jobs:
           TIME_RAW="${{ inputs.time }}"  # may be empty
 
           # ========== Sanitize 'time' input ==========
-          # Strip whitespace
           TIME="$(echo "${TIME_RAW:-}" | tr -d '[:space:]')"
-
-          # helper: keep digits only
           digits_only() { printf '%s' "$1" | tr -cd '0-9'; }
 
           # Window selection
@@ -151,7 +148,6 @@ jobs:
                 SD="${SD//[^0-9:]/}"
                 ED="${ED//[^0-9:]/}"
 
-                # Basic validation
                 [[ ${#DATE} -eq 8 ]] || { echo "::error::DATE must be YYYYMMDD"; exit 1; }
                 [[ "$SD" =~ ^[0-2][0-9]:[0-5][0-9]$ ]] || { echo "::error::start time must be HH:MM"; exit 1; }
                 [[ "$ED" =~ ^[0-2][0-9]:[0-5][0-9]$ ]] || { echo "::error::end time must be HH:MM"; exit 1; }
@@ -178,7 +174,7 @@ jobs:
                 ;;
             esac
             if [[ "${{ inputs.upload_to_supabase }}" == "true" ]]; then
-              ARGS+=( "--upload" "--table" "${{ inputs.table }}" )
+              ARGS+=( "--upload" "--table" "idx_filings" )
             fi
           fi
 
@@ -187,7 +183,6 @@ jobs:
             ARGS+=( "--generate-articles" "--articles-out" "data/articles.jsonl" )
           fi
           if [[ "${{ inputs.upload_news }}" == "true" || "${{ github.event_name }}" == "schedule" ]]; then
-            # --news-table guaranteed non-empty because of default "idx_news"
             ARGS+=( "--upload-news" "--news-table" "${{ inputs.news_table }}" "--prefer-symbol" )
           fi
 
@@ -198,6 +193,13 @@ jobs:
             else
               echo "::notice::USE_LLM=true but no API key found; continuing without LLM."
             fi
+          fi
+
+          # ==== Email alerts toggling ====
+          if [[ "${{ github.event_name }}" == "schedule" || "${{ inputs.send_alerts }}" == "true" ]]; then
+            ARGS+=( "--email-alerts" )
+          else
+            echo "::notice::Email alerts disabled for this run."
           fi
 
           echo "python -m pipeline.orchestrator ${ARGS[*]}"
