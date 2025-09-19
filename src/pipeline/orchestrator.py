@@ -684,14 +684,12 @@ def main():
         if not news_input.exists():
             LOG.warning("[UPLOAD-NEWS] %s not found; skip upload", news_input)
         else:
-            LOG.info("[UPLOAD-NEWS] uploading %s → table=%s (dry_run=%s, timeout=%s)",
-                     news_input, args.news_table, args.news_dry_run, args.news_timeout)
-            # ⚠️ FIX: jangan kirim prefer_symbol — fungsi tidak menerimanya & idx_news tidak punya 'symbol'
+            LOG.info("[UPLOAD-NEWS] uploading %s → table=%s (dry_run=%s)",
+                     news_input, args.news_table, args.news_dry_run)
             upload_news_file_cli(
                 input_path=str(news_input),
                 table=args.news_table,
                 dry_run=args.news_dry_run,
-                timeout=args.news_timeout,
             )
 
     # 5) Bucketize alerts → alerts_inserted / alerts_not_inserted
