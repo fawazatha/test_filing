@@ -153,7 +153,7 @@ def upload_news_file_cli(
     input_path: str,
     table: str = "idx_news",
     dry_run: bool = False,
-    timeout: int = 30,
+    # timeout: int = 30,
     supabase_url: Optional[str] = None,
     supabase_key: Optional[str] = None,
 ) -> Tuple[int, int]:
@@ -179,7 +179,6 @@ def upload_news_file_cli(
     uploader = SupabaseUploader(
         url=supabase_url,
         key=supabase_key,
-        timeout=timeout,
     )
 
     # Upload dengan filter kolom → aman walau input membawa extra keys
