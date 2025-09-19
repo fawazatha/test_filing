@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-import os, json, re, time, random, math
+import os, json, re, time, random
 from typing import Dict, Any, Optional, Tuple, List
 from datetime import datetime
 
@@ -17,6 +17,12 @@ try:
     from openai import RateLimitError as OpenAIRateLimitError  # optional
 except Exception:
     class OpenAIRateLimitError(Exception): ...
+
+# Gemini optional
+try:
+    import google.generativeai as genai  # type: ignore
+except Exception:
+    genai = None
 
 # ---------------- helpers ----------------
 def _env(key: str, default: str = "") -> str:
@@ -64,7 +70,6 @@ def _lc_to_text(msgs) -> str:
         txt = getattr(m, "content", "") or ""
         parts.append(str(txt))
     return "\n\n".join(parts).strip()
-
 
 def _parse_providers(prefer: Optional[str] = None) -> List[str]:
     if prefer:
@@ -203,13 +208,10 @@ def _backoff_sleep(base: float, attempt: int) -> float:
 # ---------------- main ----------------
 class Summarizer:
     """
-    Selalu pakai LLM. Provider: Groq (SDK) dan/atau OpenAI.
-    Output: JSON {"title","body"} gaya newsroom.
+    Newsroom summarizer dengan dukungan Groq / OpenAI / Gemini.
+    Jika LLM tidak tersedia / rate limited parah, fallback ke penulis lokal (heuristik).
     """
     def __init__(self, use_llm: bool = True, groq_model: str = "llama-3.3-70b-versatile", provider: Optional[str] = None):
-        if not use_llm:
-            raise RuntimeError("Summarizer must use LLM (use_llm=True).")
-
         # pastikan .env kebaca
         try:
             from dotenv import load_dotenv, find_dotenv
@@ -217,9 +219,8 @@ class Summarizer:
         except Exception:
             pass
 
+        self.request_llm = bool(use_llm)
         self.providers_order = _parse_providers(provider)
-        if not self.providers_order:
-            raise RuntimeError("No LLM clients available. Set GROQ_API_KEY or OPENAI_API_KEY.")
 
         self.model_hint = groq_model
         # retry/env tuning
@@ -271,74 +272,79 @@ class Summarizer:
 
         # siapkan klien
         self._clients: List[Dict[str, Any]] = []
-        for prov in self.providers_order:
-            if prov == "groq":
-                key = _env("GROQ_API_KEY")
-                if not key:
-                    continue
-                os.environ["GROQ_API_KEY"] = key  # untuk lib yang baca dari ENV
-                model = _normalize_model("groq", self.model_hint)
 
-                # 1) Groq SDK (utama)
-                groq_sdk = None
-                if Groq is not None:
+        if self.request_llm:
+            for prov in self.providers_order:
+                if prov == "groq":
+                    key = _env("GROQ_API_KEY")
+                    if not key:
+                        continue
+                    os.environ["GROQ_API_KEY"] = key  # untuk lib yang baca dari ENV
+                    model = _normalize_model("groq", self.model_hint)
+
+                    # 1) Groq SDK (utama)
+                    groq_sdk = None
+                    if Groq is not None:
+                        try:
+                            groq_sdk = Groq(api_key=key)
+                        except Exception as e:
+                            log.debug(f"Groq SDK init warn: {e}")
+
+                    # 2) Fallback via langchain_groq
+                    lc_llm = None
                     try:
-                        groq_sdk = Groq(api_key=key)
+                        from langchain_groq import ChatGroq
+                        lc_llm = ChatGroq(model=model, temperature=self.temperature, groq_api_key=key)
                     except Exception as e:
-                        log.debug(f"Groq SDK init warn: {e}")
+                        log.debug(f"langchain_groq init warn: {e}")
 
-                # 2) Fallback via langchain_groq
-                lc_llm = None
-                try:
-                    from langchain_groq import ChatGroq
-                    lc_llm = ChatGroq(model=model, temperature=self.temperature, groq_api_key=key)
-                except Exception as e:
-                    log.debug(f"langchain_groq init warn: {e}")
+                    if groq_sdk is None and lc_llm is None:
+                        continue
 
-                if groq_sdk is None and lc_llm is None:
-                    continue
+                    self._clients.append({"prov": "groq", "model": model, "sdk": groq_sdk, "llm": lc_llm})
+                    log.info(f"Summarizer provider ready: groq ({model})")
 
-                self._clients.append({"prov": "groq", "model": model, "sdk": groq_sdk, "llm": lc_llm})
-                log.info(f"Summarizer provider ready: groq ({model})")
+                elif prov == "openai":
+                    key = _env("OPENAI_API_KEY")
+                    if not key:
+                        continue
+                    model = _normalize_model("openai", self.model_hint)
+                    try:
+                        from langchain_openai import ChatOpenAI
+                        try:
+                            llm = ChatOpenAI(model=model, temperature=self.temperature, api_key=key)
+                        except TypeError:
+                            llm = ChatOpenAI(model=model, temperature=self.temperature)
+                    except Exception as e:
+                        log.debug(f"langchain_openai init warn: {e}")
+                        llm = None
+                    if llm is None:
+                        continue
+                    self._clients.append({"prov": "openai", "model": model, "llm": llm})
+                    log.info(f"Summarizer provider ready: openai ({model})")
 
-            elif prov == "openai":
-                key = _env("OPENAI_API_KEY")
-                if not key:
-                    continue
-                model = _normalize_model("openai", self.model_hint)
-                from langchain_openai import ChatOpenAI
-                try:
-                    llm = ChatOpenAI(model=model, temperature=self.temperature, api_key=key)
-                except TypeError:
-                    llm = ChatOpenAI(model=model, temperature=self.temperature)
-                self._clients.append({"prov": "openai", "model": model, "llm": llm})
-                log.info(f"Summarizer provider ready: openai ({model})")
-
-            elif prov == "gemini":
-                key = _env("GEMINI_API_KEY") or _env("GOOGLE_API_KEY")
-                if not key:
-                    continue
-                try:
-                    from ..model.llm_gemini import GeminiLLM
-                except Exception as e:
-                    log.debug(f"Gemini adapter not available: {e}")
-                    continue
-                model = _normalize_model("gemini", self.model_hint)
-                gem_llm = None
-                try:
-                    gem_llm = GeminiLLM(api_key=key, model=model, temperature=self.temperature,
-                                        max_output_tokens=(self.max_tokens if self.max_tokens else 1024),
-                                        system=("You are a financial news writer. Return STRICT JSON with keys title and body."))
-                except Exception as e:
-                    log.debug(f"Gemini init warn: {e}")
-                    gem_llm = None
-                if gem_llm is None:
-                    continue
-                self._clients.append({"prov": "gemini", "model": model, "sdk": gem_llm})
-                log.info(f"Summarizer provider ready: gemini ({model})")
+                elif prov == "gemini":
+                    key = _env("GEMINI_API_KEY") or _env("GOOGLE_API_KEY")
+                    if not key or genai is None:
+                        if not key:
+                            log.debug("Gemini skipped: API key missing.")
+                        else:
+                            log.debug("Gemini skipped: google-generativeai not installed.")
+                        continue
+                    try:
+                        genai.configure(api_key=key)
+                        model = _normalize_model("gemini", self.model_hint)
+                        # siapkan model object
+                        model_obj = genai.GenerativeModel(model)
+                        self._clients.append({"prov": "gemini", "model": model, "model_obj": model_obj})
+                        log.info(f"Summarizer provider ready: gemini ({model})")
+                    except Exception as e:
+                        log.debug(f"Gemini init warn: {e}")
 
         if not self._clients:
-            raise RuntimeError("No LLM clients available. Set GROQ_API_KEY or OPENAI_API_KEY.")
+            if self.request_llm:
+                log.warning("No LLM clients available (GROQ/OPENAI/GEMINI). Falling back to non-LLM.")
+            self.request_llm = False  # pakai fallback lokal
 
     def _vars_from_facts(self, facts: Dict[str, Any], text_hint: Optional[str]) -> Dict[str, Any]:
         cname = facts.get("company_name") or facts.get("symbol") or ""
@@ -374,6 +380,12 @@ class Summarizer:
 
     def summarize_from_facts(self, facts: Dict[str, Any], text_hint: Optional[str] = None) -> Tuple[str, str]:
         vars_dict = self._vars_from_facts(facts, text_hint)
+
+        # Jika LLM tak tersedia / dinonaktifkan → langsung fallback
+        if not self.request_llm or not self._clients:
+            log.info("Summarizer: using local fallback (LLM disabled/unavailable).")
+            return _local_fallback(vars_dict)
+
         msgs = self._prompt.format_messages(**vars_dict)
         last_err: Optional[Exception] = None
 
@@ -384,15 +396,23 @@ class Summarizer:
                     log.info(f"Summarizer invoking {prov} ({model})")
 
                     if prov == "gemini":
-                        gem = c.get("sdk")
+                        model_obj = c.get("model_obj")
                         prompt_text = _lc_to_text(msgs)
-                        msg = gem.invoke(prompt_text)
-                        raw = (getattr(msg, "content", "") or "").strip()
+                        # Safety: minta JSON ketat, tapi kalau model menambahkan prose → _extract_json akan membersihkan ```json
+                        resp = model_obj.generate_content(prompt_text)
+                        raw = (getattr(resp, "text", None) or "").strip()
+                        if not raw and hasattr(resp, "candidates") and resp.candidates:
+                            # fallback ambil dari parts
+                            raw = "\n".join(
+                                getattr(p, "text", "") or str(getattr(p, "parts", ""))  # type: ignore
+                                for cnd in resp.candidates for p in getattr(cnd, "content", {}).parts  # type: ignore
+                            ).strip()
                         out = _extract_json(raw)
                         title = (out.get("title") or "").strip()
                         body  = (out.get("body")  or "").strip()
                         if not title or not body:
                             raise ValueError("Empty title/body from Gemini.")
+                        # bersihkan disclaimer umum
                         banned = [
                             "this disclosure is informational",
                             "investment advice",
@@ -463,5 +483,6 @@ class Summarizer:
                     log.exception("%s call failed; trying next provider...", prov)
                     break  # stop attempts for this provider; try next provider
 
-        log.error("LLM summarize failed (no providers left).")
-        raise RuntimeError("LLM summarize failed (no fallback).") from last_err
+        # semua provider gagal → fallback lokal agar pipeline tidak putus
+        log.error("LLM summarize failed (no providers left). Using local fallback.")
+        return _local_fallback(vars_dict)
