@@ -124,7 +124,15 @@ jobs:
           fi
 
           MODE="${{ inputs.mode }}"
-          TIME="${{ inputs.time }}"  # may be empty
+          TIME_RAW="${{ inputs.time }}"  # may be empty
+
+          # ========== Sanitize 'time' input ==========
+          # Strip whitespace
+          TIME="$(echo "${TIME_RAW:-}" | tr -d '[:space:]')"
+
+          # helper: keep digits only
+          digits_only() { printf '%s' "$1" | tr -cd '0-9'; }
+
           # Window selection
           if [[ "${{ github.event_name }}" == "schedule" ]]; then
             # default scheduled run: lookback with slight overlap + upload filings
@@ -133,29 +141,39 @@ jobs:
           else
             case "$MODE" in
               single_day)
-                # Expect TIME as YYYYMMDD|HH:MM|HH:MM
-                if [[ -z "${TIME:-}" ]]; then
+                # Expect TIME: YYYYMMDD|HH:MM|HH:MM
+                if [[ -z "${TIME:-}" || "${TIME}" != *"|"* ]]; then
                   echo "::error::For mode=single_day, 'time' must be 'YYYYMMDD|HH:MM|HH:MM'"; exit 1;
                 fi
                 IFS='|' read -r DATE SD ED <<< "$TIME"
-                if [[ -z "${DATE:-}" || -z "${SD:-}" || -z "${ED:-}" ]]; then
-                  echo "::error::Invalid 'time' format for single_day. Use YYYYMMDD|HH:MM|HH:MM"; exit 1;
-                fi
+
+                DATE="$(digits_only "${DATE}")"
+                SD="${SD//[^0-9:]/}"
+                ED="${ED//[^0-9:]/}"
+
+                # Basic validation
+                [[ ${#DATE} -eq 8 ]] || { echo "::error::DATE must be YYYYMMDD"; exit 1; }
+                [[ "$SD" =~ ^[0-2][0-9]:[0-5][0-9]$ ]] || { echo "::error::start time must be HH:MM"; exit 1; }
+                [[ "$ED" =~ ^[0-2][0-9]:[0-5][0-9]$ ]] || { echo "::error::end time must be HH:MM"; exit 1; }
+
                 ARGS+=( "--date" "$DATE" "--start-hhmm" "$SD" "--end-hhmm" "$ED" )
                 ;;
               range)
-                # Expect TIME as YYYYMMDD..YYYYMMDD
-                if [[ -z "${TIME:-}" ]]; then
+                # Expect TIME: YYYYMMDD..YYYYMMDD
+                if [[ -z "${TIME:-}" || "${TIME}" != *".."* ]]; then
                   echo "::error::For mode=range, 'time' must be 'YYYYMMDD..YYYYMMDD'"; exit 1;
                 fi
                 IFS='..' read -r FROMD TOD <<< "$TIME"
-                if [[ -z "${FROMD:-}" || -z "${TOD:-}" ]]; then
-                  echo "::error::Invalid 'time' format for range. Use YYYYMMDD..YYYYMMDD"; exit 1;
-                fi
+
+                FROMD="$(digits_only "${FROMD}")"
+                TOD="$(digits_only "${TOD}")"
+
+                [[ ${#FROMD} -eq 8 && ${#TOD} -eq 8 ]] || { echo "::error::from/to must be YYYYMMDD"; exit 1; }
+
                 ARGS+=( "--from-date" "$FROMD" "--to-date" "$TOD" )
                 ;;
               lookback|*)
-                WIN="${{ inputs.window_minutes || '120' }}"
+                WIN="${{ inputs.window_minutes }}"
                 ARGS+=( "--window-minutes" "$WIN" )
                 ;;
             esac
@@ -169,6 +187,7 @@ jobs:
             ARGS+=( "--generate-articles" "--articles-out" "data/articles.jsonl" )
           fi
           if [[ "${{ inputs.upload_news }}" == "true" || "${{ github.event_name }}" == "schedule" ]]; then
+            # --news-table guaranteed non-empty because of default "idx_news"
             ARGS+=( "--upload-news" "--news-table" "${{ inputs.news_table }}" "--prefer-symbol" )
           fi
 
