@@ -6,7 +6,7 @@ from typing import Any, Dict, List, Optional, Iterable, Tuple, Union
 from datetime import datetime
 import pathlib
 
-from ....services.upload.supabase import SupabaseUploader
+from services.upload.supabase import SupabaseUploader
 from .io_utils import get_logger
 
 log = get_logger(__name__)
