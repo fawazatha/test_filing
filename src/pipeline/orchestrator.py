@@ -30,7 +30,7 @@ from parser import parser_idx as parser_idx_mod
 from parser import parser_non_idx as parser_non_idx_mod
 
 from generate.filings.runner import run as run_generate
-from services.alerts.bucketize import bucketize as bucketize_alerts
+from services.email.bucketize import bucketize as bucketize_alerts
 from services.io.artifacts import make_artifact_zip
 
 # --- Upload (filings) ---
@@ -38,8 +38,8 @@ from services.upload.supabase import SupabaseUploader
 from services.transform.filings_schema import clean_rows, ALLOWED_COLUMNS, REQUIRED_COLUMNS
 
 # --- Email alerts ---
-from services.alerts.ses_email import send_attachments
-from services.alerts.alerts_mailer import _render_email_content
+from services.email.ses_email import send_attachments
+from services.email.alerts_mailer import _render_email_content
 
 # --- NEW: Articles generate + upload news ---
 from generate.articles.runner import run_from_filings as run_articles_from_filings

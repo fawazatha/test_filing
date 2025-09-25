@@ -12,9 +12,9 @@ from .runner import run as run_generate
 
 from services.io.paths import data_file, list_alert_files
 from services.upload.supabase import SupabaseUploader
-from services.alerts.manager import AlertManager
+from services.email.manager import AlertManager
 # === GANTI KE SES ===
-from services.alerts.ses_email import send_attachments
+from services.email.ses_email import send_attachments
 from services.transform.filings_schema import (
     clean_rows, ALLOWED_COLUMNS, REQUIRED_COLUMNS
 )

@@ -1,0 +1,418 @@
+{
+  "total_companies": 14,
+  "total_filings": 18,
+  "companies": [
+    {
+      "symbol": "AMIN.JK",
+      "filings": [
+        {
+          "id": "1194",
+          "symbol": "AMIN.JK",
+          "holder_name": "Lindataty",
+          "holder_ticker": null,
+          "transaction_type": "buy",
+          "price": 219.01,
+          "transaction_value": 127990400.0,
+          "amount": 584400.0,
+          "holding_before": 2771300.0,
+          "holding_after": 3355700.0,
+          "share_percentage_before": 0.256,
+          "share_percentage_transaction": 0.054,
+          "share_percentage_after": 0.31,
+          "transaction_date": null,
+          "timestamp": "2025-09-23T17:05:24",
+          "source": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_EREP/202509/f32cac1c8b_9a2a8449e8.pdf",
+          "display_time": "23/09/2025 17:05:24"
+        }
+      ]
+    },
+    {
+      "symbol": "AMMS.JK",
+      "filings": [
+        {
+          "id": "1190",
+          "symbol": "AMMS.JK",
+          "holder_name": "Hartono Limmantoro",
+          "holder_ticker": null,
+          "transaction_type": "buy",
+          "price": 200.0,
+          "transaction_value": 1966520000.0,
+          "amount": 9832600.0,
+          "holding_before": 20604900.0,
+          "holding_after": 30437500.0,
+          "share_percentage_before": 1.71,
+          "share_percentage_transaction": 0.76,
+          "share_percentage_after": 2.47,
+          "transaction_date": null,
+          "timestamp": "2025-09-23T14:36:59",
+          "source": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_EREP/202509/0354743fd0_ed56bb2e52.pdf",
+          "display_time": "23/09/2025 14:36:59"
+        }
+      ]
+    },
+    {
+      "symbol": "BRPT.JK",
+      "filings": [
+        {
+          "id": "1197",
+          "symbol": "BRPT.JK",
+          "holder_name": "Rudy Suparman",
+          "holder_ticker": null,
+          "transaction_type": "sell",
+          "price": 2810.96,
+          "transaction_value": 2427600000.0,
+          "amount": 730000.0,
+          "holding_before": 1574100.0,
+          "holding_after": 964100.0,
+          "share_percentage_before": 0.002,
+          "share_percentage_transaction": 0.001,
+          "share_percentage_after": 0.001,
+          "transaction_date": null,
+          "timestamp": "2025-09-23T16:33:05",
+          "source": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_EREP/202509/3e929a86c2_3efced24b5.pdf",
+          "display_time": "23/09/2025 16:33:05"
+        }
+      ]
+    },
+    {
+      "symbol": "BUMI.JK",
+      "filings": [
+        {
+          "id": "1189",
+          "symbol": "BUMI.JK",
+          "holder_name": "UBS Group AG",
+          "holder_ticker": null,
+          "transaction_type": "sell",
+          "price": 117.06,
+          "transaction_value": 35908689872.25,
+          "amount": 306758500.0,
+          "holding_before": 26278676555.0,
+          "holding_after": 25971918055.0,
+          "share_percentage_before": 7.08,
+          "share_percentage_transaction": 0.09,
+          "share_percentage_after": 6.99,
+          "transaction_date": null,
+          "timestamp": "2025-09-23T11:14:54",
+          "source": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_EREP/202509/3a23fa0535_6e09c60ccb.pdf",
+          "display_time": "23/09/2025 11:14:54"
+        },
+        {
+          "id": "1188",
+          "symbol": "BUMI.JK",
+          "holder_name": "UBS Group AG",
+          "holder_ticker": null,
+          "transaction_type": "buy",
+          "price": 113.43,
+          "transaction_value": 10204711553.060001,
+          "amount": 89966900.0,
+          "holding_before": 25971918055.0,
+          "holding_after": 26061884955.0,
+          "share_percentage_before": 6.99,
+          "share_percentage_transaction": 0.03,
+          "share_percentage_after": 7.02,
+          "transaction_date": null,
+          "timestamp": "2025-09-23T11:32:39",
+          "source": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_EREP/202509/76c5e64474_aa2385e663.pdf",
+          "display_time": "23/09/2025 11:32:39"
+        }
+      ]
+    },
+    {
+      "symbol": "GPRA.JK",
+      "filings": [
+        {
+          "id": "1198",
+          "symbol": "GPRA.JK",
+          "holder_name": "PT Abadimukti Gunalestari",
+          "holder_ticker": null,
+          "transaction_type": "buy",
+          "price": 143.1,
+          "transaction_value": 18962493500.0,
+          "amount": 81164300.0,
+          "holding_before": 2342175620.0,
+          "holding_after": 2373100720.0,
+          "share_percentage_before": 54.77,
+          "share_percentage_transaction": 0.72,
+          "share_percentage_after": 55.49,
+          "transaction_date": null,
+          "timestamp": "2025-09-23T16:39:59",
+          "source": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_EREP/202509/c442b86e01_2c0e0d386f.pdf",
+          "display_time": "23/09/2025 16:39:59"
+        }
+      ]
+    },
+    {
+      "symbol": "IRSX.JK",
+      "filings": [
+        {
+          "id": "1184",
+          "symbol": "IRSX.JK",
+          "holder_name": "PT Buana Megah Wicaksana",
+          "holder_ticker": null,
+          "transaction_type": "sell",
+          "price": 25.0,
+          "transaction_value": 19000000000.0,
+          "amount": 760000000.0,
+          "holding_before": 760000000.0,
+          "holding_after": 0.0,
+          "share_percentage_before": 12.27,
+          "share_percentage_transaction": 12.27,
+          "share_percentage_after": 0.0,
+          "transaction_date": null,
+          "timestamp": "2025-09-22T18:23:56",
+          "source": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_EREP/202509/48a4087aa3_dca92eba10.pdf",
+          "display_time": "22/09/2025 18:23:56"
+        },
+        {
+          "id": "1182",
+          "symbol": "IRSX.JK",
+          "holder_name": "PT Matra Tri Abadi",
+          "holder_ticker": null,
+          "transaction_type": "buy",
+          "price": 25.0,
+          "transaction_value": 19000000000.0,
+          "amount": 760000000.0,
+          "holding_before": 2640000000.0,
+          "holding_after": 3400000000.0,
+          "share_percentage_before": 42.61,
+          "share_percentage_transaction": 12.27,
+          "share_percentage_after": 54.88,
+          "transaction_date": null,
+          "timestamp": "2025-09-22T18:28:46",
+          "source": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_EREP/202509/06a866cb49_a6f3253c8c.pdf",
+          "display_time": "22/09/2025 18:28:46"
+        }
+      ]
+    },
+    {
+      "symbol": "ISSP.JK",
+      "filings": [
+        {
+          "id": "1185",
+          "symbol": "ISSP.JK",
+          "holder_name": "PT Cakra Bhakti Para Putra",
+          "holder_ticker": null,
+          "transaction_type": "buy",
+          "price": 410.0,
+          "transaction_value": 1182153000.0,
+          "amount": 2883300.0,
+          "holding_before": 4113667330.0,
+          "holding_after": 4116550630.0,
+          "share_percentage_before": 57.25,
+          "share_percentage_transaction": 0.04,
+          "share_percentage_after": 57.29,
+          "transaction_date": null,
+          "timestamp": "2025-09-23T09:40:04",
+          "source": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_EREP/202509/f3f858d605_04ff2c62a9.pdf",
+          "display_time": "23/09/2025 09:40:04"
+        },
+        {
+          "id": "1187",
+          "symbol": "ISSP.JK",
+          "holder_name": "PT Cakra Bhakti Para Putra",
+          "holder_ticker": null,
+          "transaction_type": "buy",
+          "price": 410.0,
+          "transaction_value": 1182153000.0,
+          "amount": 2883300.0,
+          "holding_before": 4113667330.0,
+          "holding_after": 4116550630.0,
+          "share_percentage_before": 57.25,
+          "share_percentage_transaction": 0.04,
+          "share_percentage_after": 57.29,
+          "transaction_date": null,
+          "timestamp": "2025-09-23T09:40:04",
+          "source": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_EREP/202509/f3f858d605_04ff2c62a9.pdf",
+          "display_time": "23/09/2025 09:40:04"
+        }
+      ]
+    },
+    {
+      "symbol": "ITMA.JK",
+      "filings": [
+        {
+          "id": "1192",
+          "symbol": "ITMA.JK",
+          "holder_name": "PT Trukindo Persada Sejahtera",
+          "holder_ticker": null,
+          "transaction_type": "buy",
+          "price": 0.0,
+          "transaction_value": 8720000000.0,
+          "amount": 8000000.0,
+          "holding_before": 52895400.0,
+          "holding_after": 60895400.0,
+          "share_percentage_before": 5.29,
+          "share_percentage_transaction": 0.81,
+          "share_percentage_after": 6.1,
+          "transaction_date": null,
+          "timestamp": "2025-09-23T16:09:44",
+          "source": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_EREP/202509/b7083bf906_97f4d8b032.pdf",
+          "display_time": "23/09/2025 16:09:44"
+        },
+        {
+          "id": "1193",
+          "symbol": "ITMA.JK",
+          "holder_name": "PT Fersindo Nusa Jaya",
+          "holder_ticker": null,
+          "transaction_type": "buy",
+          "price": 0.0,
+          "transaction_value": 14916432000.0,
+          "amount": 13684800.0,
+          "holding_before": 101300200.0,
+          "holding_after": 114985000.0,
+          "share_percentage_before": 10.14,
+          "share_percentage_transaction": 1.37,
+          "share_percentage_after": 11.51,
+          "transaction_date": null,
+          "timestamp": "2025-09-23T16:09:44",
+          "source": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_EREP/202509/5ad3102945_f8a12f1cf5.pdf",
+          "display_time": "23/09/2025 16:09:44"
+        }
+      ]
+    },
+    {
+      "symbol": "KLIN.JK",
+      "filings": [
+        {
+          "id": "1191",
+          "symbol": "KLIN.JK",
+          "holder_name": "Tohirin",
+          "holder_ticker": null,
+          "transaction_type": "buy",
+          "price": 168.0,
+          "transaction_value": 835968000.0,
+          "amount": 4976000.0,
+          "holding_before": 61699700.0,
+          "holding_after": 66675700.0,
+          "share_percentage_before": 4.72,
+          "share_percentage_transaction": 0.38,
+          "share_percentage_after": 5.1,
+          "transaction_date": null,
+          "timestamp": "2025-09-23T14:16:47",
+          "source": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_EREP/202509/acf3e98bab_21e7ef5662.pdf",
+          "display_time": "23/09/2025 14:16:47"
+        }
+      ]
+    },
+    {
+      "symbol": "LAPD.JK",
+      "filings": [
+        {
+          "id": "1195",
+          "symbol": "LAPD.JK",
+          "holder_name": "Leo Andyanto",
+          "holder_ticker": null,
+          "transaction_type": "sell",
+          "price": 175.0,
+          "transaction_value": 38732522500.0,
+          "amount": 221328700.0,
+          "holding_before": 284738000.0,
+          "holding_after": 63409300.0,
+          "share_percentage_before": 7.18,
+          "share_percentage_transaction": 5.58,
+          "share_percentage_after": 1.6,
+          "transaction_date": null,
+          "timestamp": "2025-09-23T15:17:22",
+          "source": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_EREP/202509/fd9539db33_eaf6efa362.pdf",
+          "display_time": "23/09/2025 15:17:22"
+        }
+      ]
+    },
+    {
+      "symbol": "MAXI.JK",
+      "filings": [
+        {
+          "id": "1186",
+          "symbol": "MAXI.JK",
+          "holder_name": "Candra Gunawan",
+          "holder_ticker": null,
+          "transaction_type": "buy",
+          "price": 53.0,
+          "transaction_value": 4375680000.0,
+          "amount": 82560000.0,
+          "holding_before": 0.0,
+          "holding_after": 82560000.0,
+          "share_percentage_before": 0.0,
+          "share_percentage_transaction": 0.86,
+          "share_percentage_after": 0.86,
+          "transaction_date": null,
+          "timestamp": "2025-09-23T08:54:10",
+          "source": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_EREP/202509/ae602db3aa_85a6e7b485.pdf",
+          "display_time": "23/09/2025 08:54:10"
+        }
+      ]
+    },
+    {
+      "symbol": "MDLN.JK",
+      "filings": [
+        {
+          "id": "1180",
+          "symbol": "MDLN.JK",
+          "holder_name": "Haiyanto",
+          "holder_ticker": null,
+          "transaction_type": "sell",
+          "price": 0.0,
+          "transaction_value": 255300000.0,
+          "amount": 3700000.0,
+          "holding_before": 1212557700.0,
+          "holding_after": 1208857700.0,
+          "share_percentage_before": 9.675,
+          "share_percentage_transaction": 0.03,
+          "share_percentage_after": 9.645,
+          "transaction_date": null,
+          "timestamp": "2025-09-22T18:04:50",
+          "source": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_EREP/202509/7342b1c5ce_411577e6ec.pdf",
+          "display_time": "22/09/2025 18:04:50"
+        }
+      ]
+    },
+    {
+      "symbol": "MSJA.JK",
+      "filings": [
+        {
+          "id": "1196",
+          "symbol": "MSJA.JK",
+          "holder_name": "PT Maju Selaras Jaya Merta",
+          "holder_ticker": null,
+          "transaction_type": "buy",
+          "price": 332.0,
+          "transaction_value": 112234009008.0,
+          "amount": 338054244.0,
+          "holding_before": 3417500000.0,
+          "holding_after": 3755554244.0,
+          "share_percentage_before": 58.1,
+          "share_percentage_transaction": 5.74,
+          "share_percentage_after": 63.84,
+          "transaction_date": null,
+          "timestamp": "2025-09-23T16:46:08",
+          "source": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_EREP/202509/fbd697933d_300566bc4b.pdf",
+          "display_time": "23/09/2025 16:46:08"
+        }
+      ]
+    },
+    {
+      "symbol": "PTSP.JK",
+      "filings": [
+        {
+          "id": "1181",
+          "symbol": "PTSP.JK",
+          "holder_name": "Bank Of Singapore LIMITED",
+          "holder_ticker": null,
+          "transaction_type": "buy",
+          "price": 0.0,
+          "transaction_value": 179550000.0,
+          "amount": 190000.0,
+          "holding_before": 17370320.0,
+          "holding_after": 17560320.0,
+          "share_percentage_before": 7.867,
+          "share_percentage_transaction": 0.086,
+          "share_percentage_after": 7.953,
+          "transaction_date": null,
+          "timestamp": "2025-09-22T18:02:48",
+          "source": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_EREP/202509/8934820cee_e3c45481f6.pdf",
+          "display_time": "22/09/2025 18:02:48"
+        }
+      ]
+    }
+  ]
+}

@@ -6,7 +6,7 @@ import os
 load_dotenv()
 logging.basicConfig(level=logging.INFO)
 
-from src.services.alerts.ses_email import send_attachments
+from src.services.email.ses_email import send_attachments
 
 if __name__ == "__main__":
     # Prefer recipient from env; fall back to SES simulator (works in sandbox)

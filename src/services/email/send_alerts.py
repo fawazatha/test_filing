@@ -14,9 +14,9 @@ logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
 # pakai renderer dari alerts_mailer agar konsisten tampilannya
-from src.services.alerts.alerts_mailer import _render_email_content  # type: ignore
+from src.services.email.alerts_mailer import _render_email_content  # type: ignore
 # kirim langsung dengan daftar attachment asli
-from src.services.alerts.ses_email import send_attachments
+from src.services.email.ses_email import send_attachments
 
 # -------- helpers --------
 def _tolist(x: Optional[Sequence[str] | str]) -> List[str]:
