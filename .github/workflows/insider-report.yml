@@ -1,9 +1,9 @@
-name: Insider Report (IDX)
+name: Insider Report
 
 on:
   schedule:
-    # 18:00 WIB = 11:00 UTC (Senin–Jumat)
-    - cron: '0 11 * * 1-5'
+    # 17:50 WIB = 10:50 UTC (Senin–Jumat)
+    - cron: '50 10 * * 1-5'
   workflow_dispatch:
     inputs:
       from:
@@ -18,20 +18,15 @@ on:
         description: 'Comma-separated symbols to override watchlist (e.g., BBCA.JK,BBRI.JK)'
         required: false
         type: string
-      send:
-        description: 'Send email via SES'
+      recipients_override:
+        description: 'Override recipients (comma-separated). If empty, uses REPORT_RECIPIENTS secret'
         required: false
-        default: true
-        type: boolean
+        type: string
       attach_html:
         description: 'Attach HTML to email? (body HTML tetap dikirim walau false)'
         required: false
         default: false
         type: boolean
-      recipients_override:
-        description: 'Override recipients (comma-separated). If empty, uses REPORT_RECIPIENTS secret'
-        required: false
-        type: string
 
 permissions:
   contents: read
@@ -44,15 +39,13 @@ jobs:
   run:
     runs-on: ubuntu-latest
     env:
-      # === Secrets yang perlu kamu set di repo Settings → Secrets and variables → Actions ===
       SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
       SUPABASE_KEY: ${{ secrets.SUPABASE_KEY }}
       AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
       AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-      AWS_REGION: ${{ secrets.AWS_REGION }} # contoh: ap-southeast-1
+      AWS_REGION: ${{ secrets.AWS_REGION }}        # contoh: ap-southeast-1
       SES_FROM_EMAIL: ${{ secrets.SES_FROM_EMAIL }}
-      # 3 email, pisahkan koma (boleh ada spasi)
-      REPORT_RECIPIENTS: ${{ secrets.REPORT_RECIPIENTS }}
+      REPORT_RECIPIENTS: ${{ secrets.REPORT_RECIPIENTS }}  # 3 email, pisahkan koma
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -73,25 +66,34 @@ jobs:
       - name: Install deps
         run: |
           if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
-          # kalau ada sub requirements: pip install -r src/requirements.txt
 
-      - name: Make dirs
+      - name: Prepare dirs & filenames
+        id: prep
+        shell: bash
         run: |
-          mkdir -p data/tmp
-          mkdir -p data/report
-          mkdir -p logs
+          mkdir -p data/tmp data/report logs
+          # Nama file deterministik berdasarkan tanggal end window (WIB) → pakai UTC+7 manual sederhana:
+          # Untuk kesederhanaan, kita pakai tanggal hari ini UTC (cukup untuk penamaan/artifact).
+          DAY=$(date -u +%Y%m%d)
+          echo "DAY=$DAY" >> "$GITHUB_OUTPUT"
+          echo "COMP_JSON=data/tmp/company_report_${DAY}.json"   >> "$GITHUB_OUTPUT"
+          echo "FILINGS_JSON=data/tmp/filings_${DAY}.json"      >> "$GITHUB_OUTPUT"
+          echo "OUT_JSON=data/report/insider_report_${DAY}.json" >> "$GITHUB_OUTPUT"
+          echo "OUT_HTML=data/report/insider_email_${DAY}.html"  >> "$GITHUB_OUTPUT"
 
-      - name: Build command
+      # ====== Fase A: Build-only (export + fetch + render) TANPA SEND ======
+      - name: Build command (dry-run)
         id: build
         shell: bash
         run: |
-          # Tentukan recipients: override input > secret default
           RECIPS="${{ inputs.recipients_override }}"
-          if [ -z "$RECIPS" ]; then
-            RECIPS="$REPORT_RECIPIENTS"
-          fi
+          if [ -z "$RECIPS" ]; then RECIPS="$REPORT_RECIPIENTS"; fi
 
-          # Base command (watchlist mode)
+          COMP_JSON="${{ steps.prep.outputs.COMP_JSON }}"
+          FILINGS_JSON="${{ steps.prep.outputs.FILINGS_JSON }}"
+          OUT_JSON="${{ steps.prep.outputs.OUT_JSON }}"
+          OUT_HTML="${{ steps.prep.outputs.OUT_HTML }}"
+
           CMD=( PYTHONPATH=src python -m src.generate.reports.cli
             --export-company-report
             --company-script src/scripts/company_report.py
@@ -100,7 +102,15 @@ jobs:
             --fetch-filings
             --fetch-script src/scripts/fetch_filings.py
             --template src/generate/reports/templates/insider_email.html
+            --out-json "$OUT_JSON"
+            --out-html "$OUT_HTML"
+            --dry-run
           )
+
+          # simpan JSON perantara supaya bisa re-use saat send
+          CMD+=( --companies-json-in "$COMP_JSON" --filings-json-in "$FILINGS_JSON" )
+          # catatan: untuk benar-benar memaksa export & fetch dulu, kamu bisa jalankan export/fetch terpisah.
+          # (CLI saat ini akan pakai JSON jika file ada; kalau tidak, tetap export/fetch.)
 
           # Window manual bila diberikan
           if [ -n "${{ inputs.from }}" ] && [ -n "${{ inputs.to }}" ]; then
@@ -110,26 +120,65 @@ jobs:
           # Override symbols bila diberikan (mengabaikan watchlist)
           if [ -n "${{ inputs.symbols }}" ]; then
             CMD+=( --symbols "${{ inputs.symbols }}" )
-          end
-
-          # Kirim email?
-          if [ "${{ inputs.send }}" != 'false' ]; then
-            CMD+=( --send --mail-to "$RECIPS" )
-            # lampiran HTML opsional
-            if [ "${{ inputs.attach_html }}" = 'true' ]; then
-              CMD+=( --attach-html )
-            fi
           fi
 
-          # Echo final command to output for next step
-          printf '%s\0' "${CMD[@]}" > cmd.zsharray
+          printf '%s\0' "${CMD[@]}" > cmd_build.zsharray
+          printf '%s\0' "$RECIPS" > recips.nul
 
-      - name: Run
+      - name: Run build (dry-run)
         shell: bash
         run: |
-          # Baca array aman (dengan NUL delimiter)
-          mapfile -d '' CMD < cmd.zsharray
-          echo "[RUN]" "${CMD[@]}"
+          mapfile -d '' CMD < cmd_build.zsharray
+          echo "[BUILD]" "${CMD[@]}"
+          "${CMD[@]}"
+
+      # ====== Fase B: Tunggu sampai 18:00 WIB (11:00 UTC) ======
+      - name: Wait until 18:00 WIB (11:00 UTC)
+        shell: bash
+        run: |
+          NOW=$(date -u +%s)
+          TODAY=$(date -u +%Y-%m-%d)
+          TARGET=$(date -u -d "$TODAY 11:00" +%s)
+          WAIT=$(( TARGET - NOW ))
+          if [ $WAIT -gt 0 ]; then
+            echo "Sleeping $WAIT seconds until 11:00 UTC (18:00 WIB)..."
+            sleep $WAIT
+          else
+            echo "It's past 11:00 UTC already; skipping wait."
+          fi
+
+      # ====== Fase C: Send-only (pakai JSON hasil fase A) ======
+      - name: Send command
+        id: sendcmd
+        shell: bash
+        run: |
+          RECIPS=$(tr -d '\0' < recips.nul)
+          COMP_JSON="${{ steps.prep.outputs.COMP_JSON }}"
+          FILINGS_JSON="${{ steps.prep.outputs.FILINGS_JSON }}"
+          OUT_JSON="${{ steps.prep.outputs.OUT_JSON }}"
+          OUT_HTML="${{ steps.prep.outputs.OUT_HTML }}"
+
+          CMD=( PYTHONPATH=src python -m src.generate.reports.cli
+            --filings-json-in "$FILINGS_JSON"
+            --companies-json-in "$COMP_JSON"
+            --template src/generate/reports/templates/insider_email.html
+            --out-json "$OUT_JSON"
+            --out-html "$OUT_HTML"
+            --send --mail-to "$RECIPS"
+          )
+
+          # Lampirkan HTML bila diminta
+          if [ "${{ inputs.attach_html }}" = 'true' ]; then
+            CMD+=( --attach-html )
+          fi
+
+          printf '%s\0' "${CMD[@]}" > cmd_send.zsharray
+
+      - name: Run send
+        shell: bash
+        run: |
+          mapfile -d '' CMD < cmd_send.zsharray
+          echo "[SEND]" "${CMD[@]}"
           "${CMD[@]}"
 
       - name: Upload artifacts (HTML & JSON)
@@ -138,6 +187,6 @@ jobs:
         with:
           name: insider-report
           path: |
-            data/report/insider_email.html
-            data/report/insider_report.json
+            data/report/insider_email_*.html
+            data/report/insider_report_*.json
           if-no-files-found: ignore
