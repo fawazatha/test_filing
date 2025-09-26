@@ -1,0 +1,143 @@
+name: Insider Report (IDX)
+
+on:
+  schedule:
+    # 18:00 WIB = 11:00 UTC (Senin–Jumat)
+    - cron: '0 11 * * 1-5'
+  workflow_dispatch:
+    inputs:
+      from:
+        description: 'Window start (YYYY-MM-DD HH:MM, WIB)'
+        required: false
+        type: string
+      to:
+        description: 'Window end (YYYY-MM-DD HH:MM, WIB)'
+        required: false
+        type: string
+      symbols:
+        description: 'Comma-separated symbols to override watchlist (e.g., BBCA.JK,BBRI.JK)'
+        required: false
+        type: string
+      send:
+        description: 'Send email via SES'
+        required: false
+        default: true
+        type: boolean
+      attach_html:
+        description: 'Attach HTML to email? (body HTML tetap dikirim walau false)'
+        required: false
+        default: false
+        type: boolean
+      recipients_override:
+        description: 'Override recipients (comma-separated). If empty, uses REPORT_RECIPIENTS secret'
+        required: false
+        type: string
+
+permissions:
+  contents: read
+
+concurrency:
+  group: insider-report
+  cancel-in-progress: false
+
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    env:
+      # === Secrets yang perlu kamu set di repo Settings → Secrets and variables → Actions ===
+      SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+      SUPABASE_KEY: ${{ secrets.SUPABASE_KEY }}
+      AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+      AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+      AWS_REGION: ${{ secrets.AWS_REGION }} # contoh: ap-southeast-1
+      SES_FROM_EMAIL: ${{ secrets.SES_FROM_EMAIL }}
+      # 3 email, pisahkan koma (boleh ada spasi)
+      REPORT_RECIPIENTS: ${{ secrets.REPORT_RECIPIENTS }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.10'
+
+      - name: Cache pip
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/pip
+          key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements*.txt') }}
+          restore-keys: |
+            ${{ runner.os }}-pip-
+
+      - name: Install deps
+        run: |
+          if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+          # kalau ada sub requirements: pip install -r src/requirements.txt
+
+      - name: Make dirs
+        run: |
+          mkdir -p data/tmp
+          mkdir -p data/report
+          mkdir -p logs
+
+      - name: Build command
+        id: build
+        shell: bash
+        run: |
+          # Tentukan recipients: override input > secret default
+          RECIPS="${{ inputs.recipients_override }}"
+          if [ -z "$RECIPS" ]; then
+            RECIPS="$REPORT_RECIPIENTS"
+          fi
+
+          # Base command (watchlist mode)
+          CMD=( PYTHONPATH=src python -m src.generate.reports.cli
+            --export-company-report
+            --company-script src/scripts/company_report.py
+            --company-select "symbol,company_name,listing_board,tags"
+            --listing-board watchlist
+            --fetch-filings
+            --fetch-script src/scripts/fetch_filings.py
+            --template src/generate/reports/templates/insider_email.html
+          )
+
+          # Window manual bila diberikan
+          if [ -n "${{ inputs.from }}" ] && [ -n "${{ inputs.to }}" ]; then
+            CMD+=( --from "${{ inputs.from }}" --to "${{ inputs.to }}" )
+          fi
+
+          # Override symbols bila diberikan (mengabaikan watchlist)
+          if [ -n "${{ inputs.symbols }}" ]; then
+            CMD+=( --symbols "${{ inputs.symbols }}" )
+          end
+
+          # Kirim email?
+          if [ "${{ inputs.send }}" != 'false' ]; then
+            CMD+=( --send --mail-to "$RECIPS" )
+            # lampiran HTML opsional
+            if [ "${{ inputs.attach_html }}" = 'true' ]; then
+              CMD+=( --attach-html )
+            fi
+          fi
+
+          # Echo final command to output for next step
+          printf '%s\0' "${CMD[@]}" > cmd.zsharray
+
+      - name: Run
+        shell: bash
+        run: |
+          # Baca array aman (dengan NUL delimiter)
+          mapfile -d '' CMD < cmd.zsharray
+          echo "[RUN]" "${CMD[@]}"
+          "${CMD[@]}"
+
+      - name: Upload artifacts (HTML & JSON)
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: insider-report
+          path: |
+            data/report/insider_email.html
+            data/report/insider_report.json
+          if-no-files-found: ignore

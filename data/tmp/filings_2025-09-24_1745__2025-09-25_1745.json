@@ -1,0 +1,173 @@
+[
+  {
+    "id": 1212,
+    "created_at": "2025-09-25T04:12:59.299593+00:00",
+    "title": "PT Infiniti Wahana Sell Transaction of Steady Safe Tbk",
+    "body": "On September 25, 2025, PT Infiniti Wahana, an institution shareholder, sold 1,500,000 shares of Steady Safe Tbk, changing its holding from 255,887,413 to 254,387,413 shares.",
+    "source": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_EREP/202509/a81b67cb67_5002937f76.pdf",
+    "timestamp": "2025-09-25T10:26:29",
+    "sector": "transportation-logistic",
+    "sub_sector": "[\"transportation\"]",
+    "tags": [
+      "Bearish",
+      "Divestment",
+      "Ownership Change",
+      "Insider Trading"
+    ],
+    "tickers": null,
+    "transaction_type": "sell",
+    "holding_before": 255887413,
+    "holding_after": 254387413,
+    "amount_transaction": 1500000,
+    "holder_type": "institution",
+    "holder_name": "PT Infiniti Wahana",
+    "price": 227.67,
+    "transaction_value": 341500000.0,
+    "price_transaction": {
+      "type": [
+        "sell",
+        "sell"
+      ],
+      "prices": [
+        199.0,
+        242.0
+      ],
+      "amount_transacted": [
+        500000,
+        1000000
+      ]
+    },
+    "share_percentage_before": 41.6,
+    "share_percentage_after": 41.35,
+    "share_percentage_transaction": 0.25,
+    "UID": null,
+    "symbol": "SAFE.JK"
+  },
+  {
+    "id": 1211,
+    "created_at": "2025-09-25T04:12:58.485199+00:00",
+    "title": "Johan Rose Sell Transaction of PT Era Mandiri Cemerlang Tbk",
+    "body": "On September 25, 2025, Johan Rose, an insider shareholder, sold 20,000,000 shares of PT Era Mandiri Cemerlang Tbk, changing its holding from 170,000,000 to 150,000,000 shares.",
+    "source": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_EREP/202509/9658aeb196_155dc7dd47.pdf",
+    "timestamp": "2025-09-25T10:37:02",
+    "sector": "consumer-non-cyclicals",
+    "sub_sector": "[\"food-beverage\"]",
+    "tags": [
+      "Bearish",
+      "Divestment",
+      "Ownership Change",
+      "Insider Trading"
+    ],
+    "tickers": null,
+    "transaction_type": "sell",
+    "holding_before": 170000000,
+    "holding_after": 150000000,
+    "amount_transaction": 20000000,
+    "holder_type": "insider",
+    "holder_name": "Johan Rose",
+    "price": 140.0,
+    "transaction_value": 2800000000.0,
+    "price_transaction": {
+      "type": [
+        "sell",
+        "sell"
+      ],
+      "prices": [
+        140.0,
+        140.0
+      ],
+      "amount_transacted": [
+        17100000,
+        2900000
+      ]
+    },
+    "share_percentage_before": 20.4,
+    "share_percentage_after": 18,
+    "share_percentage_transaction": 2.4,
+    "UID": null,
+    "symbol": "IKAN.JK"
+  },
+  {
+    "id": 1213,
+    "created_at": "2025-09-25T08:14:21.223744+00:00",
+    "title": "PT Infiniti Wahana Sell Transaction of Steady Safe Tbk",
+    "body": "On September 25, 2025, PT Infiniti Wahana, an institution shareholder, sold 3,273,200 shares of Steady Safe Tbk, changing its holding from 254,387,413 to 251,114,213 shares.",
+    "source": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_EREP/202509/6eebf8216c_9f4c798704.pdf",
+    "timestamp": "2025-09-25T14:20:07",
+    "sector": "transportation-logistic",
+    "sub_sector": "[\"transportation\"]",
+    "tags": [
+      "Bearish",
+      "Divestment",
+      "Ownership Change",
+      "Insider Trading"
+    ],
+    "tickers": null,
+    "transaction_type": "sell",
+    "holding_before": 254387413,
+    "holding_after": 251114213,
+    "amount_transaction": 3273200,
+    "holder_type": "institution",
+    "holder_name": "PT Infiniti Wahana",
+    "price": 252.57,
+    "transaction_value": 826697000.0,
+    "price_transaction": {
+      "type": [
+        "sell",
+        "sell",
+        "sell",
+        "sell",
+        "sell",
+        "sell",
+        "sell",
+        "sell",
+        "sell",
+        "sell",
+        "sell",
+        "sell",
+        "sell",
+        "sell",
+        "sell"
+      ],
+      "prices": [
+        234.0,
+        236.0,
+        240.0,
+        242.0,
+        250.0,
+        252.0,
+        254.0,
+        256.0,
+        258.0,
+        262.0,
+        264.0,
+        266.0,
+        274.0,
+        276.0,
+        278.0
+      ],
+      "amount_transacted": [
+        150000,
+        100000,
+        295700,
+        504300,
+        790100,
+        260400,
+        49500,
+        72100,
+        164700,
+        200000,
+        200000,
+        98900,
+        178600,
+        99300,
+        109600
+      ]
+    },
+    "share_percentage_before": 41.35,
+    "share_percentage_after": 40.82,
+    "share_percentage_transaction": 0.53,
+    "UID": null,
+    "symbol": "SAFE.JK"
+  }
+]

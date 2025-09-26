@@ -36,6 +36,7 @@ class Cfg:
     col_sector: str = "sector"
     col_sub_sector: str = "sub_sector"
     col_tags: str = "tags"
+    col_listing_board: str = "listing_board"
 
     col_report_date: str = ""  
     col_updated_at: str = ""  
