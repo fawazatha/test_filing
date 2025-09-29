@@ -1,5 +1,3 @@
-#!/usr/bin/env python3
-# src/scripts/fetch_filings.py
 from __future__ import annotations
 
 """
@@ -48,9 +46,7 @@ logger = logging.getLogger("fetch_idx_filings")
 JKT = timezone(timedelta(hours=7))
 
 
-# =========================
-# Supabase REST (standalone)
-# =========================
+# Supabase REST 
 def _sb_base() -> str:
     url = os.getenv("SUPABASE_URL")
     if not url:
@@ -62,7 +58,6 @@ def _sb_headers() -> Dict[str, str]:
     key = os.getenv("SUPABASE_KEY")
     if not key:
         raise RuntimeError("SUPABASE_KEY is not set")
-    # Prefer count=exact gives Content-Range totals (optional)
     return {
         "apikey": key,
         "Authorization": f"Bearer {key}",
@@ -130,7 +125,7 @@ async def _rest_get(
     ilike: Optional[Dict[str, str]] = None,
     in_: Optional[Dict[str, Iterable[Any]]] = None,
     order: Optional[str] = None,
-    range_: Optional[Tuple[int, int]] = None,  # inclusive
+    range_: Optional[Tuple[int, int]] = None, 
     timeout: float = 60.0,
 ) -> Tuple[List[Dict[str, Any]], Dict[str, str]]:
     base = _sb_base()
@@ -183,7 +178,7 @@ async def _rest_get_all(
             timeout=timeout,
         )
         out.extend(batch)
-        cr = headers.get("content-range")  # e.g. "0-999/2345"
+        cr = headers.get("content-range")  # "0-999/2345"
         if not cr:
             if len(batch) < page_size:
                 break
@@ -199,15 +194,13 @@ async def _rest_get_all(
     return out
 
 
-# =========================
 # High-level fetch (ts-col aware)
-# =========================
 def _parse_dt_iso(s: Optional[str]) -> Optional[datetime]:
     if not s:
         return None
     dt = datetime.fromisoformat(s)
     if dt.tzinfo is None:
-        dt = dt.replace(tzinfo=JKT)  # assume JKT if naive
+        dt = dt.replace(tzinfo=JKT)  
     return dt
 
 
@@ -238,7 +231,7 @@ async def get_idx_filings_between(
     *,
     symbols: Optional[Iterable[str]] = None,
     table: str = "idx_filings",
-    select: str = "*",  # keep simple; change if you want a fixed column list
+    select: str = "*",  
 ) -> List[Dict[str, Any]]:
     """
     Fetch rows from `table` where ts_col is (gt start_dt) and (lt end_dt), ordered by ts_col then id.
@@ -250,16 +243,14 @@ async def get_idx_filings_between(
     return await _rest_get_all(
         table,
         select=select,
-        gt={ts_col: start_val},   # half-open window
+        gt={ts_col: start_val},  
         lt={ts_col: end_val},
         in_=in_filter,
         order=f"{ts_col}.asc,id.asc",
     )
 
 
-# =========================
 # Local helpers (checkpoint, IO)
-# =========================
 def _ensure_parent(path: str) -> None:
     Path(path).parent.mkdir(parents=True, exist_ok=True)
 
@@ -312,9 +303,7 @@ def _merge_symbols(symbols_arg: Optional[str], company_report_json: Optional[str
     return sorted(symset)
 
 
-# =========================
 # CLI & window resolution
-# =========================
 def build_argparser():
     p = argparse.ArgumentParser(description="Fetch idx_filings for a time window and write to JSON.")
 
@@ -377,9 +366,7 @@ def resolve_window(
     return Window(we - timedelta(days=1), we)
 
 
-# =========================
 # Runner
-# =========================
 async def main():
     args = build_argparser().parse_args()
 

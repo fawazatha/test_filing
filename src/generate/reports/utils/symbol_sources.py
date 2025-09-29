@@ -1,11 +1,10 @@
-# src/generate/reports/utils/symbol_sources.py
 from __future__ import annotations
 from typing import Iterable, List, Optional, Dict, Any
 import json
 from pathlib import Path
 
 from ..core import fetch_company_report_symbols, load_companies_from_json
-from . import sb as sbapi  # Supabase REST helper kamu
+from . import sb as sbapi  
 
 def parse_symbols_arg(arg: Optional[str]) -> List[str]:
     out: List[str] = []
@@ -62,13 +61,12 @@ async def resolve_symbols_priority(
     use_company_report_watchlist: bool = True,
     companies_json_in: Optional[str] = None,
 ) -> List[str]:
-    """
-    Prioritas simbol:
-    1) --symbols (jika diisi)
-    2) watchlist user (jika user_email diberikan dan tabelnya tersedia)
-    3) watchlist dari idx_company_report (listing_board='watchlist') bila diizinkan
-    4) insider-tagged (fallback lama)
-    """
+    # Prioritas simbol:
+    # 1) --symbols (jika diisi)
+    # 2) watchlist user (jika user_email diberikan dan tabelnya tersedia)
+    # 3) watchlist dari idx_company_report (listing_board='watchlist') bila diizinkan
+    # 4) insider-tagged (fallback lama)
+
     # 1) explicit
     syms = parse_symbols_arg(symbols_arg)
     if syms:

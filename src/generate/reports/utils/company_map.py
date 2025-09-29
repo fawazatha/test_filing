@@ -1,4 +1,3 @@
-# src/generate/reports/utils/company_map.py
 from __future__ import annotations
 
 import json
@@ -7,14 +6,13 @@ from pathlib import Path
 from typing import Dict, Any, Tuple
 
 def _normalize_company_name(s: str) -> str:
-    """
-    Normalisasi longgar agar 'PT ABC Tbk' ≈ 'ABC'.
-    - huruf kecil
-    - hapus titik/koma/apostrof/hyphen
-    - ganti '&' -> 'and'
-    - buang kata umum: pt, tbk, indonesia, limited, tbk., corp, corporate, co, ltd
-    - kompres spasi
-    """
+    # Normalisasi longgar agar 'PT ABC Tbk' ≈ 'ABC'.
+    # - huruf kecil
+    # - hapus titik/koma/apostrof/hyphen
+    # - ganti '&' -> 'and'
+    # - buang kata umum: pt, tbk, indonesia, limited, tbk., corp, corporate, co, ltd
+    # - kompres spasi
+    
     if not s:
         return ""
     t = s.lower()
@@ -27,8 +25,8 @@ def _normalize_company_name(s: str) -> str:
 def load_company_map(path: str) -> Tuple[Dict[str, Any], Dict[str, str]]:
     """
     Return:
-      - raw_map: dict seperti file (ticker -> {...})
-      - by_name_norm: peta nama_norm -> ticker
+      - raw_map: dict file (ticker -> {...})
+      - by_name_norm: map nama_norm -> ticker
     """
     p = Path(path)
     data = json.loads(p.read_text(encoding="utf-8"))
@@ -41,10 +39,6 @@ def load_company_map(path: str) -> Tuple[Dict[str, Any], Dict[str, str]]:
     return data, by_name_norm
 
 def annotate_holder_tickers(filings: list[dict], by_name_norm: Dict[str, str]) -> int:
-    """
-    Isi f['holder_ticker'] jika kosong dan holder_name match company_map.
-    Return: jumlah baris yang ter-annotate.
-    """
     filled = 0
     for f in filings:
         if f.get("holder_ticker"):

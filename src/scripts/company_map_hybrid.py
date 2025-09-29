@@ -1,5 +1,3 @@
-#!/usr/bin/env python3
-# src/scripts/company_map_hybrid.py
 # Build & refresh local caches:
 #  - company_map.json        : symbol -> { company_name, sector, sub_sector }
 #  - latest_prices.json      : { "prices": { SYMBOL.JK: { "close": float, "date": "YYYY-MM-DD" } } }
@@ -22,20 +20,20 @@ from datetime import datetime, timezone, timedelta
 from typing import Dict, Any, Optional, Tuple, List, Iterable
 
 try:
-    from dotenv import load_dotenv  # type: ignore
+    from dotenv import load_dotenv 
     load_dotenv()
 except Exception:
     pass
 
-import requests  # pip install requests
+import requests  
 
-# --------- Outputs ---------
+# Outputs 
 OUT_JSON            = pathlib.Path("data/company/company_map.json")
 META_JSON           = pathlib.Path("data/company/company_map.meta.json")
 LATEST_PRICES_JSON  = pathlib.Path("data/company/latest_prices.json")
 HYDRATED_JSON       = pathlib.Path("data/company/company_map.hydrated.json")
 
-# --------- Supabase env ---------
+# Supabase env 
 SUPABASE_URL  = os.getenv("SUPABASE_URL")
 SUPABASE_KEY  = os.getenv("SUPABASE_KEY") or os.getenv("SUPABASE_SERVICE_ROLE_KEY") or os.getenv("SUPABASE_ANON_KEY")
 SCHEMA_NAME   = os.getenv("COMPANY_SCHEMA", "public")
@@ -84,7 +82,7 @@ def _normalize_full(sym: str) -> str:
     s = (sym or "").upper().strip()
     return s if s.endswith(".JK") else f"{s}.JK"
 
-# ---------- local cache IO ----------
+# local cache IO
 def load_local() -> Tuple[Dict[str, Dict[str, str]], Dict[str, Any]]:
     mapping: Dict[str, Dict[str, str]] = {}
     meta: Dict[str, Any] = {}
@@ -123,7 +121,7 @@ def save_local(mapping: Dict[str, Dict[str, str]], rows_meta: Dict[str, Any]):
     OUT_JSON.write_text(json.dumps(mapping, ensure_ascii=False, indent=2), encoding="utf-8")
     META_JSON.write_text(json.dumps(rows_meta, ensure_ascii=False, indent=2), encoding="utf-8")
 
-# ---------- remote row count (tanpa updated_on/at) ----------
+# remote row count
 def remote_row_count(table: str) -> Optional[int]:
     """Ambil total row via Content-Range + Prefer: count=exact dengan payload minimum."""
     if not SUPABASE_URL or not SUPABASE_KEY:
@@ -147,7 +145,7 @@ def remote_row_count(table: str) -> Optional[int]:
         log(f"warn: count({table}) failed: {e}")
         return None
 
-# ---------- fetchers (data penuh) ----------
+# fetchers
 def fetch_profile() -> Optional[Dict[str, Dict[str, str]]]:
     if not SUPABASE_URL or not SUPABASE_KEY:
         log("error: SUPABASE_URL/KEY missing; cannot fetch profile.")
@@ -191,7 +189,7 @@ def fetch_report() -> Optional[Dict[str, Dict[str, str]]]:
         }
     return out
 
-# ---------- build map: PROFILE base + REPORT overlay sectors ----------
+# build map: PROFILE base + REPORT overlay sectors 
 def build_map_from_remote() -> Optional[Tuple[Dict[str, Dict[str, str]], Dict[str, Any]]]:
     base = fetch_profile()
     if base is None:
@@ -237,7 +235,7 @@ def fetch_latest_price_for_symbol(sym_full: str) -> Optional[Dict[str, Any]]:
     except Exception:
         return None
 
-# ---------- BULK recent-days fetch (program-only) ----------
+# BULK recent-days fetch (program-only) 
 def _fetch_recent_rows_all(start_date: str, page_size: int = 20000) -> List[dict]:
     """Tarik semua baris date >= start_date (paged). Order: symbol ASC, date DESC, updated_on DESC."""
     if not SUPABASE_URL or not SUPABASE_KEY:
@@ -274,7 +272,7 @@ def _latest_per_symbol_from_rows(rows: Iterable[dict]) -> Dict[str, Dict[str, An
         if not sym:
             continue
         if sym != last_sym:
-            if sym not in latest:  # guard kalau suatu saat diproses per page
+            if sym not in latest: 
                 try:
                     latest[sym] = {"close": float(row.get("close") or 0), "date": row.get("date")}
                 except Exception:
@@ -379,7 +377,7 @@ def get_company_map(force: bool = False) -> Dict[str, Dict[str, str]]:
     log("No company_map available.")
     return {}
 
-# ---------- utilities: hydrate, bootstrap, reset ----------
+# utilities: hydrate, bootstrap, reset
 def hydrate_company_map_with_prices():
     """Gabungkan company_map + latest_prices ke satu file untuk inspeksi."""
     mapping, _ = load_local()
@@ -440,7 +438,7 @@ def reset_all(no_bootstrap: bool = False, lookback_days: int = 7, use_fallback: 
 
     bootstrap_all(lookback_days=lookback_days, use_fallback=use_fallback)
 
-# ------------- CLI -------------
+# CLI
 def _cmd_get():
     _ = get_company_map(force=False)
 
@@ -510,8 +508,8 @@ def _build_argparser():
     sub.add_parser("get")
     sub.add_parser("print")
     sub.add_parser("status")
-    sub.add_parser("refresh")          # company_map only
-    sub.add_parser("hydrate")          # gabungkan map + harga
+    sub.add_parser("refresh")         
+    sub.add_parser("hydrate")         
 
     p_prices = sub.add_parser("refresh_prices")
     p_prices.add_argument("--prices-lookback-days", type=int, default=int(os.getenv("PRICES_LOOKBACK_DAYS", "7")),

@@ -1,4 +1,3 @@
-# src/generate/reports/mailer.py
 from __future__ import annotations
 
 import os

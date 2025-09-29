@@ -1,4 +1,3 @@
-# src/generate/reports/cli.py
 from __future__ import annotations
 import argparse
 import asyncio
@@ -27,9 +26,7 @@ from .mailer import send_attachments  # SES sender
 LOGO_PNG_PATH = "public/img/sectors-logo.png"
 logger = get_logger("report.cli")
 
-# -----------------------------
 # Template helpers
-# -----------------------------
 def _load_template(path: str) -> str:
     p = Path(path)
     if p.exists():
@@ -48,9 +45,8 @@ def _render_email(html_tpl: str, ctx: Dict[str, Any]) -> str:
     tpl = Template(html_tpl)
     return tpl.render(**ctx)
 
-# -----------------------------
+
 # Format helpers
-# -----------------------------
 _ABBR_STEPS: List[Tuple[float, str]] = [(1e12, "T"), (1e9, "B"), (1e6, "M"), (1e3, "K")]
 
 def _abbrev_number(v: Any, digits: int = 1) -> str:
@@ -165,9 +161,7 @@ def _inject_source(grouped: dict, id_to_source: Dict[int, Optional[str]]) -> dic
             f["source"] = id_to_source.get(f["id"])
     return grouped
 
-# -----------------------------
 # CLI
-# -----------------------------
 def build_argparser():
     p = argparse.ArgumentParser(
         description="Orchestrate: export company report → fetch filings → render & (optionally) email."

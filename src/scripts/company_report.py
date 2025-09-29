@@ -1,4 +1,3 @@
-#!/usr/bin/env python3
 from __future__ import annotations
 
 import os
@@ -18,8 +17,7 @@ except Exception:
 
 import requests
 
-# ------------------------------ Config ------------------------------
-
+# Config 
 @dataclass
 class Cfg:
     url: str = os.getenv("SUPABASE_URL", "").rstrip("/")
@@ -45,8 +43,7 @@ class Cfg:
         if not self.url or not self.key:
             raise RuntimeError("SUPABASE_URL/KEY missing; export cannot proceed")
 
-# ------------------------------ HTTP helpers ------------------------------
-
+# HTTP helpers 
 def _headers(cfg: Cfg) -> Dict[str, str]:
     h = {
         "apikey": cfg.key,
@@ -127,7 +124,7 @@ def export_company_report(
         if keys:
             rows = [r for r in rows if any(k in str(r.get(cfg.col_tags, "")).lower() for k in keys)]
 
-    # Report-date range hanya jika kolomnya ada (tidak ada → diabaikan)
+    # Report-date range 
     if (since_report or until_report) and cfg.col_report_date:
         def _in_range(val: Optional[str], lo: Optional[str], hi: Optional[str]) -> bool:
             if not val: return False
@@ -191,7 +188,7 @@ def main(argv: Optional[List[str]] = None) -> int:
 
     cfg = Cfg()
 
-    # select default: '*' (ambil semua kolom)
+    # select default: '*' 
     if args.all or not args.select:
         select_cols = ["*"]
     else:
