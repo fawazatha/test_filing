@@ -1,235 +1,221 @@
-name: Insider Report
+name: IDX Filings
 
 on:
   schedule:
-    # 17:50 WIB = 10:50 UTC (Senin–Jumat)
-    - cron: '50 10 * * 1-5'
+    - cron: "0 */2 * * *"
   workflow_dispatch:
     inputs:
-      from:
-        description: 'Window start (YYYY-MM-DD HH:MM, WIB)'
+      mode:
+        description: "Run mode"
+        type: choice
+        required: true
+        default: lookback
+        options: [single_day, range, lookback]
+      time:
+        description: |
+          For single_day: YYYYMMDD|HH:MM|HH:MM
+          For range: YYYYMMDD..YYYYMMDD
+          For lookback: leave empty
         required: false
-        type: string
-      to:
-        description: 'Window end (YYYY-MM-DD HH:MM, WIB)'
+      window_minutes:
+        description: "Lookback minutes (lookback mode only)"
         required: false
-        type: string
-      symbols:
-        description: 'Comma-separated symbols to override watchlist (e.g., BBCA.JK,BBRI.JK)'
-        required: false
-        type: string
-      recipients_override:
-        description: 'Override recipients (comma-separated). If empty, uses REPORT_RECIPIENTS secret'
-        required: false
-        type: string
-      attach_html:
-        description: 'Attach HTML to email? (body HTML tetap dikirim walau false)'
-        required: false
+        default: "120"
+      upload_to_supabase:
+        description: "Upload filings to Supabase? (needs secrets)"
+        type: boolean
         default: false
+      send_alerts:
+        description: "Send SES email alerts?"
         type: boolean
-      send:
-        description: 'Send email? (true/false) — only used for manual runs; scheduled runs default to true'
-        required: false
+        default: false
+      generate_articles:
+        description: "Generate articles.jsonl from filings?"
+        type: boolean
         default: true
+      upload_news:
+        description: "Upload articles to Supabase idx_news?"
         type: boolean
-      send_timing:
-        description: 'When to send (manual runs): "now" or "wait" (wait = 18:00 WIB)'
+        default: true
+      news_table:
+        description: "Supabase news table"
         required: false
-        default: 'wait'
-        type: string
+        default: "idx_news"
+      use_llm:
+        description: "Use LLM if API key present"
+        type: boolean
+        default: true
+      verbose:
+        description: "Verbose logs?"
+        type: boolean
+        default: true
 
-permissions:
-  contents: read
+env:
+  PYTHONPATH: src
+  TZ: Asia/Jakarta
+  OVERLAP_MINUTES: "1"
 
 concurrency:
-  group: insider-report
-  cancel-in-progress: false
+  group: idx-filings-manual
+  cancel-in-progress: true
 
 jobs:
   run:
     runs-on: ubuntu-latest
-    env:
-      PYTHONPATH: src
-      SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
-      SUPABASE_KEY: ${{ secrets.SUPABASE_KEY }}
-      AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-      AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-      AWS_REGION: ${{ secrets.AWS_REGION }}
-      SES_FROM_EMAIL: ${{ secrets.SES_FROM_EMAIL }}
-      REPORT_RECIPIENTS: ${{ secrets.REPORT_RECIPIENTS }}
-
+    timeout-minutes: 60
     steps:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Set up Python
+      - name: Setup Python
         uses: actions/setup-python@v5
         with:
-          python-version: '3.10'
+          python-version: "3.10"
+          cache: "pip"
 
-      - name: Cache pip
-        uses: actions/cache@v4
-        with:
-          path: ~/.cache/pip
-          key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements*.txt') }}
-          restore-keys: |
-            ${{ runner.os }}-pip-
-
-      - name: Install deps
+      - name: Install dependencies
         run: |
-          if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+          python -m pip install -U pip
+          pip install -r requirements.txt
 
-      - name: Prepare dirs & filenames (Jakarta date)
-        id: prep
+      - name: Pre-clean
+        run: |
+          rm -rf downloads/idx-format downloads/non-idx-format || true
+          rm -rf data/*.json data/*.jsonl alerts/*.json alerts_inserted alerts_not_inserted artifacts/*.zip || true
+          mkdir -p downloads/idx-format downloads/non-idx-format data alerts artifacts
+
+      - name: Compute run timestamp (WIB)
+        id: ts
+        run: echo "stamp=$(date +'%Y%m%d-%H%M%S')" >> "$GITHUB_OUTPUT"
+
+      - name: Run orchestrator
+        env:
+          # ===== App secrets =====
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_KEY: ${{ secrets.SUPABASE_KEY }}
+
+          # (Optional) HTTP proxy only for IDX fetch/downloader
+          HTTP_PROXY:  ${{ secrets.PROXY }}
+          HTTPS_PROXY: ${{ secrets.PROXY }}
+          NO_PROXY: "localhost,127.0.0.1,supabase.co,.supabase.co,amazonaws.com,.amazonaws.com"
+
+          # ===== AWS / SES (for emailing alerts) =====
+          AWS_ACCESS_KEY_ID:     ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          AWS_REGION:            ${{ secrets.AWS_REGION }}
+          SES_FROM_EMAIL:        ${{ secrets.SES_FROM_EMAIL }}
+
+          ALERT_TO_EMAIL_INSERTED:     ${{ secrets.ALERT_TO_EMAIL }}
+          ALERT_TO_EMAIL_NOT_INSERTED: ${{ secrets.ALERT_TO_EMAIL }}
+
+          # ===== (Optional) LLM keys =====
+          GROQ_API_KEY:   ${{ secrets.GROQ_API_KEY }}
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
         shell: bash
         run: |
           set -euo pipefail
-          mkdir -p data/tmp data/report data/company logs
-          DAY=$(TZ=Asia/Jakarta date +%Y%m%d)
-          echo "DAY=$DAY" >> "$GITHUB_OUTPUT"
-          echo "FILINGS_JSON=data/tmp/filings_${DAY}.json"      >> "$GITHUB_OUTPUT"
-          echo "OUT_JSON=data/report/insider_report_${DAY}.json" >> "$GITHUB_OUTPUT"
-          echo "OUT_HTML=data/report/insider_email_${DAY}.html"  >> "$GITHUB_OUTPUT"
 
-      - name: Resolve send, timing & recipients
-        id: sendcfg
-        shell: bash
-        run: |
-          set -euo pipefail
-          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
-            SEND="${{ inputs.send }}"
-            # normalize timing to 'now' or 'wait' (default wait)
-            case "${{ inputs.send_timing }}" in
-              now|NOW|Now) DO_WAIT="false" ;;
-              *) DO_WAIT="true" ;;
+          ARGS=( "--zip-artifacts" "--artifact-prefix" "filings" )
+
+          # Verbose?
+          if [[ "${{ inputs.verbose }}" == "true" || "${{ github.event_name }}" == "schedule" ]]; then
+            ARGS+=("-v")
+          fi
+
+          MODE="${{ inputs.mode }}"
+          TIME_RAW="${{ inputs.time }}"  # may be empty
+
+          # ========== Sanitize 'time' input ==========
+          TIME="$(echo "${TIME_RAW:-}" | tr -d '[:space:]')"
+          digits_only() { printf '%s' "$1" | tr -cd '0-9'; }
+
+          # Window selection
+          if [[ "${{ github.event_name }}" == "schedule" ]]; then
+            # default scheduled run: lookback with slight overlap + upload filings
+            WIN=$(( 120 + ${OVERLAP_MINUTES:-1} ))
+            ARGS+=( "--window-minutes" "$WIN" "--upload" "--table" "idx_filings" )
+          else
+            case "$MODE" in
+              single_day)
+                # Expect TIME: YYYYMMDD|HH:MM|HH:MM
+                if [[ -z "${TIME:-}" || "${TIME}" != *"|"* ]]; then
+                  echo "::error::For mode=single_day, 'time' must be 'YYYYMMDD|HH:MM|HH:MM'"; exit 1;
+                fi
+                IFS='|' read -r DATE SD ED <<< "$TIME"
+
+                DATE="$(digits_only "${DATE}")"
+                SD="${SD//[^0-9:]/}"
+                ED="${ED//[^0-9:]/}"
+
+                [[ ${#DATE} -eq 8 ]] || { echo "::error::DATE must be YYYYMMDD"; exit 1; }
+                [[ "$SD" =~ ^[0-2][0-9]:[0-5][0-9]$ ]] || { echo "::error::start time must be HH:MM"; exit 1; }
+                [[ "$ED" =~ ^[0-2][0-9]:[0-5][0-9]$ ]] || { echo "::error::end time must be HH:MM"; exit 1; }
+
+                ARGS+=( "--date" "$DATE" "--start-hhmm" "$SD" "--end-hhmm" "$ED" )
+                ;;
+              range)
+                # Expect TIME: YYYYMMDD..YYYYMMDD
+                if [[ -z "${TIME:-}" || "${TIME}" != *".."* ]]; then
+                  echo "::error::For mode=range, 'time' must be 'YYYYMMDD..YYYYMMDD'"; exit 1;
+                fi
+                IFS='..' read -r FROMD TOD <<< "$TIME"
+
+                FROMD="$(digits_only "${FROMD}")"
+                TOD="$(digits_only "${TOD}")"
+
+                [[ ${#FROMD} -eq 8 && ${#TOD} -eq 8 ]] || { echo "::error::from/to must be YYYYMMDD"; exit 1; }
+
+                ARGS+=( "--from-date" "$FROMD" "--to-date" "$TOD" )
+                ;;
+              lookback|*)
+                WIN="${{ inputs.window_minutes }}"
+                ARGS+=( "--window-minutes" "$WIN" )
+                ;;
             esac
+            if [[ "${{ inputs.upload_to_supabase }}" == "true" ]]; then
+              ARGS+=( "--upload" "--table" "idx_filings" )
+            fi
+          fi
+
+          # ==== Articles generation & upload news ====
+          if [[ "${{ inputs.generate_articles }}" == "true" || "${{ github.event_name }}" == "schedule" ]]; then
+            ARGS+=( "--generate-articles" "--articles-out" "data/articles.jsonl" )
+          fi
+          if [[ "${{ inputs.upload_news }}" == "true" || "${{ github.event_name }}" == "schedule" ]]; then
+            ARGS+=( "--upload-news" "--news-table" "${{ inputs.news_table }}" "--prefer-symbol" )
+          fi
+
+          # ==== LLM toggling (auto-enable only if key present) ====
+          if [[ "${{ inputs.use_llm }}" == "true" ]]; then
+            if [[ -n "${GROQ_API_KEY:-}" || -n "${OPENAI_API_KEY:-}" || -n "${GEMINI_API_KEY:-}" ]]; then
+              ARGS+=( "--use-llm" )
+            else
+              echo "::notice::USE_LLM=true but no API key found; continuing without LLM."
+            fi
+          fi
+
+          # ==== Email alerts toggling ====
+          if [[ "${{ github.event_name }}" == "schedule" || "${{ inputs.send_alerts }}" == "true" ]]; then
+            ARGS+=( "--email-alerts" )
           else
-            SEND="true"
-            DO_WAIT="true"  # scheduled runs always wait until 18:00 WIB
-          fi
-          RECIPS="${{ inputs.recipients_override }}"
-          if [ -z "$RECIPS" ]; then RECIPS="$REPORT_RECIPIENTS"; fi
-          echo "send=$SEND"        >> "$GITHUB_OUTPUT"
-          echo "do_wait=$DO_WAIT"  >> "$GITHUB_OUTPUT"
-          echo "recips=$RECIPS"    >> "$GITHUB_OUTPUT"
-
-      - name: Build company_map & latest_prices (refresh_all)
-        shell: bash
-        run: |
-          set -euo pipefail
-          python src/scripts/company_map_hybrid.py refresh_all
-          test -s data/company/company_map.json || { echo "company_map.json missing"; exit 1; }
-
-      - name: Build command (dry-run)
-        id: build
-        shell: bash
-        run: |
-          set -euo pipefail
-          FILINGS_JSON="${{ steps.prep.outputs.FILINGS_JSON }}"
-          OUT_JSON="${{ steps.prep.outputs.OUT_JSON }}"
-          OUT_HTML="${{ steps.prep.outputs.OUT_HTML }}"
-
-          CMD=( python -m src.generate.reports.cli
-            --export-company-report
-            --company-script src/scripts/company_report.py
-            --company-select "symbol,company_name,listing_board,tags"
-            # --listing-board watchlist   # enable if sure it won’t zero rows
-            --fetch-filings
-            --fetch-script src/scripts/fetch_filings.py
-            --fetch-out "$FILINGS_JSON"
-            --company-map-json data/company/company_map.json
-            --template src/generate/reports/templates/insider_email.html
-            --out-json "$OUT_JSON"
-            --out-html "$OUT_HTML"
-            --dry-run
-          )
-          if [ -n "${{ inputs.from }}" ] && [ -n "${{ inputs.to }}" ]; then
-            CMD+=( --from "${{ inputs.from }}" --to "${{ inputs.to }}" )
-          fi
-          if [ -n "${{ inputs.symbols }}" ]; then
-            CMD+=( --symbols "${{ inputs.symbols }}" )
-          fi
-          printf '%s\0' "${CMD[@]}" > cmd_build.zsharray
-
-      - name: Run build (dry-run)
-        shell: bash
-        run: |
-          set -euo pipefail
-          mapfile -d '' CMD < cmd_build.zsharray
-          echo "[BUILD]" "${CMD[@]}"
-          "${CMD[@]}"
-
-      - name: Wait until 18:00 WIB (11:00 UTC)
-        if: steps.sendcfg.outputs.send == 'true' && steps.sendcfg.outputs.do_wait == 'true'
-        shell: bash
-        run: |
-          set -euo pipefail
-          NOW=$(date -u +%s)
-          TODAY=$(date -u +%Y-%m-%d)
-          TARGET=$(date -u -d "$TODAY 11:00" +%s)
-          WAIT=$(( TARGET - NOW ))
-          if [ $WAIT -gt 0 ]; then
-            echo "Sleeping $WAIT seconds until 11:00 UTC (18:00 WIB)..."
-            sleep $WAIT
-          else
-            echo "It's past 11:00 UTC already; skipping wait."
+            echo "::notice::Email alerts disabled for this run."
           fi
 
-      - name: Resolve generated JSON paths for send
-        if: steps.sendcfg.outputs.send == 'true'
-        id: resolvejson
-        shell: bash
-        run: |
-          set -euo pipefail
-          echo "FILINGS_JSON=${{ steps.prep.outputs.FILINGS_JSON }}" >> "$GITHUB_OUTPUT"
-          COMP_JSON=$(ls -t data/tmp/company_report_*.json 2>/dev/null | head -n1 || true)
-          if [ -z "$COMP_JSON" ]; then
-            echo "Tidak menemukan company_report_*.json — apakah --export-company-report berhasil?" >&2
-            exit 1
-          fi
-          echo "COMP_JSON=$COMP_JSON" >> "$GITHUB_OUTPUT"
+          echo "python -m pipeline.orchestrator ${ARGS[*]}"
+          python -m pipeline.orchestrator "${ARGS[@]}"
 
-      - name: Send command
-        if: steps.sendcfg.outputs.send == 'true'
-        id: sendcmd
-        shell: bash
-        run: |
-          set -euo pipefail
-          RECIPS="${{ steps.sendcfg.outputs.recips }}"
-          COMP_JSON="${{ steps.resolvejson.outputs.COMP_JSON }}"
-          FILINGS_JSON="${{ steps.resolvejson.outputs.FILINGS_JSON }}"
-          OUT_JSON="${{ steps.prep.outputs.OUT_JSON }}"
-          OUT_HTML="${{ steps.prep.outputs.OUT_HTML }}"
-
-          CMD=( python -m src.generate.reports.cli
-            --filings-json-in "$FILINGS_JSON"
-            --companies-json-in "$COMP_JSON"
-            --company-map-json data/company/company_map.json
-            --template src/generate/reports/templates/insider_email.html
-            --out-json "$OUT_JSON"
-            --out-html "$OUT_HTML"
-            --send --mail-to "$RECIPS"
-          )
-          if [ "${{ inputs.attach_html }}" = 'true' ]; then
-            CMD+=( --attach-html )
-          fi
-          printf '%s\0' "${CMD[@]}" > cmd_send.zsharray
-
-      - name: Run send
-        if: steps.sendcfg.outputs.send == 'true'
-        shell: bash
-        run: |
-          set -euo pipefail
-          mapfile -d '' CMD < cmd_send.zsharray
-          echo "[SEND]" "${CMD[@]}"
-          "${CMD[@]}"
-
-      - name: Upload artifacts (HTML & JSON)
-        if: always()
+      - name: Upload artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: insider-report
+          name: filings-manual-${{ steps.ts.outputs.stamp }}-run${{ github.run_number }}
           path: |
-            data/report/insider_email_*.html
-            data/report/insider_report_*.json
-          if-no-files-found: ignore
+            artifacts/*.zip
+            data/*.json
+            data/*.jsonl
+            alerts/*.json
+            alerts_inserted/*.json
+            alerts_not_inserted/*.json
+          if-no-files-found: warn
+          retention-days: 14
+          compression-level: 6

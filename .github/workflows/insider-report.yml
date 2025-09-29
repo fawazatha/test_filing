@@ -32,6 +32,11 @@ on:
         required: false
         default: true
         type: boolean
+      send_timing:
+        description: 'When to send (manual runs): "now" or "wait" (wait = 18:00 WIB)'
+        required: false
+        default: 'wait'
+        type: string
 
 permissions:
   contents: read
@@ -49,7 +54,7 @@ jobs:
       SUPABASE_KEY: ${{ secrets.SUPABASE_KEY }}
       AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
       AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-      AWS_REGION: ${{ secrets.AWS_REGION }}        # contoh: ap-southeast-1
+      AWS_REGION: ${{ secrets.AWS_REGION }}
       SES_FROM_EMAIL: ${{ secrets.SES_FROM_EMAIL }}
       REPORT_RECIPIENTS: ${{ secrets.REPORT_RECIPIENTS }}
 
@@ -86,23 +91,28 @@ jobs:
           echo "OUT_JSON=data/report/insider_report_${DAY}.json" >> "$GITHUB_OUTPUT"
           echo "OUT_HTML=data/report/insider_email_${DAY}.html"  >> "$GITHUB_OUTPUT"
 
-      - name: Resolve send & recipients
+      - name: Resolve send, timing & recipients
         id: sendcfg
         shell: bash
         run: |
           set -euo pipefail
-          # Default: scheduled runs send = true; dispatch uses input
           if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
             SEND="${{ inputs.send }}"
+            # normalize timing to 'now' or 'wait' (default wait)
+            case "${{ inputs.send_timing }}" in
+              now|NOW|Now) DO_WAIT="false" ;;
+              *) DO_WAIT="true" ;;
+            esac
           else
             SEND="true"
+            DO_WAIT="true"  # scheduled runs always wait until 18:00 WIB
           fi
           RECIPS="${{ inputs.recipients_override }}"
           if [ -z "$RECIPS" ]; then RECIPS="$REPORT_RECIPIENTS"; fi
-          echo "send=$SEND"   >> "$GITHUB_OUTPUT"
-          echo "recips=$RECIPS" >> "$GITHUB_OUTPUT"
+          echo "send=$SEND"        >> "$GITHUB_OUTPUT"
+          echo "do_wait=$DO_WAIT"  >> "$GITHUB_OUTPUT"
+          echo "recips=$RECIPS"    >> "$GITHUB_OUTPUT"
 
-      # Refresh company map & latest prices (pre-req so enrichment/path is consistent)
       - name: Build company_map & latest_prices (refresh_all)
         shell: bash
         run: |
@@ -110,7 +120,6 @@ jobs:
           python src/scripts/company_map_hybrid.py refresh_all
           test -s data/company/company_map.json || { echo "company_map.json missing"; exit 1; }
 
-      # ====== Phase A: Build (export + fetch + render) WITHOUT sending ======
       - name: Build command (dry-run)
         id: build
         shell: bash
@@ -124,7 +133,7 @@ jobs:
             --export-company-report
             --company-script src/scripts/company_report.py
             --company-select "symbol,company_name,listing_board,tags"
-            # --listing-board watchlist   # enable if you’re sure this filter won’t zero out rows
+            # --listing-board watchlist   # enable if sure it won’t zero rows
             --fetch-filings
             --fetch-script src/scripts/fetch_filings.py
             --fetch-out "$FILINGS_JSON"
@@ -150,9 +159,8 @@ jobs:
           echo "[BUILD]" "${CMD[@]}"
           "${CMD[@]}"
 
-      # ====== Phase B: Wait until 18:00 WIB only if we will send ======
       - name: Wait until 18:00 WIB (11:00 UTC)
-        if: steps.sendcfg.outputs.send == 'true'
+        if: steps.sendcfg.outputs.send == 'true' && steps.sendcfg.outputs.do_wait == 'true'
         shell: bash
         run: |
           set -euo pipefail
@@ -167,7 +175,6 @@ jobs:
             echo "It's past 11:00 UTC already; skipping wait."
           fi
 
-      # ====== Phase C: Send-only (reuse JSON from Phase A) — conditional ======
       - name: Resolve generated JSON paths for send
         if: steps.sendcfg.outputs.send == 'true'
         id: resolvejson
