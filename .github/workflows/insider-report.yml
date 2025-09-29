@@ -39,17 +39,14 @@ jobs:
   run:
     runs-on: ubuntu-latest
     env:
-      # PYTHONPATH fix → tidak lagi sebagai elemen CMD array
       PYTHONPATH: src
-
-      # Secrets / config
       SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
       SUPABASE_KEY: ${{ secrets.SUPABASE_KEY }}
       AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
       AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
       AWS_REGION: ${{ secrets.AWS_REGION }}        # contoh: ap-southeast-1
       SES_FROM_EMAIL: ${{ secrets.SES_FROM_EMAIL }}
-      REPORT_RECIPIENTS: ${{ secrets.REPORT_RECIPIENTS }}  # 3 email, pisahkan koma
+      REPORT_RECIPIENTS: ${{ secrets.REPORT_RECIPIENTS }}
 
     steps:
       - name: Checkout
@@ -78,16 +75,12 @@ jobs:
         run: |
           set -euo pipefail
           mkdir -p data/tmp data/report logs
-
-          # Penamaan file pakai tanggal Asia/Jakarta (WIB)
+          # Penamaan dasar; filings akan dipaksa ke path ini via --fetch-out.
           DAY=$(TZ=Asia/Jakarta date +%Y%m%d)
-          {
-            echo "DAY=$DAY"
-            echo "COMP_JSON=data/tmp/company_report_${DAY}.json"
-            echo "FILINGS_JSON=data/tmp/filings_${DAY}.json"
-            echo "OUT_JSON=data/report/insider_report_${DAY}.json"
-            echo "OUT_HTML=data/report/insider_email_${DAY}.html"
-          } >> "$GITHUB_OUTPUT"
+          echo "DAY=$DAY" >> "$GITHUB_OUTPUT"
+          echo "FILINGS_JSON=data/tmp/filings_${DAY}.json"      >> "$GITHUB_OUTPUT"
+          echo "OUT_JSON=data/report/insider_report_${DAY}.json" >> "$GITHUB_OUTPUT"
+          echo "OUT_HTML=data/report/insider_email_${DAY}.html"  >> "$GITHUB_OUTPUT"
 
       # ====== Fase A: Build-only (export + fetch + render) TANPA SEND ======
       - name: Build command (dry-run)
@@ -99,7 +92,6 @@ jobs:
           RECIPS="${{ inputs.recipients_override }}"
           if [ -z "${RECIPS}" ]; then RECIPS="$REPORT_RECIPIENTS"; fi
 
-          COMP_JSON="${{ steps.prep.outputs.COMP_JSON }}"
           FILINGS_JSON="${{ steps.prep.outputs.FILINGS_JSON }}"
           OUT_JSON="${{ steps.prep.outputs.OUT_JSON }}"
           OUT_HTML="${{ steps.prep.outputs.OUT_HTML }}"
@@ -111,12 +103,11 @@ jobs:
             --listing-board watchlist
             --fetch-filings
             --fetch-script src/scripts/fetch_filings.py
+            --fetch-out "$FILINGS_JSON"
             --template src/generate/reports/templates/insider_email.html
             --out-json "$OUT_JSON"
             --out-html "$OUT_HTML"
             --dry-run
-            --companies-json-in "$COMP_JSON"
-            --filings-json-in "$FILINGS_JSON"
           )
 
           # Window manual bila diberikan via workflow_dispatch
@@ -129,7 +120,6 @@ jobs:
             CMD+=( --symbols "${{ inputs.symbols }}" )
           fi
 
-          # Simpan command & recipients ke file untuk step berikutnya
           printf '%s\0' "${CMD[@]}" > cmd_build.zsharray
           printf '%s\0' "$RECIPS" > recips.nul
 
@@ -158,6 +148,23 @@ jobs:
           fi
 
       # ====== Fase C: Send-only (pakai JSON hasil fase A) ======
+      - name: Resolve generated JSON paths for send
+        id: resolvejson
+        shell: bash
+        run: |
+          set -euo pipefail
+          # Filings JSON diketahui karena dipaksa via --fetch-out
+          echo "FILINGS_JSON=${{ steps.prep.outputs.FILINGS_JSON }}" >> "$GITHUB_OUTPUT"
+
+          # Company JSON path ditentukan oleh cli.py: data/tmp/company_report_{win.end:%Y%m%d}.json
+          # Ambil yang terbaru dari pola tersebut.
+          COMP_JSON=$(ls -t data/tmp/company_report_*.json 2>/dev/null | head -n1 || true)
+          if [ -z "$COMP_JSON" ]; then
+            echo "Tidak menemukan company_report_*.json — apakah --export-company-report berhasil?" >&2
+            exit 1
+          fi
+          echo "COMP_JSON=$COMP_JSON" >> "$GITHUB_OUTPUT"
+
       - name: Send command
         id: sendcmd
         shell: bash
@@ -165,8 +172,8 @@ jobs:
           set -euo pipefail
 
           RECIPS=$(tr -d '\0' < recips.nul)
-          COMP_JSON="${{ steps.prep.outputs.COMP_JSON }}"
-          FILINGS_JSON="${{ steps.prep.outputs.FILINGS_JSON }}"
+          COMP_JSON="${{ steps.resolvejson.outputs.COMP_JSON }}"
+          FILINGS_JSON="${{ steps.resolvejson.outputs.FILINGS_JSON }}"
           OUT_JSON="${{ steps.prep.outputs.OUT_JSON }}"
           OUT_HTML="${{ steps.prep.outputs.OUT_HTML }}"
 
