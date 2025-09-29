@@ -39,6 +39,10 @@ jobs:
   run:
     runs-on: ubuntu-latest
     env:
+      # PYTHONPATH fix → tidak lagi sebagai elemen CMD array
+      PYTHONPATH: src
+
+      # Secrets / config
       SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
       SUPABASE_KEY: ${{ secrets.SUPABASE_KEY }}
       AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
@@ -46,6 +50,7 @@ jobs:
       AWS_REGION: ${{ secrets.AWS_REGION }}        # contoh: ap-southeast-1
       SES_FROM_EMAIL: ${{ secrets.SES_FROM_EMAIL }}
       REPORT_RECIPIENTS: ${{ secrets.REPORT_RECIPIENTS }}  # 3 email, pisahkan koma
+
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -67,34 +72,39 @@ jobs:
         run: |
           if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
 
-      - name: Prepare dirs & filenames
+      - name: Prepare dirs & filenames (Jakarta date)
         id: prep
         shell: bash
         run: |
+          set -euo pipefail
           mkdir -p data/tmp data/report logs
-          # Nama file deterministik berdasarkan tanggal end window (WIB) → pakai UTC+7 manual sederhana:
-          # Untuk kesederhanaan, kita pakai tanggal hari ini UTC (cukup untuk penamaan/artifact).
-          DAY=$(date -u +%Y%m%d)
-          echo "DAY=$DAY" >> "$GITHUB_OUTPUT"
-          echo "COMP_JSON=data/tmp/company_report_${DAY}.json"   >> "$GITHUB_OUTPUT"
-          echo "FILINGS_JSON=data/tmp/filings_${DAY}.json"      >> "$GITHUB_OUTPUT"
-          echo "OUT_JSON=data/report/insider_report_${DAY}.json" >> "$GITHUB_OUTPUT"
-          echo "OUT_HTML=data/report/insider_email_${DAY}.html"  >> "$GITHUB_OUTPUT"
+
+          # Penamaan file pakai tanggal Asia/Jakarta (WIB)
+          DAY=$(TZ=Asia/Jakarta date +%Y%m%d)
+          {
+            echo "DAY=$DAY"
+            echo "COMP_JSON=data/tmp/company_report_${DAY}.json"
+            echo "FILINGS_JSON=data/tmp/filings_${DAY}.json"
+            echo "OUT_JSON=data/report/insider_report_${DAY}.json"
+            echo "OUT_HTML=data/report/insider_email_${DAY}.html"
+          } >> "$GITHUB_OUTPUT"
 
       # ====== Fase A: Build-only (export + fetch + render) TANPA SEND ======
       - name: Build command (dry-run)
         id: build
         shell: bash
         run: |
+          set -euo pipefail
+
           RECIPS="${{ inputs.recipients_override }}"
-          if [ -z "$RECIPS" ]; then RECIPS="$REPORT_RECIPIENTS"; fi
+          if [ -z "${RECIPS}" ]; then RECIPS="$REPORT_RECIPIENTS"; fi
 
           COMP_JSON="${{ steps.prep.outputs.COMP_JSON }}"
           FILINGS_JSON="${{ steps.prep.outputs.FILINGS_JSON }}"
           OUT_JSON="${{ steps.prep.outputs.OUT_JSON }}"
           OUT_HTML="${{ steps.prep.outputs.OUT_HTML }}"
 
-          CMD=( PYTHONPATH=src python -m src.generate.reports.cli
+          CMD=( python -m src.generate.reports.cli
             --export-company-report
             --company-script src/scripts/company_report.py
             --company-select "symbol,company_name,listing_board,tags"
@@ -105,14 +115,11 @@ jobs:
             --out-json "$OUT_JSON"
             --out-html "$OUT_HTML"
             --dry-run
+            --companies-json-in "$COMP_JSON"
+            --filings-json-in "$FILINGS_JSON"
           )
 
-          # simpan JSON perantara supaya bisa re-use saat send
-          CMD+=( --companies-json-in "$COMP_JSON" --filings-json-in "$FILINGS_JSON" )
-          # catatan: untuk benar-benar memaksa export & fetch dulu, kamu bisa jalankan export/fetch terpisah.
-          # (CLI saat ini akan pakai JSON jika file ada; kalau tidak, tetap export/fetch.)
-
-          # Window manual bila diberikan
+          # Window manual bila diberikan via workflow_dispatch
           if [ -n "${{ inputs.from }}" ] && [ -n "${{ inputs.to }}" ]; then
             CMD+=( --from "${{ inputs.from }}" --to "${{ inputs.to }}" )
           fi
@@ -122,12 +129,14 @@ jobs:
             CMD+=( --symbols "${{ inputs.symbols }}" )
           fi
 
+          # Simpan command & recipients ke file untuk step berikutnya
           printf '%s\0' "${CMD[@]}" > cmd_build.zsharray
           printf '%s\0' "$RECIPS" > recips.nul
 
       - name: Run build (dry-run)
         shell: bash
         run: |
+          set -euo pipefail
           mapfile -d '' CMD < cmd_build.zsharray
           echo "[BUILD]" "${CMD[@]}"
           "${CMD[@]}"
@@ -136,6 +145,7 @@ jobs:
       - name: Wait until 18:00 WIB (11:00 UTC)
         shell: bash
         run: |
+          set -euo pipefail
           NOW=$(date -u +%s)
           TODAY=$(date -u +%Y-%m-%d)
           TARGET=$(date -u -d "$TODAY 11:00" +%s)
@@ -152,13 +162,15 @@ jobs:
         id: sendcmd
         shell: bash
         run: |
+          set -euo pipefail
+
           RECIPS=$(tr -d '\0' < recips.nul)
           COMP_JSON="${{ steps.prep.outputs.COMP_JSON }}"
           FILINGS_JSON="${{ steps.prep.outputs.FILINGS_JSON }}"
           OUT_JSON="${{ steps.prep.outputs.OUT_JSON }}"
           OUT_HTML="${{ steps.prep.outputs.OUT_HTML }}"
 
-          CMD=( PYTHONPATH=src python -m src.generate.reports.cli
+          CMD=( python -m src.generate.reports.cli
             --filings-json-in "$FILINGS_JSON"
             --companies-json-in "$COMP_JSON"
             --template src/generate/reports/templates/insider_email.html
@@ -177,6 +189,7 @@ jobs:
       - name: Run send
         shell: bash
         run: |
+          set -euo pipefail
           mapfile -d '' CMD < cmd_send.zsharray
           echo "[SEND]" "${CMD[@]}"
           "${CMD[@]}"
