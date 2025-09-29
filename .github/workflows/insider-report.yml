@@ -27,6 +27,11 @@ on:
         required: false
         default: false
         type: boolean
+      send:
+        description: 'Send email? (true/false) — only used for manual runs; scheduled runs default to true'
+        required: false
+        default: true
+        type: boolean
 
 permissions:
   contents: read
@@ -74,24 +79,43 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          mkdir -p data/tmp data/report logs
-          # Penamaan dasar; filings akan dipaksa ke path ini via --fetch-out.
+          mkdir -p data/tmp data/report data/company logs
           DAY=$(TZ=Asia/Jakarta date +%Y%m%d)
           echo "DAY=$DAY" >> "$GITHUB_OUTPUT"
           echo "FILINGS_JSON=data/tmp/filings_${DAY}.json"      >> "$GITHUB_OUTPUT"
           echo "OUT_JSON=data/report/insider_report_${DAY}.json" >> "$GITHUB_OUTPUT"
           echo "OUT_HTML=data/report/insider_email_${DAY}.html"  >> "$GITHUB_OUTPUT"
 
-      # ====== Fase A: Build-only (export + fetch + render) TANPA SEND ======
+      - name: Resolve send & recipients
+        id: sendcfg
+        shell: bash
+        run: |
+          set -euo pipefail
+          # Default: scheduled runs send = true; dispatch uses input
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            SEND="${{ inputs.send }}"
+          else
+            SEND="true"
+          fi
+          RECIPS="${{ inputs.recipients_override }}"
+          if [ -z "$RECIPS" ]; then RECIPS="$REPORT_RECIPIENTS"; fi
+          echo "send=$SEND"   >> "$GITHUB_OUTPUT"
+          echo "recips=$RECIPS" >> "$GITHUB_OUTPUT"
+
+      # Refresh company map & latest prices (pre-req so enrichment/path is consistent)
+      - name: Build company_map & latest_prices (refresh_all)
+        shell: bash
+        run: |
+          set -euo pipefail
+          python src/scripts/company_map_hybrid.py refresh_all
+          test -s data/company/company_map.json || { echo "company_map.json missing"; exit 1; }
+
+      # ====== Phase A: Build (export + fetch + render) WITHOUT sending ======
       - name: Build command (dry-run)
         id: build
         shell: bash
         run: |
           set -euo pipefail
-
-          RECIPS="${{ inputs.recipients_override }}"
-          if [ -z "${RECIPS}" ]; then RECIPS="$REPORT_RECIPIENTS"; fi
-
           FILINGS_JSON="${{ steps.prep.outputs.FILINGS_JSON }}"
           OUT_JSON="${{ steps.prep.outputs.OUT_JSON }}"
           OUT_HTML="${{ steps.prep.outputs.OUT_HTML }}"
@@ -100,28 +124,23 @@ jobs:
             --export-company-report
             --company-script src/scripts/company_report.py
             --company-select "symbol,company_name,listing_board,tags"
-            --listing-board watchlist
+            # --listing-board watchlist   # enable if you’re sure this filter won’t zero out rows
             --fetch-filings
             --fetch-script src/scripts/fetch_filings.py
             --fetch-out "$FILINGS_JSON"
+            --company-map-json data/company/company_map.json
             --template src/generate/reports/templates/insider_email.html
             --out-json "$OUT_JSON"
             --out-html "$OUT_HTML"
             --dry-run
           )
-
-          # Window manual bila diberikan via workflow_dispatch
           if [ -n "${{ inputs.from }}" ] && [ -n "${{ inputs.to }}" ]; then
             CMD+=( --from "${{ inputs.from }}" --to "${{ inputs.to }}" )
           fi
-
-          # Override symbols bila diberikan (mengabaikan watchlist)
           if [ -n "${{ inputs.symbols }}" ]; then
             CMD+=( --symbols "${{ inputs.symbols }}" )
           fi
-
           printf '%s\0' "${CMD[@]}" > cmd_build.zsharray
-          printf '%s\0' "$RECIPS" > recips.nul
 
       - name: Run build (dry-run)
         shell: bash
@@ -131,8 +150,9 @@ jobs:
           echo "[BUILD]" "${CMD[@]}"
           "${CMD[@]}"
 
-      # ====== Fase B: Tunggu sampai 18:00 WIB (11:00 UTC) ======
+      # ====== Phase B: Wait until 18:00 WIB only if we will send ======
       - name: Wait until 18:00 WIB (11:00 UTC)
+        if: steps.sendcfg.outputs.send == 'true'
         shell: bash
         run: |
           set -euo pipefail
@@ -147,17 +167,14 @@ jobs:
             echo "It's past 11:00 UTC already; skipping wait."
           fi
 
-      # ====== Fase C: Send-only (pakai JSON hasil fase A) ======
+      # ====== Phase C: Send-only (reuse JSON from Phase A) — conditional ======
       - name: Resolve generated JSON paths for send
+        if: steps.sendcfg.outputs.send == 'true'
         id: resolvejson
         shell: bash
         run: |
           set -euo pipefail
-          # Filings JSON diketahui karena dipaksa via --fetch-out
           echo "FILINGS_JSON=${{ steps.prep.outputs.FILINGS_JSON }}" >> "$GITHUB_OUTPUT"
-
-          # Company JSON path ditentukan oleh cli.py: data/tmp/company_report_{win.end:%Y%m%d}.json
-          # Ambil yang terbaru dari pola tersebut.
           COMP_JSON=$(ls -t data/tmp/company_report_*.json 2>/dev/null | head -n1 || true)
           if [ -z "$COMP_JSON" ]; then
             echo "Tidak menemukan company_report_*.json — apakah --export-company-report berhasil?" >&2
@@ -166,12 +183,12 @@ jobs:
           echo "COMP_JSON=$COMP_JSON" >> "$GITHUB_OUTPUT"
 
       - name: Send command
+        if: steps.sendcfg.outputs.send == 'true'
         id: sendcmd
         shell: bash
         run: |
           set -euo pipefail
-
-          RECIPS=$(tr -d '\0' < recips.nul)
+          RECIPS="${{ steps.sendcfg.outputs.recips }}"
           COMP_JSON="${{ steps.resolvejson.outputs.COMP_JSON }}"
           FILINGS_JSON="${{ steps.resolvejson.outputs.FILINGS_JSON }}"
           OUT_JSON="${{ steps.prep.outputs.OUT_JSON }}"
@@ -180,20 +197,19 @@ jobs:
           CMD=( python -m src.generate.reports.cli
             --filings-json-in "$FILINGS_JSON"
             --companies-json-in "$COMP_JSON"
+            --company-map-json data/company/company_map.json
             --template src/generate/reports/templates/insider_email.html
             --out-json "$OUT_JSON"
             --out-html "$OUT_HTML"
             --send --mail-to "$RECIPS"
           )
-
-          # Lampirkan HTML bila diminta
           if [ "${{ inputs.attach_html }}" = 'true' ]; then
             CMD+=( --attach-html )
           fi
-
           printf '%s\0' "${CMD[@]}" > cmd_send.zsharray
 
       - name: Run send
+        if: steps.sendcfg.outputs.send == 'true'
         shell: bash
         run: |
           set -euo pipefail
