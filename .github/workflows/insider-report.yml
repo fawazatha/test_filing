@@ -37,6 +37,10 @@ on:
         required: false
         default: 'wait'
         type: string
+      subject_override:
+        description: 'Email subject override (optional)'
+        required: false
+        type: string
 
 permissions:
   contents: read
@@ -98,14 +102,13 @@ jobs:
           set -euo pipefail
           if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
             SEND="${{ inputs.send }}"
-            # normalize timing to 'now' or 'wait' (default wait)
             case "${{ inputs.send_timing }}" in
               now|NOW|Now) DO_WAIT="false" ;;
               *) DO_WAIT="true" ;;
             esac
           else
             SEND="true"
-            DO_WAIT="true"  # scheduled runs always wait until 18:00 WIB
+            DO_WAIT="true"  # scheduled runs always wait
           fi
           RECIPS="${{ inputs.recipients_override }}"
           if [ -z "$RECIPS" ]; then RECIPS="$REPORT_RECIPIENTS"; fi
@@ -113,6 +116,7 @@ jobs:
           echo "do_wait=$DO_WAIT"  >> "$GITHUB_OUTPUT"
           echo "recips=$RECIPS"    >> "$GITHUB_OUTPUT"
 
+      # Refresh company map & latest prices (enrichment dependency)
       - name: Build company_map & latest_prices (refresh_all)
         shell: bash
         run: |
@@ -120,6 +124,7 @@ jobs:
           python src/scripts/company_map_hybrid.py refresh_all
           test -s data/company/company_map.json || { echo "company_map.json missing"; exit 1; }
 
+      # ===== Phase A: Build (export + fetch + render) WITHOUT sending =====
       - name: Build command (dry-run)
         id: build
         shell: bash
@@ -133,7 +138,7 @@ jobs:
             --export-company-report
             --company-script src/scripts/company_report.py
             --company-select "symbol,company_name,listing_board,tags"
-            # --listing-board watchlist   # enable if sure it won’t zero rows
+            # --listing-board watchlist   # enable if yakin tidak mengosongkan
             --fetch-filings
             --fetch-script src/scripts/fetch_filings.py
             --fetch-out "$FILINGS_JSON"
@@ -149,6 +154,9 @@ jobs:
           if [ -n "${{ inputs.symbols }}" ]; then
             CMD+=( --symbols "${{ inputs.symbols }}" )
           fi
+          if [ -n "${{ inputs.subject_override }}" ]; then
+            CMD+=( --subject "${{ inputs.subject_override }}" )
+          fi
           printf '%s\0' "${CMD[@]}" > cmd_build.zsharray
 
       - name: Run build (dry-run)
@@ -159,6 +167,7 @@ jobs:
           echo "[BUILD]" "${CMD[@]}"
           "${CMD[@]}"
 
+      # ===== Phase B: Wait until 18:00 WIB (only if sending AND do_wait) =====
       - name: Wait until 18:00 WIB (11:00 UTC)
         if: steps.sendcfg.outputs.send == 'true' && steps.sendcfg.outputs.do_wait == 'true'
         shell: bash
@@ -175,6 +184,7 @@ jobs:
             echo "It's past 11:00 UTC already; skipping wait."
           fi
 
+      # ===== Phase C: Send-only (reuse JSON from Phase A) =====
       - name: Resolve generated JSON paths for send
         if: steps.sendcfg.outputs.send == 'true'
         id: resolvejson
@@ -210,6 +220,14 @@ jobs:
             --out-html "$OUT_HTML"
             --send --mail-to "$RECIPS"
           )
+          # >>> penting: jaga window tetap sama seperti Build <<<
+          if [ -n "${{ inputs.from }}" ] && [ -n "${{ inputs.to }}" ]; then
+            CMD+=( --from "${{ inputs.from }}" --to "${{ inputs.to }}" )
+          fi
+          # subject override juga dipass ke fase send
+          if [ -n "${{ inputs.subject_override }}" ]; then
+            CMD+=( --subject "${{ inputs.subject_override }}" )
+          fi
           if [ "${{ inputs.attach_html }}" = 'true' ]; then
             CMD+=( --attach-html )
           fi
