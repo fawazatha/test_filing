@@ -1,3 +1,4 @@
+# src/generate/reports/utils/filters.py
 from __future__ import annotations
 from typing import Iterable, List, Optional, Dict, Any
 import json
@@ -6,6 +7,10 @@ from pathlib import Path
 from ..core import fetch_company_report_symbols, load_companies_from_json
 from . import sb as sbapi  # keep import if used elsewhere
 
+
+# -----------------------------
+# Parsing & normalization
+# -----------------------------
 def parse_symbols_arg(arg: Optional[str]) -> List[str]:
     out: List[str] = []
     if not arg:
@@ -16,14 +21,15 @@ def parse_symbols_arg(arg: Optional[str]) -> List[str]:
             out.append(t)
     return sorted(set(out))
 
+
 def _normalize_tags(v: Any) -> List[str]:
-    # tags bisa list atau string; jadikan list of str lower
+    """tags bisa list atau string; jadikan list[str] lowercase"""
     if v is None:
         return []
     if isinstance(v, list):
         return [str(x).strip().lower() for x in v]
     if isinstance(v, str):
-        # coba parse json list, kalau gagal treat as single
+        # coba parse json list, kalau gagal treat as single string
         try:
             arr = json.loads(v)
             if isinstance(arr, list):
@@ -32,6 +38,7 @@ def _normalize_tags(v: Any) -> List[str]:
             pass
         return [v.strip().lower()]
     return [str(v).strip().lower()]
+
 
 def _load_rows(path: str) -> List[Dict[str, Any]]:
     p = Path(path)
@@ -45,6 +52,10 @@ def _load_rows(path: str) -> List[Dict[str, Any]]:
         pass
     return []
 
+
+# -----------------------------
+# Symbol resolvers (watchlist-first)
+# -----------------------------
 async def fetch_watchlist_symbols(
     *,
     companies_json_in: Optional[str] = None,
@@ -67,6 +78,7 @@ async def fetch_watchlist_symbols(
     # server-side
     return await fetch_company_report_symbols(listing_board="watchlist", symbol_col=symbol_col)
 
+
 async def fetch_insider_tagged_symbols(
     *,
     companies_json_in: Optional[str] = None,
@@ -88,6 +100,7 @@ async def fetch_insider_tagged_symbols(
         return sorted(set(out))
     # server-side (via core)
     return await fetch_company_report_symbols(min_tag_substring="insider", symbol_col=symbol_col)
+
 
 async def resolve_symbols_priority(
     *,
@@ -115,3 +128,51 @@ async def resolve_symbols_priority(
 
     # 3) fallback insider-tagged
     return await fetch_insider_tagged_symbols(companies_json_in=companies_json_in, symbol_col=symbol_col)
+
+
+# -----------------------------
+# Client-side sweeps / filters
+# -----------------------------
+def _extract_symbol_from_obj(obj: Any) -> str:
+    """
+    Ambil symbol dari:
+    - dict: obj["symbol"]
+    - Filing dataclass: obj.symbol atau obj.raw["symbol"]
+    """
+    # dict case
+    if isinstance(obj, dict):
+        return (str(obj.get("symbol") or "").strip().upper())
+
+    # dataclass Filing (atau objek lain yang punya attribute)
+    sym = getattr(obj, "symbol", None)
+    if sym:
+        return (str(sym).strip().upper())
+
+    raw = getattr(obj, "raw", None)
+    if isinstance(raw, dict):
+        return (str(raw.get("symbol") or "").strip().upper())
+
+    return ""
+
+
+def filter_filings_by_symbols(filings: List[Any], symbols: List[str]) -> List[Any]:
+    """
+    Sapu akhir client-side—hanya pertahankan filings dengan symbol ∈ symbols.
+    Mendukung elemen bertipe dict atau Filing dataclass.
+    """
+    if not filings or not symbols:
+        return filings
+    allowed = set(s.upper() for s in symbols)
+    out: List[Any] = []
+    for f in filings:
+        s = _extract_symbol_from_obj(f)
+        if s in allowed:
+            out.append(f)
+    return out
+
+
+def filter_company_rows_by_board(company_rows: List[Dict[str, Any]], board: str) -> List[Dict[str, Any]]:
+    if not company_rows or not board:
+        return company_rows
+    lb = board.strip().lower()
+    return [r for r in company_rows if str(r.get("listing_board") or "").strip().lower() == lb]

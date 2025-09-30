@@ -23,6 +23,13 @@ from .core import (
 from .utils.company_map import load_company_map, annotate_holder_tickers
 from .mailer import send_attachments  # SES sender
 
+# === NEW: filters helper (watchlist-first symbols + final sweep) ===
+from .utils.filters import (
+    resolve_symbols_priority,
+    filter_filings_by_symbols,
+    filter_company_rows_by_board,
+)
+
 LOGO_PNG_PATH = "public/img/sectors-logo.png"
 logger = get_logger("report.cli")
 
@@ -246,7 +253,7 @@ async def run(args):
         ])
         logger.info("Company report exported: %s", companies_json_path)
 
-        # client-side filter by listing_board
+        # client-side filter by listing_board (e.g. watchlist)
         if args.listing_board and os.path.exists(companies_json_path):
             with open(companies_json_path, "r", encoding="utf-8") as f:
                 rows = json.load(f) or []
@@ -256,12 +263,14 @@ async def run(args):
                 json.dump(rows, f, ensure_ascii=False, indent=2)
             logger.info("Company report filtered by listing_board=%s: %d rows", want, len(rows))
 
-    # 3) Decide symbols for filings
-    symbols_arg = (args.symbols or "").strip()
-    if not symbols_arg and companies_json_path and os.path.exists(companies_json_path):
-        syms = _extract_symbols(companies_json_path)
-        symbols_arg = ",".join(syms)
-        logger.info("Symbols from companies JSON: %d symbols", len(syms))
+    # 3) Resolve symbols ( --symbols > watchlist > insider )
+    symbols: List[str] = await resolve_symbols_priority(
+        symbols_arg=(args.symbols or None),
+        use_company_report_watchlist=True,
+        companies_json_in=(companies_json_path or args.companies_json_in),
+        symbol_col="symbol",
+    )
+    logger.info("Symbols resolved: %d -> sample=%s", len(symbols), symbols[:10] if symbols else [])
 
     # 4) Filings (fetch or offline)
     filings_json_path = args.filings_json_in
@@ -274,17 +283,22 @@ async def run(args):
             "--ts-col", args.ts_col, "--ts-kind", args.ts_kind,
             "--out", filings_json_path,
         ]
-        if symbols_arg:
-            cmd += ["--symbols", symbols_arg]
+        # PASS symbols to fetcher → server-side filter (symbol=in.(...))
+        if symbols:
+            cmd += ["--symbols", ",".join(symbols)]
+        logger.info("Running fetch: %s", " ".join(shlex.quote(c) for c in cmd))
         _run(cmd)
         logger.info("Filings fetched: %s", filings_json_path)
 
     if not filings_json_path or not os.path.exists(filings_json_path):
         raise SystemExit("No filings JSON provided. Use --fetch-filings or --filings-json-in.")
 
+    # 4b) Apply window & final sweep (client-side safety)
     all_filings = load_filings_from_json(filings_json_path)
     filings: List[Filing] = filter_filings_by_window(all_filings, win, ts_col=args.ts_col, ts_kind=args.ts_kind)
     logger.info("Filings (offline): %d in window", len(filings))
+    # keep only watchlist symbols (if any)
+    filings = filter_filings_by_symbols(filings, symbols)
 
     # 5) Enrichment
     try:
@@ -304,6 +318,13 @@ async def run(args):
     grouped = _decorate_times(grouped)
     grouped = _inject_amount(grouped, id_to_amount)
     grouped = _inject_source(grouped, id_to_source)
+
+    # (opsional) filter company_rows untuk tampilan kalau kamu ikut load sendiri
+    # NOTE: group_report() kamu tidak butuh company_rows eksplisit. Jika kamu ingin
+    # menampilkan tabel perusahaan terfilter board, tambah logic load+filter di sini:
+    # company_rows = load_companies_from_json(companies_json_path) if companies_json_path else []
+    # if company_rows and args.listing_board:
+    #     company_rows = filter_company_rows_by_board(company_rows, args.listing_board)
 
     # 7) Write JSON
     Path(args.out_json).parent.mkdir(parents=True, exist_ok=True)

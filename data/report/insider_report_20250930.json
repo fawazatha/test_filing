@@ -1,0 +1,54 @@
+{
+  "total_companies": 2,
+  "total_filings": 2,
+  "companies": [
+    {
+      "symbol": "DADA.JK",
+      "filings": [
+        {
+          "id": "1230",
+          "symbol": "DADA.JK",
+          "holder_name": "PT Karya Permata Inovasi Indonesia",
+          "holder_ticker": null,
+          "transaction_type": "sell",
+          "price": 165.0,
+          "transaction_value": 1650000000.0,
+          "amount": 10000000.0,
+          "holding_before": 4362637600.0,
+          "holding_after": 4352637600.0,
+          "share_percentage_before": 58.7,
+          "share_percentage_transaction": 0.13,
+          "share_percentage_after": 58.57,
+          "transaction_date": null,
+          "timestamp": "2025-09-29T16:45:08",
+          "source": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_EREP/202509/5c20eb9901_74815f0703.pdf",
+          "display_time": "29/09/2025 16:45:08"
+        }
+      ]
+    },
+    {
+      "symbol": "KKES.JK",
+      "filings": [
+        {
+          "id": "1227",
+          "symbol": "KKES.JK",
+          "holder_name": "Kundy Wijaya",
+          "holder_ticker": null,
+          "transaction_type": "sell",
+          "price": 43.0,
+          "transaction_value": 115777500.0,
+          "amount": 2692500.0,
+          "holding_before": 97384800.0,
+          "holding_after": 94692300.0,
+          "share_percentage_before": 6.49,
+          "share_percentage_transaction": 0.18,
+          "share_percentage_after": 6.31,
+          "transaction_date": null,
+          "timestamp": "2025-09-29T11:55:32",
+          "source": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_EREP/202509/619c02797c_efa3f36480.pdf",
+          "display_time": "29/09/2025 11:55:32"
+        }
+      ]
+    }
+  ]
+}
