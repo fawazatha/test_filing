@@ -327,6 +327,10 @@ async def run(args):
     #     company_rows = filter_company_rows_by_board(company_rows, args.listing_board)
 
     # 7) Write JSON
+    # Write resolve window start and end to json 
+    grouped['window_start'] = win.start.strftime("%Y-%m-%d %H:%M:%S")
+    grouped['window_end'] = win.end.strftime("%Y-%m-%d %H:%M:%S")
+
     Path(args.out_json).parent.mkdir(parents=True, exist_ok=True)
     Path(args.out_json).write_text(json.dumps(grouped, ensure_ascii=False, indent=2), encoding="utf-8")
     logger.info("Wrote JSON report: %s", args.out_json)
