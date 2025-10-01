@@ -5,6 +5,7 @@ import json
 import os
 import shlex
 import subprocess
+import sys
 from datetime import datetime
 from pathlib import Path
 from typing import Any, Dict, List, Optional, Tuple
@@ -246,7 +247,7 @@ async def run(args):
     if args.export_company_report and not companies_json_path:
         companies_json_path = f"data/tmp/company_report_{win.end.strftime('%Y%m%d')}.json"
         _run([
-            "python", args.company_script,
+            sys.executable, args.company_script,
             "--select", args.company_select,
             "--order", args.company_order,
             "--out-json", companies_json_path,
@@ -277,7 +278,7 @@ async def run(args):
     if args.fetch_filings and not filings_json_path:
         filings_json_path = args.fetch_out or f"data/tmp/filings_{win.start.strftime('%Y-%m-%d_%H%M')}__{win.end.strftime('%Y-%m-%d_%H%M')}.json"
         cmd = [
-            "python", args.fetch_script,
+            sys.executable, args.fetch_script,
             "--from", win.start.strftime("%Y-%m-%d %H:%M"),
             "--to",   win.end.strftime("%Y-%m-%d %H:%M"),
             "--ts-col", args.ts_col, "--ts-kind", args.ts_kind,

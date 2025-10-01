@@ -1,5 +1,7 @@
 import typer 
 import sys 
+import random 
+import time
 
 from src.services.whatsapp.twilio_sender import run_send_whatsapp
 from src.services.whatsapp.utils.config import LOGGER
@@ -32,9 +34,13 @@ def main_wa_workflow(
         else:
             typer.echo("All messages sent successfully.")
 
+        time.sleep(random.uniform(1, 5))
+
     except Exception as error:
         LOGGER.critical(f"CLI failed with unexpected error: {error}", exc_info=True)
         typer.echo("Critical failure in workflow. Check logs for details.")
         sys.exit(1)
 
 
+if __name__ == '__main__':
+    app()

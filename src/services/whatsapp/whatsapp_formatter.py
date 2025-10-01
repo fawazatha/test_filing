@@ -12,19 +12,20 @@ def format_payload(
     ) -> json:
     try:
         # Extract and validate required fields
-        symbol = filing.get("symbol", "N/A")
-        holder_name = filing.get("holder_name", "N/A")
-        transaction_type = filing.get("transaction_type", "N/A").upper()
+        symbol = filing.get("symbol", "-")
+        holder_name = filing.get("holder_name", "-")
+        transaction_type = filing.get("transaction_type", "-").upper()
         
         # Format financial data with short notation
-        price = format_idr_price(filing.get("price"))
-        value = format_idr_price(filing.get("transaction_value"))
-        amount = format_amount(filing.get("amount"))
+        price = format_abbreviated_idr(filing.get("price"))
+        value = format_abbreviated_idr(filing.get("transaction_value"))
+        amount = format_number_abbreviated(filing.get("amount"))
+        
         tx_percentage = format_tx_percentage(filing.get("share_percentage_transaction"))
 
         # Get timestamp and source
-        time = filing.get("display_time", filing.get("timestamp", "N/A"))
-        source = filing.get("source", "N/A")
+        time = filing.get("display_time", filing.get("timestamp", "-"))
+        source = filing.get("source", "-")
         
         # Format window dates
         date_before, hour_before = format_window_date(window_start)
@@ -56,57 +57,70 @@ def format_payload(
         return None
 
 
-def format_idr_price(value: any) -> str:
+def format_number_abbreviated(value: any, decimal_places: int = 1) -> str:
+    if value is None or value == '':
+        return '-'
+    
     try:
-        if value is None:
-            return 'IDR 0'
+        num = float(value) 
+
+        is_negative = num < 0
+        num = abs(num)
+
+        TRILLION = 1_000_000_000_000
+        BILLION = 1_000_000_000
+        MILLION = 1_000_000
+        THOUSAND = 1_000
+
+        if num >= TRILLION:
+            abbreviated = num / TRILLION
+            suffix = "T"
+        elif num >= BILLION:
+            abbreviated = num / BILLION
+            suffix = "B"
+        elif num >= MILLION:
+            abbreviated = num / MILLION
+            suffix = "M"
+        elif num >= THOUSAND:
+            abbreviated = num / THOUSAND
+            suffix = "K"
+        else:
+            abbreviated = num
+            suffix = ""
+
+        formatted = f"{abbreviated:.{decimal_places}f}"
+
+        if formatted.endswith(".0"):
+            formatted = formatted[:-2]
+
+        if is_negative:
+            formatted = f"-{formatted}"
         
-        num_converted = float(value)
-        return f'IDR {num_converted:.0f}'
+        return f"{formatted}{suffix}"
 
     except (ValueError, TypeError):
-        return 'IDR 0'
+        return str(value)
     
 
-def format_amount(value: any) -> str:
-    try:
-        if value is None:
-            return "0"
-        
-        num = float(value)
-        
-        if num == 0:
-            return "0"
-        
-        if abs(num) >= 1_000_000_000:
-            return f"{num / 1_000_000_000:.1f}B"
-        
-        if abs(num) >= 1_000_000:
-            formatted = f"{num / 1_000_000:.1f}M"
-            return formatted.replace(".0M", "M")
-        
-        if abs(num) >= 1_000:
-            return f"{num / 1_000:.1f}K"
-        
-        return f"{num:.0f}"
-        
-    except (ValueError, TypeError):
-        return "0"
-
-
-def format_tx_percentage(value: any) -> str:
-    try:
-        if value is None:
-            return "0"
-        num = float(value)
-   
-        if num == int(num):
-            return str(int(num))
-        return f"{num}"
+def format_abbreviated_idr(value: any) -> str:
+    abbreviated = format_number_abbreviated(value, decimal_places=1)
     
-    except (ValueError, TypeError):
-        return "0"
+    if abbreviated == "—":
+        return "—"
+    
+    return f"IDR {abbreviated}"
 
+
+def format_tx_percentage(value: any) -> str: 
+    if value is None or value == '':
+        return '-'
+    
+    try:
+        num = float(value)
+        return f"{num:.2f}"
+    except (ValueError, TypeError):
+        return str(value)
+    
 
 def format_window_date(value: str) -> str | str:  
     try: 
