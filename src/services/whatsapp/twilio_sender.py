@@ -103,7 +103,7 @@ def run_send_whatsapp(filings_data_path: str, to_number: str) -> WhatsAppSummary
 
                     result = send_whatsapp_message(formatted_payload, to_number)
 
-                    if result["success"]:
+                    if result and result.get("success") :
                         summary["sent"] += 1
                     else:
                         summary["failed"] += 1
@@ -112,14 +112,15 @@ def run_send_whatsapp(filings_data_path: str, to_number: str) -> WhatsAppSummary
                     time.sleep(random.uniform(1, 3))
 
                 except Exception as error:
-                    LOGGER.error(f"Failed to send WhatsApp message for filing {filing.get('id', 'unknown')}: Error: {error}", 
-                                 exc_info=True)
+                    error_str = f"Failed to send for filing {filing.get('id', 'unknown')}: {error}"
+                    LOGGER.error(error_str, exc_info=True)
                     summary["failed"] += 1
-                    summary["errors"].append(msg)
+                    summary["errors"].append(error_str)
 
     except Exception as error:
-        LOGGER.error(f"Unexpected error in run_send_whatsapp_message: Error: {error}", exc_info=True)
-        summary["errors"].append(msg)
+        error_str = f"A critical error occurred in the main process: {error}"
+        LOGGER.error(error_str, exc_info=True)
+        summary["errors"].append(error_str)
 
     return summary
 
