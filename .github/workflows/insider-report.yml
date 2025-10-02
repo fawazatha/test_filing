@@ -283,7 +283,7 @@ jobs:
           fi
           
           echo "Running WhatsApp Sender CLI..."
-          python -m src.generate.reports.whatsapp_cli \
+          python -m src.generate.reports.wa_cli \
             --json-in "$REPORT_JSON_PATH" \
             --to "$WHATSAPP_RECIPIENTS"
 
