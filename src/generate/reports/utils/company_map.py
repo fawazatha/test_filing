@@ -43,7 +43,7 @@ def annotate_holder_tickers(filings: list[dict], by_name_norm: Dict[str, str]) -
     for f in filings:
         if f.holder_ticker:
             continue
-        name = str(f.get("holder_name") or "")
+        name = str(f.holder_name or "")
         key = _normalize_company_name(name)
         ticker = by_name_norm.get(key)
         if ticker:
