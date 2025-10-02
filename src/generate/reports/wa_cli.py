@@ -21,18 +21,22 @@ def main_wa_workflow(
     )
 ): 
     try:
-        summary = run_send_whatsapp(filings_data_path, to_number)
+        recipient_list = [num_recipient.strip() for num_recipient in to_number.split(",")]
+        LOGGER.info(f"Starting WhatsApp workflow for {len(recipient_list)} recipients.")
 
-        typer.echo(f"WhatsApp Summary: {summary.get('sent')} sent, {summary.get('failed')} failed")
+        for num_recipient in recipient_list:
+            summary = run_send_whatsapp(filings_data_path, num_recipient)
 
-        if summary.get("failed") > 0:
-            typer.echo("\nErrors:")
-            for error in summary.get("errors"):
-                typer.echo(f" - {error}")
-        else:
-            typer.echo("All messages sent successfully.")
+            typer.echo(f"WhatsApp Summary: {summary.get('sent')} sent, {summary.get('failed')} failed")
 
-        time.sleep(random.uniform(1, 5))
+            if summary.get("failed") > 0:
+                typer.echo("\nErrors:")
+                for error in summary.get("errors"):
+                    typer.echo(f" - {error}")
+            else:
+                typer.echo("All messages sent successfully.")
+
+            time.sleep(random.uniform(1, 5))
 
     except Exception as error:
         LOGGER.critical(f"CLI failed with unexpected error: {error}", exc_info=True)

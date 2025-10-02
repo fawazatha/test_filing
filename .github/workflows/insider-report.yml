@@ -22,6 +22,10 @@ on:
         description: 'Override recipients (comma-separated). If empty, uses REPORT_RECIPIENTS secret'
         required: false
         type: string
+      whatsapp_recipients_override:
+        description: 'Override WhatsApp recipient (comma-separated). Uses secret if empty.'
+        required: false
+        type: string
       attach_html:
         description: 'Attach HTML to email? (body HTML tetap dikirim walau false)'
         required: false
@@ -29,6 +33,11 @@ on:
         type: boolean
       send:
         description: 'Send email? (true/false) — only used for manual runs; scheduled runs default to true'
+        required: false
+        default: true
+        type: boolean
+      send_whatsapp:
+        description: 'Send WhatsApp? (true/false)'
         required: false
         default: true
         type: boolean
@@ -65,7 +74,7 @@ jobs:
       TWILIO_AUTH_TOKEN: ${{ secrets.TWILIO_AUTH_TOKEN }}
       TWILIO_FROM_NUMBER: ${{ secrets.TWILIO_FROM_NUMBER }}
       TEMPLATE_SID: ${{ secrets.TEMPLATE_SID }}
-
+    
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -247,10 +256,11 @@ jobs:
           "${CMD[@]}"
         
       - name: Run send (WhatsApp)
-        if: steps.sendcfg.outputs.send == 'true'
+        if: steps.sendcfg.outputs.send_wa == 'true'
         shell: bash 
         env: 
           REPORT_JSON_PATH: ${{ steps.prep.outputs.OUT_JSON }}
+          WHATSAPP_RECIPIENTS: ${{ inputs.whatsapp_recipients_override || secrets.WHATSAPP_RECIPIENTS }}
         run: | 
           set -euo pipefail
           if [ -z "$WHATSAPP_RECIPIENTS" ]; then
