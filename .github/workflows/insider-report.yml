@@ -61,6 +61,10 @@ jobs:
       AWS_REGION: ${{ secrets.AWS_REGION }}
       SES_FROM_EMAIL: ${{ secrets.SES_FROM_EMAIL }}
       REPORT_RECIPIENTS: ${{ secrets.REPORT_RECIPIENTS }}
+      TWILIO_ACCOUNT_SID: ${{ secrets.TWILIO_ACCOUNT_SID }}
+      TWILIO_AUTH_TOKEN: ${{ secrets.TWILIO_AUTH_TOKEN }}
+      TWILIO_FROM_NUMBER: ${{ secrets.TWILIO_FROM_NUMBER }}
+      TEMPLATE_SID: ${{ secrets.TEMPLATE_SID }}
 
     steps:
       - name: Checkout
@@ -241,6 +245,23 @@ jobs:
           mapfile -d '' CMD < cmd_send.zsharray
           echo "[SEND]" "${CMD[@]}"
           "${CMD[@]}"
+        
+      - name: Run send (WhatsApp)
+        if: steps.sendcfg.outputs.send == 'true'
+        shell: bash 
+        env: 
+          REPORT_JSON_PATH: ${{ steps.prep.outputs.OUT_JSON }}
+        run: | 
+          set -euo pipefail
+          if [ -z "$WHATSAPP_RECIPIENTS" ]; then
+            echo "Skipping WhatsApp: Recipient not set."
+            exit 0
+          fi
+          
+          echo "Running WhatsApp Sender CLI..."
+          python -m src.generate.reports.whatsapp_cli \
+            --json-in "$REPORT_JSON_PATH" \
+            --to "$WHATSAPP_RECIPIENTS"
 
       - name: Upload artifacts (HTML & JSON)
         if: always()

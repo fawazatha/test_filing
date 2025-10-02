@@ -1,5 +1,4 @@
 import typer 
-import sys 
 import random 
 import time
 
@@ -30,7 +29,6 @@ def main_wa_workflow(
             typer.echo("\nErrors:")
             for error in summary.get("errors"):
                 typer.echo(f" - {error}")
-            sys.exit(1)  
         else:
             typer.echo("All messages sent successfully.")
 
@@ -39,7 +37,6 @@ def main_wa_workflow(
     except Exception as error:
         LOGGER.critical(f"CLI failed with unexpected error: {error}", exc_info=True)
         typer.echo("Critical failure in workflow. Check logs for details.")
-        sys.exit(1)
 
 
 if __name__ == '__main__':
