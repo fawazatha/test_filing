@@ -129,6 +129,18 @@ jobs:
           echo "do_wait=$DO_WAIT"  >> "$GITHUB_OUTPUT"
           echo "recips=$RECIPS"    >> "$GITHUB_OUTPUT"
 
+        - name: Configure WhatsApp send
+        id: sendwacfg
+        shell: bash
+        run: |
+          # Default to 'true' for scheduled runs
+          SEND_WA='true' 
+          # For manual runs, override the default with the user's choice
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            SEND_WA="${{ inputs.send_whatsapp }}"
+          fi
+          echo "send_wa=${SEND_WA}" >> $GITHUB_OUTPUT
+
       # Refresh company map & latest prices (enrichment dependency)
       - name: Build company_map & latest_prices (refresh_all)
         shell: bash
@@ -256,7 +268,7 @@ jobs:
           "${CMD[@]}"
         
       - name: Run send (WhatsApp)
-        if: steps.sendcfg.outputs.send_wa == 'true'
+        if: steps.sendwacfg.outputs.send_wa == 'true'
         shell: bash 
         env: 
           REPORT_JSON_PATH: ${{ steps.prep.outputs.OUT_JSON }}
