@@ -5,8 +5,6 @@ from src.services.whatsapp.utils.config import LOGGER
 
 def format_payload(
         filing: dict[str, any], 
-        total_companies: int, 
-        total_filings: int,
         window_start: str, 
         window_end: str
     ) -> json:
@@ -37,8 +35,6 @@ def format_payload(
             "hour_before": str(hour_before),
             "date_after": str(date_after),
             "hour_after": str(hour_after),
-            "total_companies": str(total_companies),
-            "total_filings": str(total_filings),
             "company": symbol,
             "holder": holder_name,
             "type": transaction_type,

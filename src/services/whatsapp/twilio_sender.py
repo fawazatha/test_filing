@@ -82,8 +82,6 @@ def run_send_whatsapp(filings_data_path: str, to_number: str) -> WhatsAppSummary
             LOGGER.warning("No data report found. Exiting message sending process.")
             return
 
-        total_companies = data_report.get('total_companies', 0)
-        total_filings = data_report.get('total_filings', 0)
         start_window = data_report.get('window_start') 
         end_window = data_report.get('window_end')
 
@@ -92,8 +90,6 @@ def run_send_whatsapp(filings_data_path: str, to_number: str) -> WhatsAppSummary
                 try:
                     formatted_payload = format_payload(
                         filing=filing,
-                        total_companies=total_companies,
-                        total_filings=total_filings,
                         window_start=start_window,
                         window_end=end_window
                     )
