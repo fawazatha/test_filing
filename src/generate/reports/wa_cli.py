@@ -27,7 +27,8 @@ def main_wa_workflow(
         for num_recipient in recipient_list:
             summary = run_send_whatsapp(filings_data_path, num_recipient)
 
-            typer.echo(f"WhatsApp Summary: {summary.get('sent')} sent, {summary.get('failed')} failed")
+            typer.echo(f"WhatsApp Summary for number ...{num_recipient[-4:]}: "
+                       "{summary.get('sent')} sent, {summary.get('failed')} failed")
 
             if summary.get("failed") > 0:
                 typer.echo("\nErrors:")

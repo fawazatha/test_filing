@@ -36,6 +36,12 @@ def get_data_report(filings_json_path: str) -> dict[str, str]:
         return {}
     
 
+def mask_number(number: str) -> str:
+    if len(number) > 4:
+        return f"...{number[-4:]}"
+    return "****"
+
+
 def send_whatsapp_message(body_content: json, to_number: str) -> MessageResult:
     if not all([
         ACCOUNT_SID, AUTH_TOKEN, 
@@ -54,7 +60,7 @@ def send_whatsapp_message(body_content: json, to_number: str) -> MessageResult:
             content_variables=body_content,
             
         )
-        LOGGER.info(f"WhatsApp message sent successfully to {to_number} (SID: {message.sid})")
+        LOGGER.info(f"WhatsApp message sent successfully to {mask_number(to_number)} (SID: {message.sid})")
         return {"success": True, "sid": message.sid, "error": None}
     
     except TwilioRestException as tre:
