@@ -70,10 +70,6 @@ jobs:
       AWS_REGION: ${{ secrets.AWS_REGION }}
       SES_FROM_EMAIL: ${{ secrets.SES_FROM_EMAIL }}
       REPORT_RECIPIENTS: ${{ secrets.REPORT_RECIPIENTS }}
-      TWILIO_ACCOUNT_SID: ${{ secrets.TWILIO_ACCOUNT_SID }}
-      TWILIO_AUTH_TOKEN: ${{ secrets.TWILIO_AUTH_TOKEN }}
-      TWILIO_FROM_NUMBER: ${{ secrets.TWILIO_FROM_NUMBER }}
-      TEMPLATE_SID: ${{ secrets.TEMPLATE_SID }}
     
     steps:
       - name: Checkout
@@ -271,8 +267,14 @@ jobs:
         if: steps.sendwacfg.outputs.send_wa == 'true'
         shell: bash 
         env: 
+          PYTHONPATH: src
           REPORT_JSON_PATH: ${{ steps.prep.outputs.OUT_JSON }}
           WHATSAPP_RECIPIENTS: ${{ inputs.whatsapp_recipients_override || secrets.WHATSAPP_RECIPIENTS }}
+          TWILIO_ACCOUNT_SID: ${{ secrets.TWILIO_ACCOUNT_SID }}
+          TWILIO_AUTH_TOKEN: ${{ secrets.TWILIO_AUTH_TOKEN }}
+          TWILIO_FROM_NUMBER: ${{ secrets.TWILIO_FROM_NUMBER }}
+          TEMPLATE_SID: ${{ secrets.TEMPLATE_SID }}
+
         run: | 
           set -euo pipefail
           if [ -z "$WHATSAPP_RECIPIENTS" ]; then
