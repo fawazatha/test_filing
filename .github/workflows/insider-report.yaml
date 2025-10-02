@@ -129,7 +129,7 @@ jobs:
           echo "do_wait=$DO_WAIT"  >> "$GITHUB_OUTPUT"
           echo "recips=$RECIPS"    >> "$GITHUB_OUTPUT"
 
-        - name: Configure WhatsApp send
+      - name: Configure WhatsApp send
         id: sendwacfg
         shell: bash
         run: |
