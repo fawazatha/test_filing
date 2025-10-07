@@ -16,7 +16,35 @@ try:
 except Exception:
     JKT = None
 
-from scripts.company_map_hybrid import get_company_map
+# ---- Hybrid company map & prices imports (robust to different module roots) ----
+# Tries: scripts.company_map_hybrid → src.utils.company_map_hybrid → utils.company_map_hybrid
+get_company_map = None
+refresh_latest_prices_program_only = None
+hydrate_company_map_with_prices = None
+_last_import_err = None
+for _mod in (
+    "scripts.company_map_hybrid",
+    "src.utils.company_map_hybrid",
+    "utils.company_map_hybrid",
+):
+    try:
+        _m = __import__(_mod, fromlist=[
+            "get_company_map",
+            "refresh_latest_prices_program_only",
+            "hydrate_company_map_with_prices",
+        ])
+        get_company_map = getattr(_m, "get_company_map")
+        refresh_latest_prices_program_only = getattr(_m, "refresh_latest_prices_program_only")
+        hydrate_company_map_with_prices = getattr(_m, "hydrate_company_map_with_prices")
+        break
+    except Exception as _e:
+        _last_import_err = _e  # keep last error
+        continue
+if get_company_map is None:
+    raise ImportError(
+        "Cannot import company_map_hybrid from scripts/src.utils/utils. "
+        f"Last error: {_last_import_err}"
+    )
 
 from ingestion.runner import (
     get_ownership_announcements,
@@ -135,6 +163,27 @@ def step_check_company_map(force: bool = False) -> None:
         LOG.info("company_map cached rows: %d", len(m or {}))
     except Exception as e:
         LOG.warning("company_map check failed (continue offline): %s", e)
+
+
+def step_refresh_company_assets(lookback_days: int = 14, use_fallback: bool = True) -> None:
+    """
+    1) Pastikan company_map.json up-to-date
+    2) Refresh latest_prices.json untuk semua symbol dalam map
+    3) Tulis company_map.hydrated.json untuk inspeksi
+    """
+    try:
+        m = get_company_map(force=False)
+        LOG.info("company_map cached rows: %d", len(m or {}))
+        syms = sorted((m or {}).keys())
+        if syms:
+            refresh_latest_prices_program_only(
+                symbols=syms,
+                lookback_days=lookback_days,
+                use_fallback=use_fallback,
+            )
+        hydrate_company_map_with_prices()
+    except Exception as e:
+        LOG.warning("refresh company assets failed (continue): %s", e)
 
 
 def step_fetch_announcements(
@@ -570,6 +619,14 @@ def build_argparser() -> argparse.ArgumentParser:
     p.add_argument("--news-dry-run", action="store_true")
     p.add_argument("--news-timeout", type=int, default=int(os.getenv("SUPABASE_TIMEOUT", "30")))
 
+    # --- Company assets (map + prices + hydrated) ---
+    p.add_argument("--refresh-company-assets", action="store_true",
+                   help="Refresh company_map.json, latest_prices.json, and hydrated map before running")
+    p.add_argument("--prices-lookback-days", type=int, default=14,
+                   help="Lookback days for latest prices refresh (default 14)")
+    p.add_argument("--no-price-fallback", action="store_true",
+                   help="Disable per-symbol fallback when missing within lookback window")
+
     return p
 
 
@@ -582,8 +639,15 @@ def main():
         LOG.info("[CLEAN] removing generated outputs")
         pre_clean_outputs()
 
-    # 0) company map check/refresh (auto no-op if unchanged)
-    step_check_company_map(force=False)
+    # 0) company assets
+    if args.refresh_company_assets:
+        step_refresh_company_assets(
+            lookback_days=args.prices_lookback_days,
+            use_fallback=(not args.no_price_fallback),
+        )
+    else:
+        # minimal check (no hydrate)
+        step_check_company_map(force=False)
 
     # 1) Decide fetch window
     ann_out: Path

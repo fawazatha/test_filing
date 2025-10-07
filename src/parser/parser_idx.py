@@ -30,6 +30,36 @@ EN_DATE_PATTERN = (
 SYMBOL_TOKEN_RE = re.compile(r"^[A-Z0-9]{3,6}$")
 
 
+# -------------------------------
+# Helper: validasi arah transaksi
+# -------------------------------
+def _validate_tx_direction(
+    before: Optional[float],
+    after: Optional[float],
+    tx_type: str,
+    eps: float = 1e-3
+) -> Tuple[bool, Optional[str]]:
+    """
+    Direction sanity:
+      - buy  => after >= before (±eps)
+      - sell => after <= before (±eps)
+    """
+    try:
+        b = float(before) if before is not None else None
+        a = float(after) if after is not None else None
+    except Exception:
+        return False, "non_numeric_before_after"
+    if b is None or a is None:
+        return False, "missing_before_or_after"
+
+    t = (tx_type or "").strip().lower()
+    if t == "buy" and a + eps < b:
+        return False, f"inconsistent_buy: after({a}) < before({b})"
+    if t == "sell" and a > b + eps:
+        return False, f"inconsistent_sell: after({a}) > before({b})"
+    return True, None
+
+
 class IDXParser(BaseParser):
     def __init__(
         self,
@@ -138,7 +168,7 @@ class IDXParser(BaseParser):
         ex = TextExtractor(text)
         res: Dict[str, Any] = {"lang": "en"}
 
-        # Header-ish fields: (sesuai pola dokumen IDX EN)
+        # Header-ish fields (sesuai pola dokumen IDX EN)
         res["issuer_code"] = (
             ex.find_table_value("Issuer Name")
             or ex.find_value_in_line("Issuer Name")
@@ -200,7 +230,7 @@ class IDXParser(BaseParser):
                         canonical_name_for_symbol(self.company_map, sym) or issuer_name_raw
                     )
 
-        # Jika tetap tidak dapat symbol → alert ke alerts_not_inserted + tandai skip_filing
+        # Jika tetap tidak dapat symbol → alert + tandai skip_filing
         if issuer_name_raw and not sym:
             norm_key = normalize_company_name(issuer_name_raw)
             suggestions = suggest_symbols(
@@ -222,12 +252,11 @@ class IDXParser(BaseParser):
                 },
             )
 
-            # Tetap tulis hasil parsing, tetapi beri flag untuk di-skip saat filings
             res["skip_filing"] = True
             res["skip_reason"] = "Symbol Not Resolved from Name"
             res.setdefault("parse_warnings", []).append("Symbol Not Resolved from Name")
 
-            # NEW: tetap tampilkan nama perusahaan yang 'rapi' agar enak dibaca
+            # tetap tampilkan nama perusahaan rapih
             company_name_out = pretty_company_name(issuer_name_raw)
 
         # Persist company fields
@@ -273,9 +302,9 @@ class IDXParser(BaseParser):
             or ""
         ).strip()
 
-        # ===========================
+        # ---------------------------
         # Holder (DROP-IN UPDATED)
-        # ===========================
+        # ---------------------------
         holder_name_raw = (
             ex.find_table_value("Name of Shareholder")
             or ex.find_value_in_line("Name of Shareholder")
@@ -288,7 +317,7 @@ class IDXParser(BaseParser):
         res["holder_type"] = holder_type
 
         if holder_type == "institution":
-            # Coba resolve simbol; jika gagal, tetap pulangin nama institusi yang sudah 'rapi'
+            # Coba resolve simbol; jika gagal, tetap kembalikan display name yang rapih
             hsym, disp, _key, _tried = resolve_symbol_and_name(
                 holder_name_raw,
                 self.company_map,
@@ -297,13 +326,22 @@ class IDXParser(BaseParser):
                 min_score=int(os.getenv("COMPANY_RESOLVE_MIN_SCORE", "80")),
             )
             res["holder_name"] = disp
-            res["holder_symbol"] = hsym  # bisa None jika tidak ketemu
+            res["holder_symbol"] = hsym  # bisa None
         else:
             # Insider (perorangan): bersihkan nama, tanpa simbol
             res["holder_name"] = NameCleaner.clean_holder_name(holder_name_raw, "insider")
             res["holder_symbol"] = None
 
-        # Holdings
+        # +++ VALIDASI HOLDER NAME
+        if not NameCleaner.is_valid_holder(res.get("holder_name")):
+            res["skip_filing"] = True
+            res["skip_reason"] = "Invalid holder_name"
+            res.setdefault("parse_warnings", []).append("Invalid holder_name")
+            return res  # atau return None, sesuai preferensi kamu
+
+        # ---------------------------
+        # Holdings / percentages
+        # ---------------------------
         res["holding_before"] = NumberParser.parse_number(
             ex.find_number_after_keyword("Number of shares owned before the transaction")
         )
@@ -343,10 +381,26 @@ class IDXParser(BaseParser):
         if phone:
             res["company_phone"] = phone
 
+        # Transactions parse
         self._extract_transactions_en(ex, res)
         self._postprocess_transactions(res)
 
-        # Mismatch alert
+        # +++ VALIDASI ARAH TRANSAKSI (butuh res["transaction_type"] sudah ada)
+        tx_type = res.get("transaction_type")
+        if tx_type in ("buy", "sell"):
+            ok, reason = _validate_tx_direction(
+                res.get("share_percentage_before"),
+                res.get("share_percentage_after"),
+                tx_type
+            )
+            if not ok:
+                logger.warning("Skipping inconsistent %s: %s", tx_type, reason)
+                res["skip_filing"] = True
+                res["skip_reason"] = reason
+                res.setdefault("parse_warnings", []).append(reason)
+                return res  # atau return None
+
+        # Mismatch alert (tetap kirim untuk observability)
         self._flag_type_mismatch_if_any(res, filename)
         return res
 
@@ -484,7 +538,6 @@ class IDXParser(BaseParser):
 
         # Tanda transfer
         res["is_transfer"] = res.get("is_transfer", False) or res["has_transfer"]
-
 
     def _flag_type_mismatch_if_any(self, res: Dict[str, Any], filename: str) -> None:
         doc_type = (res.get("transaction_type") or "").lower()

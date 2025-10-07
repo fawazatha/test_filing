@@ -18,26 +18,37 @@ from .utils.company_resolver import (
     resolve_symbol_from_emiten,
     normalize_company_name,
 )
-# from .utils.company_resolver import KNOWN_EMITEN_SYNONYMS as _RAW_EMITEN_SYNONYMS
 
 logger = logging.getLogger(__name__)
 
-class NonIDXParser(BaseParser):
-    def __init__(
-        self,
-        pdf_folder: str = "downloads/non-idx-format",
-        output_file: str = "data/parsed_non_idx_output.json",
-        announcement_json: str = "data/idx_announcements.json",
-    ):
-        super().__init__(
-            pdf_folder,
-            output_file,
-            announcement_json,
-            alerts_file=os.getenv("ALERTS_NON_IDX", "alerts/alerts_non_idx.json"),
-            alerts_not_inserted_file=os.getenv("ALERTS_NOT_INSERTED_NON_IDX", "alerts/alerts_not_inserted_non_idx.json"),
-        )
-        # ... sisa init NonIDXParser kamu ...
+# -------------------------------
+# Helper: validasi arah transaksi
+# -------------------------------
+def _validate_tx_direction(
+    before: Optional[float],
+    after: Optional[float],
+    tx_type: str,
+    eps: float = 1e-3
+) -> Tuple[bool, Optional[str]]:
+    """
+    Direction sanity:
+      - buy  => after >= before (±eps)
+      - sell => after <= before (±eps)
+    """
+    try:
+        b = float(before) if before is not None else None
+        a = float(after) if after is not None else None
+    except Exception:
+        return False, "non_numeric_before_after"
+    if b is None or a is None:
+        return False, "missing_before_or_after"
 
+    t = (tx_type or "").strip().lower()
+    if t == "buy" and a + eps < b:
+        return False, f"inconsistent_buy: after({a}) < before({b})"
+    if t == "sell" and a > b + eps:
+        return False, f"inconsistent_sell: after({a}) > before({b})"
+    return True, None
 
 
 class NonIDXParser(BaseParser):
@@ -46,10 +57,11 @@ class NonIDXParser(BaseParser):
     }
     _TOKEN_SPLIT = re.compile(r"[^a-z0-9]+", re.UNICODE)
 
-    def __init__(self,
-                 pdf_folder: str = "downloads/non-idx-format",
-                 output_file: str = "data/parsed_non_idx_output.json",
-                 announcement_json: str = "data/idx_announcements.json",
+    def __init__(
+        self,
+        pdf_folder: str = "downloads/non-idx-format",
+        output_file: str = "data/parsed_non_idx_output.json",
+        announcement_json: str = "data/idx_announcements.json",
     ):
         super().__init__(
             pdf_folder,
@@ -67,6 +79,9 @@ class NonIDXParser(BaseParser):
         self._debug_trace = os.getenv("COMPANY_RESOLVE_DEBUG", "0") == "1"
         self._synonym_enable = os.getenv("NONIDX_RESOLVE_SYNONYM_ENABLE", "1") != "0"
 
+    # -------------------------------
+    # Company map helpers
+    # -------------------------------
     @staticmethod
     def _normalize_symbol(sym: str) -> str:
         s = (sym or "").strip().upper()
@@ -104,7 +119,12 @@ class NonIDXParser(BaseParser):
             exists = probe in (self._rev_company_map or {})
             logger.info("[company_map] probe_key='%s' present=%s", probe, exists)
 
-    def parse_single_pdf(self, filepath: str, filename: str, pdf_mapping: Dict[str, Any]) -> Optional[List[Dict[str, Any]]]:
+    # -------------------------------
+    # Entry point
+    # -------------------------------
+    def parse_single_pdf(
+        self, filepath: str, filename: str, pdf_mapping: Dict[str, Any]
+    ) -> Optional[List[Dict[str, Any]]]:
         ann_ctx = (pdf_mapping or {}).get(filename, {})
         try:
             with pdfplumber.open(filepath) as pdf:
@@ -141,6 +161,9 @@ class NonIDXParser(BaseParser):
             self._blocked_already_logged = True
             return None
 
+    # -------------------------------
+    # PDF helpers
+    # -------------------------------
     def _extract_last_page_table(self, last_page) -> Optional[List[List[str]]]:
         table_settings = {
             "vertical_strategy": "lines",
@@ -207,6 +230,9 @@ class NonIDXParser(BaseParser):
             return m.group(1).strip()
         return None
 
+    # -------------------------------
+    # Resolve symbol (local)
+    # -------------------------------
     def _resolve_symbol_from_emiten_local(self, emiten_name: Optional[str], full_text: str) -> Optional[str]:
         if not self._symbol_to_name or not self._rev_company_map:
             return None
@@ -259,12 +285,7 @@ class NonIDXParser(BaseParser):
                     logger.info("[nonidx-resolve] token-scan hit cand=%s", cand)
                 return cand
 
-        # if self._synonym_enable:
-        #     syn = _RAW_EMITEN_SYNONYMS.get(norm_query)
-        #     if syn:
-        #         if self._debug_trace:
-        #             logger.info("[nonidx-resolve] synonym-fallback norm='%s' -> %s", norm_query, syn)
-        #         return syn
+        # (opsional) sinonim emiten bisa dimasukkan di sini bila tersedia
 
         try:
             if self._debug_trace:
@@ -277,6 +298,9 @@ class NonIDXParser(BaseParser):
             pass
         return None
 
+    # -------------------------------
+    # Row processing
+    # -------------------------------
     def _coerce_dash_zero(self, s: Any, as_percentage: bool = False):
         txt = (str(s or "")).strip()
         if txt in {"-", "–", "—", ""}:
@@ -361,13 +385,26 @@ class NonIDXParser(BaseParser):
         except Exception:
             pass
 
+        # Holder cleaning & validation
         holder_type = NameCleaner.classify_holder_type(holder_name_raw)
         holder_name = NameCleaner.clean_holder_name(holder_name_raw, holder_type)
+
+        # +++ VALIDASI HOLDER NAME
+        if not NameCleaner.is_valid_holder(holder_name):
+            return None
 
         share_pct_transaction = round(abs(float(pct_after) - float(pct_before)), 3)
         transaction_type, tags = TransactionClassifier.classify_transaction_type(
             all_text, float(pct_before), float(pct_after)
         )
+
+        # +++ VALIDASI ARAH TRANSAKSI
+        if transaction_type in ("buy", "sell"):
+            ok, reason = _validate_tx_direction(pct_before, pct_after, transaction_type)
+            if not ok:
+                # kamu bisa tulis alert jika perlu:
+                # self.alert_manager.log_alert(source_name, "Transaction Direction Invalid", {"reason": reason})
+                return None
 
         filing: Dict[str, Any] = {
             "title": title_line.strip(),
@@ -420,6 +457,9 @@ class NonIDXParser(BaseParser):
 
         return filing
 
+    # -------------------------------
+    # Output
+    # -------------------------------
     def validate_parsed_data(self, data: List[Dict[str, Any]]) -> bool:
         return bool(data)
 

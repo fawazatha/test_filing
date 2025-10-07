@@ -13,7 +13,10 @@ class TransactionClassifier:
         pct_before: float,
         pct_after: float
     ) -> Tuple[str, List[str]]:
- 
+        """
+        Klasifikasi kasar tipe transaksi berbasis kata kunci di teks + perubahan persentase.
+        Mengembalikan (type, tags).
+        """
         tl = (text or "").lower()
 
         if any(k in tl for k in ["perbaikan", "koreksi", "ralat", "errata", "amendment"]):
@@ -47,6 +50,7 @@ class TransactionClassifier:
             if is_takeover: tags.append("takeover")
             return "neutral", tags
 
+        # fallback by delta percentage
         try:
             if float(pct_after) > float(pct_before):
                 tags = ["bullish", "ownership_change", "insider_trading"]
@@ -100,7 +104,9 @@ class TransactionClassifier:
         pct_before: Optional[float],
         pct_after: Optional[float]
     ) -> Optional[Dict]:
-
+        """
+        Jika label dokumen bertentangan dengan inferensi data, kembalikan payload flag untuk alert/logging.
+        """
         doc = (doc_type or "").strip().lower()
         if doc in {"buy", "sell"} and inferred in {"buy", "sell"} and doc != inferred:
             return {
@@ -114,3 +120,53 @@ class TransactionClassifier:
                 "share_percentage_after": pct_after,
             }
         return None
+
+    @staticmethod
+    def validate_direction(
+        before: Optional[float],
+        after: Optional[float],
+        tx_type: str,
+        eps: float = 1e-3
+    ) -> Tuple[bool, Optional[str]]:
+        """
+        Validasi konsistensi arah transaksi terhadap persentase kepemilikan.
+
+        Returns:
+            (ok, reason)
+            ok     : True jika konsisten, False jika tidak.
+            reason : string alasan ketika tidak konsisten.
+        """
+        try:
+            b = float(before) if before is not None else None
+            a = float(after) if after is not None else None
+        except Exception:
+            return False, "non_numeric_before_after"
+
+        if b is None or a is None:
+            return False, "missing_before_or_after"
+
+        t = (tx_type or "").strip().lower()
+        if t == "buy" and a + eps < b:
+            return False, f"inconsistent_buy: after({a}) < before({b})"
+        if t == "sell" and a > b + eps:
+            return False, f"inconsistent_sell: after({a}) > before({b})"
+
+        # untuk 'neutral' / tipe lain, kita tidak memaksa
+        return True, None
+
+    # (Opsional) sugar untuk sekali panggil
+    @staticmethod
+    def coherent_or_reason(
+        tx_type: Optional[str],
+        pct_before: Optional[float],
+        pct_after: Optional[float],
+        eps: float = 1e-3
+    ) -> Tuple[bool, Optional[str]]:
+        """
+        Satu pintu: kalau tx_type 'buy'/'sell' maka validasi;
+        jika bukan, dianggap ok.
+        """
+        t = (tx_type or "").lower()
+        if t in {"buy", "sell"}:
+            return TransactionClassifier.validate_direction(pct_before, pct_after, t, eps=eps)
+        return True, None

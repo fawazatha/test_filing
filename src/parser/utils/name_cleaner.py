@@ -18,17 +18,32 @@ class NameCleaner:
     @classmethod
     def clean_holder_name(cls, name: str, holder_type: str) -> str:
         """Clean holder name with proper capitalization."""
+        if not name:
+            return ""
+        # buang karakter tak terlihat + normalisasi spasi
+        name = "".join(ch for ch in str(name) if ch.isprintable())
         words = name.replace("\n", " ").strip().split()
         cleaned_words = []
-        
         for word in words:
             upper_word = word.upper().strip(".,")
             if upper_word in cls.SPECIAL_CAPS:
                 cleaned_words.append(upper_word)
             else:
-                cleaned_words.append(word.capitalize())
-        
+                cleaned_words.append(word[:1].upper() + word[1:].lower())
         return " ".join(cleaned_words)
+
+
+    @staticmethod
+    def is_valid_holder(name: str | None) -> bool:
+        """Reject empty, too short, or mostly-numeric holder names."""
+        if not name:
+            return False
+        n = name.strip()
+        if len(n) < 3:
+            return False
+        letters = sum(1 for c in n if c.isalpha())
+        ratio = letters / max(1, len(n))
+        return ratio >= 0.40
     
     @classmethod
     def match_holder_name_to_company(cls, holder_name: str, company_list: List[str], threshold: int = 85) -> str:
