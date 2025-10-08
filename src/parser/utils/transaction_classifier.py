@@ -2,68 +2,180 @@ from __future__ import annotations
 from typing import List, Dict, Optional, Tuple
 
 import logging
-
 logger = logging.getLogger(__name__)
+
+# === Canonical whitelist (exactly 9) ===
+TAGS_WHITELIST = {
+    "bullish", "bearish", "takeover", "investment", "divestment",
+    "free-float-requirement", "MESOP", "inheritance", "share-transfer",
+}
+
+# Keyword banks for side-signals (parser may pass text here)
+_KW_BUY = [
+    "beli", "pembelian", "buy", "akumulasi", "investasi", "acquisition",
+    "penambahan", "increase", "buyback", "buy back",
+]
+_KW_SELL = [
+    "jual", "penjualan", "sell", "divestasi", "divestment", "pengurangan",
+    "reduksi", "disposal",
+]
+_KW_TRANSFER = [
+    "transfer", "pemindahan", "konversi", "conversion", "neutral",
+    "tanpa perubahan", "alih", "pengalihan",
+]
+_KW_INHERIT = ["waris", "inheritance", "hibah", "grant", "bequest"]
+_KW_MESOP = ["mesop", "msop", "esop", "program opsi saham", "employee stock option"]
+_KW_FREEFLOAT = ["free float", "free-float", "freefloat", "pemenuhan porsi publik"]
+
+
+def _crosses_50(before_pp: Optional[float], after_pp: Optional[float]) -> bool:
+    try:
+        b = float(before_pp)
+        a = float(after_pp)
+    except Exception:
+        return False
+    return (b < 50 <= a) or (b >= 50 > a)
+
+
+def _safe_float(x, default=0.0) -> float:
+    try:
+        return float(x)
+    except Exception:
+        return default
+
+
+def _any_kw(text_lower: str, bank: List[str]) -> bool:
+    return any(k in text_lower for k in bank)
 
 
 class TransactionClassifier:
+    """
+    Provides:
+      - classify_transaction_type(): returns tx_type ('buy'/'sell'/'transfer'/'neutral') and PRELIM tags
+      - compute_filings_tags(): final standardized tag list (whitelist-enforced)
+    """
+
     @staticmethod
     def classify_transaction_type(
         text: str,
-        pct_before: float,
-        pct_after: float
+        pct_before: Optional[float],
+        pct_after: Optional[float],
     ) -> Tuple[str, List[str]]:
         """
-        Klasifikasi kasar tipe transaksi berbasis kata kunci di teks + perubahan persentase.
-        Mengembalikan (type, tags).
+        Heuristic classification based on keywords + percentage delta.
+
+        Returns:
+            (tx_type, prelim_tags)
+            prelim_tags already uses canonical tag vocabulary (no insider/ownership-change here).
         """
         tl = (text or "").lower()
+        prelim: List[str] = []
 
+        # Correction (we keep tx_type 'neutral', add no tags; downstream can still compute tags from data)
         if any(k in tl for k in ["perbaikan", "koreksi", "ralat", "errata", "amendment"]):
-            return "correction", ["correction", "insider_trading"]
+            return "neutral", []
 
-        # Heuristik crossing 50%
-        def crosses_majority(a: float, b: float) -> bool:
-            try:
-                return (a < 50 <= b) or (a >= 50 > b)
-            except Exception:
-                return False
+        is_takeover = _crosses_50(pct_before, pct_after)
+        if is_takeover:
+            prelim.append("takeover")
 
-        is_takeover = crosses_majority(pct_before, pct_after)
+        # Keyword-driven type
+        if _any_kw(tl, _KW_SELL):
+            return "sell", prelim
+        if _any_kw(tl, _KW_BUY):
+            return "buy", prelim
+        if _any_kw(tl, _KW_TRANSFER) or _any_kw(tl, _KW_INHERIT):
+            return "transfer", prelim
 
-        sell_kw = ["jual", "penjualan", "sell", "divestasi", "divestment", "pengurangan", "reduksi", "disposal"]
-        buy_kw  = ["beli", "pembelian", "buy", "akumulasi", "investasi", "acquisition", "penambahan", "increase", "buyback", "buy back"]
-        neutral_kw = ["transfer", "pemindahan", "konversi", "conversion", "hibah", "waris", "neutral", "tanpa perubahan"]
-
-        if any(k in tl for k in sell_kw):
-            tags = ["bearish", "ownership_change", "insider_trading"]
-            if is_takeover: tags.append("takeover")
-            return "sell", tags
-
-        if any(k in tl for k in buy_kw):
-            tags = ["bullish", "ownership_change", "insider_trading"]
-            if is_takeover: tags.append("takeover")
-            return "buy", tags
-
-        if any(k in tl for k in neutral_kw):
-            tags = ["neutral", "ownership_change", "insider_trading"]
-            if is_takeover: tags.append("takeover")
-            return "neutral", tags
-
-        # fallback by delta percentage
+        # Fallback: derive from percentage movement
         try:
-            if float(pct_after) > float(pct_before):
-                tags = ["bullish", "ownership_change", "insider_trading"]
-                if is_takeover: tags.append("takeover")
-                return "buy", tags
-            if float(pct_after) < float(pct_before):
-                tags = ["bearish", "ownership_change", "insider_trading"]
-                if is_takeover: tags.append("takeover")
-                return "sell", tags
+            b = float(pct_before) if pct_before is not None else None
+            a = float(pct_after) if pct_after is not None else None
+            if b is not None and a is not None:
+                if a > b:
+                    return "buy", prelim
+                if a < b:
+                    return "sell", prelim
         except Exception:
             pass
 
-        return "neutral", ["neutral", "ownership_change", "insider_trading"]
+        return "neutral", prelim
+
+    @staticmethod
+    def detect_flags_from_text(text: str) -> Dict[str, bool]:
+        """Lightweight flags for MESOP, free-float requirement, inheritance/transfer hints."""
+        tl = (text or "").lower()
+        return {
+            "mesop": _any_kw(tl, _KW_MESOP),
+            "free_float_requirement": _any_kw(tl, _KW_FREEFLOAT),
+            "inheritance": _any_kw(tl, _KW_INHERIT),
+            "share_transfer_hint": _any_kw(tl, _KW_TRANSFER),
+        }
+
+    @staticmethod
+    def compute_filings_tags(
+        txns: List[Dict] | None,
+        share_percentage_before: Optional[float],
+        share_percentage_after: Optional[float],
+        flags: Optional[Dict] = None,
+    ) -> List[str]:
+        """
+        Final standardized tags for idx_filings, enforcing the 9-tag whitelist.
+        txns: e.g. [{"type":"buy"|"sell"|"transfer", "amount": int|float}, ...]
+        """
+        flags = flags or {}
+        tags = set()
+
+        net_amount = 0.0
+        has_buy = has_sell = False
+        has_transfer = False
+        explicit_inheritance = False
+
+        for t in (txns or []):
+            ttype = (t.get("type") or "").lower().strip()
+            amt = _safe_float(t.get("amount"), 0.0)
+            if ttype == "buy":
+                has_buy = True
+                net_amount += amt
+            elif ttype == "sell":
+                has_sell = True
+                net_amount -= amt
+            elif ttype == "transfer":
+                has_transfer = True
+
+        # investment/divestment/share-transfer(+inheritance)
+        if has_buy and not has_sell:
+            tags.add("investment")
+        if has_sell and not has_buy:
+            tags.add("divestment")
+        if has_transfer or flags.get("share_transfer_hint"):
+            tags.add("share-transfer")
+        if flags.get("inheritance"):
+            tags.add("inheritance")
+
+        # bullish/bearish net
+        if net_amount > 0 and has_buy:
+            tags.add("bullish")
+        elif net_amount < 0 and has_sell:
+            tags.add("bearish")
+
+        # takeover (50% crossing)
+        if _crosses_50(share_percentage_before, share_percentage_after):
+            tags.add("takeover")
+
+        # Free float & MESOP
+        if flags.get("free_float_requirement") or flags.get("free_float"):
+            tags.add("free-float-requirement")
+        if flags.get("mesop"):
+            tags.add("MESOP")
+
+        # Enforce whitelist & normalize
+        clean = []
+        for t in {t.lower().strip() for t in tags}:
+            if t in TAGS_WHITELIST:
+                clean.append(t)
+        clean.sort()
+        return clean
 
     @staticmethod
     def infer_direction(
@@ -73,7 +185,7 @@ class TransactionClassifier:
         pct_after: Optional[float]
     ) -> str:
         """
-        Infer arah ('buy'/'sell'/'neutral') dari perubahan holdings/persentase.
+        Infer 'buy'/'sell'/'neutral' from holdings/percentages.
         """
         try:
             if isinstance(holding_before, (int, float)) and isinstance(holding_after, (int, float)):
@@ -83,7 +195,6 @@ class TransactionClassifier:
                     return "sell"
         except Exception:
             pass
-
         try:
             if isinstance(pct_before, (int, float)) and isinstance(pct_after, (int, float)):
                 if pct_after > pct_before:
@@ -92,7 +203,6 @@ class TransactionClassifier:
                     return "sell"
         except Exception:
             pass
-
         return "neutral"
 
     @staticmethod
@@ -105,7 +215,7 @@ class TransactionClassifier:
         pct_after: Optional[float]
     ) -> Optional[Dict]:
         """
-        Jika label dokumen bertentangan dengan inferensi data, kembalikan payload flag untuk alert/logging.
+        Returns a payload when document label conflicts with inferred direction (observability).
         """
         doc = (doc_type or "").strip().lower()
         if doc in {"buy", "sell"} and inferred in {"buy", "sell"} and doc != inferred:
@@ -129,19 +239,13 @@ class TransactionClassifier:
         eps: float = 1e-3
     ) -> Tuple[bool, Optional[str]]:
         """
-        Validasi konsistensi arah transaksi terhadap persentase kepemilikan.
-
-        Returns:
-            (ok, reason)
-            ok     : True jika konsisten, False jika tidak.
-            reason : string alasan ketika tidak konsisten.
+        Sanity for direction vs percentages.
         """
         try:
             b = float(before) if before is not None else None
             a = float(after) if after is not None else None
         except Exception:
             return False, "non_numeric_before_after"
-
         if b is None or a is None:
             return False, "missing_before_or_after"
 
@@ -150,11 +254,8 @@ class TransactionClassifier:
             return False, f"inconsistent_buy: after({a}) < before({b})"
         if t == "sell" and a > b + eps:
             return False, f"inconsistent_sell: after({a}) > before({b})"
-
-        # untuk 'neutral' / tipe lain, kita tidak memaksa
         return True, None
 
-    # (Opsional) sugar untuk sekali panggil
     @staticmethod
     def coherent_or_reason(
         tx_type: Optional[str],
@@ -162,10 +263,6 @@ class TransactionClassifier:
         pct_after: Optional[float],
         eps: float = 1e-3
     ) -> Tuple[bool, Optional[str]]:
-        """
-        Satu pintu: kalau tx_type 'buy'/'sell' maka validasi;
-        jika bukan, dianggap ok.
-        """
         t = (tx_type or "").lower()
         if t in {"buy", "sell"}:
             return TransactionClassifier.validate_direction(pct_before, pct_after, t, eps=eps)

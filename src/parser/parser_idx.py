@@ -1,8 +1,10 @@
+# parser_idx.py
+from __future__ import annotations
+from typing import List, Dict, Optional, Tuple, Any
 import os
 import re
 import logging
 from pathlib import Path
-from typing import Dict, Any, Optional, List, Tuple
 
 from .core.base_parser import BaseParser
 from .utils.text_extractor import TextExtractor
@@ -15,8 +17,8 @@ from .utils.company_resolver import (
     canonical_name_for_symbol,
     normalize_company_name,
     suggest_symbols,
-    resolve_symbol_and_name,   # <-- NEW
-    pretty_company_name,       # <-- NEW
+    resolve_symbol_and_name,
+    pretty_company_name,
 )
 
 logger = logging.getLogger(__name__)
@@ -26,24 +28,15 @@ EN_DATE_PATTERN = (
     r"(?:January|February|March|April|May|June|July|August|September|October|November|December)\s+"
     r"\d{4}"
 )
-
 SYMBOL_TOKEN_RE = re.compile(r"^[A-Z0-9]{3,6}$")
 
 
-# -------------------------------
-# Helper: validasi arah transaksi
-# -------------------------------
 def _validate_tx_direction(
     before: Optional[float],
     after: Optional[float],
     tx_type: str,
     eps: float = 1e-3
 ) -> Tuple[bool, Optional[str]]:
-    """
-    Direction sanity:
-      - buy  => after >= before (±eps)
-      - sell => after <= before (±eps)
-    """
     try:
         b = float(before) if before is not None else None
         a = float(after) if after is not None else None
@@ -81,10 +74,6 @@ class IDXParser(BaseParser):
         self.company_names = set(self.company_map.values())
 
     def _load_company_mapping(self) -> Dict[str, Any]:
-        """Load local company map and normalize keys:
-           - dukung struktur dict maupun list
-           - simpan versi base (ABCD) dan full (ABCD.JK) -> nama
-        """
         try:
             import json
             path = os.getenv("COMPANY_MAP_FILE", "data/company/company_map.json")
@@ -102,7 +91,6 @@ class IDXParser(BaseParser):
                 n = str(nm).strip()
                 if not s or not n:
                     return
-                # simpan keduanya (full & base)
                 if s.endswith(".JK"):
                     out[s] = n
                     out[s[:-3]] = n
@@ -130,7 +118,7 @@ class IDXParser(BaseParser):
             logger.error(f"load company_map error: {e}")
             return {}
 
-    # Entry points
+    # == Entry point ==
     def parse_single_pdf(
         self, filepath: str, filename: str, pdf_mapping: Dict[str, Any]
     ) -> Optional[Dict[str, Any]]:
@@ -149,6 +137,24 @@ class IDXParser(BaseParser):
         try:
             data = self.extract_fields_from_text(text, filename)
             data["source"] = filename
+
+            # === Compute standardized tags ===
+            # Flags from text (MESOP, free-float, inheritance/transfer hints)
+            flags = TransactionClassifier.detect_flags_from_text(text)
+
+            # Build txns list from parsed rows
+            txns = (data.get("transactions") or [])
+            # If rows empty, synthesize from doc-level type
+            if not txns and data.get("transaction_type") in {"buy", "sell", "transfer"}:
+                txns = [{"type": data["transaction_type"], "amount": data.get("amount_transacted") or 0}]
+
+            data["tags"] = TransactionClassifier.compute_filings_tags(
+                txns=txns,
+                share_percentage_before=data.get("share_percentage_before"),
+                share_percentage_after=data.get("share_percentage_after"),
+                flags=flags,
+            )
+
             return data
         except Exception as e:
             logger.error(f"extract_fields error {filename}: {e}")
@@ -168,7 +174,7 @@ class IDXParser(BaseParser):
         ex = TextExtractor(text)
         res: Dict[str, Any] = {"lang": "en"}
 
-        # Header-ish fields (sesuai pola dokumen IDX EN)
+        # Header-ish fields (beware swapped labels on some docs)
         res["issuer_code"] = (
             ex.find_table_value("Issuer Name")
             or ex.find_value_in_line("Issuer Name")
@@ -199,7 +205,7 @@ class IDXParser(BaseParser):
         if issuer_name_raw:
             token = issuer_name_raw.strip().upper()
 
-            # Case A: token adalah ticker dan ada di mapping → pakai sebagai simbol
+            # Case A: issuer_name_raw is a ticker
             if SYMBOL_TOKEN_RE.fullmatch(token) and (
                 token in self.company_map or f"{token}.JK" in self.company_map
             ):
@@ -211,7 +217,7 @@ class IDXParser(BaseParser):
                     canonical_name_for_symbol(self.company_map, sym) or issuer_name_raw
                 )
 
-            # Case B: bukan ticker → resolve dari nama emiten (fuzzy)
+            # Case B: resolve from emiten name (fuzzy)
             if not sym:
                 min_score = int(os.getenv("COMPANY_RESOLVE_MIN_SCORE", "85"))
                 sym2, _k, _t = resolve_symbol_from_emiten(
@@ -230,7 +236,6 @@ class IDXParser(BaseParser):
                         canonical_name_for_symbol(self.company_map, sym) or issuer_name_raw
                     )
 
-        # Jika tetap tidak dapat symbol → alert + tandai skip_filing
         if issuer_name_raw and not sym:
             norm_key = normalize_company_name(issuer_name_raw)
             suggestions = suggest_symbols(
@@ -255,8 +260,6 @@ class IDXParser(BaseParser):
             res["skip_filing"] = True
             res["skip_reason"] = "Symbol Not Resolved from Name"
             res.setdefault("parse_warnings", []).append("Symbol Not Resolved from Name")
-
-            # tetap tampilkan nama perusahaan rapih
             company_name_out = pretty_company_name(issuer_name_raw)
 
         # Persist company fields
@@ -264,7 +267,6 @@ class IDXParser(BaseParser):
         res["company_name"] = company_name_out or ""
         res["symbol"] = sym or None
 
-        # Toleransi typo "Controling"
         res["classification_of_shareholder"] = (
             ex.find_table_value("Classification of Shareholder")
             or ex.find_value_in_line("Classification of Shareholder")
@@ -302,22 +304,18 @@ class IDXParser(BaseParser):
             or ""
         ).strip()
 
-        # ---------------------------
-        # Holder (DROP-IN UPDATED)
-        # ---------------------------
+        # Holder
         holder_name_raw = (
             ex.find_table_value("Name of Shareholder")
             or ex.find_value_in_line("Name of Shareholder")
             or ""
         ).strip()
-
         res["holder_name_raw"] = holder_name_raw
 
         holder_type = NameCleaner.classify_holder_type(holder_name_raw)
         res["holder_type"] = holder_type
 
         if holder_type == "institution":
-            # Coba resolve simbol; jika gagal, tetap kembalikan display name yang rapih
             hsym, disp, _key, _tried = resolve_symbol_and_name(
                 holder_name_raw,
                 self.company_map,
@@ -326,22 +324,19 @@ class IDXParser(BaseParser):
                 min_score=int(os.getenv("COMPANY_RESOLVE_MIN_SCORE", "80")),
             )
             res["holder_name"] = disp
-            res["holder_symbol"] = hsym  # bisa None
+            res["holder_symbol"] = hsym
         else:
-            # Insider (perorangan): bersihkan nama, tanpa simbol
             res["holder_name"] = NameCleaner.clean_holder_name(holder_name_raw, "insider")
             res["holder_symbol"] = None
 
-        # +++ VALIDASI HOLDER NAME
+        # Validate holder
         if not NameCleaner.is_valid_holder(res.get("holder_name")):
             res["skip_filing"] = True
             res["skip_reason"] = "Invalid holder_name"
             res.setdefault("parse_warnings", []).append("Invalid holder_name")
-            return res  # atau return None, sesuai preferensi kamu
+            return res
 
-        # ---------------------------
         # Holdings / percentages
-        # ---------------------------
         res["holding_before"] = NumberParser.parse_number(
             ex.find_number_after_keyword("Number of shares owned before the transaction")
         )
@@ -358,7 +353,7 @@ class IDXParser(BaseParser):
             (res.get("share_percentage_after") or 0.0) - (res.get("share_percentage_before") or 0.0)
         )
 
-        # Address (fallback heuristik)
+        # Address/phone (best-effort)
         addr = (
             ex.find_value_in_line("Address")
             or ex.find_value_after_keyword("Address")
@@ -381,11 +376,11 @@ class IDXParser(BaseParser):
         if phone:
             res["company_phone"] = phone
 
-        # Transactions parse
+        # Transactions parse (fills res["transactions"] and doc-level res["transaction_type"])
         self._extract_transactions_en(ex, res)
         self._postprocess_transactions(res)
 
-        # +++ VALIDASI ARAH TRANSAKSI (butuh res["transaction_type"] sudah ada)
+        # Sanity: direction vs percentages
         tx_type = res.get("transaction_type")
         if tx_type in ("buy", "sell"):
             ok, reason = _validate_tx_direction(
@@ -398,15 +393,14 @@ class IDXParser(BaseParser):
                 res["skip_filing"] = True
                 res["skip_reason"] = reason
                 res.setdefault("parse_warnings", []).append(reason)
-                return res  # atau return None
+                return res
 
-        # Mismatch alert (tetap kirim untuk observability)
+        # Observability flag
         self._flag_type_mismatch_if_any(res, filename)
         return res
 
-    # in IDXParser._extract_transactions_en
     def _extract_transactions_en(self, ex: TextExtractor, res: Dict[str, Any]) -> None:
-        # Doc-level declared type (termasuk transfer)
+        # Doc-level declared type
         for i, line in enumerate(ex.lines or []):
             if "transaction type" in (line or "").lower():
                 for j in range(i + 1, min(i + 8, len(ex.lines))):
@@ -423,7 +417,6 @@ class IDXParser(BaseParser):
         rows = self._parse_transactions_text_en(full_text)
         if not rows:
             rows = self._parse_transactions_lines_en(ex.lines or [])
-
         res["transactions"] = rows
 
     def _parse_transactions_text_en(self, text: str) -> List[Dict[str, Any]]:
@@ -439,12 +432,7 @@ class IDXParser(BaseParser):
         out: List[Dict[str, Any]] = []
         for m in pat.finditer(text):
             typ_raw = (m.group("typ") or "").strip().lower()
-            if typ_raw.startswith("b"):
-                typ = "buy"
-            elif typ_raw.startswith("s"):
-                typ = "sell"
-            else:
-                typ = "transfer"
+            typ = "buy" if typ_raw.startswith("b") else ("sell" if typ_raw.startswith("s") else "transfer")
             price = NumberParser.parse_number(m.group("price")) or 0.0
             amt = NumberParser.parse_number(m.group("amount")) or 0
             out.append({
@@ -469,12 +457,7 @@ class IDXParser(BaseParser):
             if not m:
                 continue
             typ_raw = (m.group("typ") or "").lower()
-            if typ_raw.startswith("b"):
-                typ = "buy"
-            elif typ_raw.startswith("s"):
-                typ = "sell"
-            else:
-                typ = "transfer"
+            typ = "buy" if typ_raw.startswith("b") else ("sell" if typ_raw.startswith("s") else "transfer")
             price = NumberParser.parse_number(m.group("price")) or 0.0
             amt = NumberParser.parse_number(m.group("amount")) or 0
             out.append({
@@ -488,15 +471,12 @@ class IDXParser(BaseParser):
 
     def _postprocess_transactions(self, res: Dict[str, Any]) -> None:
         txs = res.get("transactions") or []
-
         buy_sell = [t for t in txs if t.get("type") in {"buy", "sell"}]
         transfers = [t for t in txs if t.get("type") == "transfer"]
 
-        # --- Totals (rows vs holdings delta) ---
-        rows_amt = sum(t.get("amount", 0) for t in buy_sell)             # hanya BUY/SELL
+        rows_amt = sum(t.get("amount", 0) for t in buy_sell)
         rows_val = sum(t.get("value", 0.0) for t in buy_sell)
 
-        # Delta holdings (utamakan ini untuk amount_transacted)
         hb = res.get("holding_before")
         ha = res.get("holding_after")
         delta_amt = None
@@ -506,17 +486,14 @@ class IDXParser(BaseParser):
         except Exception:
             delta_amt = None
 
-        # Set field utama
-        res["amount_transacted_rows"] = rows_amt                    # referensi/debug
+        res["amount_transacted_rows"] = rows_amt
         res["amount_transacted"] = (delta_amt if (delta_amt is not None) else rows_amt)
-        res["transaction_value"] = rows_val                         # nilai dari baris BUY/SELL (tetap)
+        res["transaction_value"] = rows_val
 
-        # Transfer-only metrics (tetap dipisah)
         res["has_transfer"] = bool(transfers)
         res["amount_transferred"] = sum(t.get("amount", 0) for t in transfers)
         res["value_transferred"] = sum(t.get("value", 0.0) for t in transfers)
 
-        # Doc-level type jika belum ada
         if not res.get("transaction_type"):
             kinds = {t.get("type") for t in txs}
             if kinds == {"transfer"}:
@@ -524,19 +501,16 @@ class IDXParser(BaseParser):
             elif kinds <= {"buy", "sell"} and len({t["type"] for t in buy_sell}) == 1:
                 res["transaction_type"] = buy_sell[0]["type"]
 
-        # Weighted average price untuk BUY/SELL saja (tidak untuk transfer)
         total_amt = sum(t.get("amount", 0) for t in buy_sell if t.get("amount", 0) > 0)
         if total_amt:
             wavg = sum((t.get("price", 0.0) * t.get("amount", 0)) for t in buy_sell) / total_amt
             res["price"] = round(wavg, 2)
 
-        # Simpan rincian price_transaction (BUY/SELL only)
         res["price_transaction"] = {
             "prices": [t.get("price", 0.0) for t in buy_sell if t.get("amount", 0) > 0],
             "amount_transacted": [t.get("amount", 0) for t in buy_sell if t.get("amount", 0) > 0],
         }
 
-        # Tanda transfer
         res["is_transfer"] = res.get("is_transfer", False) or res["has_transfer"]
 
     def _flag_type_mismatch_if_any(self, res: Dict[str, Any], filename: str) -> None:
@@ -593,8 +567,8 @@ class IDXParser(BaseParser):
                 {
                     "symbol": res.get("symbol"),
                     "company_name": res.get("company_name"),
-                    "document_type": flag["document_type"],
-                    "inferred_type": flag["inferred_type"],
+                    "document_type": doc_type,
+                    "inferred_type": inferred,
                     "explanation": why,
                     "holding_before": hb,
                     "holding_after": ha,

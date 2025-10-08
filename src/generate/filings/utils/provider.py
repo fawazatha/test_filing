@@ -122,17 +122,56 @@ def get_company_info(symbol_full: str) -> CompanyInfo | None:
     return _lookup_company(symbol_full)
 
 
-def get_tags(tx_type: str, before_pct: float, after_pct: float):
-    tx = (tx_type or "").lower()
-    if tx=="sell":
-        tags = ["Bearish","Divestment","Ownership Change","Insider Trading"]
-    elif tx=="buy":
-        tags = ["Bullish","Investment","Ownership Change","Insider Trading"]
-    else:
-        tags = ["Neutral","Ownership Change","Insider Trading"]
-    if (before_pct<50<=after_pct) or (before_pct>=50>after_pct):
-        tags.append("Takeover")
-    return tags
+def get_tags(
+    tx_type: str,
+    before_pct: float | None,
+    after_pct: float | None,
+    body: str | None = None,   # optional, if you want to detect MESOP/free-float later
+) -> list[str]:
+    """
+    Canonical tags for idx_filings. Enforces the 9-tag whitelist:
+    ['bullish','bearish','takeover','investment','divestment',
+     'free-float-requirement','MESOP','inheritance','share-transfer']
+    """
+    tx = (tx_type or "").strip().lower()
+    tags: set[str] = set()
+
+    # primary tags from tx type
+    if tx == "buy":
+        tags.update(["investment", "bullish"])
+    elif tx == "sell":
+        tags.update(["divestment", "bearish"])
+    elif tx == "transfer":
+        tags.add("share-transfer")
+    # (neutral/other → no bullish/bearish/invest/divest)
+
+    # takeover only on crossings of 50%
+    try:
+        b = float(before_pct) if before_pct is not None else None
+        a = float(after_pct)  if after_pct  is not None else None
+        if b is not None and a is not None:
+            if (b < 50 <= a) or (b >= 50 > a):
+                tags.add("takeover")
+    except Exception:
+        pass
+
+    # (Optional) detect MESOP/free-float/inheritance from body text if you pass it in.
+    # Keep commented unless you plan to pass `body=` from processors:
+    # tl = (body or "").lower()
+    # if any(k in tl for k in ["mesop","msop","esop","program opsi","employee stock option"]):
+    #     tags.add("MESOP")
+    # if any(k in tl for k in ["free float","free-float","freefloat","porsi publik"]):
+    #     tags.add("free-float-requirement")
+    # if any(k in tl for k in ["waris","inheritance","hibah","grant","bequest"]):
+    #     tags.update(["inheritance","share-transfer"])
+
+    # normalize & enforce whitelist
+    whitelist = {
+        "bullish","bearish","takeover","investment","divestment",
+        "free-float-requirement","MESOP","inheritance","share-transfer",
+    }
+    out = sorted(t for t in {t.strip().lower() for t in tags} if t in whitelist)
+    return out
 
 
 def configure_paths(latest_price_path: str | None = None, company_map_path: str | None = None) -> None:

@@ -1,3 +1,4 @@
+# parser_non_idx.py
 from __future__ import annotations
 
 import os
@@ -21,20 +22,13 @@ from .utils.company_resolver import (
 
 logger = logging.getLogger(__name__)
 
-# -------------------------------
-# Helper: validasi arah transaksi
-# -------------------------------
+
 def _validate_tx_direction(
     before: Optional[float],
     after: Optional[float],
     tx_type: str,
     eps: float = 1e-3
 ) -> Tuple[bool, Optional[str]]:
-    """
-    Direction sanity:
-      - buy  => after >= before (±eps)
-      - sell => after <= before (±eps)
-    """
     try:
         b = float(before) if before is not None else None
         a = float(after) if after is not None else None
@@ -79,9 +73,6 @@ class NonIDXParser(BaseParser):
         self._debug_trace = os.getenv("COMPANY_RESOLVE_DEBUG", "0") == "1"
         self._synonym_enable = os.getenv("NONIDX_RESOLVE_SYNONYM_ENABLE", "1") != "0"
 
-    # -------------------------------
-    # Company map helpers
-    # -------------------------------
     @staticmethod
     def _normalize_symbol(sym: str) -> str:
         s = (sym or "").strip().upper()
@@ -119,9 +110,7 @@ class NonIDXParser(BaseParser):
             exists = probe in (self._rev_company_map or {})
             logger.info("[company_map] probe_key='%s' present=%s", probe, exists)
 
-    # -------------------------------
-    # Entry point
-    # -------------------------------
+    # == Entry point ==
     def parse_single_pdf(
         self, filepath: str, filename: str, pdf_mapping: Dict[str, Any]
     ) -> Optional[List[Dict[str, Any]]]:
@@ -144,7 +133,9 @@ class NonIDXParser(BaseParser):
                     self._blocked_already_logged = True
                     return None
 
-                data_rows = self._process_table_rows(table, all_text, title_line, emiten_name, filename)
+                data_rows = self._process_table_rows(
+                    table, all_text, title_line, emiten_name, filename
+                )
 
                 filtered_rows = [
                     entry for entry in data_rows
@@ -161,9 +152,7 @@ class NonIDXParser(BaseParser):
             self._blocked_already_logged = True
             return None
 
-    # -------------------------------
-    # PDF helpers
-    # -------------------------------
+    # == PDF helpers ==
     def _extract_last_page_table(self, last_page) -> Optional[List[List[str]]]:
         table_settings = {
             "vertical_strategy": "lines",
@@ -230,9 +219,7 @@ class NonIDXParser(BaseParser):
             return m.group(1).strip()
         return None
 
-    # -------------------------------
-    # Resolve symbol (local)
-    # -------------------------------
+    # == Company resolution ==
     def _resolve_symbol_from_emiten_local(self, emiten_name: Optional[str], full_text: str) -> Optional[str]:
         if not self._symbol_to_name or not self._rev_company_map:
             return None
@@ -285,8 +272,6 @@ class NonIDXParser(BaseParser):
                     logger.info("[nonidx-resolve] token-scan hit cand=%s", cand)
                 return cand
 
-        # (opsional) sinonim emiten bisa dimasukkan di sini bila tersedia
-
         try:
             if self._debug_trace:
                 self.alert_manager.log_alert(
@@ -298,9 +283,7 @@ class NonIDXParser(BaseParser):
             pass
         return None
 
-    # -------------------------------
-    # Row processing
-    # -------------------------------
+    # == Row processing ==
     def _coerce_dash_zero(self, s: Any, as_percentage: bool = False):
         txt = (str(s or "")).strip()
         if txt in {"-", "–", "—", ""}:
@@ -385,35 +368,34 @@ class NonIDXParser(BaseParser):
         except Exception:
             pass
 
-        # Holder cleaning & validation
         holder_type = NameCleaner.classify_holder_type(holder_name_raw)
         holder_name = NameCleaner.clean_holder_name(holder_name_raw, holder_type)
 
-        # +++ VALIDASI HOLDER NAME
         if not NameCleaner.is_valid_holder(holder_name):
             return None
 
         share_pct_transaction = round(abs(float(pct_after) - float(pct_before)), 3)
-        transaction_type, tags = TransactionClassifier.classify_transaction_type(
+
+        # Classify tx type from text/percentages (prelim; tags will be recomputed canonically)
+        tx_type, _prelim = TransactionClassifier.classify_transaction_type(
             all_text, float(pct_before), float(pct_after)
         )
 
-        # +++ VALIDASI ARAH TRANSAKSI
-        if transaction_type in ("buy", "sell"):
-            ok, reason = _validate_tx_direction(pct_before, pct_after, transaction_type)
+        # Direction sanity
+        if tx_type in ("buy", "sell"):
+            ok, reason = _validate_tx_direction(pct_before, pct_after, tx_type)
             if not ok:
-                # kamu bisa tulis alert jika perlu:
-                # self.alert_manager.log_alert(source_name, "Transaction Direction Invalid", {"reason": reason})
                 return None
 
+        # Build base filing
         filing: Dict[str, Any] = {
             "title": title_line.strip(),
             "body": all_text.strip(),
             "source": source_name,
-            "timestamp": None,
-            "tags": tags,
+            "timestamp": None,  # set upstream from announcement
+            "tags": [],         # filled below (standardized)
             "symbol": None,
-            "transaction_type": transaction_type,
+            "transaction_type": tx_type,
             "holder_type": holder_type,
             "holding_before": holding_before,
             "holding_after": holding_after,
@@ -428,6 +410,7 @@ class NonIDXParser(BaseParser):
             "UID": None,
         }
 
+        # Company symbol (best effort)
         try:
             sym = self._resolve_symbol_from_emiten_local(emiten_name, all_text)
             if sym:
@@ -446,20 +429,24 @@ class NonIDXParser(BaseParser):
                     "min_score": int(os.getenv("NONIDX_RESOLVE_MIN_SCORE", "88")),
                     "debug": self._debug_trace,
                 }
-                # NON-BLOCKING: ke alerts_non_idx.json
-                self.alert_manager.log_alert(
-                    source_name,
-                    "Symbol Not Resolved",
-                    payload
-                )
+                self.alert_manager.log_alert(source_name, "Symbol Not Resolved", payload)
             except Exception:
                 logger.warning(f"[alert] Symbol Not Resolved for {source_name} (emiten='{emiten_name}')")
 
+        # === Standardized tags ===
+        flags = TransactionClassifier.detect_flags_from_text(all_text)
+        txns = [{"type": tx_type, "amount": filing["amount_transaction"] or 0}] if tx_type else []
+
+        filing["tags"] = TransactionClassifier.compute_filings_tags(
+            txns=txns,
+            share_percentage_before=filing["share_percentage_before"],
+            share_percentage_after=filing["share_percentage_after"],
+            flags=flags,
+        )
+
         return filing
 
-    # -------------------------------
-    # Output
-    # -------------------------------
+    # == Output ==
     def validate_parsed_data(self, data: List[Dict[str, Any]]) -> bool:
         return bool(data)
 
