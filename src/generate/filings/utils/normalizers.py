@@ -1,42 +1,47 @@
 from __future__ import annotations
-import re
-from datetime import datetime
+from typing import Dict, List, Set
 
-def normalize_symbol(sym: str|None, issuer_code: str|None=None) -> str|None:
-    """
-    Normalize symbol to UPPER + ensure '.JK' suffix.
-    Priority: parsed `symbol` -> fallback `issuer_code` -> None.
-    """
-    cand = (sym or "").strip().upper() or (issuer_code or "").strip().upper()
-    if not cand:
-        return None
-    return cand if cand.endswith(".JK") else f"{cand}.JK"
+WHITELIST: Set[str] = {
+    "bullish","bearish","takeover","investment","divestment",
+    "free-float-requirement","MESOP","inheritance","share-transfer",
+}
 
-def slug(s: str) -> str:
-    s = (s or "").lower().strip()
-    repl = {"ñ":"n","ç":"c","·":"-","/":"-","_":"-",
-            ",":"-",":":"-",";":"-"}
-    for k,v in repl.items(): s = s.replace(k,v)
-    s = re.sub(r"[^a-z0-9 \-]","",s)
-    s = re.sub(r"\s+","-",s)
-    s = re.sub(r"-{2,}","-",s)
-    return s.strip("-")
+def _titlecase_like(s: str | None) -> str | None:
+    if not s:
+        return s
+    # Title Case while preserving dashes (Software-It-Services)
+    parts = []
+    for token in str(s).split("-"):
+        parts.append(token.strip().title())
+    return "-".join(p for p in parts if p)
 
-def parse_timestamp(ts: str|None) -> tuple[str|None, str]:
-    if not ts: return None, "an unknown date"
-    try:
-        if "T" in ts: dt = datetime.fromisoformat(ts.replace("Z","+00:00"))
-        elif "-" in ts: dt = datetime.strptime(ts,"%Y-%m-%d %H:%M:%S")
-        else: dt = datetime.strptime(ts,"%d %b %Y %H:%M:%S")
-        return dt.strftime("%Y-%m-%d %H:%M:%S"), dt.strftime("%B %d, %Y")
-    except: return None, "an unknown date"
+def normalize_row(row: Dict) -> Dict:
+    # tags: whitelist + lowercase + list
+    tags = row.get("tags") or []
+    if isinstance(tags, str):
+        # if someone accidentally json-dumped into a string
+        import json
+        try:
+            tags = json.loads(tags)
+        except Exception:
+            tags = []
+    tags = sorted({str(t).strip().lower() for t in tags if str(t).strip().lower() in WHITELIST})
+    row["tags"] = tags
 
-def safe_int(x, default=0):
-    try: return int(x)
-    except:
-        try: return int(float(str(x).replace(",","")))
-        except: return default
+    # price_transaction: ensure dict, not string
+    pt = row.get("price_transaction")
+    if isinstance(pt, str):
+        import json
+        try:
+            row["price_transaction"] = json.loads(pt)
+        except Exception:
+            pass
 
-def safe_float(x, default=0.0):
-    try: return float(str(x).replace(",",""))
-    except: return default
+    # sector/sub_sector Title Case
+    row["sector"] = _titlecase_like(row.get("sector"))
+    row["sub_sector"] = _titlecase_like(row.get("sub_sector"))
+
+    return row
+
+def normalize_all(rows: List[Dict]) -> List[Dict]:
+    return [normalize_row(r) for r in rows]

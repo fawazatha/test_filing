@@ -1,28 +1,40 @@
 from __future__ import annotations
-import logging
-from typing import List, Optional
-from .loaders import build_download_map, load_parsed_items, save_json, ensure_dir
-from .processors import enrich_and_filter_items
 
-logger = logging.getLogger(__name__)
+import json
+from pathlib import Path
+from typing import List
 
-def generate_filings(
-    parsed_files: Optional[List[str]] = None,
-    downloads_file: str = "data/downloaded_pdfs.json",
-    output_file: str = "data/filings_data.json",
-    alerts_file: str = "alerts/suspicious_alerts.json",
+from .loaders import load_parsed_files, build_downloads_meta_map
+from .processors import process_all
+from .normalizers import normalize_all
+from .consolidators import dedupe_rows
+
+def run(
+    *,
+    parsed_files: List[str],
+    downloads_file: str,
+    output_file: str,
+    alerts_file: str | None = None,  # reserved (suspicious)
 ) -> int:
-    parsed_files = parsed_files or ["data/parsed_non_idx_output.json", "data/parsed_idx_output.json"]
-    logger.info("Starting filings generation...")
-    download_map = build_download_map(downloads_file)
-    parsed_items = load_parsed_items(parsed_files)
+    # 1) load inputs
+    parsed_lists = load_parsed_files(parsed_files)
+    meta_map = build_downloads_meta_map(downloads_file)
 
-    results, alerts = enrich_and_filter_items(parsed_items, download_map)
+    # 2) process → rows
+    rows = process_all(parsed_lists, meta_map)
 
-    ensure_dir(output_file);  save_json(output_file, results)
-    logger.info("Wrote %d filings → %s", len(results), output_file)
+    # 3) normalize
+    rows = normalize_all(rows)
 
-    ensure_dir(alerts_file);  save_json(alerts_file, alerts)
-    logger.info("Wrote %d alerts → %s", len(alerts), alerts_file)
+    # 4) dedupe
+    rows = dedupe_rows(rows)
 
-    return len(results)
+    # 5) (optional) filter out duplicates from downstream alerts
+    # leave all rows in the JSON; email/gating can skip is_duplicate
+
+    # 6) save
+    outp = Path(output_file)
+    outp.parent.mkdir(parents=True, exist_ok=True)
+    outp.write_text(json.dumps(rows, ensure_ascii=False, indent=2), encoding="utf-8")
+
+    return len(rows)

@@ -21,6 +21,20 @@ on:
         description: "Lookback minutes (lookback mode only)"
         required: false
         default: "120"
+      # ===== NEW: company assets controls =====
+      refresh_company_assets:
+        description: "Refresh company map + latest prices before run?"
+        type: boolean
+        default: true
+      prices_lookback_days:
+        description: "Lookback days for latest prices"
+        required: false
+        default: "14"
+      no_price_fallback:
+        description: "Disable per-symbol fallback (not recommended)"
+        type: boolean
+        default: false
+      # ===== Existing flags =====
       upload_to_supabase:
         description: "Upload filings to Supabase? (needs secrets)"
         type: boolean
@@ -130,12 +144,18 @@ jobs:
           TIME="$(echo "${TIME_RAW:-}" | tr -d '[:space:]')"
           digits_only() { printf '%s' "$1" | tr -cd '0-9'; }
 
-          # Window selection
+          # ===== Default behavior on schedule =====
           if [[ "${{ github.event_name }}" == "schedule" ]]; then
             # default scheduled run: lookback with slight overlap + upload filings
             WIN=$(( 120 + ${OVERLAP_MINUTES:-1} ))
             ARGS+=( "--window-minutes" "$WIN" "--upload" "--table" "idx_filings" )
+            # NEW: always refresh company assets on schedule
+            ARGS+=( "--refresh-company-assets" "--prices-lookback-days" "${{ inputs.prices_lookback_days }}" )
+            if [[ "${{ inputs.no_price_fallback }}" == "true" ]]; then
+              ARGS+=( "--no-price-fallback" )
+            fi
           else
+            # ===== Manual workflow_dispatch modes =====
             case "$MODE" in
               single_day)
                 # Expect TIME: YYYYMMDD|HH:MM|HH:MM
@@ -176,6 +196,14 @@ jobs:
             if [[ "${{ inputs.upload_to_supabase }}" == "true" ]]; then
               ARGS+=( "--upload" "--table" "idx_filings" )
             fi
+
+            # NEW: refresh company assets when requested (default true)
+            if [[ "${{ inputs.refresh_company_assets }}" == "true" ]]; then
+              ARGS+=( "--refresh-company-assets" "--prices-lookback-days" "${{ inputs.prices_lookback_days }}" )
+              if [[ "${{ inputs.no_price_fallback }}" == "true" ]]; then
+                ARGS+=( "--no-price-fallback" )
+              fi
+            fi
           fi
 
           # ==== Articles generation & upload news ====
@@ -213,6 +241,7 @@ jobs:
             artifacts/*.zip
             data/*.json
             data/*.jsonl
+            data/company/*.json
             alerts/*.json
             alerts_inserted/*.json
             alerts_not_inserted/*.json

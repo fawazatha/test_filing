@@ -5,8 +5,12 @@ import logging
 import os
 import threading
 from pathlib import Path
-from typing import Any
-from ..types import CompanyInfo
+from typing import Any, Optional, Dict, List
+
+from ..types import CompanyInfo  # adjust import if your types module lives elsewhere
+# AFTER (use this)
+from parser.utils.transaction_classifier import TransactionClassifier as _TC
+
 
 logger = logging.getLogger(__name__)
 
@@ -76,19 +80,17 @@ def _ensure_map_loaded() -> None:
                 _map_cache, _map_mtime = {}, None
 
 
-def _lookup_price(symbol_full: str) -> float | None:
+def get_latest_price(symbol_full: str) -> float | None:
     _ensure_prices_loaded()
     data = _prices_cache or {}
     prices = data.get("prices", data)
 
-    entry = prices.get(symbol_full)
+    entry = prices.get(symbol_full) or prices.get(symbol_full.upper())
     if entry is None:
-        entry = prices.get(symbol_full.upper())
-        if entry is None:
-            return None
+        return None
 
     if isinstance(entry, dict):
-        val = entry.get("close")
+        val = entry.get("close") or entry.get("last") or entry.get("price")
         try:
             return float(val) if val is not None else None
         except (TypeError, ValueError):
@@ -100,7 +102,7 @@ def _lookup_price(symbol_full: str) -> float | None:
         return None
 
 
-def _lookup_company(symbol_full: str) -> CompanyInfo | None:
+def get_company_info(symbol_full: str) -> CompanyInfo | None:
     _ensure_map_loaded()
     mapping = _map_cache or {}
     rec = mapping.get(symbol_full) or mapping.get(symbol_full.upper())
@@ -114,72 +116,31 @@ def _lookup_company(symbol_full: str) -> CompanyInfo | None:
     return CompanyInfo(company_name=name, sector=sector, sub_sector=sub_sector)
 
 
-def get_latest_price(symbol_full: str) -> float | None:
-    return _lookup_price(symbol_full)
-
-
-def get_company_info(symbol_full: str) -> CompanyInfo | None:
-    return _lookup_company(symbol_full)
-
-
 def get_tags(
     tx_type: str,
-    before_pct: float | None,
-    after_pct: float | None,
-    body: str | None = None,   # optional, if you want to detect MESOP/free-float later
-) -> list[str]:
+    before_pct: Optional[float],
+    after_pct: Optional[float],
+    *,
+    body: str | None = None,
+) -> List[str]:
     """
-    Canonical tags for idx_filings. Enforces the 9-tag whitelist:
-    ['bullish','bearish','takeover','investment','divestment',
-     'free-float-requirement','MESOP','inheritance','share-transfer']
+    Return canonical tags (lowercase, list) using the 9-tag whitelist.
+
+    tx_type : 'buy' | 'sell' | 'transfer' | 'neutral'
+    before_pct/after_pct : share % before/after (for takeover crossing)
+    body : optional text to detect MESOP / free-float / inheritance / transfer hints
     """
     tx = (tx_type or "").strip().lower()
-    tags: set[str] = set()
+    txns = []
+    if tx in {"buy", "sell", "transfer"}:
+        txns = [{"type": tx, "amount": 1}]  # we don't have per-row amounts here
 
-    # primary tags from tx type
-    if tx == "buy":
-        tags.update(["investment", "bullish"])
-    elif tx == "sell":
-        tags.update(["divestment", "bearish"])
-    elif tx == "transfer":
-        tags.add("share-transfer")
-    # (neutral/other → no bullish/bearish/invest/divest)
+    flags: Dict[str, bool] = _TC.detect_flags_from_text(body or "") if body else {}
 
-    # takeover only on crossings of 50%
-    try:
-        b = float(before_pct) if before_pct is not None else None
-        a = float(after_pct)  if after_pct  is not None else None
-        if b is not None and a is not None:
-            if (b < 50 <= a) or (b >= 50 > a):
-                tags.add("takeover")
-    except Exception:
-        pass
-
-    # (Optional) detect MESOP/free-float/inheritance from body text if you pass it in.
-    # Keep commented unless you plan to pass `body=` from processors:
-    # tl = (body or "").lower()
-    # if any(k in tl for k in ["mesop","msop","esop","program opsi","employee stock option"]):
-    #     tags.add("MESOP")
-    # if any(k in tl for k in ["free float","free-float","freefloat","porsi publik"]):
-    #     tags.add("free-float-requirement")
-    # if any(k in tl for k in ["waris","inheritance","hibah","grant","bequest"]):
-    #     tags.update(["inheritance","share-transfer"])
-
-    # normalize & enforce whitelist
-    whitelist = {
-        "bullish","bearish","takeover","investment","divestment",
-        "free-float-requirement","MESOP","inheritance","share-transfer",
-    }
-    out = sorted(t for t in {t.strip().lower() for t in tags} if t in whitelist)
-    return out
-
-
-def configure_paths(latest_price_path: str | None = None, company_map_path: str | None = None) -> None:
-    global LATEST_PRICE_PATHS, COMPANY_MAP_PATH, _prices_mtime, _map_mtime
-    if latest_price_path:
-        LATEST_PRICE_PATHS = [latest_price_path]
-    if company_map_path:
-        COMPANY_MAP_PATH = company_map_path
-
-    _prices_mtime = None
-    _map_mtime = None
+    tags = _TC.compute_filings_tags(
+        txns=txns,
+        share_percentage_before=before_pct,
+        share_percentage_after=after_pct,
+        flags=flags,
+    )
+    return tags  # already whitelist-enforced, lowercase

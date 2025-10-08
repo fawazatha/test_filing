@@ -11,6 +11,9 @@ Bonus:
 Perbaikan:
  - Normalisasi sector/sub_sector menjadi string konsisten (title-case), baik saat load cache,
    fetch dari remote, maupun saat merge—mencegah format dict/JSON atau slug nyasar ke downstream.
+ - Normalisasi symbol key ke bentuk ABC.JK (uniform).
+ - Carry-forward harga lama (keep_previous) bila tidak ada update pada jendela lookback.
+ - Hydrate lebih robust mencari berbagai varian key (dengan/ tanpa .JK).
 
 Tidak butuh perubahan schema Supabase.
 """
@@ -91,6 +94,13 @@ def _normalize_full(sym: str) -> str:
     s = (sym or "").upper().strip()
     return s if s.endswith(".JK") else f"{s}.JK"
 
+def _normalize_prices_dict(src: Dict[str, Any]) -> Dict[str, Any]:
+    """Normalize keys of prices dict to ABC.JK."""
+    out: Dict[str, Any] = {}
+    for k, v in (src or {}).items():
+        nk = _normalize_full((k or "").upper())
+        out[nk] = v
+    return out
 
 # --------------------------
 # Sector/sub_sector normalizers
@@ -158,7 +168,6 @@ def normalize_sector_entry(entry: Dict[str, Any]) -> Dict[str, Any]:
     entry["sub_sector"] = ss or ""
     return entry
 
-
 # --------------------------
 # Local cache IO (dengan normalisasi)
 # --------------------------
@@ -213,11 +222,10 @@ def save_local(mapping: Dict[str, Dict[str, str]], rows_meta: Dict[str, Any]):
             "sector": row.get("sector"),
             "sub_sector": row.get("sub_sector"),
         }
-        normed[sym] = normalize_sector_entry(out)
+        normed[_normalize_full(sym)] = normalize_sector_entry(out)
     OUT_JSON.parent.mkdir(parents=True, exist_ok=True)
     OUT_JSON.write_text(json.dumps(normed, ensure_ascii=False, indent=2), encoding="utf-8")
     META_JSON.write_text(json.dumps(rows_meta, ensure_ascii=False, indent=2), encoding="utf-8")
-
 
 # --------------------------
 # Remote helpers
@@ -291,7 +299,6 @@ def fetch_report() -> Optional[Dict[str, Dict[str, str]]]:
         out[_normalize_full(sym)] = entry
     return out
 
-
 # --------------------------
 # Build map: PROFILE base + REPORT overlay sectors
 # --------------------------
@@ -326,7 +333,6 @@ def build_map_from_remote() -> Optional[Tuple[Dict[str, Dict[str, str]], Dict[st
     }
     return base, meta
 
-
 # --------------------------
 # Prices
 # --------------------------
@@ -334,6 +340,7 @@ def build_map_from_remote() -> Optional[Tuple[Dict[str, Dict[str, str]], Dict[st
 def fetch_latest_price_for_symbol(sym_full: str) -> Optional[Dict[str, Any]]:
     if not SUPABASE_URL or not SUPABASE_KEY:
         return None
+    sym_full = _normalize_full(sym_full)
     url = _build_url(
         PRICES_TABLE,
         "date,close,updated_on",
@@ -383,9 +390,10 @@ def _latest_per_symbol_from_rows(rows: Iterable[dict]) -> Dict[str, Dict[str, An
     latest: Dict[str, Dict[str, Any]] = {}
     last_sym = None
     for row in rows:
-        sym = (row.get("symbol") or "").upper().strip()
-        if not sym:
+        raw = (row.get("symbol") or "").upper().strip()
+        if not raw:
             continue
+        sym = _normalize_full(raw)  # <-- pastikan selalu ABC.JK
         if sym != last_sym:
             if sym not in latest:
                 try:
@@ -397,8 +405,9 @@ def _latest_per_symbol_from_rows(rows: Iterable[dict]) -> Dict[str, Dict[str, An
 
 def refresh_latest_prices_program_only(symbols: List[str] | None = None,
                                       lookback_days: int = 7,
-                                      use_fallback: bool = True) -> Dict[str, Dict[str, Any]]:
-    """Bulk + group; lalu fallback per-simbol untuk yang miss."""
+                                      use_fallback: bool = True,
+                                      keep_previous: bool = True) -> Dict[str, Dict[str, Any]]:
+    """Bulk + group; lalu fallback per-simbol untuk yang miss; carry-forward harga lama bila diminta."""
     start_date = (datetime.utcnow().date() - timedelta(days=lookback_days)).isoformat()
     rows = _fetch_recent_rows_all(start_date)
     latest_all = _latest_per_symbol_from_rows(rows)
@@ -407,19 +416,32 @@ def refresh_latest_prices_program_only(symbols: List[str] | None = None,
         targets = {_normalize_full(s) for s in symbols}
         found: Dict[str, Dict[str, Any] | None] = {}
         for s in targets:
-            found[s] = latest_all.get(s) or latest_all.get(s.upper()) \
-                       or latest_all.get(s.replace(".JK", "").upper() + ".JK")
+            # latest_all sudah normalized, jadi lookup langsung
+            found[s] = latest_all.get(s)
         missing = [s for s, rec in found.items() if not rec]
 
+        # fallback per-simbol (tanpa batas tanggal) → ambil benar-benar latest
         if use_fallback and missing:
             for m in missing:
                 rec = fetch_latest_price_for_symbol(m)
                 if rec:
                     found[m] = rec
 
-        prices = {k: v for k, v in found.items() if v}
+        # normalize keys sebelum simpan
+        prices = { _normalize_full(k): v for k, v in found.items() if v }
     else:
-        prices = latest_all
+        prices = { _normalize_full(k): v for k, v in latest_all.items() }
+
+    # --- NEW: carry-forward harga lama bila tidak ada update untuk simbol tsb
+    if keep_previous and LATEST_PRICES_JSON.exists():
+        try:
+            prev_raw = json.loads(LATEST_PRICES_JSON.read_text(encoding="utf-8"))
+            prev = _normalize_prices_dict(prev_raw.get("prices", {}))
+            for s, rec in prev.items():
+                if s not in prices:
+                    prices[s] = rec
+        except Exception:
+            pass
 
     payload = {
         "updated_at": datetime.now(timezone.utc).isoformat().replace("+00:00", "Z"),
@@ -432,7 +454,6 @@ def refresh_latest_prices_program_only(symbols: List[str] | None = None,
     )
     log(f"Saved latest prices (program-only bulk): {LATEST_PRICES_JSON} ({len(prices)} symbols)")
     return prices
-
 
 # --------------------------
 # Main hybrid logic: invalidasi map pakai row_count
@@ -496,7 +517,6 @@ def get_company_map(force: bool = False) -> Dict[str, Dict[str, str]]:
     log("No company_map available.")
     return {}
 
-
 # --------------------------
 # Utilities: hydrate, bootstrap, reset, CLI
 # --------------------------
@@ -508,13 +528,30 @@ def hydrate_company_map_with_prices():
     if LATEST_PRICES_JSON.exists():
         try:
             p = json.loads(LATEST_PRICES_JSON.read_text(encoding="utf-8"))
-            prices_obj = p.get("prices", {}) if isinstance(p, dict) else {}
+            prices_obj = _normalize_prices_dict(p.get("prices", {}) if isinstance(p, dict) else {})
         except Exception:
             prices_obj = {}
 
+    def _get_price(prices: Dict[str, Any], sym: str):
+        # robust lookup: berbagai varian key
+        candidates = [
+            sym,
+            sym.upper(),
+            sym.replace(".JK", ""),
+            sym.replace(".JK", "").upper(),
+            _normalize_full(sym),
+        ]
+        for c in candidates:
+            nc = _normalize_full(c)
+            if nc in prices:
+                return prices[nc]
+            if c in prices:
+                return prices[c]
+        return None
+
     hydrated: Dict[str, Any] = {}
     for sym, info in mapping.items():
-        pr = prices_obj.get(sym) or prices_obj.get(sym.upper())
+        pr = _get_price(prices_obj, sym)
         hydrated[sym] = {
             **info,
             "latest_price": pr or None,
@@ -535,7 +572,12 @@ def bootstrap_all(lookback_days: int = 7, use_fallback: bool = True):
     """
     mapping = get_company_map(force=True)
     symbols = sorted(mapping.keys())
-    refresh_latest_prices_program_only(symbols=symbols, lookback_days=lookback_days, use_fallback=use_fallback)
+    refresh_latest_prices_program_only(
+        symbols=symbols,
+        lookback_days=lookback_days,
+        use_fallback=use_fallback,
+        keep_previous=True,
+    )
     hydrate_company_map_with_prices()
 
 def _safe_unlink(path: pathlib.Path):
@@ -578,7 +620,8 @@ def _cmd_refresh_prices(args):
     refresh_latest_prices_program_only(
         symbols=symbols,
         lookback_days=args.prices_lookback_days,
-        use_fallback=not args.no_fallback
+        use_fallback=not args.no_fallback,
+        keep_previous=not args.no_keep_previous_false,
     )
 
 def _cmd_refresh_all(args):
@@ -639,6 +682,9 @@ def _build_argparser():
                           help="Look back this many days for latest prices (default 7).")
     p_prices.add_argument("--no-fallback", action="store_true",
                           help="Disable per-symbol fallback for symbols missing in lookback window.")
+    # default keep_previous=True; bisa dimatikan pakai flag ini
+    p_prices.add_argument("--no-keep-previous-false", action="store_true",
+                          help="(internal) keep_previous stays True by default; this flag name is inverted to avoid breaking existing scripts.")
 
     p_all = sub.add_parser("refresh_all")
     p_all.add_argument("--prices-lookback-days", type=int, default=int(os.getenv("PRICES_LOOKBACK_DAYS", "7")))
