@@ -133,7 +133,10 @@ def _to_narrative_if_keyfacts(title: str, body: str, facts: Dict[str, Any]) -> T
             own = f" The filing notes a change in ownership from {hb} to {ha}."
 
     p1_core = f"{holder} {tx} " + (f"{_fmt_int(vol)} shares " if vol > 0 else "shares ")
-    p1 = f"{p1_core}of {cname} ({sym}) on {date_s}.{own}"
+    if date_s:
+        p1 = f"{p1_core}of {cname} ({sym}), according to the published announcement on {date_s}.{own}"
+    else:
+        p1 = f"{p1_core}of {cname} ({sym}), according to the published announcement.{own}"
 
     reason = facts.get("reason")
     p2_extra = f" Stated purpose: {reason}." if reason else ""
