@@ -21,7 +21,6 @@ on:
         description: "Lookback minutes (lookback mode only)"
         required: false
         default: "120"
-      # ==== Company assets (6) ====
       refresh_company_assets:
         description: "Refresh company map + latest prices before run?"
         type: boolean
@@ -34,7 +33,6 @@ on:
         description: "Disable per-symbol fallback (not recommended)"
         type: boolean
         default: false
-      # ==== Existing core flags (9-10) ====
       upload_to_supabase:
         description: "Upload filings to Supabase? (needs secrets)"
         type: boolean
@@ -43,10 +41,10 @@ on:
         description: "Send SES email alerts?"
         type: boolean
         default: false
-      news_table:
-        description: "Supabase news table (for articles)"
-        required: false
-        default: "idx_news"
+      upload_news:
+        description: "Upload generated articles to Supabase (idx_news or SUPABASE_NEWS_TABLE)?"
+        type: boolean
+        default: true
       verbose:
         description: "Verbose logs?"
         type: boolean
@@ -56,6 +54,8 @@ env:
   PYTHONPATH: src
   TZ: Asia/Jakarta
   OVERLAP_MINUTES: "1"
+  # Optional: override default news table used by orchestrator (--news-table default)
+  # SUPABASE_NEWS_TABLE: idx_news
 
 concurrency:
   group: idx-filings-manual
@@ -114,6 +114,8 @@ jobs:
           GROQ_API_KEY:   ${{ secrets.GROQ_API_KEY }}
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          # Optionally set the news table name for articles upload
+          SUPABASE_NEWS_TABLE:   ${{ secrets.SUPABASE_NEWS_TABLE }}
         shell: bash
         run: |
           set -euo pipefail
@@ -194,10 +196,14 @@ jobs:
             fi
           fi
 
-          # ==== Articles generation & upload news ====
-          # We always generate & upload unless you remove these lines.
+          # ==== Articles generation ====
           ARGS+=( "--generate-articles" "--articles-out" "data/articles.jsonl" )
-          ARGS+=( "--upload-news" "--news-table" "${{ inputs.news_table }}" "--prefer-symbol" )
+
+          # ==== Optional upload news (checkbox) ====
+          if [[ "${{ inputs.upload_news }}" == "true" || "${{ github.event_name }}" == "schedule" ]]; then
+            # --news-table will default to $SUPABASE_NEWS_TABLE or 'idx_news' inside the orchestrator
+            ARGS+=( "--upload-news" "--prefer-symbol" )
+          fi
 
           # ==== LLM toggling (auto-enable only if key present) ====
           if [[ -n "${GROQ_API_KEY:-}" || -n "${OPENAI_API_KEY:-}" || -n "${GEMINI_API_KEY:-}" ]]; then
