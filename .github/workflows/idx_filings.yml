@@ -21,7 +21,7 @@ on:
         description: "Lookback minutes (lookback mode only)"
         required: false
         default: "120"
-      # ===== NEW: company assets controls =====
+      # ==== Company assets (6) ====
       refresh_company_assets:
         description: "Refresh company map + latest prices before run?"
         type: boolean
@@ -34,7 +34,7 @@ on:
         description: "Disable per-symbol fallback (not recommended)"
         type: boolean
         default: false
-      # ===== Existing flags =====
+      # ==== Existing core flags (9-10) ====
       upload_to_supabase:
         description: "Upload filings to Supabase? (needs secrets)"
         type: boolean
@@ -43,22 +43,10 @@ on:
         description: "Send SES email alerts?"
         type: boolean
         default: false
-      generate_articles:
-        description: "Generate articles.jsonl from filings?"
-        type: boolean
-        default: true
-      upload_news:
-        description: "Upload articles to Supabase idx_news?"
-        type: boolean
-        default: true
       news_table:
-        description: "Supabase news table"
+        description: "Supabase news table (for articles)"
         required: false
         default: "idx_news"
-      use_llm:
-        description: "Use LLM if API key present"
-        type: boolean
-        default: true
       verbose:
         description: "Verbose logs?"
         type: boolean
@@ -149,7 +137,7 @@ jobs:
             # default scheduled run: lookback with slight overlap + upload filings
             WIN=$(( 120 + ${OVERLAP_MINUTES:-1} ))
             ARGS+=( "--window-minutes" "$WIN" "--upload" "--table" "idx_filings" )
-            # NEW: always refresh company assets on schedule
+            # Always refresh company assets on schedule
             ARGS+=( "--refresh-company-assets" "--prices-lookback-days" "${{ inputs.prices_lookback_days }}" )
             if [[ "${{ inputs.no_price_fallback }}" == "true" ]]; then
               ARGS+=( "--no-price-fallback" )
@@ -197,7 +185,7 @@ jobs:
               ARGS+=( "--upload" "--table" "idx_filings" )
             fi
 
-            # NEW: refresh company assets when requested (default true)
+            # Refresh company assets when requested (default true)
             if [[ "${{ inputs.refresh_company_assets }}" == "true" ]]; then
               ARGS+=( "--refresh-company-assets" "--prices-lookback-days" "${{ inputs.prices_lookback_days }}" )
               if [[ "${{ inputs.no_price_fallback }}" == "true" ]]; then
@@ -207,20 +195,15 @@ jobs:
           fi
 
           # ==== Articles generation & upload news ====
-          if [[ "${{ inputs.generate_articles }}" == "true" || "${{ github.event_name }}" == "schedule" ]]; then
-            ARGS+=( "--generate-articles" "--articles-out" "data/articles.jsonl" )
-          fi
-          if [[ "${{ inputs.upload_news }}" == "true" || "${{ github.event_name }}" == "schedule" ]]; then
-            ARGS+=( "--upload-news" "--news-table" "${{ inputs.news_table }}" "--prefer-symbol" )
-          fi
+          # We always generate & upload unless you remove these lines.
+          ARGS+=( "--generate-articles" "--articles-out" "data/articles.jsonl" )
+          ARGS+=( "--upload-news" "--news-table" "${{ inputs.news_table }}" "--prefer-symbol" )
 
           # ==== LLM toggling (auto-enable only if key present) ====
-          if [[ "${{ inputs.use_llm }}" == "true" ]]; then
-            if [[ -n "${GROQ_API_KEY:-}" || -n "${OPENAI_API_KEY:-}" || -n "${GEMINI_API_KEY:-}" ]]; then
-              ARGS+=( "--use-llm" )
-            else
-              echo "::notice::USE_LLM=true but no API key found; continuing without LLM."
-            fi
+          if [[ -n "${GROQ_API_KEY:-}" || -n "${OPENAI_API_KEY:-}" || -n "${GEMINI_API_KEY:-}" ]]; then
+            ARGS+=( "--use-llm" )
+          else
+            echo "::notice::No LLM API key found; continuing without LLM."
           fi
 
           # ==== Email alerts toggling ====
