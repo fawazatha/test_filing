@@ -169,6 +169,11 @@ def clean_row(row: Dict[str, Any]) -> Dict[str, Any]:
     # tickers -> None (sesuai permintaan)
     r["tickers"] = None
 
+    # Normalize timestamp (publish time) to ISO8601 WIB string (keep original if unparsable)
+    if "timestamp" in r and isinstance(r.get("timestamp"), str):
+        ts_parsed = _parse_dt_wib(r["timestamp"])
+        r["timestamp"] = _iso_wib(ts_parsed) or r["timestamp"]
+
     # NEW: normalize announcement_published_at to ISO8601 WIB (+07:00)
     if "announcement_published_at" in r:
         v = r.get("announcement_published_at")
@@ -185,10 +190,17 @@ def clean_row(row: Dict[str, Any]) -> Dict[str, Any]:
             except Exception:
                 r["announcement_published_at"] = str(v)
 
+    # If announcement_published_at missing, mirror from timestamp (per your directive)
+    if not r.get("announcement_published_at"):
+        ts = r.get("timestamp")
+        if isinstance(ts, str):
+            r["announcement_published_at"] = _iso_wib(_parse_dt_wib(ts)) or ts
+
     # pastikan required fields tidak kosong (biar cepat ketahuan)
     for k in REQUIRED_COLUMNS:
         if not r.get(k):
             logger.debug("Missing required field %s on row with title=%r", k, r.get("title"))
+            logger.warning("DROP row: missing %s (title=%r, symbol=%r, sector=%r, timestamp=%r)", k, r.get("title"), r.get("symbol"), r.get("sector"), r.get("timestamp"))
 
     # keep only allowed columns
     r = _filter_allowed(r, ALLOWED_COLUMNS)
