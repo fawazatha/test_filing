@@ -201,7 +201,7 @@ jobs:
                 if [[ -z "${WIN:-}" ]]; then WIN="${DEFAULT_WINDOW_MINUTES}"; fi
                 ARGS+=( "--window-minutes" "$WIN" )
                 ;;
-            esrange
+            esac
 
             if [[ "${{ inputs.upload_to_supabase }}" == "true" ]]; then
               ARGS+=( "--upload" "--table" "idx_filings" )
