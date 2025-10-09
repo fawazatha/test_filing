@@ -120,6 +120,15 @@ jobs:
         run: |
           set -euo pipefail
 
+          # ---------- Helper: add flag only if value is non-empty ----------
+          add_arg_if_set() {
+            local flag="$1"; shift
+            local val="${1:-}"
+            if [[ -n "${val}" ]]; then
+              ARGS+=("$flag" "$val")
+            fi
+          }
+
           ARGS=( "--zip-artifacts" "--artifact-prefix" "filings" )
 
           # Verbose?
@@ -130,38 +139,50 @@ jobs:
           MODE="${{ inputs.mode }}"
           TIME_RAW="${{ inputs.time }}"  # may be empty
 
-          # ========== Sanitize 'time' input ==========
+          # Sanitize 'time' input
           TIME="$(echo "${TIME_RAW:-}" | tr -d '[:space:]')"
           digits_only() { printf '%s' "$1" | tr -cd '0-9'; }
 
-          # ===== Default behavior on schedule =====
+          # ---------- Defaults that are safe across events ----------
+          DEFAULT_WINDOW_MINUTES=$(( 120 + ${OVERLAP_MINUTES:-1} ))
+          DEFAULT_PRICES_LOOKBACK_DAYS="14"
+
+          # Compute final lookback days:
+          # - For schedule: always use DEFAULT_PRICES_LOOKBACK_DAYS
+          # - For workflow_dispatch: use input if provided, else default
           if [[ "${{ github.event_name }}" == "schedule" ]]; then
-            # default scheduled run: lookback with slight overlap + upload filings
-            WIN=$(( 120 + ${OVERLAP_MINUTES:-1} ))
-            ARGS+=( "--window-minutes" "$WIN" "--upload" "--table" "idx_filings" )
+            PRICES_LOOKBACK_DAYS="${DEFAULT_PRICES_LOOKBACK_DAYS}"
+          else
+            PRICES_LOOKBACK_DAYS="${{ inputs.prices_lookback_days }}"
+            if [[ -z "${PRICES_LOOKBACK_DAYS:-}" ]]; then
+              PRICES_LOOKBACK_DAYS="${DEFAULT_PRICES_LOOKBACK_DAYS}"
+            fi
+          fi
+
+          # ===== Defaults on schedule =====
+          if [[ "${{ github.event_name }}" == "schedule" ]]; then
+            ARGS+=( "--window-minutes" "${DEFAULT_WINDOW_MINUTES}" "--upload" "--table" "idx_filings" )
             # Always refresh company assets on schedule
-            ARGS+=( "--refresh-company-assets" "--prices-lookback-days" "${{ inputs.prices_lookback_days }}" )
+            ARGS+=( "--refresh-company-assets" )
+            add_arg_if_set "--prices-lookback-days" "${PRICES_LOOKBACK_DAYS}"
             if [[ "${{ inputs.no_price_fallback }}" == "true" ]]; then
               ARGS+=( "--no-price-fallback" )
             fi
           else
             # ===== Manual workflow_dispatch modes =====
-            case "$MODE" in
+            case "${MODE}" in
               single_day)
                 # Expect TIME: YYYYMMDD|HH:MM|HH:MM
                 if [[ -z "${TIME:-}" || "${TIME}" != *"|"* ]]; then
                   echo "::error::For mode=single_day, 'time' must be 'YYYYMMDD|HH:MM|HH:MM'"; exit 1;
                 fi
                 IFS='|' read -r DATE SD ED <<< "$TIME"
-
                 DATE="$(digits_only "${DATE}")"
                 SD="${SD//[^0-9:]/}"
                 ED="${ED//[^0-9:]/}"
-
                 [[ ${#DATE} -eq 8 ]] || { echo "::error::DATE must be YYYYMMDD"; exit 1; }
                 [[ "$SD" =~ ^[0-2][0-9]:[0-5][0-9]$ ]] || { echo "::error::start time must be HH:MM"; exit 1; }
                 [[ "$ED" =~ ^[0-2][0-9]:[0-5][0-9]$ ]] || { echo "::error::end time must be HH:MM"; exit 1; }
-
                 ARGS+=( "--date" "$DATE" "--start-hhmm" "$SD" "--end-hhmm" "$ED" )
                 ;;
               range)
@@ -170,26 +191,26 @@ jobs:
                   echo "::error::For mode=range, 'time' must be 'YYYYMMDD..YYYYMMDD'"; exit 1;
                 fi
                 IFS='..' read -r FROMD TOD <<< "$TIME"
-
                 FROMD="$(digits_only "${FROMD}")"
                 TOD="$(digits_only "${TOD}")"
-
                 [[ ${#FROMD} -eq 8 && ${#TOD} -eq 8 ]] || { echo "::error::from/to must be YYYYMMDD"; exit 1; }
-
                 ARGS+=( "--from-date" "$FROMD" "--to-date" "$TOD" )
                 ;;
               lookback|*)
                 WIN="${{ inputs.window_minutes }}"
+                if [[ -z "${WIN:-}" ]]; then WIN="${DEFAULT_WINDOW_MINUTES}"; fi
                 ARGS+=( "--window-minutes" "$WIN" )
                 ;;
-            esac
+            esrange
+
             if [[ "${{ inputs.upload_to_supabase }}" == "true" ]]; then
               ARGS+=( "--upload" "--table" "idx_filings" )
             fi
 
             # Refresh company assets when requested (default true)
             if [[ "${{ inputs.refresh_company_assets }}" == "true" ]]; then
-              ARGS+=( "--refresh-company-assets" "--prices-lookback-days" "${{ inputs.prices_lookback_days }}" )
+              ARGS+=( "--refresh-company-assets" )
+              add_arg_if_set "--prices-lookback-days" "${PRICES_LOOKBACK_DAYS}"
               if [[ "${{ inputs.no_price_fallback }}" == "true" ]]; then
                 ARGS+=( "--no-price-fallback" )
               fi
@@ -199,7 +220,7 @@ jobs:
           # ==== Articles generation ====
           ARGS+=( "--generate-articles" "--articles-out" "data/articles.jsonl" )
 
-          # ==== Optional upload news (checkbox) ====
+          # ==== Optional upload news ====
           if [[ "${{ inputs.upload_news }}" == "true" || "${{ github.event_name }}" == "schedule" ]]; then
             # --news-table will default to $SUPABASE_NEWS_TABLE or 'idx_news' inside the orchestrator
             ARGS+=( "--upload-news" "--prefer-symbol" )

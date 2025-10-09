@@ -86,6 +86,9 @@ def _fmt_idr(n: float) -> str:
         return f"IDR {n}"
 
 def _date_str(ts: Optional[str]) -> str:
+    """
+    Legacy formatter (kept for non-published dates if ever needed).
+    """
     if not ts:
         return ""
     try:
@@ -97,7 +100,35 @@ def _date_str(ts: Optional[str]) -> str:
     except Exception:
         return ts
 
+def _date_str_wib(ts: Optional[str]) -> str:
+    """
+    Preferred human formatter for announcement_published_at (WIB label).
+    Accepts ISO8601 (with or without offset). Appends ' (WIB)'.
+    """
+    if not ts:
+        return ""
+    try:
+        dt = datetime.fromisoformat(ts.replace("Z", "+00:00"))
+        return dt.strftime("%B %d, %Y") + " (WIB)"
+    except Exception:
+        # If parsing fails, still show what we have + WIB hint.
+        return f"{ts} (WIB)"
+
+def _opening_sentence(facts: Dict[str, Any]) -> str:
+    """
+    Build the mandatory opening using announcement_published_at.
+    """
+    pub = facts.get("announcement_published_at")
+    human = _date_str_wib(pub) if pub else None
+    if human:
+        return f"According to the published announcement on {human}, "
+    return "According to the published announcement, "
+
 def _to_narrative_if_keyfacts(title: str, body: str, facts: Dict[str, Any]) -> Tuple[str, str]:
+    """
+    If LLM produced a 'Key Facts' style body, convert it into a readable narrative.
+    Opening line MUST reference announcement_published_at (WIB).
+    """
     if not body or not body.lstrip().lower().startswith("key facts"):
         return title, body
 
@@ -105,7 +136,9 @@ def _to_narrative_if_keyfacts(title: str, body: str, facts: Dict[str, Any]) -> T
     sym = facts.get("symbol") or ""
     tx = (facts.get("transaction_type") or "transaction").lower()
     holder = facts.get("holder_name") or facts.get("holder_type") or "an insider"
-    date_s = _date_str(facts.get("timestamp"))
+    # Use announcement_published_at for opening (WIB)
+    opening = _opening_sentence(facts)
+
     prices: List[float] = facts.get("prices") or []
     amounts: List[int] = facts.get("amount_transacted") or []
 
@@ -133,10 +166,8 @@ def _to_narrative_if_keyfacts(title: str, body: str, facts: Dict[str, Any]) -> T
             own = f" The filing notes a change in ownership from {hb} to {ha}."
 
     p1_core = f"{holder} {tx} " + (f"{_fmt_int(vol)} shares " if vol > 0 else "shares ")
-    if date_s:
-        p1 = f"{p1_core}of {cname} ({sym}), according to the published announcement on {date_s}.{own}"
-    else:
-        p1 = f"{p1_core}of {cname} ({sym}), according to the published announcement.{own}"
+    # Opening sentence already contains the "According to..." and date.
+    p1 = f"{p1_core}of {cname} ({sym}), {opening.rstrip()}{own}"
 
     reason = facts.get("reason")
     p2_extra = f" Stated purpose: {reason}." if reason else ""
@@ -231,10 +262,18 @@ class ArticleGenerator:
             "reason": reason,
             "timestamp": filing.get("timestamp"),
             "source": pdf_url,
+            # NEW: carry published announcement date through facts
+            "announcement_published_at": filing.get("announcement_published_at"),
         }
 
         title, body = self.summarizer.summarize_from_facts(facts)
         title, body = _to_narrative_if_keyfacts(title, body, facts)
+
+        # If body isn't a Key Facts narrative, ensure the required opening is prepended
+        if not body.lstrip().lower().startswith("according to the published announcement"):
+            opening = _opening_sentence(facts)
+            body = f"{opening}{body}"
+
         tags = self.classifier.infer_tags(facts, text_hint=None)
         sentiment = self.classifier.infer_sentiment(facts, text_hint=None)
 
@@ -250,6 +289,10 @@ class ArticleGenerator:
             dimension={},
             score=0.0,
         ).to_dict()
+
+        # surface for downstream validation / display
+        article["announcement_published_at"] = facts.get("announcement_published_at")
+
         return self._finalize(article)
 
     # ---------- FROM TEXT ----------
@@ -279,10 +322,17 @@ class ArticleGenerator:
             "reason": item.get("reason") or item.get("purpose"),
             "timestamp": item.get("timestamp"),
             "source": pdf_url,
+            # NEW: allow text item to provide published announcement date too
+            "announcement_published_at": item.get("announcement_published_at"),
         }
 
         title, body = self.summarizer.summarize_from_facts(facts, text_hint=text)
         title, body = _to_narrative_if_keyfacts(title, body, facts)
+
+        # Ensure opening sentence present
+        if not body.lstrip().lower().startswith("according to the published announcement"):
+            opening = _opening_sentence(facts)
+            body = f"{opening}{body}"
 
         tags = self.classifier.infer_tags(facts, text_hint=text)
         sentiment = self.classifier.infer_sentiment(facts, text_hint=text)
@@ -299,4 +349,7 @@ class ArticleGenerator:
             dimension={},
             score=0.0,
         ).to_dict()
+
+        article["announcement_published_at"] = facts.get("announcement_published_at")
+
         return self._finalize(article)
