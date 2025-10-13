@@ -1,52 +1,37 @@
-# src/generate/filings/normalizers.py
 from __future__ import annotations
 from typing import Any, Dict, List, Optional, Set
 import json
 import re
 
-# Whitelist tags (lowercase for comparison)
+# Ambil info sektor dari company_map via provider
+try:
+    from generate.filings.provider import get_company_info  # type: ignore
+except Exception:
+    # fallback relative
+    from provider import get_company_info  # type: ignore
+
+# Whitelist 9 tag
 WHITELIST: Set[str] = {
     "bullish","bearish","takeover","investment","divestment",
-    "free-float-requirement","mesop","inheritance","share-transfer",
+    "free-float-requirement","MESOP","inheritance","share-transfer",
 }
 
-_non_alnum = re.compile(r"[^a-z0-9]+", flags=re.IGNORECASE)
+_S1 = re.compile(r"([a-z0-9])([A-Z])")
+_S2 = re.compile(r"[^a-zA-Z0-9]+")
+
+def _titlecase_like(s: str | None) -> str | None:
+    if not s:
+        return s
+    parts = []
+    for token in str(s).split("-"):
+        parts.append(token.strip().title())
+    return "-".join(p for p in parts if p)
 
 def _kebab(s: Optional[str]) -> Optional[str]:
-    """Ubah string ke kebab-case: 'Oil, Gas & Coal' -> 'oil-gas-coal'."""
     if not s:
         return None
-    s = str(s).strip().lower()
-    s = _non_alnum.sub("-", s)      # ganti non-alnum jadi '-'
-    s = re.sub(r"-{2,}", "-", s)    # rapikan '---' -> '-'
-    s = s.strip("-")
-    return s or None
-
-def _first_str(x: Any) -> Optional[str]:
-    """Ambil string pertama bermakna dari value (string/list/None/other)."""
-    if x is None:
-        return None
-    if isinstance(x, list):
-        for v in x:
-            if isinstance(v, str) and v.strip():
-                return v.strip()
-        return None
-    if isinstance(x, str):
-        s = x.strip()
-        return s if s else None
-    try:
-        s = str(x).strip()
-        return s if s else None
-    except Exception:
-        return None
-
-def _normalize_symbol(sym: Optional[str]) -> Optional[str]:
-    if not sym:
-        return None
-    s = str(sym).strip().upper()
-    if not s:
-        return None
-    return s if s.endswith(".JK") else f"{s}.JK"
+    ss = re.sub(r"[^A-Za-z0-9]+", "-", str(s)).strip("-").lower()
+    return ss or None
 
 def _to_int(v: Any) -> int | None:
     if v is None or v == "": return None
@@ -67,15 +52,13 @@ def _ensure_list(v: Any) -> Optional[List[Any]]:
     if isinstance(v, list): return v
     if isinstance(v, str):
         s = v.strip()
-        # coba parse JSON list
         try:
             arr = json.loads(s)
             if isinstance(arr, list):
                 return arr
         except Exception:
             pass
-        # postgres array-style {"a","b"}
-        if s.startswith("{") and s.endswith("}"):
+        if s.startswith("{") and s.endswith("}"):  # postgres array
             inner = s[1:-1]
             if not inner: return []
             out, buf, quote = [], [], False
@@ -90,76 +73,70 @@ def _ensure_list(v: Any) -> Optional[List[Any]]:
                 buf.append(ch)
             if buf: out.append(''.join(buf).strip())
             return [p.strip('"') for p in out]
-        return [v] if s else []
+        return [v]
     try:
         return list(v)
     except Exception:
         return [str(v)]
 
 def normalize_row(row: Dict) -> Dict:
-    # --- tags: parse, lower, whitelist ---
+    # tags whitelist (lower)
     tags = row.get("tags")
     if tags is not None:
         if isinstance(tags, str):
-            # coba JSON
             try:
-                parsed = json.loads(tags)
-                tags = parsed if isinstance(parsed, list) else [tags]
+                tags = json.loads(tags)
             except Exception:
                 tags = [tags]
         if isinstance(tags, list):
-            cleaned = []
-            for t in tags:
-                tt = str(t).strip()
-                if not tt:
-                    continue
-                if tt.lower() in WHITELIST:
-                    cleaned.append(tt.lower())
-            tags = cleaned
-        else:
-            tags = []
+            tags = [str(t).strip().lower() for t in tags if str(t).strip().lower() in WHITELIST]
         row["tags"] = tags
 
-    # --- symbol: isi dari tickers jika kosong ---
-    sym = _first_str(row.get("symbol"))
-    if not sym:
-        tickers = _ensure_list(row.get("tickers")) or []
-        for t in tickers:
-            if isinstance(t, str) and t.strip():
-                sym = t.strip()
-                break
-    row["symbol"] = _normalize_symbol(sym) or None
+    # tickers → None (pakai field single `symbol`)
+    row["tickers"] = None
 
-    # bersihkan tickers dari payload upload (tidak dibutuhkan di tabel filings)
-    if "tickers" in row:
-        del row["tickers"]
-
-    # --- ints ---
+    # ints
     for k in ("holding_before", "holding_after", "amount_transaction"):
         if k in row:
             row[k] = _to_int(row.get(k))
 
-    # --- floats ---
+    # floats
     for k in ("price","transaction_value","share_percentage_before","share_percentage_after","share_percentage_transaction"):
         if k in row:
             row[k] = _to_float(row.get(k))
 
-    # --- price_transaction: parse JSON string jika ada ---
+    # price_transaction json
     pt = row.get("price_transaction")
-    if isinstance(pt, str) and pt.strip():
+    if isinstance(pt, str):
         try:
             row["price_transaction"] = json.loads(pt)
         except Exception:
-            # biarkan apa adanya jika bukan JSON valid
             pass
 
-    # --- sector & sub_sector: pastikan single string dan kebab-case ---
-    sector_raw = _first_str(row.get("sector"))
-    subsec_raw = _first_str(row.get("sub_sector") or row.get("subsector"))
-    row["sector"] = _kebab(sector_raw)
-    row["sub_sector"] = _kebab(subsec_raw)
+    # ==== sector / sub_sector ====
+    # 1) Ambil dari provider kalau kosong/null
+    sym = row.get("symbol")
+    if not row.get("sector") or row.get("sector") in ([], ""):
+        ci = get_company_info(sym)
+        if ci and ci.sector:
+            row["sector"] = ci.sector
+    if not row.get("sub_sector") or row.get("sub_sector") in ([], ""):
+        ci = ci if 'ci' in locals() else get_company_info(sym)
+        if ci and ci.sub_sector:
+            row["sub_sector"] = ci.sub_sector
 
-    # --- announcement_published_at fallback ---
+    # 2) Pastikan kebab-case & string (bukan list)
+    if isinstance(row.get("sector"), list):
+        row["sector"] = _kebab(" ".join([str(x) for x in row["sector"] if x is not None]))
+    else:
+        row["sector"] = _kebab(row.get("sector"))
+
+    if isinstance(row.get("sub_sector"), list):
+        row["sub_sector"] = _kebab(" ".join([str(x) for x in row["sub_sector"] if x is not None]))
+    else:
+        row["sub_sector"] = _kebab(row.get("sub_sector"))
+
+    # Ensure announcement_published_at exists (mirror from timestamp if missing)
     if not row.get("announcement_published_at"):
         row["announcement_published_at"] = row.get("timestamp")
 
