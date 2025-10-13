@@ -183,7 +183,7 @@ class ArticleGenerator:
     def __init__(
         self,
         company_map_path: str = "data/company/company_map.json",
-        latest_prices_path: str = "data/company/latest_prices.json",
+        latest_prices_path: str = "data/company/company_map.json",
         use_llm: bool = False,
         groq_model: str = "llama-3.3-70b-versatile",
         prefer_symbol: bool = True,

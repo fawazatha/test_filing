@@ -1,3 +1,4 @@
+# src/pipeline/orchestrator.py
 from __future__ import annotations
 import argparse
 import json
@@ -103,6 +104,25 @@ def _glob_many(patterns: List[str]) -> List[Path]:
     return out
 
 
+# -----------------------------
+# Cache helpers (NEW)
+# -----------------------------
+def _safe_unlink(path: Path) -> None:
+    try:
+        if path.exists():
+            path.unlink()
+            LOG.info("[CACHE] deleted: %s", path)
+    except Exception as e:
+        LOG.warning("[CACHE] failed delete %s: %s", path, e)
+
+def reset_company_cache() -> None:
+    """Hapus cache company_map agar selalu fresh setiap run."""
+    _safe_unlink(Path("data/company/company_map.json"))
+    _safe_unlink(Path("data/company/company_map.meta.json"))
+    # Jika perlu, bersihkan hydrated juga:
+    # _safe_unlink(Path("data/company/company_map.hydrated.json"))
+
+
 def pre_clean_outputs() -> None:
     targets = [
         "downloads/idx-format",
@@ -125,6 +145,8 @@ def pre_clean_outputs() -> None:
         except Exception:
             pass
     _safe_mkdirs("downloads/idx-format", "downloads/non-idx-format", "data", "alerts", "artifacts")
+    # ikut hapus cache company di mode clean
+    reset_company_cache()
 
 
 def _compute_window_from_minutes(window_minutes: int) -> Tuple[str, str, str, str]:
@@ -167,12 +189,11 @@ def step_check_company_map(force: bool = False) -> None:
 
 def step_refresh_company_assets(lookback_days: int = 14, use_fallback: bool = True) -> None:
     """
-    1) Pastikan company_map.json up-to-date
-    2) Refresh latest_prices.json untuk semua symbol dalam map
-    3) Tulis company_map.hydrated.json untuk inspeksi
+    Refresh company_map + latest_prices + hydrated map (jika tersedia env Supabase).
     """
     try:
-        m = get_company_map(force=False)
+        # Paksa fresh agar konsisten
+        m = get_company_map(force=True)
         LOG.info("company_map cached rows: %d", len(m or {}))
         syms = sorted((m or {}).keys())
         if syms:
@@ -304,6 +325,45 @@ def step_generate_filings(
     )
     LOG.info("[GENERATE] filings count = %d", cnt)
     return cnt
+
+
+def step_alerts_v2_from_filings(
+    *,
+    filings_json: Path,
+    date_str: Optional[str] = None,
+) -> Tuple[Optional[Path], Optional[Path]]:
+    """
+    Build Alerts v2 langsung dari filings_data.json:
+      - alerts/alerts_inserted_{date}.json
+      - alerts/alerts_not_inserted_{date}.json
+    Memakai gating rules dari services.send_alerts.split_alerts().
+    """
+    from services.email.send_alerts import write_alert_files
+
+    if not filings_json.exists():
+        LOG.warning("[ALERTS-V2] %s not found; skip alerts_v2", filings_json)
+        return None, None
+
+    if not date_str:
+        date_str = _now_wib().strftime("%Y%m%d")
+
+    try:
+        payload = json.loads(filings_json.read_text(encoding="utf-8"))
+    except Exception as e:
+        LOG.error("[ALERTS-V2] failed reading %s", filings_json, e)
+        return None, None
+
+    rows = payload["rows"] if isinstance(payload, dict) and "rows" in payload else payload
+    if not isinstance(rows, list):
+        LOG.error("[ALERTS-V2] %s must contain a JSON array (or {'rows': [...]})", filings_json)
+        return None, None
+
+    inserted_path, not_inserted_path = write_alert_files(
+        alerts_rows=rows,
+        date_str=date_str,
+    )
+    LOG.info("[ALERTS-V2] wrote inserted=%s not_inserted=%s", inserted_path, not_inserted_path)
+    return inserted_path, not_inserted_path
 
 
 def step_bucketize_alerts(
@@ -635,6 +695,10 @@ def main():
     args = ap.parse_args()
     _setup_logging(args.verbose)
 
+    # Hapus cache company map di awal run agar selalu konsisten
+    LOG.info("[CACHE] resetting company_map cache")
+    reset_company_cache()
+
     if args.clean:
         LOG.info("[CLEAN] removing generated outputs")
         pre_clean_outputs()
@@ -729,6 +793,9 @@ def main():
         alerts_out=suspicious_out,
     )
 
+    # 4.1) Alerts v2 langsung dari filings_data.json → inserted / not_inserted
+    step_alerts_v2_from_filings(filings_json=filings_out)
+
     # 4.5) (Opsional) Generate articles dari filings
     if args.generate_articles:
         step_generate_articles(
@@ -756,7 +823,7 @@ def main():
                 dry_run=args.news_dry_run,
             )
 
-    # 5) Bucketize alerts → alerts_inserted / alerts_not_inserted
+    # 5) Bucketize alerts → alerts_inserted / alerts_not_inserted (optional, legacy)
     step_bucketize_alerts()
 
     # 6) Email alerts

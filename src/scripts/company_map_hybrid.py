@@ -1,31 +1,11 @@
-# src/utils/company_map_hybrid.py
-# -*- coding: utf-8 -*-
-
-"""
-Build & refresh local caches:
- - company_map.json        : symbol -> { company_name, sector, sub_sector }
- - latest_prices.json      : { "prices": { SYMBOL.JK: { "close": float, "date": "YYYY-MM-DD" } } }
-Bonus:
- - company_map.hydrated.json (opsional) menggabungkan map + harga untuk inspeksi.
-
-Perbaikan:
- - Normalisasi sector/sub_sector menjadi string konsisten (title-case), baik saat load cache,
-   fetch dari remote, maupun saat merge—mencegah format dict/JSON atau slug nyasar ke downstream.
- - Normalisasi symbol key ke bentuk ABC.JK (uniform).
- - Carry-forward harga lama (keep_previous) bila tidak ada update pada jendela lookback.
- - Hydrate lebih robust mencari berbagai varian key (dengan/ tanpa .JK).
-
-Tidak butuh perubahan schema Supabase.
-"""
-
 from __future__ import annotations
 import os
 import sys
 import json
 import urllib.parse
 import pathlib
-from datetime import datetime, timezone, timedelta
-from typing import Dict, Any, Optional, Tuple, List, Iterable
+from datetime import datetime, timezone
+from typing import Dict, Any, Optional, Tuple, List
 
 try:
     from dotenv import load_dotenv
@@ -35,21 +15,27 @@ except Exception:
 
 import requests
 
-# Outputs
-OUT_JSON            = pathlib.Path("data/company/company_map.json")
-META_JSON           = pathlib.Path("data/company/company_map.meta.json")
-LATEST_PRICES_JSON  = pathlib.Path("data/company/latest_prices.json")
-HYDRATED_JSON       = pathlib.Path("data/company/company_map.hydrated.json")
+# --------------------------
+# Konfigurasi I/O
+# --------------------------
+OUT_JSON   = pathlib.Path("data/company/company_map.json")
+META_JSON  = pathlib.Path("data/company/company_map.meta.json")
 
+# --------------------------
 # Supabase env
-SUPABASE_URL  = os.getenv("SUPABASE_URL")
-SUPABASE_KEY  = os.getenv("SUPABASE_KEY") or os.getenv("SUPABASE_SERVICE_ROLE_KEY") or os.getenv("SUPABASE_ANON_KEY")
-SCHEMA_NAME   = os.getenv("COMPANY_SCHEMA", "public")
+# --------------------------
+SUPABASE_URL = os.getenv("SUPABASE_URL")
+SUPABASE_KEY = (
+    os.getenv("SUPABASE_KEY")
+    or os.getenv("SUPABASE_SERVICE_ROLE_KEY")
+    or os.getenv("SUPABASE_ANON_KEY")
+)
+SCHEMA_NAME  = os.getenv("COMPANY_SCHEMA", "public")
 
-# Tables
-PROFILE_TABLE = os.getenv("COMPANY_PROFILE_TABLE", "idx_company_report")   # symbol, company_name
-REPORT_TABLE  = os.getenv("COMPANY_REPORT_TABLE",  "idx_company_report")    # symbol, sector, sub_sector
-PRICES_TABLE  = os.getenv("PRICES_TABLE",          "idx_daily_data")        # symbol, date, close, updated_on
+# Satu-satunya tabel sumber
+REPORT_TABLE = os.getenv("COMPANY_REPORT_TABLE", "idx_company_report")
+# Kolom yang diambil dari report
+REPORT_SELECT = "symbol,company_name,sector,sub_sector,last_close_price,latest_close_date"
 
 # Flags/opsi
 ALLOW_OFFLINE = (os.getenv("COMPANY_MAP_ALLOW_OFFLINE", "1").lower() in ("1", "true", "yes", "y"))
@@ -58,7 +44,6 @@ FORCE_REFRESH = (os.getenv("COMPANY_MAP_FORCE_REFRESH", "0").lower() in ("1", "t
 # --------------------------
 # Logging & helpers
 # --------------------------
-
 def log(msg: str):
     ts = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     print(f"{ts} | {msg}", file=sys.stderr)
@@ -82,30 +67,24 @@ def _build_url(table: str, select: str, extra_params: Optional[Dict[str, str]] =
         params.update(extra_params)
     return f"{base}?{urllib.parse.urlencode(params)}"
 
-def _checksum(d: Dict[str, Dict[str, str]]) -> str:
-    parts: List[str] = []
-    for k in sorted(d.keys()):
-        v = d[k] or {}
-        parts.append(f"{k}|{v.get('company_name','')}|{v.get('sector','')}|{v.get('sub_sector','')}")
-    import hashlib as _hl  # local import
-    return "sha256:" + _hl.sha256("\n".join(parts).encode("utf-8")).hexdigest()
-
 def _normalize_full(sym: str) -> str:
     s = (sym or "").upper().strip()
     return s if s.endswith(".JK") else f"{s}.JK"
 
-def _normalize_prices_dict(src: Dict[str, Any]) -> Dict[str, Any]:
-    """Normalize keys of prices dict to ABC.JK."""
-    out: Dict[str, Any] = {}
-    for k, v in (src or {}).items():
-        nk = _normalize_full((k or "").upper())
-        out[nk] = v
-    return out
+def _checksum(d: Dict[str, Dict[str, Any]]) -> str:
+    parts: List[str] = []
+    for k in sorted(d.keys()):
+        v = d[k] or {}
+        parts.append(
+            f"{k}|{v.get('company_name','')}|{v.get('sector','')}|{v.get('sub_sector','')}|"
+            f"{v.get('last_close_price','')}|{v.get('latest_close_date','')}"
+        )
+    import hashlib as _hl  # local import
+    return "sha256:" + _hl.sha256("\n".join(parts).encode("utf-8")).hexdigest()
 
 # --------------------------
-# Sector/sub_sector normalizers
+# Normalizer sektor/subsektor
 # --------------------------
-
 def _extract_str(v: Any) -> Optional[str]:
     """Ambil string bermakna dari dict/slug/JSON-ish/primitive."""
     if v is None:
@@ -120,7 +99,7 @@ def _extract_str(v: Any) -> Optional[str]:
         raw = v.strip()
         if not raw:
             return None
-        # best-effort: kalau kelihatan JSON-ish {"name":"X"} tapi gak valid, coba culik value-nya
+        # rescue JSON-ish {"name":"X"} (best-effort)
         if raw.startswith("{") and raw.endswith("}"):
             for tag in ['"name"', '"title"', '"slug"', "'name'", "'title'", "'slug'"]:
                 idx = raw.find(tag)
@@ -132,7 +111,6 @@ def _extract_str(v: Any) -> Optional[str]:
                             raw = val
                             break
         return raw or None
-    # fallback ke str() untuk tipe lain
     try:
         s = str(v).strip()
         return s or None
@@ -152,58 +130,50 @@ def _titlecase_preserve(s: Optional[str]) -> Optional[str]:
             words.append(w.capitalize())
     return " ".join(words)
 
-def coalesce_sector_values(sector: Any, sub_sector: Any) -> Tuple[Optional[str], Optional[str]]:
-    s = _extract_str(sector)
-    ss = _extract_str(sub_sector)
-    s = _titlecase_preserve(s) if s else None
-    ss = _titlecase_preserve(ss) if ss else None
-    return s, ss
-
-def normalize_sector_entry(entry: Dict[str, Any]) -> Dict[str, Any]:
-    """Mutasi + kembalikan dict dengan sector/sub_sector yang sudah normal."""
-    if not isinstance(entry, dict):
-        return entry
-    s, ss = coalesce_sector_values(entry.get("sector"), entry.get("sub_sector"))
-    entry["sector"] = s or ""
-    entry["sub_sector"] = ss or ""
-    return entry
+def _normalize_sector(ss: Any) -> str:
+    s = _extract_str(ss)
+    return _titlecase_preserve(s) or ""
 
 # --------------------------
-# Local cache IO (dengan normalisasi)
+# Local cache IO
 # --------------------------
-
-def load_local() -> Tuple[Dict[str, Dict[str, str]], Dict[str, Any]]:
-    mapping: Dict[str, Dict[str, str]] = {}
+def load_local() -> Tuple[Dict[str, Dict[str, Any]], Dict[str, Any]]:
+    mapping: Dict[str, Dict[str, Any]] = {}
     meta: Dict[str, Any] = {}
     try:
         if OUT_JSON.exists():
             raw = json.loads(OUT_JSON.read_text(encoding="utf-8"))
             if isinstance(raw, dict):
                 for sym, row in raw.items():
-                    if isinstance(row, dict):
-                        symu = (sym or "").upper().strip()
-                        if not symu:
-                            continue
-                        entry = {
-                            "company_name": (row.get("company_name") or "").strip(),
-                            "sector": row.get("sector"),
-                            "sub_sector": row.get("sub_sector"),
-                        }
-                        entry = normalize_sector_entry(entry)
-                        mapping[_normalize_full(symu)] = entry
+                    if not isinstance(row, dict):
+                        continue
+                    symu = (sym or "").upper().strip()
+                    if not symu:
+                        continue
+                    entry = {
+                        "company_name": (row.get("company_name") or "").strip(),
+                        "sector": _normalize_sector(row.get("sector")),
+                        "sub_sector": _normalize_sector(row.get("sub_sector")),
+                        "last_close_price": row.get("last_close_price"),
+                        "latest_close_date": row.get("latest_close_date"),
+                    }
+                    mapping[_normalize_full(symu)] = entry
             elif isinstance(raw, list):
+                # dukung format lama berbasis list of rows
                 for row in raw:
-                    if isinstance(row, dict):
-                        symu = (row.get("symbol") or "").upper().strip()
-                        if not symu:
-                            continue
-                        entry = {
-                            "company_name": (row.get("company_name") or "").strip(),
-                            "sector": row.get("sector"),
-                            "sub_sector": row.get("sub_sector"),
-                        }
-                        entry = normalize_sector_entry(entry)
-                        mapping[_normalize_full(symu)] = entry
+                    if not isinstance(row, dict):
+                        continue
+                    symu = (row.get("symbol") or "").upper().strip()
+                    if not symu:
+                        continue
+                    entry = {
+                        "company_name": (row.get("company_name") or "").strip(),
+                        "sector": _normalize_sector(row.get("sector")),
+                        "sub_sector": _normalize_sector(row.get("sub_sector")),
+                        "last_close_price": row.get("last_close_price"),
+                        "latest_close_date": row.get("latest_close_date"),
+                    }
+                    mapping[_normalize_full(symu)] = entry
     except Exception as e:
         log(f"warn: failed reading {OUT_JSON}: {e}")
     try:
@@ -213,16 +183,18 @@ def load_local() -> Tuple[Dict[str, Dict[str, str]], Dict[str, Any]]:
         log(f"warn: failed reading {META_JSON}: {e}")
     return mapping, meta
 
-def save_local(mapping: Dict[str, Dict[str, str]], rows_meta: Dict[str, Any]):
-    # pastikan semua entry ter-normalisasi sebelum simpan
-    normed: Dict[str, Dict[str, str]] = {}
+def save_local(mapping: Dict[str, Dict[str, Any]], rows_meta: Dict[str, Any]):
+    # pastikan semua entry normalized sebelum simpan
+    normed: Dict[str, Dict[str, Any]] = {}
     for sym, row in mapping.items():
         out = {
             "company_name": (row.get("company_name") or "").strip(),
-            "sector": row.get("sector"),
-            "sub_sector": row.get("sub_sector"),
+            "sector": _normalize_sector(row.get("sector")),
+            "sub_sector": _normalize_sector(row.get("sub_sector")),
+            "last_close_price": row.get("last_close_price"),
+            "latest_close_date": row.get("latest_close_date"),
         }
-        normed[_normalize_full(sym)] = normalize_sector_entry(out)
+        normed[_normalize_full(sym)] = out
     OUT_JSON.parent.mkdir(parents=True, exist_ok=True)
     OUT_JSON.write_text(json.dumps(normed, ensure_ascii=False, indent=2), encoding="utf-8")
     META_JSON.write_text(json.dumps(rows_meta, ensure_ascii=False, indent=2), encoding="utf-8")
@@ -230,7 +202,6 @@ def save_local(mapping: Dict[str, Dict[str, str]], rows_meta: Dict[str, Any]):
 # --------------------------
 # Remote helpers
 # --------------------------
-
 def remote_row_count(table: str) -> Optional[int]:
     """Ambil total row via Content-Range + Prefer: count=exact dengan payload minimum."""
     if not SUPABASE_URL or not SUPABASE_KEY:
@@ -254,214 +225,72 @@ def remote_row_count(table: str) -> Optional[int]:
         log(f"warn: count({table}) failed: {e}")
         return None
 
-def fetch_profile() -> Optional[Dict[str, Dict[str, str]]]:
-    if not SUPABASE_URL or not SUPABASE_KEY:
-        log("error: SUPABASE_URL/KEY missing; cannot fetch profile.")
-        return None
-    url = _build_url(PROFILE_TABLE, "symbol,company_name", {"limit": "20000"})
-    r = requests.get(url, headers=_headers(), timeout=120)
-    if r.status_code != 200:
-        log(f"error: fetch {PROFILE_TABLE} status {r.status_code}: {r.text[:300]}")
-        return None
-    rows = r.json()
-    out: Dict[str, Dict[str, str]] = {}
-    for row in rows:
-        sym = (row.get("symbol") or "").upper().strip()
-        if not sym:
-            continue
-        out[_normalize_full(sym)] = {
-            "company_name": (row.get("company_name") or "").strip(),
-            "sector": "",
-            "sub_sector": "",
-        }
-    return out
-
-def fetch_report() -> Optional[Dict[str, Dict[str, str]]]:
+def fetch_report_all() -> Optional[List[Dict[str, Any]]]:
+    """Ambil SEMUA kolom yang dibutuhkan dari idx_company_report."""
     if not SUPABASE_URL or not SUPABASE_KEY:
         log("error: SUPABASE_URL/KEY missing; cannot fetch report.")
         return None
-    url = _build_url(REPORT_TABLE, "symbol,sector,sub_sector", {"limit": "20000"})
-    r = requests.get(url, headers=_headers(), timeout=120)
+    url = _build_url(REPORT_TABLE, REPORT_SELECT, {"limit": "20000"})
+    r = requests.get(url, headers=_headers(), timeout=180)
     if r.status_code != 200:
         log(f"error: fetch {REPORT_TABLE} status {r.status_code}: {r.text[:300]}")
         return None
-    rows = r.json()
-    out: Dict[str, Dict[str, str]] = {}
-    for row in rows:
-        sym = (row.get("symbol") or "").upper().strip()
-        if not sym:
-            continue
-        entry = {
-            "sector": row.get("sector"),
-            "sub_sector": row.get("sub_sector"),
-        }
-        entry = normalize_sector_entry(entry)  # <-- NORMALISASI DI SINI
-        out[_normalize_full(sym)] = entry
-    return out
+    return r.json() or []
 
 # --------------------------
-# Build map: PROFILE base + REPORT overlay sectors
+# Build map (single source)
 # --------------------------
-
-def build_map_from_remote() -> Optional[Tuple[Dict[str, Dict[str, str]], Dict[str, Any]]]:
-    base = fetch_profile()
-    if base is None:
+def build_map_from_report() -> Optional[Tuple[Dict[str, Dict[str, Any]], Dict[str, Any]]]:
+    rows = fetch_report_all()
+    if rows is None:
         return None
-    overlay = fetch_report() or {}
 
-    for sym, sec in overlay.items():
-        if sym in base:
-            if sec.get("sector"):
-                base[sym]["sector"] = sec["sector"]
-            if sec.get("sub_sector"):
-                base[sym]["sub_sector"] = sec["sub_sector"]
-            # pastikan hasil akhir normalized (idempotent, harmless)
-            base[sym] = normalize_sector_entry(base[sym])
-
-    # juga normalize semua row yang mungkin belum terisi sector/sub_sector
-    for sym in list(base.keys()):
-        base[sym] = normalize_sector_entry(base[sym])
+    mapping: Dict[str, Dict[str, Any]] = {}
+    for row in rows:
+        raw_sym = (row.get("symbol") or "").upper().strip()
+        if not raw_sym:
+            continue
+        sym = _normalize_full(raw_sym)
+        entry = {
+            "company_name": (row.get("company_name") or "").strip(),
+            "sector": _normalize_sector(row.get("sector")),
+            "sub_sector": _normalize_sector(row.get("sub_sector")),
+            "last_close_price": _safe_float(row.get("last_close_price")),
+            "latest_close_date": row.get("latest_close_date"),
+        }
+        mapping[sym] = entry
 
     meta: Dict[str, Any] = {
         "generated_at": datetime.now(timezone.utc).isoformat().replace("+00:00", "Z"),
-        "profile_table": PROFILE_TABLE,
         "report_table": REPORT_TABLE,
-        "row_count": len(base),
-        "row_count_profile": None,
-        "row_count_report": None,
-        "checksum": _checksum(base),
+        "row_count": len(mapping),
+        "row_count_report": None,  # akan diisi di get_company_map()
+        "checksum": _checksum(mapping),
+        "source": "idx_company_report",
+        "columns": REPORT_SELECT,
     }
-    return base, meta
+    return mapping, meta
 
-# --------------------------
-# Prices
-# --------------------------
-
-def fetch_latest_price_for_symbol(sym_full: str) -> Optional[Dict[str, Any]]:
-    if not SUPABASE_URL or not SUPABASE_KEY:
-        return None
-    sym_full = _normalize_full(sym_full)
-    url = _build_url(
-        PRICES_TABLE,
-        "date,close,updated_on",
-        {"symbol": f"eq.{sym_full}", "order": "date.desc,updated_on.desc", "limit": "1"}
-    )
-    r = requests.get(url, headers=_headers(), timeout=30)
-    if r.status_code != 200:
-        return None
-    rows = r.json()
-    if not rows:
-        return None
-    row = rows[0]
+def _safe_float(v: Any) -> Optional[float]:
     try:
-        return {"close": float(row["close"]), "date": row.get("date")}
+        if v is None:
+            return None
+        if isinstance(v, (int, float)):
+            return float(v)
+        s = str(v).strip()
+        if not s:
+            return None
+        return float(s.replace(",", ""))  # antisipasi format "1,234.56"
     except Exception:
         return None
 
-def _fetch_recent_rows_all(start_date: str, page_size: int = 20000) -> List[dict]:
-    """Tarik semua baris date >= start_date (paged). Order: symbol ASC, date DESC, updated_on DESC."""
-    if not SUPABASE_URL or not SUPABASE_KEY:
-        return []
-    url = _build_url(
-        PRICES_TABLE,
-        "symbol,date,close,updated_on",
-        {"date": f"gte.{start_date}", "order": "symbol.asc,date.desc,updated_on.desc"}
-    )
-    headers = _headers()
-    out: List[dict] = []
-    offset = 0
-    while True:
-        headers["Range"] = f"{offset}-{offset + page_size - 1}"
-        r = requests.get(url, headers=headers, timeout=90)
-        if r.status_code not in (200, 206):
-            log(f"warn: fetch recent rows status {r.status_code}: {r.text[:200]}")
-            break
-        rows = r.json() or []
-        if not rows:
-            break
-        out.extend(rows)
-        if len(rows) < page_size:
-            break
-        offset += page_size
-    return out
-
-def _latest_per_symbol_from_rows(rows: Iterable[dict]) -> Dict[str, Dict[str, Any]]:
-    """Ambil kemunculan pertama per symbol → terbaru (rows sudah terurut global)."""
-    latest: Dict[str, Dict[str, Any]] = {}
-    last_sym = None
-    for row in rows:
-        raw = (row.get("symbol") or "").upper().strip()
-        if not raw:
-            continue
-        sym = _normalize_full(raw)  # <-- pastikan selalu ABC.JK
-        if sym != last_sym:
-            if sym not in latest:
-                try:
-                    latest[sym] = {"close": float(row.get("close") or 0), "date": row.get("date")}
-                except Exception:
-                    pass
-            last_sym = sym
-    return latest
-
-def refresh_latest_prices_program_only(symbols: List[str] | None = None,
-                                      lookback_days: int = 7,
-                                      use_fallback: bool = True,
-                                      keep_previous: bool = True) -> Dict[str, Dict[str, Any]]:
-    """Bulk + group; lalu fallback per-simbol untuk yang miss; carry-forward harga lama bila diminta."""
-    start_date = (datetime.utcnow().date() - timedelta(days=lookback_days)).isoformat()
-    rows = _fetch_recent_rows_all(start_date)
-    latest_all = _latest_per_symbol_from_rows(rows)
-
-    if symbols:
-        targets = {_normalize_full(s) for s in symbols}
-        found: Dict[str, Dict[str, Any] | None] = {}
-        for s in targets:
-            # latest_all sudah normalized, jadi lookup langsung
-            found[s] = latest_all.get(s)
-        missing = [s for s, rec in found.items() if not rec]
-
-        # fallback per-simbol (tanpa batas tanggal) → ambil benar-benar latest
-        if use_fallback and missing:
-            for m in missing:
-                rec = fetch_latest_price_for_symbol(m)
-                if rec:
-                    found[m] = rec
-
-        # normalize keys sebelum simpan
-        prices = { _normalize_full(k): v for k, v in found.items() if v }
-    else:
-        prices = { _normalize_full(k): v for k, v in latest_all.items() }
-
-    # --- NEW: carry-forward harga lama bila tidak ada update untuk simbol tsb
-    if keep_previous and LATEST_PRICES_JSON.exists():
-        try:
-            prev_raw = json.loads(LATEST_PRICES_JSON.read_text(encoding="utf-8"))
-            prev = _normalize_prices_dict(prev_raw.get("prices", {}))
-            for s, rec in prev.items():
-                if s not in prices:
-                    prices[s] = rec
-        except Exception:
-            pass
-
-    payload = {
-        "updated_at": datetime.now(timezone.utc).isoformat().replace("+00:00", "Z"),
-        "prices": prices
-    }
-    LATEST_PRICES_JSON.parent.mkdir(parents=True, exist_ok=True)
-    LATEST_PRICES_JSON.write_text(
-        json.dumps(payload, ensure_ascii=False, indent=2),
-        encoding="utf-8"
-    )
-    log(f"Saved latest prices (program-only bulk): {LATEST_PRICES_JSON} ({len(prices)} symbols)")
-    return prices
-
 # --------------------------
-# Main hybrid logic: invalidasi map pakai row_count
+# Main logic (single-source invalidation)
 # --------------------------
-
-def get_company_map(force: bool = False) -> Dict[str, Dict[str, str]]:
+def get_company_map(force: bool = False) -> Dict[str, Dict[str, Any]]:
     local_map, meta = load_local()
 
+    # Jika tidak ada Supabase env: pakai cache lokal bila ada
     if not (SUPABASE_URL and SUPABASE_KEY):
         if local_map:
             log("No Supabase env; using local company_map cache.")
@@ -469,14 +298,13 @@ def get_company_map(force: bool = False) -> Dict[str, Dict[str, str]]:
         log("No Supabase env and no local cache.")
         return {}
 
+    # Force?
     if force or FORCE_REFRESH:
         log("FORCE refresh requested for company_map.")
-        fresh = build_map_from_remote()
+        fresh = build_map_from_report()
         if fresh:
             mapping, new_meta = fresh
-            rc_p = remote_row_count(PROFILE_TABLE)
             rc_r = remote_row_count(REPORT_TABLE)
-            new_meta["row_count_profile"] = rc_p
             new_meta["row_count_report"] = rc_r
             save_local(mapping, new_meta)
             return mapping
@@ -486,26 +314,16 @@ def get_company_map(force: bool = False) -> Dict[str, Dict[str, str]]:
         log("No company_map available.")
         return {}
 
-    rc_profile = remote_row_count(PROFILE_TABLE)
+    # Invalidasi ringan: bandingkan jumlah baris
     rc_report  = remote_row_count(REPORT_TABLE)
-    prev_rc_profile = meta.get("row_count_profile")
     prev_rc_report  = meta.get("row_count_report")
 
-    if (
-        local_map
-        and rc_profile is not None
-        and rc_report is not None
-        and prev_rc_profile is not None
-        and prev_rc_report is not None
-        and int(rc_profile) == int(prev_rc_profile)
-        and int(rc_report) == int(prev_rc_report)
-    ):
+    if local_map and rc_report is not None and prev_rc_report is not None and int(rc_report) == int(prev_rc_report):
         return local_map
 
-    fresh = build_map_from_remote()
+    fresh = build_map_from_report()
     if fresh:
         mapping, new_meta = fresh
-        new_meta["row_count_profile"] = rc_profile
         new_meta["row_count_report"]  = rc_report
         save_local(mapping, new_meta)
         return mapping
@@ -518,68 +336,8 @@ def get_company_map(force: bool = False) -> Dict[str, Dict[str, str]]:
     return {}
 
 # --------------------------
-# Utilities: hydrate, bootstrap, reset, CLI
+# Utilities & CLI
 # --------------------------
-
-def hydrate_company_map_with_prices():
-    """Gabungkan company_map + latest_prices ke satu file untuk inspeksi."""
-    mapping, _ = load_local()
-    prices_obj: Dict[str, Any] = {}
-    if LATEST_PRICES_JSON.exists():
-        try:
-            p = json.loads(LATEST_PRICES_JSON.read_text(encoding="utf-8"))
-            prices_obj = _normalize_prices_dict(p.get("prices", {}) if isinstance(p, dict) else {})
-        except Exception:
-            prices_obj = {}
-
-    def _get_price(prices: Dict[str, Any], sym: str):
-        # robust lookup: berbagai varian key
-        candidates = [
-            sym,
-            sym.upper(),
-            sym.replace(".JK", ""),
-            sym.replace(".JK", "").upper(),
-            _normalize_full(sym),
-        ]
-        for c in candidates:
-            nc = _normalize_full(c)
-            if nc in prices:
-                return prices[nc]
-            if c in prices:
-                return prices[c]
-        return None
-
-    hydrated: Dict[str, Any] = {}
-    for sym, info in mapping.items():
-        pr = _get_price(prices_obj, sym)
-        hydrated[sym] = {
-            **info,
-            "latest_price": pr or None,
-        }
-
-    HYDRATED_JSON.parent.mkdir(parents=True, exist_ok=True)
-    HYDRATED_JSON.write_text(json.dumps(hydrated, ensure_ascii=False, indent=2), encoding="utf-8")
-    log(f"Wrote hydrated map: {HYDRATED_JSON} ({len(hydrated)} symbols)")
-    return hydrated
-
-def bootstrap_all(lookback_days: int = 7, use_fallback: bool = True):
-    """
-    First run helper:
-      1) build company_map.json (force)
-      2) extract symbols
-      3) refresh latest_prices.json for those symbols
-      4) (optional) produce hydrated map
-    """
-    mapping = get_company_map(force=True)
-    symbols = sorted(mapping.keys())
-    refresh_latest_prices_program_only(
-        symbols=symbols,
-        lookback_days=lookback_days,
-        use_fallback=use_fallback,
-        keep_previous=True,
-    )
-    hydrate_company_map_with_prices()
-
 def _safe_unlink(path: pathlib.Path):
     try:
         if path.exists():
@@ -588,58 +346,19 @@ def _safe_unlink(path: pathlib.Path):
     except Exception as e:
         log(f"warn: failed delete {path}: {e}")
 
-def reset_all(no_bootstrap: bool = False, lookback_days: int = 7, use_fallback: bool = True):
-    """
-    Bersihkan semua cache local & (default) rebuild dari nol.
-    """
+def reset_all():
+    """Bersihkan cache lokal."""
     _safe_unlink(OUT_JSON)
     _safe_unlink(META_JSON)
-    _safe_unlink(LATEST_PRICES_JSON)
-    _safe_unlink(HYDRATED_JSON)
+    log("reset done.")
 
-    if no_bootstrap:
-        log("reset done (no bootstrap).")
-        return
-
-    bootstrap_all(lookback_days=lookback_days, use_fallback=use_fallback)
-
-# CLI
 def _cmd_get():
-    _ = get_company_map(force=False)
+    m = get_company_map(force=False)
+    log(f"company_map loaded. Rows: {len(m)}")
 
 def _cmd_refresh():
     m = get_company_map(force=True)
     print(f"Refreshed company_map.json. Rows: {len(m)}")
-
-def _cmd_refresh_prices(args):
-    mapping, _ = load_local()
-    if not mapping:
-        log("company_map.json empty. Refreshing map first...")
-        mapping = get_company_map(force=True)
-    symbols = sorted(mapping.keys())
-    refresh_latest_prices_program_only(
-        symbols=symbols,
-        lookback_days=args.prices_lookback_days,
-        use_fallback=not args.no_fallback,
-        keep_previous=not args.no_keep_previous_false,
-    )
-
-def _cmd_refresh_all(args):
-    _cmd_refresh()
-    _cmd_refresh_prices(args)
-
-def _cmd_hydrate():
-    hydrate_company_map_with_prices()
-
-def _cmd_bootstrap(args):
-    bootstrap_all(lookback_days=args.prices_lookback_days, use_fallback=not args.no_fallback)
-
-def _cmd_reset(args):
-    reset_all(
-        no_bootstrap=args.no_bootstrap,
-        lookback_days=args.prices_lookback_days,
-        use_fallback=not args.no_fallback
-    )
 
 def _cmd_print():
     if not OUT_JSON.exists():
@@ -653,51 +372,31 @@ def _cmd_status():
         "local_rows": len(mapping),
         "local_meta": meta,
         "env_present": bool(SUPABASE_URL) and bool(SUPABASE_KEY),
-        "profile_table": PROFILE_TABLE,
         "report_table": REPORT_TABLE,
-        "prices_table": PRICES_TABLE,
         "out_paths": {
             "company_map": str(OUT_JSON),
             "company_meta": str(META_JSON),
-            "latest_prices": str(LATEST_PRICES_JSON),
-            "hydrated": str(HYDRATED_JSON),
         },
-        "latest_prices_present": LATEST_PRICES_JSON.exists(),
+        "present": {
+            "company_map": OUT_JSON.exists(),
+            "company_meta": META_JSON.exists(),
+        }
     }
     print(json.dumps(payload, ensure_ascii=False, indent=2))
 
+def _cmd_reset():
+    reset_all()
+
 def _build_argparser():
     import argparse
-    ap = argparse.ArgumentParser(description="Hybrid company map & latest prices refresher (program-only).")
+    ap = argparse.ArgumentParser(description="Company map (single-source: idx_company_report).")
     sub = ap.add_subparsers(dest="cmd")
 
     sub.add_parser("get")
     sub.add_parser("print")
     sub.add_parser("status")
     sub.add_parser("refresh")
-    sub.add_parser("hydrate")
-
-    p_prices = sub.add_parser("refresh_prices")
-    p_prices.add_argument("--prices-lookback-days", type=int, default=int(os.getenv("PRICES_LOOKBACK_DAYS", "7")),
-                          help="Look back this many days for latest prices (default 7).")
-    p_prices.add_argument("--no-fallback", action="store_true",
-                          help="Disable per-symbol fallback for symbols missing in lookback window.")
-    # default keep_previous=True; bisa dimatikan pakai flag ini
-    p_prices.add_argument("--no-keep-previous-false", action="store_true",
-                          help="(internal) keep_previous stays True by default; this flag name is inverted to avoid breaking existing scripts.")
-
-    p_all = sub.add_parser("refresh_all")
-    p_all.add_argument("--prices-lookback-days", type=int, default=int(os.getenv("PRICES_LOOKBACK_DAYS", "7")))
-    p_all.add_argument("--no-fallback", action="store_true")
-
-    p_boot = sub.add_parser("bootstrap")
-    p_boot.add_argument("--prices-lookback-days", type=int, default=int(os.getenv("PRICES_LOOKBACK_DAYS", "7")))
-    p_boot.add_argument("--no-fallback", action="store_true")
-
-    p_reset = sub.add_parser("reset")
-    p_reset.add_argument("--no-bootstrap", action="store_true", help="Hanya bersihkan cache tanpa rebuild.")
-    p_reset.add_argument("--prices-lookback-days", type=int, default=int(os.getenv("PRICES_LOOKBACK_DAYS", "7")))
-    p_reset.add_argument("--no-fallback", action="store_true")
+    sub.add_parser("reset")
 
     return ap
 
@@ -710,20 +409,12 @@ if __name__ == "__main__":
         _cmd_get()
     elif cmd == "refresh":
         _cmd_refresh()
-    elif cmd == "refresh_prices":
-        _cmd_refresh_prices(args)
-    elif cmd == "refresh_all":
-        _cmd_refresh_all(args)
-    elif cmd == "hydrate":
-        _cmd_hydrate()
-    elif cmd == "bootstrap":
-        _cmd_bootstrap(args)
     elif cmd == "reset":
-        _cmd_reset(args)
+        _cmd_reset()
     elif cmd == "status":
         _cmd_status()
     elif cmd == "print":
         _cmd_print()
     else:
-        print("Commands: get | refresh | refresh_prices | refresh_all | hydrate | bootstrap | reset | status | print", file=sys.stderr)
+        print("Commands: get | refresh | reset | status | print", file=sys.stderr)
         sys.exit(2)

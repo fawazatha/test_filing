@@ -7,7 +7,7 @@ import os
 from pathlib import Path
 from typing import List, Dict, Any
 
-from .config import LOG_LEVEL
+from utils.config import LOG_LEVEL
 from .runner import run as run_generate
 
 from services.io.paths import data_file, list_alert_files

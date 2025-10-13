@@ -1,218 +1,235 @@
+# src/services/send_alerts.py
 from __future__ import annotations
 
-import os
 import json
-import glob
-import argparse
 import logging
-from typing import Any, Dict, List, Sequence, Optional, Tuple
+from pathlib import Path
+from typing import Any, Dict, List, Optional, Tuple
 
-from dotenv import load_dotenv
-load_dotenv()
+try:
+    # Preferred relative imports (monorepo style)
+    from utils.config import (
+        GATE_REASONS,
+        ALERTS_OUTPUT_DIR,
+        ALERTS_INSERTED_FILENAME,
+        ALERTS_NOT_INSERTED_FILENAME,
+        SUGGEST_PRICE_RATIO,
+    )
+except Exception:
+    # Flat layout fallback for tests
+    from utils.config import (
+        GATE_REASONS,
+        ALERTS_OUTPUT_DIR,
+        ALERTS_INSERTED_FILENAME,
+        ALERTS_NOT_INSERTED_FILENAME,
+        SUGGEST_PRICE_RATIO,
+    )
 
-logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
-# pakai renderer dari alerts_mailer agar konsisten tampilannya
-from src.services.email.alerts_mailer import _render_email_content  # type: ignore
-# kirim langsung dengan daftar attachment asli
-from src.services.email.ses_email import send_attachments
 
-# -------- helpers --------
-def _tolist(x: Optional[Sequence[str] | str]) -> List[str]:
-    if x is None:
-        return []
-    if isinstance(x, str):
-        return [s.strip() for s in x.split(",") if s.strip()]
-    return [s for s in x if s]
-
-def _read_json(path: str):
-    with open(path, "r", encoding="utf-8") as f:
-        return json.load(f)
-
-def _coerce_alerts(obj) -> List[Dict[str, Any]]:
-    """
-    Normalisasi berbagai bentuk JSON jadi list[dict]:
-      - [ {...}, {...} ]
-      - {"alerts":[...]} / {"data":[...]} / {"items":[...]} / {"results":[...]}
-      - {"symbol": "...", ...} (single object) -> [obj]
-    """
-    if isinstance(obj, list):
-        return [x for x in obj if isinstance(x, dict)]
-    if isinstance(obj, dict):
-        for k in ("alerts", "data", "items", "results"):
-            if k in obj and isinstance(obj[k], list):
-                return [x for x in obj[k] if isinstance(x, dict)]
-        return [obj]  # single object
-    return []
-
-def _gather_dir(dir_path: str) -> List[str]:
-    if not dir_path:
-        return []
-    return [p for p in glob.glob(os.path.join(dir_path, "*.json")) if os.path.exists(p)]
-
-def _load_many(files: List[str]) -> List[Dict[str, Any]]:
-    all_alerts: List[Dict[str, Any]] = []
-    for fp in files:
-        try:
-            obj = _read_json(fp)
-            alerts = _coerce_alerts(obj)
-            logger.info("Loaded %s alerts from %s", len(alerts), fp)
-            all_alerts.extend(alerts)
-        except Exception as e:
-            logger.warning("Failed to load %s: %s (skipped)", fp, e)
-    return all_alerts
-
-def _pick_attachments(paths: List[str], max_bytes: int) -> Tuple[List[str], int, List[str]]:
-    """
-    Pilih subset file agar total size <= max_bytes (buffer untuk body & headers).
-    Strategi: sort asc by size, tambahkan satu per satu.
-    Return: (picked_paths, total_bytes, skipped_paths)
-    """
-    files = []
-    for p in paths:
-        try:
-            sz = os.path.getsize(p)
-            files.append((p, sz))
-        except OSError:
-            logger.warning("Cannot stat %s (skipped)", p)
-    files.sort(key=lambda x: x[1])  # kecil dulu
-
-    picked, total = [], 0
-    for p, sz in files:
-        if total + sz <= max_bytes:
-            picked.append(p); total += sz
-    picked_set = set(picked)
-    skipped = [p for p, _ in files if p not in picked_set]
-    return picked, total, skipped
-
-# -------- sender --------
-def _send_group(
-    *,
-    alerts: List[Dict[str, Any]],
-    source_files: List[str],
-    title: str,
-    to: Optional[Sequence[str] | str],
-    cc: Optional[Sequence[str] | str],
-    bcc: Optional[Sequence[str] | str],
-    region: Optional[str],
-    send_empty: bool,
-    attach_limit_bytes: int,
-) -> dict | None:
-    # Heartbeat bila kosong
-    if not alerts and send_empty:
-        subject, body_text, body_html = _render_email_content([], title=f"{title} (No Alerts)")
-        res = send_attachments(
-            to=_tolist(to) or None,
-            subject=subject,
-            body_text=body_text,
-            body_html=body_html,
-            files=[],  # heartbeat: tanpa lampiran
-            cc=_tolist(cc) or None,
-            bcc=_tolist(bcc) or None,
-            aws_region=region,
-        )
-        logger.info("Send result for '%s' (empty): %s", title, res)
-        return res
-
-    # Skip jika tidak ada alert
-    if not alerts:
-        logger.info("No alerts for '%s' — skipping email.", title)
+def _safe_float(x: Any) -> Optional[float]:
+    try:
+        if x is None:
+            return None
+        return float(x)
+    except Exception:
         return None
 
-    # Pilih lampiran asli tanpa melebihi limit
-    picked, total_bytes, skipped = _pick_attachments(source_files, attach_limit_bytes)
-    if skipped:
-        logger.warning(
-            "Some attachments skipped for '%s' due to size limit: %s",
-            title, ", ".join(os.path.basename(s) for s in skipped)
-        )
 
-    # Render ringkasan konten alerts (HTML + plain)
-    subject, body_text, body_html = _render_email_content(alerts, title=title)
-
-    # Tambahkan daftar nama file terlampir di akhir body_text agar jelas
-    if picked:
-        body_text += "\n\nAttached files:\n" + "\n".join(f"- {os.path.basename(p)}" for p in picked)
-
-    logger.info("Sending '%s' with %d alert(s), %d attachment(s), ~%d bytes",
-                title, len(alerts), len(picked), total_bytes)
-
-    res = send_attachments(
-        to=_tolist(to) or None,
-        subject=subject,
-        body_text=body_text,
-        body_html=body_html,
-        files=picked,
-        cc=_tolist(cc) or None,
-        bcc=_tolist(bcc) or None,
-        aws_region=region,
-    )
-    logger.info("Send result for '%s': %s", title, res)
-    return res
+def _reason_codes_from_row(row: Dict[str, Any]) -> List[str]:
+    codes: List[str] = []
+    for r in row.get("reasons") or []:
+        c = (r.get("code") or "").strip()
+        if c:
+            codes.append(c)
+    return codes
 
 
-def main():
-    ap = argparse.ArgumentParser(description="Send two alerts emails: inserted & not_inserted (attach original files).")
-    ap.add_argument("--inserted-dir", default=os.getenv("ALERT_INSERTED_DIR", "alert_inserted"),
-                    help="Folder JSON alerts yang SUDAH masuk DB (default: alert_inserted)")
-    ap.add_argument("--not-inserted-dir", default=os.getenv("ALERT_NOT_INSERTED_DIR", "alert_not_inserted"),
-                    help="Folder JSON alerts yang BELUM masuk DB (default: alert_not_inserted)")
+def is_gated(row: Dict[str, Any]) -> Tuple[bool, Optional[str]]:
+    """
+    Tentukan apakah baris ini harus DICORET dari email 'Inserted'.
+    Urutan prioritas:
+      1) Jika row.needs_review True → gated, skip_reason = row.skip_reason atau reason pertama yang ada di GATE_REASONS
+      2) Jika ada reason.code ⊂ GATE_REASONS → gated
+      3) Jika ada flag umum (fallback): suspicious_price_level/percent_discrepancy/stale_price/missing_price/delta_pp_mismatch → gated
+    """
+    if row.get("needs_review") is True:
+        sr = (row.get("skip_reason") or "").strip() or None
+        if not sr:
+            # cari reason yang masuk gate
+            for c in _reason_codes_from_row(row):
+                if c in GATE_REASONS:
+                    sr = c
+                    break
+        # fallback ke suspicious_price_level kalau belum ada
+        if not sr and row.get("suspicious_price_level"):
+            sr = "suspicious_price_level"
+        return True, sr
 
-    ap.add_argument("--to-inserted", default=os.getenv("ALERT_TO_EMAIL_INSERTED", os.getenv("ALERT_TO_EMAIL", "")),
-                    help="Comma-separated recipients untuk email INSERTED")
-    ap.add_argument("--to-not-inserted", default=os.getenv("ALERT_TO_EMAIL_NOT_INSERTED", os.getenv("ALERT_TO_EMAIL", "")),
-                    help="Comma-separated recipients untuk email NOT_INSERTED")
-    ap.add_argument("--cc-inserted", default=os.getenv("ALERT_CC_EMAIL_INSERTED", ""))
-    ap.add_argument("--cc-not-inserted", default=os.getenv("ALERT_CC_EMAIL_NOT_INSERTED", ""))
-    ap.add_argument("--bcc-inserted", default=os.getenv("ALERT_BCC_EMAIL_INSERTED", ""))
-    ap.add_argument("--bcc-not-inserted", default=os.getenv("ALERT_BCC_EMAIL_NOT_INSERTED", ""))
+    # explicit reasons
+    for c in _reason_codes_from_row(row):
+        if c in GATE_REASONS:
+            return True, c
 
-    ap.add_argument("--title-inserted", default=os.getenv("ALERT_TITLE_INSERTED", "IDX Alerts — Inserted to DB (Checking Needed)"))
-    ap.add_argument("--title-not-inserted", default=os.getenv("ALERT_TITLE_NOT_INSERTED", "IDX Alerts — Not Inserted (Action Needed)"))
+    # common flags (fallback)
+    for k in ("suspicious_price_level", "percent_discrepancy", "stale_price", "missing_price", "delta_pp_mismatch"):
+        if row.get(k):
+            return True, k
 
-    ap.add_argument("--region", default=os.getenv("AWS_REGION") or os.getenv("SES_REGION") or "ap-southeast-3")
-    ap.add_argument("--send-empty", action="store_true", help="Tetap kirim email meski tidak ada alert (heartbeat)")
-    ap.add_argument("--attach-budget", type=int, default=int(os.getenv("ATTACH_BUDGET_BYTES", "7500000")),
-                    help="Batas total size untuk lampiran (default ~7.5MB untuk aman di limit 10MB raw)")
-    args = ap.parse_args()
+    return False, None
 
-    inserted_files = _gather_dir(args.inserted_dir)
-    not_inserted_files = _gather_dir(args.not_inserted_dir)
 
-    if not inserted_files and not not_inserted_files and not args.send_empty:
-        logger.error("Tidak ada file JSON di '%s' dan '%s'.", args.inserted_dir, args.not_inserted_dir)
-        return
+def build_alert_entry(row: Dict[str, Any]) -> Dict[str, Any]:
+    """
+    Normalisasi payload alert yang ramah untuk email renderer:
+    - field inti (symbol, holder, type, amount, price)
+    - announcement block (jika ada)
+    - reasons[] disalurkan apa adanya (tapi dipastikan list of dict)
+    - price suggestions:
+        - prefer from document_median_price
+        - else from market_reference.ref_price
+    """
+    symbol = row.get("symbol") or row.get("issuer_code")
+    tx_type = (row.get("type") or "").lower() or row.get("tx_type")
+    holder = row.get("holder_name") or row.get("shareholder") or ""
+    amount = _safe_float(row.get("amount"))
+    price = _safe_float(row.get("price"))
+    value = _safe_float(row.get("value"))
 
-    inserted_alerts = _load_many(inserted_files)
-    not_inserted_alerts = _load_many(not_inserted_files)
+    # suggestions
+    suggest_ref = None
+    if _safe_float(row.get("document_median_price")):
+        suggest_ref = float(row["document_median_price"])
+    elif isinstance(row.get("market_reference"), dict) and _safe_float(row["market_reference"].get("ref_price")):
+        suggest_ref = float(row["market_reference"]["ref_price"])
+    suggest = None
+    if suggest_ref is not None and suggest_ref >= 0:
+        delta = suggest_ref * float(SUGGEST_PRICE_RATIO)
+        suggest = {
+            "ref": suggest_ref,
+            "min": max(0.0, suggest_ref - delta),
+            "max": suggest_ref + delta,
+        }
 
-    to_ins = _tolist(args.to_inserted) or None
-    to_not = _tolist(args.to_not_inserted) or None
-    cc_ins = _tolist(args.cc_inserted) or None
-    cc_not = _tolist(args.cc_not_inserted) or None
-    bcc_ins = _tolist(args.bcc_inserted) or None
-    bcc_not = _tolist(args.bcc_not_inserted) or None
+    # prepare reasons (safe)
+    reasons = []
+    for r in row.get("reasons") or []:
+        if isinstance(r, dict):
+            reasons.append({
+                "scope": r.get("scope"),
+                "code": r.get("code"),
+                "message": r.get("message"),
+                "details": r.get("details"),
+            })
 
-    _send_group(
-        alerts=inserted_alerts,
-        source_files=inserted_files,
-        title=args.title_inserted,
-        to=to_ins, cc=cc_ins, bcc=bcc_ins,
-        region=args.region,
-        send_empty=args.send_empty,
-        attach_limit_bytes=args.attach_budget,
-    )
+    # audit fields ringkas
+    audit = {
+        "delta_pp_model": _safe_float(row.get("delta_pp_model")),
+        "pp_after_model": _safe_float(row.get("pp_after_model")),
+        "percent_discrepancy": bool(row.get("percent_discrepancy") or False),
+    }
 
-    _send_group(
-        alerts=not_inserted_alerts,
-        source_files=not_inserted_files,
-        title=args.title_not_inserted,
-        to=to_not, cc=cc_not, bcc=bcc_not,
-        region=args.region,
-        send_empty=args.send_empty,
-        attach_limit_bytes=args.attach_budget,
-    )
+    entry = {
+        "symbol": symbol,
+        "type": tx_type,
+        "holder_name": holder,
+        "amount": amount,
+        "price": price,
+        "value": value,
+        "transaction_date": row.get("transaction_date"),
+        "tags": row.get("tags") or [],
+        "needs_review": bool(row.get("needs_review") or False),
+        "skip_reason": row.get("skip_reason"),
+        "reasons": reasons,
+        "announcement": row.get("announcement"),
+        "document_median_price": _safe_float(row.get("document_median_price")),
+        "market_reference": row.get("market_reference"),
+        "suggest_price": suggest,
+        "audit": audit,
+    }
+    return entry
 
-if __name__ == "__main__":
-    main()
+
+def split_alerts(alerts: List[Dict[str, Any]]) -> Tuple[List[Dict[str, Any]], List[Dict[str, Any]]]:
+    """
+    Bagi alerts (list row filing) menjadi (inserted, not_inserted) berdasarkan is_gated().
+    Return:
+      (alerts_inserted, alerts_not_inserted)
+    """
+    inserted: List[Dict[str, Any]] = []
+    not_inserted: List[Dict[str, Any]] = []
+
+    for row in alerts or []:
+        gated, reason = is_gated(row)
+        entry = build_alert_entry(row)
+        # sinkronkan flag
+        entry["needs_review"] = gated or bool(row.get("needs_review"))
+        if gated and reason and not entry.get("skip_reason"):
+            entry["skip_reason"] = reason
+
+        if gated:
+            not_inserted.append(entry)
+        else:
+            inserted.append(entry)
+
+    return inserted, not_inserted
+
+
+# --------------------------------------------------------------------------------------
+# Optional helpers untuk menulis file alerts_* sesuai pola config
+# (boleh diabaikan jika kamu sudah pakai services.email.bucketize)
+# --------------------------------------------------------------------------------------
+def _resolve_filename(pattern: str, date_str: str) -> str:
+    try:
+        return pattern.format(date=date_str)
+    except Exception:
+        # fallback
+        return f"{pattern.rstrip('.json')}_{date_str}.json"
+
+
+def write_alert_files(
+    *,
+    alerts_rows: List[Dict[str, Any]],
+    date_str: str,
+    out_dir: Optional[str] = None,
+    inserted_pattern: Optional[str] = None,
+    not_inserted_pattern: Optional[str] = None,
+) -> Tuple[Path, Path]:
+    """
+    Tulis dua file JSON:
+      - alerts_inserted_{date}.json
+      - alerts_not_inserted_{date}.json
+    berdasarkan hasil split_alerts(alerts_rows).
+
+    Mengembalikan tuple (inserted_path, not_inserted_path).
+    """
+    out_root = Path(out_dir or ALERTS_OUTPUT_DIR)
+    out_root.mkdir(parents=True, exist_ok=True)
+
+    ins_pat = inserted_pattern or ALERTS_INSERTED_FILENAME
+    not_pat = not_inserted_pattern or ALERTS_NOT_INSERTED_FILENAME
+
+    ins_name = _resolve_filename(ins_pat, date_str)
+    not_name = _resolve_filename(not_pat, date_str)
+
+    inserted, not_inserted = split_alerts(alerts_rows)
+
+    ins_path = out_root / ins_name
+    not_path = out_root / not_name
+
+    ins_path.write_text(json.dumps(inserted, ensure_ascii=False, indent=2), encoding="utf-8")
+    not_path.write_text(json.dumps(not_inserted, ensure_ascii=False, indent=2), encoding="utf-8")
+
+    logger.info("[ALERTS] wrote %s (inserted=%d)", ins_path, len(inserted))
+    logger.info("[ALERTS] wrote %s (not_inserted=%d)", not_path, len(not_inserted))
+
+    return ins_path, not_path
+
+
+__all__ = [
+    "is_gated",
+    "build_alert_entry",
+    "split_alerts",
+    "write_alert_files",
+]

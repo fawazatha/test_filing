@@ -8,7 +8,7 @@ log = get_logger(__name__)
 def run_from_filings(
     filings: List[Dict[str, Any]],
     company_map_path: str = "data/company/company_map.json",
-    latest_prices_path: str = "data/company/latest_prices.json",
+    latest_prices_path: str = "data/company/company_map.json",
     use_llm: bool = False,
     model_name: str = "llama-3.3-70b-versatile",  # override via CLI/env kalau mau 8B
     prefer_symbol: bool = True,
@@ -35,7 +35,7 @@ def run_from_filings(
 def run_from_text_items(
     items: List[Dict[str, Any]],
     company_map_path: str = "data/company/company_map.json",
-    latest_prices_path: str = "data/company/latest_prices.json",
+    latest_prices_path: str = "data/company/company_map.json",
     use_llm: bool = False,
     model_name: str = "llama-3.3-70b-versatile",
     prefer_symbol: bool = True,

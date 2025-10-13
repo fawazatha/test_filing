@@ -1,0 +1,244 @@
+id,old_tags,new_tags,changed
+2,"[""bullish"", ""investment"", ""ownership change"", ""insider trading""]","[""investment""]",True
+58,"[""IDX"", ""Bullish"", ""insider-trading"", ""Ownership Changes"", ""Executive Shareholding Changes"", ""Increase Stake""]",[],True
+59,"[""IDX"", ""Bullish"", ""insider-trading"", ""Ownership Changes"", ""Executive Shareholding Changes"", ""Portfolio Adjustment""]",[],True
+60,"[""IDX"", ""Bearish"", ""insider-trading"", ""Ownership Changes"", ""Executive Shareholding Changes"", ""Portfolio Adjustment""]",[],True
+61,"[""IDX"", ""Bullish"", ""insider-trading"", ""Ownership Changes"", ""Executive Shareholding Changes"", ""Investment""]","[""investment""]",True
+64,"[""IDX"", ""Bullish"", ""insider-trading"", ""Takeover"", ""Ownership Changes"", ""Majority Shareholding Change""]",[],True
+65,"[""IDX"", ""Bearish"", ""insider-trading"", ""Free Float"", ""Ownership Changes""]","[""free-float-requirement""]",True
+66,"[""IDX"", ""Bullish"", ""insider-trading"", ""Investment"", ""Ownership Changes""]","[""investment""]",True
+67,"[""IDX"", ""Bearish"", ""insider-trading"", ""Divestment"", ""Ownership Changes""]","[""divestment""]",True
+68,"[""IDX"", ""Bullish"", ""insider-trading"", ""Support"", ""Ownership Changes""]",[],True
+69,"[""IDX"", ""Bullish"", ""insider-trading"", ""Ownership Changes""]",[],True
+76,"[""IDX"", ""Bullish"", ""insider-trading"", ""Ownership Changes""]",[],True
+77,"[""IDX"", ""Bearish"", ""insider-trading"", ""Investment"", ""Ownership Changes""]","[""investment""]",True
+78,"[""IDX"", ""Bullish"", ""insider-trading"", ""Investment"", ""Ownership Changes""]","[""investment""]",True
+79,"[""IDX"", ""Bullish"", ""insider-trading"", ""Investment"", ""Ownership Changes""]","[""investment""]",True
+80,"[""IDX"", ""Bullish"", ""insider-trading"", ""Investment"", ""Ownership Changes""]","[""investment""]",True
+81,"[""IDX"", ""Bearish"", ""insider-trading"", ""Divestment"", ""Ownership Changes""]","[""divestment""]",True
+82,"[""IDX"", ""Bullish"", ""insider-trading"", ""Investment"", ""Ownership Changes""]","[""investment""]",True
+84,"[""IDX"", ""Bullish"", ""insider-trading"", ""Investment"", ""Ownership Changes""]","[""investment""]",True
+85,"[""IDX"", ""Bearish"", ""insider-trading"", ""Divestment"", ""Ownership Changes""]","[""divestment""]",True
+86,"[""IDX"", ""Bullish"", ""insider-trading"", ""Investment"", ""Ownership Changes""]","[""investment""]",True
+87,"[""IDX"", ""Bullish"", ""insider-trading"", ""Restructure"", ""Ownership Changes""]",[],True
+88,"[""IDX"", ""Bullish"", ""insider-trading"", ""Restructure"", ""Ownership Changes""]",[],True
+90,"[""IDX"", ""Bearish"", ""insider-trading"", ""Divestment"", ""Ownership Changes""]","[""divestment""]",True
+91,"[""IDX"", ""Bearish"", ""insider-trading"", ""Divestment"", ""Ownership Changes""]","[""divestment""]",True
+92,"[""IDX"", ""Bullish"", ""insider-trading"", ""Investment"", ""Ownership Changes""]","[""investment""]",True
+93,"[""IDX"", ""Bullish"", ""insider-trading"", ""Investment"", ""Ownership Changes""]","[""investment""]",True
+104,"[""IDX"", ""Bullish"", ""insider-trading"", ""Investment"", ""Ownership Changes""]","[""investment""]",True
+105,"[""IDX"", ""Bullish"", ""insider-trading"", ""Investment"", ""Ownership Changes""]","[""investment""]",True
+106,"[""IDX"", ""Bullish"", ""insider-trading"", ""Investment"", ""Ownership Changes""]","[""investment""]",True
+107,"[""IDX"", ""Bullish"", ""insider-trading"", ""MESOP"", ""Ownership Changes""]","[""MESOP""]",True
+109,"[""IDX"", ""Bullish"", ""insider-trading"", ""MESOP"", ""Ownership Changes""]","[""MESOP""]",True
+110,"[""IDX"", ""Bullish"", ""insider-trading"", ""MESOP"", ""Ownership Changes""]","[""MESOP""]",True
+111,"[""IDX"", ""Bullish"", ""insider-trading"", ""Investment"", ""Ownership Changes""]","[""investment""]",True
+112,"[""IDX"", ""Bearish"", ""insider-trading"", ""Divestment"", ""Ownership Changes""]","[""divestment""]",True
+113,"[""IDX"", ""Bullish"", ""insider-trading"", ""Investment"", ""Ownership Changes""]","[""investment""]",True
+116,"[""IDX"", ""Bullish"", ""insider-trading"", ""Investment"", ""Ownership Changes""]","[""investment""]",True
+117,"[""IDX"", ""Bearish"", ""insider-trading"", ""Divestment"", ""Ownership Changes""]","[""divestment""]",True
+118,"[""IDX"", ""Bullish"", ""insider-trading"", ""Investment"", ""Ownership Changes""]","[""investment""]",True
+120,"[""IDX"", ""Bearish"", ""insider-trading"", ""Divestment"", ""Ownership Changes""]","[""divestment""]",True
+122,"[""IDX"", ""Bullish"", ""insider-trading"", ""Investment"", ""Ownership Changes""]","[""investment""]",True
+124,"[""IDX"", ""Bearish"", ""insider-trading"", ""Divestment"", ""Ownership Changes""]","[""divestment""]",True
+125,"[""IDX"", ""Bearish"", ""insider-trading"", ""Divestment"", ""Ownership Changes""]","[""divestment""]",True
+126,"[""IDX"", ""Bullish"", ""insider-trading"", ""Investment"", ""Ownership Changes""]","[""investment""]",True
+127,"[""IDX"", ""Bullish"", ""insider-trading"", ""Increase Stake"", ""Ownership Changes""]",[],True
+129,"[""IDX"", ""Bearish"", ""insider-trading"", ""Divestment"", ""Ownership Changes""]","[""divestment""]",True
+131,"[""IDX"", ""Bullish"", ""insider-trading"", ""Investment"", ""Ownership Changes""]","[""investment""]",True
+132,"[""IDX"", ""Bullish"", ""insider-trading"", ""Investment"", ""Ownership Changes""]","[""investment""]",True
+133,"[""IDX"", ""Bullish"", ""insider-trading"", ""Investment"", ""Ownership Changes""]","[""investment""]",True
+134,"[""IDX"", ""Bullish"", ""insider-trading"", ""Investment"", ""Ownership Changes""]","[""investment""]",True
+135,"[""IDX"", ""Bullish"", ""insider-trading"", ""Investment"", ""Ownership Changes""]","[""investment""]",True
+140,"[""IDX"", ""Bearish"", ""insider-trading"", ""Divestment"", ""Ownership Changes""]","[""divestment""]",True
+141,"[""IDX"", ""Bearish"", ""insider-trading"", ""Divestment"", ""Ownership Changes""]","[""divestment""]",True
+142,"[""IDX"", ""Bullish"", ""insider-trading"", ""Investment"", ""Ownership Changes""]","[""investment""]",True
+143,"[""IDX"", ""Bearish"", ""insider-trading"", ""Divestment"", ""Ownership Changes""]","[""divestment""]",True
+144,"[""IDX"", ""Bullish"", ""insider-trading"", ""Investment"", ""Ownership Changes""]","[""investment""]",True
+145,"[""IDX"", ""Bullish"", ""insider-trading"", ""Investment"", ""Ownership Changes""]","[""investment""]",True
+146,"[""IDX"", ""Bullish"", ""insider-trading"", ""Investment"", ""Ownership Changes""]","[""investment""]",True
+147,"[""IDX"", ""Bullish"", ""insider-trading"", ""Investment"", ""Ownership Changes""]","[""investment""]",True
+148,"[""IDX"", ""Bullish"", ""insider-trading"", ""Investment"", ""Ownership Changes""]","[""investment""]",True
+149,"[""IDX"", ""Bullish"", ""insider-trading"", ""Investment"", ""Ownership Changes""]","[""investment""]",True
+150,"[""IDX"", ""Bullish"", ""insider-trading"", ""Investment"", ""Ownership Changes""]","[""investment""]",True
+152,"[""IDX"", ""Bullish"", ""insider-trading"", ""Investment"", ""Ownership Changes""]","[""investment""]",True
+154,"[""IDX"", ""Bullish"", ""insider-trading"", ""Investment"", ""Ownership Changes""]","[""investment""]",True
+155,"[""IDX"", ""Bullish"", ""insider-trading"", ""Investment"", ""Ownership Changes""]","[""investment""]",True
+156,"[""IDX"", ""Bullish"", ""insider-trading"", ""Stock Dividend"", ""Ownership Changes""]",[],True
+157,"[""IDX"", ""Bullish"", ""insider-trading"", ""Stock Dividend"", ""Ownership Changes""]",[],True
+158,"[""IDX"", ""Bullish"", ""insider-trading"", ""Investment"", ""Ownership Changes""]","[""investment""]",True
+159,"[""IDX"", ""Bullish"", ""insider-trading"", ""Investment"", ""Ownership Changes""]","[""investment""]",True
+160,"[""IDX"", ""Bullish"", ""insider-trading"", ""Investment"", ""Ownership Changes""]","[""investment""]",True
+161,"[""IDX"", ""Bullish"", ""insider-trading"", ""Investment"", ""Ownership Changes""]","[""investment""]",True
+162,"[""IDX"", ""Bullish"", ""insider-trading"", ""Investment"", ""Ownership Changes""]","[""investment""]",True
+163,"[""IDX"", ""Bullish"", ""insider-trading"", ""Investment"", ""Ownership Changes""]","[""investment""]",True
+164,"[""IDX"", ""Bearish"", ""insider-trading"", ""Divestment"", ""Ownership Changes""]","[""divestment""]",True
+165,"[""IDX"", ""Bullish"", ""insider-trading"", ""Investment"", ""Ownership Changes""]","[""investment""]",True
+167,"[""IDX"", ""Bearish"", ""insider-trading"", ""Divestment"", ""Ownership Changes""]","[""divestment""]",True
+168,"[""IDX"", ""Bullish"", ""insider-trading"", ""Hibah"", ""Ownership Changes""]",[],True
+169,"[""IDX"", ""Bullish"", ""insider-trading"", ""Hibah"", ""Ownership Changes""]",[],True
+170,"[""IDX"", ""Bullish"", ""insider-trading"", ""Investment"", ""Ownership Changes""]","[""investment""]",True
+172,"[""IDX"", ""Bearish"", ""insider-trading"", ""Divestment"", ""Ownership Changes""]","[""divestment""]",True
+173,"[""IDX"", ""Bullish"", ""insider-trading"", ""Investment"", ""Ownership Changes""]","[""investment""]",True
+174,"[""IDX"", ""Bullish"", ""insider-trading"", ""Investment"", ""Ownership Changes""]","[""investment""]",True
+175,"[""IDX"", ""Bearish"", ""insider-trading"", ""Divestment"", ""Ownership Changes""]","[""divestment""]",True
+176,"[""IDX"", ""Bearish"", ""insider-trading"", ""Divestment"", ""Ownership Changes""]","[""divestment""]",True
+177,"[""IDX"", ""Bullish"", ""insider-trading"", ""Investment"", ""Ownership Changes""]","[""investment""]",True
+178,"[""IDX"", ""Bearish"", ""insider-trading"", ""Divestment"", ""Ownership Changes""]","[""divestment""]",True
+179,"[""IDX"", ""Bearish"", ""insider-trading"", ""Divestment"", ""Ownership Changes""]","[""divestment""]",True
+180,"[""IDX"", ""Bullish"", ""insider-trading"", ""Investment"", ""Ownership Changes""]","[""investment""]",True
+181,"[""IDX"", ""Bullish"", ""insider-trading"", ""Investment"", ""Ownership Changes""]","[""investment""]",True
+182,"[""IDX"", ""Bearish"", ""insider-trading"", ""Divestment"", ""Ownership Changes""]","[""divestment""]",True
+183,"[""IDX"", ""Bullish"", ""insider-trading"", ""Investment"", ""Ownership Changes""]","[""investment""]",True
+184,"[""IDX"", ""Bearish"", ""insider-trading"", ""Debt Payment"", ""Ownership Changes""]",[],True
+185,"[""IDX"", ""Bullish"", ""insider-trading"", ""Investment"", ""Ownership Changes""]","[""investment""]",True
+199,"[""IDX"", ""Bullish"", ""insider-trading"", ""Investment"", ""Ownership Changes""]","[""investment""]",True
+200,"[""IDX"", ""Bearish"", ""insider-trading"", ""Divestment"", ""Ownership Changes""]","[""divestment""]",True
+201,"[""IDX"", ""Bearish"", ""insider-trading"", ""Divestment"", ""Ownership Changes""]","[""divestment""]",True
+202,"[""IDX"", ""Bullish"", ""insider-trading"", ""Investment"", ""Ownership Changes""]","[""investment""]",True
+204,"[""IDX"", ""Bullish"", ""insider-trading"", ""Investment"", ""Ownership Changes""]","[""investment""]",True
+205,"[""IDX"", ""Bullish"", ""insider-trading"", ""Investment"", ""Ownership Changes""]","[""investment""]",True
+206,"[""IDX"", ""Bullish"", ""insider-trading"", ""Investment"", ""Ownership Changes""]","[""investment""]",True
+207,"[""IDX"", ""Bearish"", ""insider-trading"", ""Divestment"", ""Ownership Changes""]","[""divestment""]",True
+208,"[""IDX"", ""Bullish"", ""insider-trading"", ""Investment"", ""Ownership Changes""]","[""investment""]",True
+209,"[""IDX"", ""Bullish"", ""insider-trading"", ""Investment"", ""Ownership Changes""]","[""investment""]",True
+210,"[""IDX"", ""Bearish"", ""insider-trading"", ""Divestment"", ""Ownership Changes""]","[""divestment""]",True
+211,"[""IDX"", ""Bullish"", ""insider-trading"", ""Investment"", ""Ownership Changes""]","[""investment""]",True
+212,"[""IDX"", ""Bullish"", ""insider-trading"", ""Investment"", ""Ownership Changes""]","[""investment""]",True
+213,"[""IDX"", ""Bullish"", ""insider-trading"", ""Investment"", ""Ownership Changes""]","[""investment""]",True
+214,"[""IDX"", ""Bullish"", ""insider-trading"", ""Investment"", ""Ownership Changes""]","[""investment""]",True
+215,"[""IDX"", ""Bullish"", ""insider-trading"", ""Investment"", ""Ownership Changes""]","[""investment""]",True
+216,"[""IDX"", ""Bearish"", ""insider-trading"", ""Divestment"", ""Ownership Changes""]","[""divestment""]",True
+217,"[""IDX"", ""Bullish"", ""insider-trading"", ""Investment"", ""Ownership Changes""]","[""investment""]",True
+218,"[""IDX"", ""Bullish"", ""insider-trading"", ""Investment"", ""Ownership Changes""]","[""investment""]",True
+219,"[""IDX"", ""Bullish"", ""insider-trading"", ""Investment"", ""Ownership Changes""]","[""investment""]",True
+220,"[""IDX"", ""Bearish"", ""insider-trading"", ""Divestment"", ""Ownership Changes""]","[""divestment""]",True
+221,"[""IDX"", ""Bearish"", ""insider-trading"", ""Divestment"", ""Ownership Changes""]","[""divestment""]",True
+222,"[""IDX"", ""Bearish"", ""insider-trading"", ""Divestment"", ""Ownership Changes""]","[""divestment""]",True
+223,"[""IDX"", ""Bearish"", ""insider-trading"", ""Divestment"", ""Ownership Changes""]","[""divestment""]",True
+224,"[""IDX"", ""Bullish"", ""insider-trading"", ""Investment"", ""Ownership Changes""]","[""investment""]",True
+225,"[""IDX"", ""Bullish"", ""insider-trading"", ""Investment"", ""Ownership Changes""]","[""investment""]",True
+226,"[""IDX"", ""Bearish"", ""insider-trading"", ""Divestment"", ""Ownership Changes""]","[""divestment""]",True
+227,"[""IDX"", ""Bearish"", ""insider-trading"", ""Divestment"", ""Ownership Changes""]","[""divestment""]",True
+228,"[""IDX"", ""Bullish"", ""insider-trading"", ""Investment"", ""Ownership Changes""]","[""investment""]",True
+229,"[""IDX"", ""Bullish"", ""insider-trading"", ""Investment"", ""Ownership Changes""]","[""investment""]",True
+230,"[""IDX"", ""Bullish"", ""insider-trading"", ""Investment"", ""Ownership Changes""]","[""investment""]",True
+231,"[""IDX"", ""Bullish"", ""insider-trading"", ""Investment"", ""Ownership Changes""]","[""investment""]",True
+232,"[""IDX"", ""Bullish"", ""insider-trading"", ""Investment"", ""Ownership Changes""]","[""investment""]",True
+233,"[""IDX"", ""Bearish"", ""insider-trading"", ""Divestment"", ""Ownership Changes""]","[""divestment""]",True
+234,"[""IDX"", ""Bullish"", ""insider-trading"", ""Investment"", ""Ownership Changes""]","[""investment""]",True
+235,"[""IDX"", ""Bullish"", ""insider-trading"", ""Investment"", ""Ownership Changes""]","[""investment""]",True
+236,"[""IDX"", ""Bullish"", ""insider-trading"", ""Investment"", ""Ownership Changes""]","[""investment""]",True
+237,"[""IDX"", ""Bearish"", ""insider-trading"", ""Divestment"", ""Ownership Changes""]","[""divestment""]",True
+238,"[""IDX"", ""Bullish"", ""insider-trading"", ""Investment"", ""Ownership Changes""]","[""investment""]",True
+239,"[""IDX"", ""Bearish"", ""insider-trading"", ""Divestment"", ""Ownership Changes""]","[""divestment""]",True
+240,"[""IDX"", ""Bearish"", ""insider-trading"", ""Divestment"", ""Ownership Changes""]","[""divestment""]",True
+241,"[""IDX"", ""Bearish"", ""insider-trading"", ""Divestment"", ""Ownership Changes""]","[""divestment""]",True
+242,"[""IDX"", ""Bullish"", ""insider-trading"", ""Investment"", ""Ownership Changes""]","[""investment""]",True
+243,"[""IDX"", ""Bullish"", ""insider-trading"", ""Investment"", ""Ownership Changes""]","[""investment""]",True
+244,"[""IDX"", ""Bullish"", ""insider-trading"", ""Investment"", ""Ownership Changes""]","[""investment""]",True
+246,"[""IDX"", ""Bullish"", ""insider-trading"", ""Investment"", ""Ownership Changes""]","[""investment""]",True
+250,"[""IDX"", ""Bearish"", ""insider-trading"", ""Divestment"", ""Ownership Changes""]","[""divestment""]",True
+251,"[""IDX"", ""Bearish"", ""insider-trading"", ""Shares Consolidation"", ""Ownership Changes""]",[],True
+252,"[""IDX"", ""Bullish"", ""insider-trading"", ""Investment"", ""Ownership Changes""]","[""investment""]",True
+253,"[""IDX"", ""Bullish"", ""insider-trading"", ""Investment"", ""Ownership Changes""]","[""investment""]",True
+254,"[""IDX"", ""Bullish"", ""insider-trading"", ""Investment"", ""Ownership Changes""]","[""investment""]",True
+255,"[""IDX"", ""Bullish"", ""insider-trading"", ""Investment"", ""Ownership Changes""]","[""investment""]",True
+256,"[""Bearish"", ""insider-trading"", ""Divestment"", ""Ownership Changes""]","[""divestment""]",True
+257,"[""Bearish"", ""insider-trading"", ""Divestment"", ""Ownership Changes""]","[""divestment""]",True
+258,"[""Bullish"", ""insider-trading"", ""Investment"", ""Ownership Changes""]","[""investment""]",True
+259,"[""Bullish"", ""insider-trading"", ""Investment"", ""Ownership Changes""]","[""investment""]",True
+260,"[""Bullish"", ""insider-trading"", ""Investment"", ""Ownership Changes""]","[""investment""]",True
+261,"[""Bullish"", ""insider-trading"", ""Investment"", ""Ownership Changes""]","[""investment""]",True
+262,"[""Bullish"", ""insider-trading"", ""Investment"", ""Ownership Changes""]","[""investment""]",True
+263,"[""Bearish"", ""insider-trading"", ""Divestment"", ""Ownership Changes"", ""Takeover""]","[""divestment""]",True
+264,"[""Bullish"", ""insider-trading"", ""Investment"", ""Ownership Changes"", ""Takeover""]","[""investment""]",True
+265,"[""Bullish"", ""insider-trading"", ""Investment"", ""Ownership Changes""]","[""investment""]",True
+266,"[""Bullish"", ""insider-trading"", ""Investment"", ""Ownership Changes""]","[""investment""]",True
+267,"[""Bullish"", ""insider-trading"", ""Investment"", ""Ownership Changes""]","[""investment""]",True
+268,"[""Bullish"", ""insider-trading"", ""Investment"", ""Ownership Changes""]","[""investment""]",True
+269,"[""Bullish"", ""insider-trading"", ""Investment"", ""Ownership Changes""]","[""investment""]",True
+270,"[""Bullish"", ""insider-trading"", ""Investment"", ""Ownership Changes""]","[""investment""]",True
+271,"[""Bullish"", ""insider-trading"", ""Investment"", ""Ownership Changes""]","[""investment""]",True
+272,"[""Bearish"", ""insider-trading"", ""Divestment"", ""Ownership Changes""]","[""divestment""]",True
+273,"[""insider-trading"", ""IDX"", ""Ownership Changes"", ""Bullish""]",[],True
+274,"[""insider-trading"", ""IDX"", ""Ownership Changes"", ""Bullish""]",[],True
+275,"[""Bullish"", ""insider-trading"", ""Investment"", ""Ownership Changes""]","[""investment""]",True
+276,"[""Bullish"", ""insider-trading"", ""Investment"", ""Ownership Changes""]","[""investment""]",True
+277,"[""Bearish"", ""insider-trading"", ""Divestment"", ""Ownership Changes""]","[""divestment""]",True
+278,"[""Bullish"", ""insider-trading"", ""Investment"", ""Ownership Changes""]","[""investment""]",True
+281,"[""Bullish"", ""insider-trading"", ""Investment"", ""Ownership Changes""]","[""investment""]",True
+283,"[""insider-trading"", ""IDX"", ""Ownership Changes"", ""Bearish"", ""\""IDX\"""", ""\""Ownership Changes\"""", ""\""Bearish\""]""]",[],True
+284,"[""insider-trading"", ""IDX"", ""Ownership Changes"", ""Bearish""]",[],True
+285,"[""insider-trading"", ""IDX"", ""Ownership Changes"", ""Bullish""]",[],True
+286,"[""Bearish"", ""insider-trading"", ""Divestment"", ""Ownership Changes""]","[""divestment""]",True
+314,"[""Ownership Changes"", ""Succession"", ""insider-trading""]","[""bearish""]",True
+315,"[""Ownership Changes"", ""Succession"", ""insider-trading""]","[""bullish"", ""takeover""]",True
+332,"[""Bullish"", ""insider-trading"", ""Investment"", ""Ownership Changes""]","[""investment""]",True
+343,"[""Bearish"", ""insider-trading"", ""Divestment"", ""Ownership Changes""]","[""divestment""]",True
+369,"[""insider-trading"", ""IDX"", ""Ownership Changes"", ""Bearish""]","[""bullish""]",True
+377,"[""insider-trading""]","[""bullish""]",True
+530,"[""Bearish"", ""Divestment"", ""Ownership Change"", ""Insider Trading"", ""Takeover""]","[""bearish"", ""divestment""]",True
+537,"[""Bullish"", ""Investment"", ""Ownership Change"", ""Insider Trading""]","[""investment""]",True
+538,"[""Bullish"", ""Investment"", ""Ownership Change"", ""Insider Trading""]","[""investment""]",True
+550,"[""Bearish"", ""Divestment"", ""Ownership Change"", ""Insider Trading""]","[""divestment""]",True
+587,"[""Bullish"", ""Investment"", ""Ownership Change"", ""Insider Trading""]","[""investment""]",True
+598,"[""Bearish"", ""Divestment"", ""Ownership Change"", ""Insider Trading"", ""Takeover""]","[""bearish"", ""divestment""]",True
+604,"[""Bullish"", ""Investment"", ""Ownership Change"", ""Insider Trading""]","[""investment""]",True
+611,"[""Bullish"", ""Investment"", ""Ownership Change"", ""Insider Trading""]","[""investment""]",True
+617,"[""Bullish"", ""Investment"", ""Ownership Change"", ""Insider Trading""]","[""investment""]",True
+622,"[""Bullish"", ""Investment"", ""Ownership Change"", ""Insider Trading""]","[""investment""]",True
+624,"[""Bullish"", ""Investment"", ""Ownership Change"", ""Insider Trading""]","[""investment""]",True
+625,"[""Bullish"", ""Investment"", ""Ownership Change"", ""Insider Trading""]","[""investment""]",True
+632,"[""Bullish"", ""Investment"", ""Ownership Change"", ""Insider Trading""]","[""investment""]",True
+640,"[""Bullish"", ""Investment"", ""Ownership Change"", ""Insider Trading""]","[""investment""]",True
+649,"[""Bullish"", ""Investment"", ""Ownership Change"", ""Insider Trading""]","[""investment""]",True
+651,"[""Bullish"", ""Investment"", ""Ownership Change"", ""Insider Trading""]","[""investment""]",True
+655,"[""Bullish"", ""Investment"", ""Ownership Change"", ""Insider Trading""]","[""investment""]",True
+661,"[""Bullish"", ""Investment"", ""Ownership Change"", ""Insider Trading""]","[""investment""]",True
+662,"[""Bearish"", ""Divestment"", ""Ownership Change"", ""Insider Trading""]","[""divestment""]",True
+667,"[""Bullish"", ""Investment"", ""Ownership Change"", ""Insider Trading""]","[""investment""]",True
+697,"[""Bullish"", ""Investment"", ""Ownership Change"", ""Insider Trading""]","[""investment""]",True
+698,"[""Bullish"", ""Investment"", ""Ownership Change"", ""Insider Trading""]","[""investment""]",True
+700,"[""Bullish"", ""Investment"", ""Ownership Change"", ""Insider Trading""]","[""investment""]",True
+703,"[""Bullish"", ""Investment"", ""Ownership Change"", ""Insider Trading""]","[""investment""]",True
+717,"[""Bullish"", ""Investment"", ""Ownership Change"", ""Insider Trading""]","[""investment""]",True
+718,"[""Bullish"", ""Investment"", ""Ownership Change"", ""Insider Trading""]","[""investment""]",True
+719,"[""Bullish"", ""Investment"", ""Ownership Change"", ""Insider Trading""]","[""investment""]",True
+725,"[""Bullish"", ""Investment"", ""Ownership Change"", ""Insider Trading""]","[""investment""]",True
+726,"[""Bullish"", ""Investment"", ""Ownership Change"", ""Insider Trading""]","[""investment""]",True
+729,"[""Bullish"", ""Investment"", ""Ownership Change"", ""Insider Trading""]","[""investment""]",True
+738,"[""Bullish"", ""Investment"", ""Ownership Change"", ""Insider Trading""]","[""investment""]",True
+763,"[""Ownership Changes"", ""insider-trading""]","[""bullish""]",True
+766,"[""Ownership Changes"", ""Takeover"", ""insider-trading""]","[""bearish""]",True
+768,"[""Divestment"", ""Ownership Change"", ""insider-trading""]","[""bearish"", ""divestment""]",True
+769,"[""Ownership Changes"", ""insider-trading""]","[""bearish""]",True
+784,"[""Ownership Changes"", ""Divestment Bearish"", ""insider-trading""]","[""bearish""]",True
+785,"[""Ownership Changes"", ""Divestment"", ""insider-trading""]","[""bearish"", ""divestment""]",True
+815,"[""Bullish"", ""Investment"", ""Ownership Change"", ""Insider Trading""]","[""investment""]",True
+816,"[""Ownership Change"", ""Takeover"", ""insider-trading""]","[""bearish""]",True
+817,"[""Divestment"", ""Ownership Changes"", ""Partnership"", ""insider-trading""]","[""bearish"", ""divestment""]",True
+820,"[""insider-trading"", ""Ownership Changes"", ""insider-trading""]","[""bearish""]",True
+821,"[""Ownership Changes"", ""insider-trading""]","[""bearish""]",True
+822,"[""Takeover"", ""Ownership Changes"", ""Investment"", ""Bullish"", ""insider-trading""]","[""bullish"", ""investment""]",True
+823,"[""Takeover Ownership Structure"", ""insider-trading""]","[""bearish""]",True
+825,"[""Ownership Changes"", ""insider-trading""]","[""bearish""]",True
+839,"[""Bearish"", ""Divestment"", ""Ownership Change"", ""Insider Trading"", ""Takeover""]","[""bearish"", ""divestment""]",True
+878,"[""Ownership Changes"", ""Acquisition"", ""insider-trading""]","[""bullish""]",True
+905,"[""Ownership Changes"", ""Takeover"", ""insider-trading""]","[""bearish""]",True
+1012,"[""Bullish"", ""Investment"", ""Ownership Change"", ""Insider Trading""]","[""investment""]",True
+1039,"[""Bullish"", ""Investment"", ""Ownership Change"", ""Insider Trading""]","[""investment""]",True
+1044,"[""Bullish"", ""Investment"", ""Ownership Change"", ""Insider Trading""]","[""investment""]",True
+1049,"[""Bullish"", ""Investment"", ""Ownership Change"", ""Insider Trading""]","[""investment""]",True
+1050,"[""Bullish"", ""Investment"", ""Ownership Change"", ""Insider Trading"", ""Takeover""]","[""bullish"", ""investment""]",True
+1052,"[""neutral"", ""ownership change"", ""insider trading""]","[""bearish""]",True
+1053,"[""neutral"", ""ownership change"", ""insider trading""]","[""bearish""]",True
+1064,"[""Bullish"", ""Investment"", ""Ownership Change"", ""Insider Trading""]","[""investment""]",True
+1086,"[""neutral"", ""ownership change"", ""insider trading""]","[""bullish""]",True
+1087,"[""neutral"", ""ownership change"", ""insider trading""]","[""bullish""]",True
+1091,"[""Bullish"", ""Investment"", ""Ownership Change"", ""Insider Trading""]","[""investment""]",True
+1126,"[""Bullish"", ""Investment"", ""Ownership Change"", ""Insider Trading""]","[""investment""]",True
+1222,"[""Bullish"", ""Investment"", ""Ownership Change"", ""Insider Trading""]","[""investment""]",True
+1283,"[""Bullish"", ""Investment"", ""Ownership Change"", ""Insider Trading""]","[""bearish"", ""investment""]",True
+1291,"[""Bullish"", ""Investment"", ""Ownership Change"", ""Insider Trading"", ""Takeover""]","[""bullish"", ""investment""]",True
+1293,"[""Bullish"", ""Investment"", ""Ownership Change"", ""Insider Trading""]","[""investment""]",True

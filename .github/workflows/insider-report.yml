@@ -117,12 +117,13 @@ jobs:
           echo "recips=$RECIPS"    >> "$GITHUB_OUTPUT"
 
       # Refresh company map & latest prices (enrichment dependency)
-      - name: Build company_map & latest_prices (refresh_all)
+      - name: Build company_map (single-source - idx_company_report)
         shell: bash
         run: |
           set -euo pipefail
-          python src/scripts/company_map_hybrid.py refresh_all
+          python src/scripts/company_map_hybrid.py refresh
           test -s data/company/company_map.json || { echo "company_map.json missing"; exit 1; }
+
 
       # ===== Phase A: Build (export + fetch + render) WITHOUT sending =====
       - name: Build command (dry-run)

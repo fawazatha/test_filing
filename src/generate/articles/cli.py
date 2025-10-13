@@ -18,7 +18,7 @@ log = get_logger(__name__)
 # =========================
 def _add_common_args(ap: argparse.ArgumentParser):
     ap.add_argument("--company-map", default="data/company/company_map.json")
-    ap.add_argument("--latest-prices", default="data/company/latest_prices.json")
+    ap.add_argument("--latest-prices", default="data/company/company_map.json")
     ap.add_argument("--use-llm", action="store_true", help="Pakai LLM untuk ringkasan/klasifikasi.")
     ap.add_argument(
         "--model",
