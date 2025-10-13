@@ -126,6 +126,114 @@ def _write_jsonl(path: Path, rows: List[Dict[str, Any]]) -> None:
             f.write(json.dumps(r, ensure_ascii=False))
             f.write("\n")
 
+# === Enrich timestamps from downloads metadata ===
+def _load_json_silent(path: Path) -> Any:
+    try:
+        return json.loads(path.read_text(encoding="utf-8"))
+    except Exception:
+        return None
+
+def _basename(s: Optional[str]) -> Optional[str]:
+    if not s:
+        return None
+    try:
+        return Path(str(s)).name
+    except Exception:
+        return None
+
+def _build_download_ts_index(downloads_meta: Path) -> Dict[str, str]:
+    """
+    Build index: filename (lower) -> ISO timestamp (string).
+    downloads_meta format (list of dict):
+      [{"filename": "...pdf", "timestamp": "YYYY-MM-DDTHH:MM:SS", ...}, ...]
+    """
+    idx: Dict[str, str] = {}
+    data = _load_json_silent(downloads_meta)
+    if not isinstance(data, list):
+        return idx
+    for item in data:
+        if not isinstance(item, dict):
+            continue
+        fn = _basename(item.get("filename")) or _basename(item.get("url"))
+        ts = item.get("timestamp")
+        if fn and ts:
+            idx[fn.lower()] = str(ts)
+    return idx
+
+def _candidate_filenames_from_row(row: Dict[str, Any]) -> List[str]:
+    """
+    Ambil kandidat nama file untuk matching dari berbagai field yang mungkin ada di row:
+    - source
+    - announcement.{pdf_url,url}
+    - pdf_url / url langsung di top-level (kalau ada)
+    """
+    cands: List[str] = []
+    for k in ("source", "pdf", "pdf_url", "url", "attachment_url", "filename"):
+        fn = _basename(row.get(k))
+        if fn:
+            cands.append(fn)
+    # nested announcement block if present
+    ann = row.get("announcement") or row.get("announcement_meta") or {}
+    if isinstance(ann, dict):
+        for k in ("pdf_url", "url", "attachment_url", "filename"):
+            fn = _basename(ann.get(k))
+            if fn:
+                cands.append(fn)
+    # de-dup, keep order
+    seen = set()
+    out: List[str] = []
+    for n in cands:
+        nl = n.lower()
+        if nl not in seen:
+            seen.add(nl)
+            out.append(n)
+    return out
+
+def step_enrich_filings_timestamps(*, filings_json: Path, downloads_meta: Path) -> int:
+    if (not filings_json.exists()) or (not downloads_meta.exists()):
+        LOG.warning("[ENRICH-TS] skip: %s or %s not found", filings_json, downloads_meta)
+        return 0
+
+    rows_or_obj = _load_json_silent(filings_json)
+    if isinstance(rows_or_obj, dict) and "rows" in rows_or_obj and isinstance(rows_or_obj["rows"], list):
+        rows = rows_or_obj["rows"]
+        wrapper_dict = True
+    elif isinstance(rows_or_obj, list):
+        rows = rows_or_obj
+        wrapper_dict = False
+    else:
+        LOG.warning("[ENRICH-TS] %s has unexpected format; skip", filings_json)
+        return 0
+
+    idx = _build_download_ts_index(downloads_meta)
+    if not idx:
+        LOG.warning("[ENRICH-TS] empty downloads index from %s; nothing to enrich", downloads_meta)
+        return 0
+
+    patched = 0
+    for r in rows:
+        if not isinstance(r, dict):
+            continue
+        matched_ts: Optional[str] = None
+        for nm in _candidate_filenames_from_row(r):
+            key = nm.lower()
+            if key in idx:
+                matched_ts = idx[key]
+                break
+        if matched_ts:
+            r["timestamp"] = matched_ts
+            r["announcement_published_at"] = matched_ts
+            patched += 1
+
+    if wrapper_dict:
+        filings_json.write_text(json.dumps({"rows": rows}, ensure_ascii=False, indent=2), encoding="utf-8")
+    else:
+        filings_json.write_text(json.dumps(rows, ensure_ascii=False, indent=2), encoding="utf-8")
+
+    LOG.info("[ENRICH-TS] enriched %d rows with timestamps from %s", patched, downloads_meta)
+    return patched
+
+
 
 # ========== Company assets via single-source script ==========
 def _run_company_map_cli(script_path: str, subcmd: str) -> subprocess.CompletedProcess:
@@ -607,6 +715,8 @@ def step_generate_articles(
     return len(articles)
 
 
+
+
 # ========== CLI ==========
 def build_argparser() -> argparse.ArgumentParser:
     p = argparse.ArgumentParser(description="IDX filings pipeline orchestrator")
@@ -815,6 +925,11 @@ def main():
         downloads_meta=Path("data/downloaded_pdfs.json"),
         filings_out=filings_out,
         alerts_out=suspicious_out,
+    )
+
+    step_enrich_filings_timestamps(
+        filings_json=filings_out,
+        downloads_meta=Path("data/downloaded_pdfs.json"),
     )
 
     # 4.1) Alerts v2 langsung dari filings_data.json → inserted / not_inserted
