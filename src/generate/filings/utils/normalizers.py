@@ -5,7 +5,7 @@ import re
 
 # Ambil info sektor dari company_map via provider
 try:
-    from generate.filings.provider import get_company_info  # type: ignore
+    from generate.filings.utils.provider import get_company_info  # type: ignore
 except Exception:
     # fallback relative
     from provider import get_company_info  # type: ignore

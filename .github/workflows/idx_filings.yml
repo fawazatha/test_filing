@@ -22,7 +22,7 @@ on:
         required: false
         default: "120"
       refresh_company_assets:
-        description: "Refresh company map + latest prices before run?"
+        description: "Refresh company map + latest prices before run? (handled in a separate warm-up step)"
         type: boolean
         default: true
       prices_lookback_days:
@@ -54,6 +54,10 @@ env:
   PYTHONPATH: src
   TZ: Asia/Jakarta
   OVERLAP_MINUTES: "1"
+  # Lokasi script company_map single-source (ubah jika beda)
+  COMPANY_MAP_SCRIPT: company_map.py
+  # (Opsional) script terpisah untuk latest prices; kalau tidak ada, biarkan kosong
+  LATEST_PRICES_SCRIPT: ""
   # Optional: override default news table used by orchestrator (--news-table default)
   # SUPABASE_NEWS_TABLE: idx_news
 
@@ -90,6 +94,60 @@ jobs:
         id: ts
         run: echo "stamp=$(date +'%Y%m%d-%H%M%S')" >> "$GITHUB_OUTPUT"
 
+      # -----------------------------
+      # Company assets warm-up (single-source)
+      # -----------------------------
+      - name: Company map (single-source) — ensure/refresh
+        if: ${{ (github.event_name == 'schedule') || (inputs.refresh_company_assets == true) }}
+        env:
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_KEY: ${{ secrets.SUPABASE_KEY }}
+        run: |
+          set -euo pipefail
+
+          # Pastikan deps minimal tersedia jika script single-source butuhnya
+          python - <<'PY'
+          import importlib, sys
+          for m in ("requests","dotenv"):
+              try: importlib.import_module(m)
+              except Exception: sys.exit(1)
+          PY
+          if [[ $? -ne 0 ]]; then
+            pip install requests python-dotenv
+          fi
+
+          # Jadwal = refresh penuh; Manual = ensure (bootstrap/invalidasi ringan)
+          if [[ "${{ github.event_name }}" == "schedule" ]]; then
+            echo "[Warm-up] Refresh company_map via ${COMPANY_MAP_SCRIPT}"
+            python "${COMPANY_MAP_SCRIPT}" refresh || true
+          else
+            echo "[Warm-up] Ensure company_map via ${COMPANY_MAP_SCRIPT}"
+            # Coba get dulu (invalidasi ringan); jika gagal fallback ke refresh
+            if ! python "${COMPANY_MAP_SCRIPT}" get; then
+              python "${COMPANY_MAP_SCRIPT}" refresh || true
+            fi
+          fi
+
+          echo "[Warm-up] Status company_map:"
+          python "${COMPANY_MAP_SCRIPT}" status || true
+
+          # (Opsional) refresh latest prices jika punya script terpisah
+          if [[ -n "${LATEST_PRICES_SCRIPT}" && -f "${LATEST_PRICES_SCRIPT}" ]]; then
+            LOOKBACK="${{ github.event_name == 'schedule' && '14' || inputs.prices_lookback_days }}"
+            [[ -z "${LOOKBACK}" ]] && LOOKBACK="14"
+            echo "[Warm-up] Refresh latest prices via ${LATEST_PRICES_SCRIPT} (lookback=${LOOKBACK})"
+            if [[ "${{ inputs.no_price_fallback }}" == "true" ]]; then
+              python "${LATEST_PRICES_SCRIPT}" --lookback-days "${LOOKBACK}" --no-fallback || true
+            else
+              python "${LATEST_PRICES_SCRIPT}" --lookback-days "${LOOKBACK}" || true
+            fi
+          else
+            echo "[Warm-up] Latest prices script not configured; skip."
+          fi
+
+      # -----------------------------
+      # Main pipeline
+      # -----------------------------
       - name: Run orchestrator
         env:
           # ===== App secrets =====
@@ -120,16 +178,19 @@ jobs:
         run: |
           set -euo pipefail
 
-          # ---------- Helper: add flag only if value is non-empty ----------
           add_arg_if_set() {
             local flag="$1"; shift
             local val="${1:-}"
-            if [[ -n "${val}" ]]; then
-              ARGS+=("$flag" "$val")
-            fi
+            if [[ -n "${val}" ]]; then ARGS+=("$flag" "$val"); fi
           }
 
-          ARGS=( "--zip-artifacts" "--artifact-prefix" "filings" )
+          ARGS=( "--zip-artifacts" "--artifact-prefix" "filings"
+                 "--company-map-script" "${COMPANY_MAP_SCRIPT}" )
+
+          # (opsional) teruskan latest prices script ke orchestrator untuk logging/status (tanpa refresh)
+          if [[ -n "${LATEST_PRICES_SCRIPT}" ]]; then
+            ARGS+=( "--latest-prices-script" "${LATEST_PRICES_SCRIPT}" )
+          fi
 
           # Verbose?
           if [[ "${{ inputs.verbose }}" == "true" || "${{ github.event_name }}" == "schedule" ]]; then
@@ -137,19 +198,13 @@ jobs:
           fi
 
           MODE="${{ inputs.mode }}"
-          TIME_RAW="${{ inputs.time }}"  # may be empty
-
-          # Sanitize 'time' input
+          TIME_RAW="${{ inputs.time }}"
           TIME="$(echo "${TIME_RAW:-}" | tr -d '[:space:]')"
           digits_only() { printf '%s' "$1" | tr -cd '0-9'; }
 
-          # ---------- Defaults that are safe across events ----------
           DEFAULT_WINDOW_MINUTES=$(( 120 + ${OVERLAP_MINUTES:-1} ))
           DEFAULT_PRICES_LOOKBACK_DAYS="14"
 
-          # Compute final lookback days:
-          # - For schedule: always use DEFAULT_PRICES_LOOKBACK_DAYS
-          # - For workflow_dispatch: use input if provided, else default
           if [[ "${{ github.event_name }}" == "schedule" ]]; then
             PRICES_LOOKBACK_DAYS="${DEFAULT_PRICES_LOOKBACK_DAYS}"
           else
@@ -159,20 +214,17 @@ jobs:
             fi
           fi
 
-          # ===== Defaults on schedule =====
+          # ===== Mode window / date =====
           if [[ "${{ github.event_name }}" == "schedule" ]]; then
             ARGS+=( "--window-minutes" "${DEFAULT_WINDOW_MINUTES}" "--upload" "--table" "idx_filings" )
-            # Always refresh company assets on schedule
-            ARGS+=( "--refresh-company-assets" )
+            # NOTE: refresh-company-assets SUDAH dilakukan di step warm-up → jangan tambah flag di sini
             add_arg_if_set "--prices-lookback-days" "${PRICES_LOOKBACK_DAYS}"
             if [[ "${{ inputs.no_price_fallback }}" == "true" ]]; then
               ARGS+=( "--no-price-fallback" )
             fi
           else
-            # ===== Manual workflow_dispatch modes =====
             case "${MODE}" in
               single_day)
-                # Expect TIME: YYYYMMDD|HH:MM|HH:MM
                 if [[ -z "${TIME:-}" || "${TIME}" != *"|"* ]]; then
                   echo "::error::For mode=single_day, 'time' must be 'YYYYMMDD|HH:MM|HH:MM'"; exit 1;
                 fi
@@ -186,7 +238,6 @@ jobs:
                 ARGS+=( "--date" "$DATE" "--start-hhmm" "$SD" "--end-hhmm" "$ED" )
                 ;;
               range)
-                # Expect TIME: YYYYMMDD..YYYYMMDD
                 if [[ -z "${TIME:-}" || "${TIME}" != *".."* ]]; then
                   echo "::error::For mode=range, 'time' must be 'YYYYMMDD..YYYYMMDD'"; exit 1;
                 fi
@@ -207,13 +258,10 @@ jobs:
               ARGS+=( "--upload" "--table" "idx_filings" )
             fi
 
-            # Refresh company assets when requested (default true)
-            if [[ "${{ inputs.refresh_company_assets }}" == "true" ]]; then
-              ARGS+=( "--refresh-company-assets" )
-              add_arg_if_set "--prices-lookback-days" "${PRICES_LOOKBACK_DAYS}"
-              if [[ "${{ inputs.no_price_fallback }}" == "true" ]]; then
-                ARGS+=( "--no-price-fallback" )
-              fi
+            # NOTE: refresh-company-assets SUDAH dilakukan di step warm-up → jangan tambah flag di sini
+            add_arg_if_set "--prices-lookback-days" "${PRICES_LOOKBACK_DAYS}"
+            if [[ "${{ inputs.no_price_fallback }}" == "true" ]]; then
+              ARGS+=( "--no-price-fallback" )
             fi
           fi
 
@@ -222,11 +270,10 @@ jobs:
 
           # ==== Optional upload news ====
           if [[ "${{ inputs.upload_news }}" == "true" || "${{ github.event_name }}" == "schedule" ]]; then
-            # --news-table will default to $SUPABASE_NEWS_TABLE or 'idx_news' inside the orchestrator
             ARGS+=( "--upload-news" "--prefer-symbol" )
           fi
 
-          # ==== LLM toggling (auto-enable only if key present) ====
+          # ==== LLM toggling ====
           if [[ -n "${GROQ_API_KEY:-}" || -n "${OPENAI_API_KEY:-}" || -n "${GEMINI_API_KEY:-}" ]]; then
             ARGS+=( "--use-llm" )
           else

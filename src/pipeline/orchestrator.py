@@ -6,6 +6,7 @@ import logging
 import os
 import re
 import shutil
+import subprocess
 from dataclasses import dataclass
 from datetime import datetime, timedelta
 from pathlib import Path
@@ -16,36 +17,6 @@ try:
     JKT = zoneinfo.ZoneInfo("Asia/Jakarta")
 except Exception:
     JKT = None
-
-# ---- Hybrid company map & prices imports (robust to different module roots) ----
-# Tries: scripts.company_map_hybrid → src.utils.company_map_hybrid → utils.company_map_hybrid
-get_company_map = None
-refresh_latest_prices_program_only = None
-hydrate_company_map_with_prices = None
-_last_import_err = None
-for _mod in (
-    "scripts.company_map_hybrid",
-    "src.utils.company_map_hybrid",
-    "utils.company_map_hybrid",
-):
-    try:
-        _m = __import__(_mod, fromlist=[
-            "get_company_map",
-            "refresh_latest_prices_program_only",
-            "hydrate_company_map_with_prices",
-        ])
-        get_company_map = getattr(_m, "get_company_map")
-        refresh_latest_prices_program_only = getattr(_m, "refresh_latest_prices_program_only")
-        hydrate_company_map_with_prices = getattr(_m, "hydrate_company_map_with_prices")
-        break
-    except Exception as _e:
-        _last_import_err = _e  # keep last error
-        continue
-if get_company_map is None:
-    raise ImportError(
-        "Cannot import company_map_hybrid from scripts/src.utils/utils. "
-        f"Last error: {_last_import_err}"
-    )
 
 from ingestion.runner import (
     get_ownership_announcements,
@@ -77,6 +48,7 @@ from generate.articles.utils.uploader import upload_news_file_cli
 LOG = logging.getLogger("orchestrator")
 
 
+# ========== Logging / Time utils ==========
 def _setup_logging(verbose: bool) -> None:
     level = logging.DEBUG if verbose else logging.INFO
     logging.basicConfig(level=level, format="%(asctime)s [%(levelname)s] %(message)s")
@@ -92,6 +64,7 @@ def _fmt(dt: datetime, fmt: str) -> str:
     return dt.strftime(fmt)
 
 
+# ========== IO helpers ==========
 def _safe_mkdirs(*dirs: str) -> None:
     for d in dirs:
         Path(d).mkdir(parents=True, exist_ok=True)
@@ -102,25 +75,6 @@ def _glob_many(patterns: List[str]) -> List[Path]:
     for pat in patterns:
         out.extend(Path(".").glob(pat))
     return out
-
-
-# -----------------------------
-# Cache helpers (NEW)
-# -----------------------------
-def _safe_unlink(path: Path) -> None:
-    try:
-        if path.exists():
-            path.unlink()
-            LOG.info("[CACHE] deleted: %s", path)
-    except Exception as e:
-        LOG.warning("[CACHE] failed delete %s: %s", path, e)
-
-def reset_company_cache() -> None:
-    """Hapus cache company_map agar selalu fresh setiap run."""
-    _safe_unlink(Path("data/company/company_map.json"))
-    _safe_unlink(Path("data/company/company_map.meta.json"))
-    # Jika perlu, bersihkan hydrated juga:
-    # _safe_unlink(Path("data/company/company_map.hydrated.json"))
 
 
 def pre_clean_outputs() -> None:
@@ -145,8 +99,6 @@ def pre_clean_outputs() -> None:
         except Exception:
             pass
     _safe_mkdirs("downloads/idx-format", "downloads/non-idx-format", "data", "alerts", "artifacts")
-    # ikut hapus cache company di mode clean
-    reset_company_cache()
 
 
 def _compute_window_from_minutes(window_minutes: int) -> Tuple[str, str, str, str]:
@@ -167,7 +119,6 @@ def _save_json(obj: Any, path: Path) -> None:
     path.write_text(json.dumps(obj, ensure_ascii=False, indent=2), encoding="utf-8")
 
 
-# NEW: write JSONL helper (untuk articles)
 def _write_jsonl(path: Path, rows: List[Dict[str, Any]]) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
     with path.open("w", encoding="utf-8") as f:
@@ -176,37 +127,120 @@ def _write_jsonl(path: Path, rows: List[Dict[str, Any]]) -> None:
             f.write("\n")
 
 
-def step_check_company_map(force: bool = False) -> None:
+# ========== Company assets via single-source script ==========
+def _run_company_map_cli(script_path: str, subcmd: str) -> subprocess.CompletedProcess:
     """
-    Cek & refresh local cache company_map jika row_count berubah (otomatis).
+    Jalankan company_map single-source script dengan subcommand:
+    get | refresh | reset | status | print
+    """
+    script = Path(script_path)
+    if not script.exists():
+        raise FileNotFoundError(f"company_map script not found: {script}")
+    cmd = [os.environ.get("PYTHON", os.sys.executable), str(script), subcmd]
+    LOG.debug("exec: %s", " ".join(cmd))
+    return subprocess.run(cmd, capture_output=True, text=True)
+
+
+def step_company_map_ensure(script_path: str) -> None:
+    """
+    Pastikan cache lokal ada. Kalau belum ada → refresh, kalau sudah → get (invalidasi ringan).
+    Implementasi minimal: coba get dulu, kalau gagal baru refresh.
     """
     try:
-        m = get_company_map(force=force)
-        LOG.info("company_map cached rows: %d", len(m or {}))
+        cp = _run_company_map_cli(script_path, "get")
+        if cp.returncode != 0:
+            LOG.warning("[COMPANY_MAP] get failed (%s); trying refresh...", cp.returncode)
+            cp2 = _run_company_map_cli(script_path, "refresh")
+            if cp2.returncode != 0:
+                LOG.warning("[COMPANY_MAP] refresh failed: %s", cp2.stderr.strip())
+            else:
+                LOG.info("[COMPANY_MAP] refreshed.")
+        else:
+            LOG.info("[COMPANY_MAP] get ok.")
     except Exception as e:
-        LOG.warning("company_map check failed (continue offline): %s", e)
+        LOG.warning("[COMPANY_MAP] ensure failed (continue offline): %s", e)
 
 
-def step_refresh_company_assets(lookback_days: int = 14, use_fallback: bool = True) -> None:
-    """
-    Refresh company_map + latest_prices + hydrated map (jika tersedia env Supabase).
-    """
+def step_company_map_refresh(script_path: str) -> None:
     try:
-        # Paksa fresh agar konsisten
-        m = get_company_map(force=True)
-        LOG.info("company_map cached rows: %d", len(m or {}))
-        syms = sorted((m or {}).keys())
-        if syms:
-            refresh_latest_prices_program_only(
-                symbols=syms,
-                lookback_days=lookback_days,
-                use_fallback=use_fallback,
-            )
-        hydrate_company_map_with_prices()
+        cp = _run_company_map_cli(script_path, "refresh")
+        if cp.returncode != 0:
+            LOG.warning("[COMPANY_MAP] refresh failed: %s", cp.stderr.strip())
+        else:
+            LOG.info("[COMPANY_MAP] refresh ok.")
     except Exception as e:
-        LOG.warning("refresh company assets failed (continue): %s", e)
+        LOG.warning("[COMPANY_MAP] refresh exception: %s", e)
 
 
+def step_company_map_status(script_path: str) -> None:
+    try:
+        cp = _run_company_map_cli(script_path, "status")
+        msg = cp.stdout.strip() or cp.stderr.strip()
+        if msg:
+            for line in msg.splitlines():
+                LOG.info("[COMPANY_MAP] %s", line)
+    except Exception as e:
+        LOG.debug("[COMPANY_MAP] status error: %s", e)
+
+
+def _run_latest_prices_script(script_path: str, lookback_days: int, use_fallback: bool) -> None:
+    """
+    Opsional: jalankan script terpisah untuk refresh latest_prices.json.
+    Jika script tidak ada, di-skip dengan log info.
+    Kontrak CLI disarankan:
+      python latest_prices.py --lookback-days N [--no-fallback]
+    """
+    sp = Path(script_path)
+    if not sp.exists():
+        LOG.info("[PRICES] latest-prices-script not found (%s) — skip.", sp)
+        return
+    cmd = [
+        os.environ.get("PYTHON", os.sys.executable),
+        str(sp),
+        "--lookback-days", str(lookback_days),
+    ]
+    if not use_fallback:
+        cmd.append("--no-fallback")
+    LOG.debug("exec: %s", " ".join(cmd))
+    cp = subprocess.run(cmd, capture_output=True, text=True)
+    if cp.returncode != 0:
+        LOG.warning("[PRICES] refresh failed: %s", cp.stderr.strip())
+    else:
+        LOG.info("[PRICES] refresh ok.")
+
+
+def step_check_company_map(company_map_script: str) -> None:
+    """
+    Minimal check untuk memastikan cache tidak basi (tanpa refresh paksa).
+    """
+    step_company_map_status(company_map_script)
+    try:
+        cp = _run_company_map_cli(company_map_script, "get")
+        if cp.returncode == 0:
+            LOG.info("[COMPANY_MAP] get ok (light invalidation).")
+        else:
+            LOG.info("[COMPANY_MAP] get returned code %s (continue).", cp.returncode)
+    except Exception as e:
+        LOG.info("[COMPANY_MAP] get failed (continue offline): %s", e)
+
+
+def step_refresh_company_assets_single_source(
+    *,
+    company_map_script: str,
+    lookback_days: int = 14,
+    use_fallback: bool = True,
+    latest_prices_script: Optional[str] = None,
+) -> None:
+    """
+    Refresh company_map via single-source script.
+    (Opsional) refresh latest_prices jika script disediakan.
+    """
+    step_company_map_refresh(company_map_script)
+    if latest_prices_script:
+        _run_latest_prices_script(latest_prices_script, lookback_days, use_fallback)
+
+
+# ========== Ingestion / Download / Parse ==========
 def step_fetch_announcements(
     *,
     date_yyyymmdd: Optional[str],
@@ -217,11 +251,6 @@ def step_fetch_announcements(
     out_path: Path,
     sort_desc: bool = True,
 ) -> List[Dict[str, Any]]:
-    """
-    Ambil announcements:
-      - single-day + HH:MM window (minute-precision, cross-midnight ok)
-      - full-day range (from..to)
-    """
     data: List[Dict[str, Any]]
     if date_yyyymmdd:
         LOG.info("[FETCH] Single-day (WIB) %s %s→%s", date_yyyymmdd, start_hhmm, end_hhmm)
@@ -309,6 +338,7 @@ def step_parse_pdfs(
     nonidx_parser.parse_folder()
 
 
+# ========== Generate / Alerts / Upload / Artifacts ==========
 def step_generate_filings(
     *,
     idx_parsed: Path,
@@ -350,7 +380,7 @@ def step_alerts_v2_from_filings(
     try:
         payload = json.loads(filings_json.read_text(encoding="utf-8"))
     except Exception as e:
-        LOG.error("[ALERTS-V2] failed reading %s", filings_json, e)
+        LOG.error("[ALERTS-V2] failed reading %s: %s", filings_json, e)
         return None, None
 
     rows = payload["rows"] if isinstance(payload, dict) and "rows" in payload else payload
@@ -437,12 +467,8 @@ def step_email_alerts(
     title_inserted: str = "IDX Alerts — Inserted (DB OK)",
     title_not_inserted: str = "IDX Alerts — Not Inserted (Action Needed)",
     aws_region: Optional[str] = None,
-    attach_budget_bytes: int = 7_500_000,  # ~7.5MB for safety under 10MB raw limit
+    attach_budget_bytes: int = 7_500_000,
 ) -> None:
-    """
-    Kirim 2 email terpisah (inserted & not_inserted) dengan melampirkan file JSON sumber.
-    Tidak mengirim jika folder tidak ada / tidak ada file / tidak ada alert.
-    """
     def _send_one(group_title: str, folder: Path, to_csv: Optional[str],
                   cc_csv: Optional[str], bcc_csv: Optional[str]) -> None:
         files = _gather_json_files(folder)
@@ -524,12 +550,10 @@ def step_upload_supabase(
         return
 
     uploader = SupabaseUploader(url=supabase_url, key=supabase_key)
-    # load
     raw = json.loads(input_json.read_text(encoding="utf-8"))
     rows = raw["rows"] if isinstance(raw, dict) and "rows" in raw else (raw if isinstance(raw, list) else [])
     rows_clean = clean_rows(rows)
 
-    # required columns check
     any_missing = False
     for i, r in enumerate(rows_clean):
         miss = [k for k in REQUIRED_COLUMNS if (r.get(k) is None or r.get(k) == "")]
@@ -541,7 +565,6 @@ def step_upload_supabase(
     if any_missing:
         LOG.warning("Some rows missing required fields; continuing.")
 
-    # upload
     res = uploader.upload_records(
         table=table,
         rows=rows_clean,
@@ -554,7 +577,6 @@ def step_upload_supabase(
         raise SystemExit(4)
 
 
-# NEW: generate articles dari filings_data.json
 def step_generate_articles(
     *,
     filings_json: Path,
@@ -585,7 +607,7 @@ def step_generate_articles(
     return len(articles)
 
 
-# CLI
+# ========== CLI ==========
 def build_argparser() -> argparse.ArgumentParser:
     p = argparse.ArgumentParser(description="IDX filings pipeline orchestrator")
 
@@ -679,9 +701,13 @@ def build_argparser() -> argparse.ArgumentParser:
     p.add_argument("--news-dry-run", action="store_true")
     p.add_argument("--news-timeout", type=int, default=int(os.getenv("SUPABASE_TIMEOUT", "30")))
 
-    # --- Company assets (map + prices + hydrated) ---
+    # --- Company assets (single-source script based) ---
     p.add_argument("--refresh-company-assets", action="store_true",
-                   help="Refresh company_map.json, latest_prices.json, and hydrated map before running")
+                   help="Refresh company_map (via single-source script) and optional latest_prices before running")
+    p.add_argument("--company-map-script", default=os.getenv("COMPANY_MAP_SCRIPT", "company_map_hybrid.py"),
+                   help="Path ke script single-source company_map_hybrid.py")
+    p.add_argument("--latest-prices-script", default=os.getenv("LATEST_PRICES_SCRIPT", ""),
+                   help="(Opsional) path ke script refresh latest_prices; skip jika kosong/tidak ada")
     p.add_argument("--prices-lookback-days", type=int, default=14,
                    help="Lookback days for latest prices refresh (default 14)")
     p.add_argument("--no-price-fallback", action="store_true",
@@ -695,23 +721,21 @@ def main():
     args = ap.parse_args()
     _setup_logging(args.verbose)
 
-    # Hapus cache company map di awal run agar selalu konsisten
-    LOG.info("[CACHE] resetting company_map cache")
-    reset_company_cache()
-
     if args.clean:
         LOG.info("[CLEAN] removing generated outputs")
         pre_clean_outputs()
 
-    # 0) company assets
+    # 0) company assets (single-source)
     if args.refresh_company_assets:
-        step_refresh_company_assets(
+        step_refresh_company_assets_single_source(
+            company_map_script=args.company_map_script,
             lookback_days=args.prices_lookback_days,
             use_fallback=(not args.no_price_fallback),
+            latest_prices_script=(args.latest_prices_script or None),
         )
     else:
-        # minimal check (no hydrate)
-        step_check_company_map(force=False)
+        # minimal check (no forced refresh)
+        step_check_company_map(args.company_map_script)
 
     # 1) Decide fetch window
     ann_out: Path
@@ -823,7 +847,7 @@ def main():
                 dry_run=args.news_dry_run,
             )
 
-    # 5) Bucketize alerts → alerts_inserted / alerts_not_inserted (optional, legacy)
+    # 5) Bucketize alerts → alerts_inserted / alerts_not_inserted
     step_bucketize_alerts()
 
     # 6) Email alerts
