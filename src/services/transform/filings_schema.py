@@ -1,4 +1,4 @@
-# src/services/filings_schema.py
+# src/services/transform/filings_schema.py
 from __future__ import annotations
 from typing import Any, Dict, List, Optional
 from datetime import datetime, date
@@ -447,57 +447,96 @@ def _choose_amount(src: Dict[str, Any]) -> Optional[float]:
 # =====================================================================================
 
 def clean_row(row: Dict[str, Any]) -> Dict[str, Any]:
-    """
-    - Hanya pertahankan kolom di ALLOWED_COLUMNS
-    - Coerce tipe sesuai COLUMN_TYPES
-    - Post-normalization & autofill:
-        * symbol: uppercase + suffix .JK jika belum ada (fallback issuer_code)
-        * holder_name: fallback ke holder_name_raw
-        * type: fallback dari transaction_type atau transactions
-        * amount: fallback dari amount_transaction/amount_transacted/sum(transactions.amount)
-        * transaction_date: fallback dari max(transactions.date) → timestamp[:10]
-        * price: bila None dan market_reference.ref_price ada → pakai ref_price
-        * value/transaction_value: bila None dan price*amount tersedia → hitung
-        * sector/sub_sector: first-scalar → kebab-case
-        * tags: lower, unique, list[str]
-        * tickers: upper, list[str] atau None
-        * price_transaction: dict atau None (parse string JSON bila perlu)
-        * announcement_published_at: jika kosong → mirror dari timestamp
-    """
     out: Dict[str, Any] = {}
     src = row or {}
 
-    # 1) salin & coerce basic sesuai ALLOWED/COLUMN_TYPES
+    # 1) Salin & coerce basic sesuai ALLOWED/COLUMN_TYPES
     for k in ALLOWED_COLUMNS:
         if k in src:
             out[k] = _coerce_value(k, src.get(k))
 
-    # 2) symbol normalisasi + issuer_code fallback
+    # 2) symbol normalisasi + issuer_code fallback (.JK)
     out["symbol"] = _normalize_symbol(out.get("symbol"), out.get("issuer_code"))
 
-    # 3) holder_name fallback
+    # 3) holder_name fallback (pakai holder_name_raw jika ada)
     if not out.get("holder_name"):
         hn = src.get("holder_name_raw")
         out["holder_name"] = str(hn) if hn else out.get("holder_name")
 
-    # 4) type fallback
+    # 4) type fallback: type -> transaction_type -> derive by holdings -> first tx
     if not out.get("type"):
-        t = _choose_type(src)
+        t = (src.get("type") or src.get("transaction_type") or "").strip().lower()
+        if t not in {"buy", "sell", "transfer", "other"}:
+            hb = _to_float(src.get("holding_before"))
+            ha = _to_float(src.get("holding_after"))
+            if isinstance(hb, (int, float)) and isinstance(ha, (int, float)):
+                if ha > hb:
+                    t = "buy"
+                elif ha < hb:
+                    t = "sell"
+        if t not in {"buy", "sell", "transfer", "other"}:
+            txs = src.get("transactions") or []
+            if isinstance(txs, list) and txs:
+                tt = str((txs[0].get("type") or "")).strip().lower()
+                t = tt if tt in {"buy", "sell", "transfer", "other"} else "other"
         out["type"] = t or None
 
-    # 5) amount fallback
+    # 5) amount fallback: amount -> amount_transaction/amount_transacted -> sum(txs.amount)
     if out.get("amount") is None:
-        out["amount"] = _choose_amount(src)
+        amt = _to_float(src.get("amount"))
+        if amt is None:
+            for k in ("amount_transaction", "amount_transacted"):
+                v = _to_float(src.get(k))
+                if v is not None:
+                    amt = v
+                    break
+        if amt is None:
+            txs = src.get("transactions") or []
+            if isinstance(txs, list):
+                total = 0.0
+                found = False
+                for tx in txs:
+                    if isinstance(tx, dict):
+                        a = _to_float(tx.get("amount"))
+                        if a is not None:
+                            total += float(a)
+                            found = True
+                if found:
+                    amt = total
+        out["amount"] = amt
 
-    # 6) transaction_date fallback
+    # 6) transaction_date fallback: transaction_date -> max(txs.date) -> timestamp[:10]
     if not out.get("transaction_date"):
-        out["transaction_date"] = _choose_tx_date(src)
+        td = _to_date_iso(src.get("transaction_date")) if src.get("transaction_date") else None
+        if not td:
+            txs = src.get("transactions") or []
+            dates: List[str] = []
+            if isinstance(txs, list):
+                for tx in txs:
+                    if isinstance(tx, dict):
+                        d = tx.get("date") or tx.get("transaction_date")
+                        if isinstance(d, str):
+                            iso = _to_date_iso(d)
+                            if iso:
+                                dates.append(iso)
+            td = max(dates) if dates else None
+        if not td and src.get("timestamp"):
+            ts = _to_datetime_iso(src.get("timestamp"))
+            if isinstance(ts, str) and len(ts) >= 10:
+                td = ts[:10]
+        out["transaction_date"] = td
 
-    # 7) sector/sub_sector (pastikan STRING & kebab)
-    sec_raw = _first_scalar(src.get("sector") if "sector" in src else out.get("sector"))
-    ssec_raw = _first_scalar(src.get("sub_sector") if "sub_sector" in src else out.get("sub_sector"))
-    out["sector"] = _kebab(sec_raw) if sec_raw else (out.get("sector") and _kebab(out.get("sector")))
-    out["sub_sector"] = _kebab(ssec_raw) if ssec_raw else (out.get("sub_sector") and _kebab(out.get("sub_sector")))
+    # 7) sector/sub_sector (pastikan STRING kebab; flatten jika list)
+    # sektor
+    sec_in = src.get("sector") if "sector" in src else out.get("sector")
+    if isinstance(sec_in, list):
+        sec_in = " ".join(str(x) for x in sec_in if x is not None)
+    out["sector"] = _kebab(_first_scalar(sec_in)) if sec_in else (out.get("sector") and _kebab(out.get("sector")))
+    # sub-sektor
+    ssec_in = src.get("sub_sector") if "sub_sector" in src else out.get("sub_sector")
+    if isinstance(ssec_in, list):
+        ssec_in = " ".join(str(x) for x in ssec_in if x is not None)
+    out["sub_sector"] = _kebab(_first_scalar(ssec_in)) if ssec_in else (out.get("sub_sector") and _kebab(out.get("sub_sector")))
 
     # 8) tags (list[str] lowercase)
     tags = _parse_json_list_or_csv(src.get("tags") if "tags" in src else out.get("tags"))
@@ -510,8 +549,10 @@ def clean_row(row: Dict[str, Any]) -> Dict[str, Any]:
         tickers = [t.upper() for t in tickers if t]
         out["tickers"] = tickers or None
 
-    # 10) price_transaction (jsonb/dict)
+    # 10) price_transaction (jsonb/dict) + default object bila None
     pt = _parse_json_dict(src.get("price_transaction") if "price_transaction" in src else out.get("price_transaction"))
+    if pt is None:
+        pt = {"type": [], "prices": [], "amount_transacted": []}
     out["price_transaction"] = pt
 
     # 11) Fallback price dari market_reference.ref_price
@@ -538,7 +579,7 @@ def clean_row(row: Dict[str, Any]) -> Dict[str, Any]:
     if not out.get("announcement_published_at") and out.get("timestamp"):
         out["announcement_published_at"] = out.get("timestamp")
 
-    # 14) normalisasi akhir tipe kolom (pastikan bentuk sesuai COLUMN_TYPES)
+    # 14) normalisasi akhir tipe kolom (pastikan sesuai COLUMN_TYPES)
     for col, typ in COLUMN_TYPES.items():
         if col in out and out[col] is not None:
             out[col] = _coerce_value(col, out[col])
@@ -548,6 +589,7 @@ def clean_row(row: Dict[str, Any]) -> Dict[str, Any]:
 
 def clean_rows(rows: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
     return [clean_row(r) for r in (rows or [])]
+
 
 
 __all__ = [

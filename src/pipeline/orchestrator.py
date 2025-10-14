@@ -26,8 +26,8 @@ from ingestion.runner import (
 from downloader.runner import download_pdfs
 from models.announcement import Announcement
 
-from parser import parser_idx as parser_idx_mod
-from parser import parser_non_idx as parser_non_idx_mod
+from parser.parser_idx import parser_idx as parser_idx_mod
+from parser.parser_non_idx import parser_non_idx as parser_non_idx_mod
 
 from generate.filings.runner import run as run_generate
 from services.email.bucketize import bucketize as bucketize_alerts
