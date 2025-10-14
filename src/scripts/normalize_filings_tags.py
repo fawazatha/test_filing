@@ -17,22 +17,34 @@ COL_AFTER  = "share_percentage_after"
 # Canonical tag policy
 # ----------------------
 SENTIMENTS = {"bullish", "bearish"}
-REASON_TAGS = {"divestment","investment","free-float-requirement","MESOP","inheritance","share-transfer"}
+REASON_TAGS = {
+    "divestment", "investment", "free-float-requirement",
+    "MESOP", "inheritance", "share-transfer"
+}
 CONTROL_TAGS = {"takeover"}
-DROP_EXPLICIT = {"insider-trading", "ownership-change"}
 WHITELIST = SENTIMENTS | REASON_TAGS | CONTROL_TAGS
 
+# ----------------------
+# Helpers
+# ----------------------
 def hyphenize(s: str) -> str:
+    """Normalize to kebab-like: spaces/underscores/symbols -> '-', collapse repeats."""
     s = re.sub(r"[_\s]+", "-", s.strip())
+    s = re.sub(r"[^0-9A-Za-z-]+", "-", s)
     s = re.sub(r"-{2,}", "-", s)
     return s
 
 VARIANTS = {
+    # reason tags
     "mesop": "MESOP",
+    "mesop-program": "MESOP",
     "free-float-requirement": "free-float-requirement",
     "freefloatrequirement": "free-float-requirement",
     "free-float": "free-float-requirement",
+    "free-float-req": "free-float-requirement",
     "freefloat": "free-float-requirement",
+    "freefloat-req": "free-float-requirement",
+    "free float requirement": "free-float-requirement",
     "share-transfer": "share-transfer",
     "sharetransfer": "share-transfer",
     "share transfer": "share-transfer",
@@ -42,17 +54,28 @@ VARIANTS = {
     "divest": "divestment",
     "inheritance": "inheritance",
     "inheritence": "inheritance",
+    # sentiments
     "bullish": "bullish",
     "bull": "bullish",
     "bearish": "bearish",
     "bear": "bearish",
+    # control
     "takeover": "takeover",
     "take-over": "takeover",
 }
 
+_DROP_SET = {
+    # explicit drops / noise (akan dibuang di canonicalize_one)
+    "insider-trading", "insider", "insider-tradings", "insider trading",
+    "ownership-change", "ownership-changes", "ownership change", "ownership changes",
+    "executive-shareholding-changes", "executive shareholding changes",
+    "idx"
+}
+
 def canonicalize_one(tag: str) -> Optional[str]:
+    """Map raw tag ke kanonikal; return None jika harus dibuang."""
     k = hyphenize(str(tag)).lower()
-    if k in {"insider-trading", "insider", "insider trading", "ownership-change", "ownership change"}:
+    if k in _DROP_SET:
         return None
     if k == "mesop":
         return "MESOP"
@@ -62,6 +85,7 @@ def canonicalize_one(tag: str) -> Optional[str]:
     return "MESOP" if mapped.lower() == "mesop" else mapped
 
 def keep_only_reason_tags(raw_tags: Any) -> List[str]:
+    """Ambil hanya reason tags dari raw_tags (setelah canonicalization)."""
     if raw_tags is None:
         arr: List[str] = []
     elif isinstance(raw_tags, list):
@@ -71,33 +95,45 @@ def keep_only_reason_tags(raw_tags: Any) -> List[str]:
     mapped = [canonicalize_one(t) for t in arr]
     return [t for t in mapped if t in REASON_TAGS]
 
-def derive_sentiment(before: Any, after: Any) -> Optional[str]:
+def parse_pct(x: Any) -> Optional[float]:
+    """Parse '12.5', '12.5%', '1,234.56' -> float; None jika gagal."""
+    if x is None:
+        return None
     try:
-        b = float(before) if before is not None else None
-        a = float(after)  if after  is not None else None
+        s = str(x).strip()
+        s = s.replace('%', '').replace(',', '')
+        if s == "":
+            return None
+        return float(s)
     except Exception:
         return None
+
+def derive_sentiment(before: Any, after: Any) -> Optional[str]:
+    b = parse_pct(before)
+    a = parse_pct(after)
     if b is None or a is None:
         return None
-    if a > b: return "bullish"
-    if a < b: return "bearish"
+    if a > b:
+        return "bullish"
+    if a < b:
+        return "bearish"
     return None
 
 def takeover_upward_only(before: Any, after: Any) -> bool:
-    try:
-        b = float(before) if before is not None else None
-        a = float(after)  if after  is not None else None
-    except Exception:
-        return False
+    b = parse_pct(before)
+    a = parse_pct(after)
     if b is None or a is None:
         return False
-    return (b < 50.0) and (a > 50.0)  # upward crossing only
+    return (b < 50.0) and (a > 50.0)  # crossing >50 only
 
 def assemble_new_tags(existing: Any, before: Any, after: Any) -> List[str]:
+    """Kembalikan daftar tag akhir (whitelist-only), unik, disortir (MESOP dulu)."""
     out = keep_only_reason_tags(existing)
     s = derive_sentiment(before, after)
-    if s: out.append(s)
-    if takeover_upward_only(before, after): out.append("takeover")
+    if s:
+        out.append(s)
+    if takeover_upward_only(before, after):
+        out.append("takeover")
     seen = set(); uniq = []
     for t in out:
         if t in WHITELIST and t not in seen:
@@ -105,23 +141,18 @@ def assemble_new_tags(existing: Any, before: Any, after: Any) -> List[str]:
     uniq.sort(key=lambda x: (x != "MESOP", x.lower()))
     return uniq
 
-def normalize_old_for_compare(old_tags: Any) -> List[str]:
-    if isinstance(old_tags, list):
-        arr = [str(x) for x in old_tags]
-    elif old_tags is None:
-        arr = []
-    else:
-        arr = [str(old_tags)]
-    mapped = [canonicalize_one(t) for t in arr]
-    mapped = [t for t in mapped if t in WHITELIST]
-    mapped = sorted(set(mapped), key=lambda x: (x != "MESOP", x.lower()))
-    return mapped
+def _sorted_canonical(arr: List[str]) -> List[str]:
+    """Sort helper untuk perbandingan deterministik (MESOP dulu)."""
+    return sorted([str(x) for x in arr], key=lambda x: (x != "MESOP", x.lower()))
 
+# ----------------------
+# Main
+# ----------------------
 def main():
-    parser = argparse.ArgumentParser(description="Normalize idx_filings.tags from .env credentials")
+    parser = argparse.ArgumentParser(description="Normalize idx_filings.tags from .env credentials (UPDATE-only).")
     parser.add_argument("--page-size", type=int, default=PAGE_SIZE)
     parser.add_argument("--dry-run", action="store_true", help="Scan & show counts, no writes")
-    parser.add_argument("--report-csv", help="Write a CSV with id, old_tags, new_tags, changed")
+    parser.add_argument("--report-csv", help="Write a CSV with id, old_tags, new_tags, changed, legacy_null")
     parser.add_argument("--all-rows", action="store_true", help="Report includes unchanged rows too")
     args = parser.parse_args()
 
@@ -133,6 +164,7 @@ def main():
 
     supabase: Client = create_client(url, key)
 
+    # hitung total rows
     res = supabase.table(TABLE).select("*", count="exact", head=True).execute()
     total = res.count or 0
     print(f"[info] {TABLE}: total rows = {total}")
@@ -141,12 +173,20 @@ def main():
     scanned = 0
     updated = 0
 
-    # prepare CSV writer if requested
+    # statistik tambahan
+    legacy_null_cnt = 0
+    sentiment_cnt = 0
+    takeover_cnt = 0
+
+    # CSV writer (opsional)
     csv_writer = None
     csv_file = None
     if args.report_csv:
         csv_file = open(args.report_csv, "w", newline="", encoding="utf-8")
-        csv_writer = csv.DictWriter(csv_file, fieldnames=[PK, "old_tags", "new_tags", "changed"])
+        csv_writer = csv.DictWriter(
+            csv_file,
+            fieldnames=[PK, "old_tags", "new_tags", "changed", "legacy_null"]
+        )
         csv_writer.writeheader()
 
     try:
@@ -162,46 +202,84 @@ def main():
                 .execute()
             )
             rows: List[Dict[str, Any]] = r.data or []
-            if not rows: break
+            if not rows:
+                break
 
+            # kumpulkan perubahan dalam satu halaman
             batch_updates: List[Dict[str, Any]] = []
+            page_updated = 0
+
             for row in rows:
                 scanned += 1
                 old_tags = row.get("tags")
                 before = row.get(COL_BEFORE)
                 after  = row.get(COL_AFTER)
 
-                new_tags = assemble_new_tags(old_tags, before, after)
-                old_norm = normalize_old_for_compare(old_tags)
-                changed = (old_norm != new_tags)
+                # stats
+                is_legacy = (parse_pct(before) is None and parse_pct(after) is None)
+                if is_legacy:
+                    legacy_null_cnt += 1
+                s = derive_sentiment(before, after)
+                if s:
+                    sentiment_cnt += 1
+                if takeover_upward_only(before, after):
+                    takeover_cnt += 1
 
-                # write CSV report row
+                # compute tags baru
+                new_tags = assemble_new_tags(old_tags, before, after)
+
+                # === PENTING: bandingkan RAW vs NEW (bukan old_norm) ===
+                if old_tags is None:
+                    old_raw = []
+                elif isinstance(old_tags, list):
+                    old_raw = [str(x) for x in old_tags]
+                else:
+                    old_raw = [str(old_tags)]
+
+                old_raw_sorted = _sorted_canonical(old_raw)
+                new_sorted = _sorted_canonical(new_tags)
+                changed = (old_raw_sorted != new_sorted)
+
+                # tulis CSV (opsional)
                 if csv_writer and (args.all_rows or changed):
                     csv_writer.writerow({
                         PK: row[PK],
                         "old_tags": json.dumps(old_tags, ensure_ascii=False),
                         "new_tags": json.dumps(new_tags, ensure_ascii=False),
                         "changed": changed,
+                        "legacy_null": is_legacy,
                     })
 
+                # queue update kalau berubah
                 if changed:
                     batch_updates.append({PK: row[PK], "tags": new_tags})
 
+            # === UPDATE-ONLY (no insert) ===
             if batch_updates and not args.dry_run:
-                for i in range(0, len(batch_updates), 500):
-                    chunk = batch_updates[i:i+500]
-                    resp = supabase.table(TABLE).upsert(chunk, on_conflict=PK).execute()
-                    if resp.error:
-                        print("[error] upsert failed:", resp.error, file=sys.stderr)
-                        sys.exit(1)
-                updated += len(batch_updates)
+                for item in batch_updates:
+                    row_id = item[PK]
+                    new_tags = item["tags"]
+                    resp = (
+                        supabase.table(TABLE)
+                        .update({"tags": new_tags})
+                        .eq(PK, row_id)
+                        .execute()
+                    )
+                    if resp.data and len(resp.data) > 0:
+                        page_updated += 1
+                    else:
+                        print(f"[warn] update skipped: id={row_id} not found", file=sys.stderr)
+                updated += page_updated
 
-            print(f"[page {p+1}/{pages}] scanned={len(rows)} updated={0 if args.dry_run else len(batch_updates)}")
+            print(f"[page {p+1}/{pages}] scanned={len(rows)} updated={0 if args.dry_run else page_updated}")
             time.sleep(0.05)
+
     finally:
         if csv_file:
             csv_file.close()
 
+    # ringkasan
+    print(f"[stats] legacy_null={legacy_null_cnt}, sentiment_added={sentiment_cnt}, takeover_added={takeover_cnt}")
     print(f"\n[done] scanned={scanned}, updated={0 if args.dry_run else updated}, dry_run={args.dry_run}")
     if args.report_csv:
         print(f"[report] CSV saved → {args.report_csv}")
