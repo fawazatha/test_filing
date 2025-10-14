@@ -4,6 +4,7 @@ from typing import Any, Dict, List, Iterable, Optional
 from datetime import datetime, date
 import json
 import re
+import ast
 from pathlib import PurePath
 
 # =====================================================================================
@@ -266,38 +267,40 @@ def _compose_title_body(out: Dict[str, Any], src: Dict[str, Any]) -> None:
 # =====================================================================================
 
 def _normalize_sub_sector(val: Any) -> Optional[str]:
-    """
-    Always return a scalar kebab-case string for sub_sector.
-    Accepts:
-      - list/tuple -> first non-empty
-      - JSON-like string '["x"]' -> parse and take first
-      - plain string -> kebab-case
-    """
     if val is None or val == "":
         return None
 
-    # JSON-looking string list?
+    # If it's a string that *looks* like a list, try to parse it.
     if isinstance(val, str):
         s = val.strip()
         if (s.startswith("[") and s.endswith("]")) or (s.startswith("(") and s.endswith(")")):
+            # try JSON first (double quotes)
             try:
                 parsed = json.loads(s)
                 if isinstance(parsed, list) and parsed:
                     val = parsed[0]
+                else:
+                    # fall through to literal_eval
+                    raise ValueError
             except Exception:
-                # fall through: treat as plain string
-                pass
+                # handle single-quoted list strings safely
+                try:
+                    parsed = ast.literal_eval(s)
+                    if isinstance(parsed, (list, tuple)) and parsed:
+                        val = parsed[0]
+                except Exception:
+                    # keep original string if parsing fails
+                    pass
 
-    # list/tuple → first non-empty
+    # Real list/tuple -> take first non-empty
     if isinstance(val, (list, tuple)):
-        first = None
         for x in val:
             if x not in (None, "", []):
-                first = x
+                val = x
                 break
-        val = first
 
     return _kebab(_first_scalar(val)) if val else None
+
 
 
 def _pick_url_from(obj: Dict[str, Any]) -> Optional[str]:
@@ -389,6 +392,10 @@ def _clean_one(row: Dict[str, Any]) -> Dict[str, Any]:
     out["sector"] = _kebab(_first_scalar(sector)) if sector else None
 
     out["sub_sector"] = _normalize_sub_sector(src.get("sub_sector"))
+    if isinstance(out.get("sub_sector"), (list, tuple)) or (
+        isinstance(out.get("sub_sector"), str) and out["sub_sector"].strip().startswith("[")
+    ):
+        out["sub_sector"] = _normalize_sub_sector(out["sub_sector"])
 
     # --- tags / tickers (text[]) ---
     tags = _parse_json_list_or_csv(src.get("tags"))
