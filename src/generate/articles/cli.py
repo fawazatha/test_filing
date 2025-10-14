@@ -120,7 +120,7 @@ def main():
     # Upload saja (tanpa generate)
     p3 = sub.add_parser("upload-news", help="Upload artikel ke Supabase table (default idx_news).")
     p3.add_argument("--input", required=True, help="Path JSONL artikel.")
-    p3.add_argument("--table", default=os.getenv("SUPABASE_TABLE", "idx_news"))
+    p3.add_argument("--table", default="idx_news")
     p3.add_argument("--dry-run", action="store_true")
     p3.add_argument("--timeout", type=int, default=int(os.getenv("SUPABASE_TIMEOUT", "30")))
 

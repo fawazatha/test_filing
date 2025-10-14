@@ -15,6 +15,28 @@ from .utils.io_utils import get_logger
 log = get_logger(__name__)
 
 # -------- helpers (tanpa kebab/slug) --------
+def _with_jk(sym: Optional[str]) -> Optional[str]:
+    if not sym:
+        return sym
+    s = str(sym).strip().upper()
+    if not s:
+        return None
+    if "." in s:
+        return s
+    return f"{s}.JK"
+
+def _dedup_preserve(seq: List[str]) -> List[str]:
+    seen = set()
+    out: List[str] = []
+    for x in seq:
+        if x is None:
+            continue
+        if x not in seen:
+            seen.add(x)
+            out.append(x)
+    return out
+
+
 def _ensure_list(x: Any) -> List[str]:
     if x is None:
         return []
@@ -199,6 +221,8 @@ class ArticleGenerator:
         if not symbol:
             return {"company_name": "", "sector": "", "sub_sector": []}
         info = self.company.get(symbol) or {}
+        if (not info) and ("." not in str(symbol)):
+            info = self.company.get(f"{symbol}.JK") or {}
         return {
             "company_name": info.get("company_name", ""),
             "sector": info.get("sector", ""),
@@ -214,14 +238,20 @@ class ArticleGenerator:
 
         tickers = core.get("tickers") or []
         symbol = core.get("symbol")
+        symbol = _with_jk(core.get("symbol"))
+        tickers_raw = core.get("tickers") or []
+        tickers_norm = _dedup_preserve([_with_jk(t) for t in tickers_raw if t])
         if self.prefer_symbol:
-            if not symbol and tickers:
+            if not symbol and tickers_norm:
                 core["symbol"] = tickers[0]
-            if symbol and not tickers:
+            if symbol and not tickers_norm:
                 core["tickers"] = [symbol]
         else:
-            if not tickers and symbol:
+            if not tickers_norm and symbol:
                 core["tickers"] = [symbol]
+
+        core["symbol"] = symbol
+        core["tickers"] = tickers_norm
 
         core["sub_sector"] = _ensure_list(core.get("sub_sector", []))
         core.setdefault("dimension", {})
@@ -231,7 +261,8 @@ class ArticleGenerator:
     # ---------- FROM FILINGS ----------
     def from_filing(self, filing: Dict[str, Any]) -> Optional[Dict[str, Any]]:
         pdf_url = filing.get("pdf_url") or filing.get("source") or ""
-        symbol = (filing.get("symbol") or (filing.get("tickers") or [None])[0])
+        symbol_raw = (filing.get("symbol") or (filing.get("tickers") or [None])[0])
+        symbol = _with_jk(symbol_raw)
         meta = self._enrich_company(symbol)
 
         holdings_before = (
@@ -245,10 +276,14 @@ class ArticleGenerator:
         reason = filing.get("reason") or filing.get("purpose") or filing.get("objective")
 
         prices, amounts = _extract_prices_amounts_from_filing(filing)
+        filing_tickers = filing.get("tickers") or []
+        tickers_norm = _dedup_preserve([_with_jk(t) for t in filing_tickers if t])
+        if symbol and symbol not in tickers_norm:
+            tickers_norm.insert(0, symbol)
 
         facts = {
             "symbol": symbol,
-            "tickers": filing.get("tickers") or ([symbol] if symbol else []),
+            "tickers": tickers_norm,
             "company_name": filing.get("company_name") or meta["company_name"],
             "sector": filing.get("sector") or meta["sector"],
             "sub_sector": filing.get("sub_sector") or meta["sub_sector"],
@@ -301,14 +336,16 @@ class ArticleGenerator:
         if not text.strip():
             return None
         pdf_url = item.get("pdf_url") or ""
-        symbol = item.get("symbol")
+        symbol = _with_jk(item.get("symbol"))
         extracted = extract_info_from_text(text)
-        sym = symbol or extracted.get("symbol")
+        sym = symbol or _with_jk(extracted.get("symbol"))
         meta = self._enrich_company(sym)
+
+        tickers_norm = [sym] if sym else []
 
         facts = {
             "symbol": sym,
-            "tickers": [sym] if sym else [],
+            "tickers": tickers_norm,
             "company_name": item.get("company_name") or meta["company_name"],
             "sector": item.get("sector") or meta["sector"],
             "sub_sector": item.get("sub_sector") or meta["sub_sector"],

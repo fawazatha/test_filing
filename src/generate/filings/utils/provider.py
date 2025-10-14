@@ -1,3 +1,4 @@
+# generate/filings/provider.py
 from __future__ import annotations
 
 import json
@@ -18,7 +19,7 @@ try:
         MARKET_REF_N_DAYS,
         SUGGEST_PRICE_RATIO,
     )
-except Exception:
+except Exception:  # pragma: no cover
     # Fallback for flat layout during testing
     from types import CompanyInfo, DownloadMeta  # type: ignore
     from config import (  # type: ignore
@@ -30,15 +31,15 @@ except Exception:
 
 logger = logging.getLogger(__name__)
 
-# Optional: classifier for tags, keep robust if missing
+# Optional: classifier (tetap robust kalau tak ada)
 try:
     from parser.utils.transaction_classifier import TransactionClassifier as _TC  # type: ignore
 except Exception:  # pragma: no cover
     _TC = None
 
-# -----------------------------------------------------------------------------
-# In-memory caches with thread-safety
-# -----------------------------------------------------------------------------
+# =============================================================================
+# In-memory caches (thread-safe)
+# =============================================================================
 _lock = threading.RLock()
 
 _company_map_raw: Optional[Dict[str, Any]] = None
@@ -51,20 +52,20 @@ _name_index: Dict[str, Dict[str, Any]] = {}
 _prices_cache: Optional[Dict[str, Any]] = None
 _prices_mtime: Optional[float] = None
 
-# Allow multiple candidate paths (some repos keep legacy files)
+# Allow multiple candidate paths (beberapa repo simpan beda lokasi)
 COMPANY_MAP_PATHS: Tuple[str, ...] = (
-    os.getenv("FILINGS_COMPANY_MAP", COMPANY_MAP_PATH if 'COMPANY_MAP_PATH' in globals() else "data/company/company_map.json"),
-    "data/company/company_map.hydrated.json",  # optional
+    os.getenv("FILINGS_COMPANY_MAP", COMPANY_MAP_PATH if "COMPANY_MAP_PATH" in globals() else "data/company/company_map.json"),
+    "data/company/company_map.hydrated.json",  # optional (hasil hydrate)
 )
 
-# FIX: default latest prices path should NOT be company_map.json
+# Pastikan latest prices tidak menunjuk company_map.json
 LATEST_PRICE_PATHS: Tuple[str, ...] = (
-    os.getenv("FILINGS_LATEST_PRICES", LATEST_PRICES_PATH if 'LATEST_PRICES_PATH' in globals() else "data/company/latest_prices.json"),
+    os.getenv("FILINGS_LATEST_PRICES", LATEST_PRICES_PATH if "LATEST_PRICES_PATH" in globals() else "data/company/latest_prices.json"),
 )
 
-# -----------------------------------------------------------------------------
+# =============================================================================
 # Helpers
-# -----------------------------------------------------------------------------
+# =============================================================================
 def _load_json(path: Path) -> Any:
     with path.open("r", encoding="utf-8") as f:
         return json.load(f)
@@ -78,24 +79,39 @@ def _normalize_symbol(sym: Optional[str]) -> Optional[str]:
     return s if s.endswith(".JK") else f"{s}.JK"
 
 def _sym_key_variants(k: str) -> List[str]:
-    """Produce index keys for a symbol key from the map (handles with/without .JK)."""
+    """Bangun beberapa varian key untuk index (dengan/tanpa .JK)."""
     s = str(k).strip().upper()
     out = set()
     if s:
         out.add(s)
         if s.endswith(".JK"):
-            out.add(s[:-3])  # without suffix
+            out.add(s[:-3])  # tanpa suffix
         else:
             out.add(f"{s}.JK")
     return list(out)
 
+def _first_scalar(x: Any) -> Optional[str]:
+    """
+    Ambil elemen pertama bila list-like; kalau string/angka → string; selain itu → None.
+    """
+    if x is None:
+        return None
+    if isinstance(x, list):
+        for it in x:
+            if it not in (None, "", []):
+                return str(it)
+        return None
+    if isinstance(x, (str, int, float)):
+        s = str(x).strip()
+        return s if s else None
+    return None
+
 def _kebab(s: Optional[str]) -> Optional[str]:
     if not s:
         return None
-    # collapse non-alnum into dash, lower, remove repeated dashes, trim
     import re
-    s2 = re.sub(r"[^A-Za-z0-9]+", "-", str(s)).strip("-").lower()
-    return s2 or None
+    t = re.sub(r"[^0-9A-Za-z]+", "-", s.strip()).strip("-").lower()
+    return t or None
 
 def _ensure_company_map_loaded() -> None:
     """Load company_map + build fast indexes (by symbol & name)."""
@@ -123,6 +139,7 @@ def _ensure_company_map_loaded() -> None:
 
         try:
             data = _load_json(found)
+            # Terima bentuk {"map": {...}} atau dict langsung
             cmap = data.get("map") if isinstance(data, dict) else None
             if isinstance(cmap, dict):
                 _company_map_raw = cmap
@@ -149,8 +166,10 @@ def _ensure_company_map_loaded() -> None:
             _sym_index = sym_idx
             _name_index = name_idx
             _company_map_mtime = mtime
-            logger.info("Loaded company map from %s (symbols=%d names=%d)",
-                        found, len(_sym_index), len(_name_index))
+            logger.info(
+                "Loaded company map from %s (symbols=%d names=%d)",
+                found, len(_sym_index), len(_name_index)
+            )
         except Exception as e:  # pragma: no cover
             logger.warning("Failed loading company map from %s: %s", found, e)
             _company_map_raw = {}
@@ -181,7 +200,7 @@ def _ensure_prices_loaded() -> None:
 
         try:
             data = _load_json(found)
-            # Accept {"prices": {...}} or plain dict
+            # Terima {"prices": {...}} atau dict langsung
             if isinstance(data, dict) and "prices" in data and isinstance(data["prices"], dict):
                 _prices_cache = data["prices"]
             elif isinstance(data, dict):
@@ -210,31 +229,43 @@ def _days_between(d1: Optional[str], d2: Optional[str]) -> Optional[int]:
     except Exception:
         return None
 
-# -----------------------------------------------------------------------------
+# =============================================================================
 # Public API
-# -----------------------------------------------------------------------------
+# =============================================================================
 def get_company_info(symbol: Optional[str]) -> CompanyInfo:
     """
-    Lookup company information for a symbol. Robust against keys without '.JK'.
-    Returns empty CompanyInfo if missing.
+    Lookup company information untuk simbol. Robust pada kunci dengan/ tanpa '.JK'.
+    Selalu kebab-case sector/sub_sector. Prefer isi dari map.
     """
     _ensure_company_map_loaded()
+
     info: Dict[str, Any] = {}
     sym_norm = _normalize_symbol(symbol)
     if sym_norm and sym_norm in _sym_index:
         info = _sym_index[sym_norm]
     elif symbol:
-        # try raw symbol (maybe map saved without .JK)
+        # coba raw symbol (bila map disimpan tanpa .JK)
         raw = str(symbol).strip().upper()
         if raw in _sym_index:
             info = _sym_index[raw]
 
-    company_name = (info.get("company_name") or info.get("name") or "").strip()
-    sector = _kebab(info.get("sector"))
-    sub_sector = _kebab(info.get("sub_sector") or info.get("subsector"))
+    # ambil variasi key & first scalar
+    company_name = _first_scalar(info.get("company_name") or info.get("name"))
+    sector_raw = (
+        info.get("sector") or info.get("Sector")
+    )
+    subsec_raw = (
+        info.get("sub_sector")
+        or info.get("subsector")
+        or info.get("Sub-Sector")
+        or info.get("SubSector")
+    )
+
+    sector = _kebab(_first_scalar(sector_raw))
+    sub_sector = _kebab(_first_scalar(subsec_raw))
 
     return CompanyInfo(
-        company_name=company_name,
+        company_name=company_name or "",
         sector=sector,
         sub_sector=sub_sector,
     )
@@ -258,12 +289,12 @@ def get_latest_price(symbol: Optional[str]) -> Optional[Dict[str, Any]]:
     out: Dict[str, Any] = {}
     if close is not None:
         try:
-            out["close"] = float(close)
+            out["close"] = float(str(close).replace(",", ""))
         except Exception:
             pass
     if vwap is not None:
         try:
-            out["vwap"] = float(vwap)
+            out["vwap"] = float(str(vwap).replace(",", ""))
         except Exception:
             pass
     if date_str:
@@ -272,9 +303,9 @@ def get_latest_price(symbol: Optional[str]) -> Optional[Dict[str, Any]]:
 
 def get_market_reference(symbol: Optional[str], n_days: int = None) -> Optional[Dict[str, Any]]:
     """
-    Compute a market reference price used for sanity checks:
-      - Prefer N-day VWAP/median-close if historical series available in cache
-      - Fallback to latest close in cache
+    Compute market reference price untuk sanity checks:
+      - Prefer N-day VWAP/median-close kalau ada series
+      - Fallback ke latest close
     """
     _ensure_prices_loaded()
     if n_days is None:
@@ -286,11 +317,11 @@ def get_market_reference(symbol: Optional[str], n_days: int = None) -> Optional[
     if not isinstance(entry, dict):
         return None
 
-    # If historical series exists under "series": [{"date":..,"close":..,"vwap":..}, ...]
+    # Jika historical series tersedia: [{"date":..,"close":..,"vwap":..}, ...]
     series = entry.get("series")
     if isinstance(series, list) and series:
         last_n = series[-n_days:] if n_days > 0 else series[:]
-        # prefer VWAP if present for majority of points
+        # prefer VWAP jika mayoritas tersedia
         v_list = [float(x["vwap"]) for x in last_n if isinstance(x, dict) and x.get("vwap") is not None]
         if len(v_list) >= max(1, len(last_n) // 2):
             ref = sum(v_list) / len(v_list)
@@ -303,7 +334,7 @@ def get_market_reference(symbol: Optional[str], n_days: int = None) -> Optional[
                 "n_days": len(last_n),
                 "freshness_days": fres,
             }
-        # else compute median of closes
+        # else median close
         c_list = [float(x["close"]) for x in last_n if isinstance(x, dict) and x.get("close") is not None]
         if c_list:
             ref = median(c_list)
@@ -317,7 +348,7 @@ def get_market_reference(symbol: Optional[str], n_days: int = None) -> Optional[
                 "freshness_days": fres,
             }
 
-    # Fallback to single latest close
+    # Fallback ke single latest close
     latest = get_latest_price(sym) or {}
     if "close" in latest:
         asof = latest.get("date")
@@ -368,7 +399,7 @@ def build_announcement_block(meta: Optional[Union[DownloadMeta, Dict[str, Any]]]
     )
     title = m.get("title") or m.get("subject") or m.get("heading")
     src = None
-    u = (url or pdf_url or "") .lower()
+    u = (url or pdf_url or "").lower()
     if "idx.co.id" in u or "idx" in (m.get("source") or "").lower():
         src = "idx"
     elif u:
@@ -382,9 +413,9 @@ def build_announcement_block(meta: Optional[Union[DownloadMeta, Dict[str, Any]]]
         "source_type": src,
     }
 
-# -----------------------------------------------------------------------------
-# Optional: tag computation passthrough (kept for backward-compat)
-# -----------------------------------------------------------------------------
+# =============================================================================
+# Optional: tag computation passthrough
+# =============================================================================
 _TAG_WHITELIST = {
     "bullish", "bearish", "takeover", "investment", "divestment",
     "free-float-requirement", "mesop", "inheritance", "share-transfer",

@@ -271,6 +271,7 @@ jobs:
           # ==== Optional upload news ====
           if [[ "${{ inputs.upload_news }}" == "true" || "${{ github.event_name }}" == "schedule" ]]; then
             ARGS+=( "--upload-news" "--prefer-symbol" )
+            ARGS+=( "--news-table" "idx_news" )
           fi
 
           # ==== LLM toggling ====

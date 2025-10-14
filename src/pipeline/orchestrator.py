@@ -805,7 +805,7 @@ def build_argparser() -> argparse.ArgumentParser:
 
     p.add_argument("--upload-news", action="store_true",
                    help="Upload articles JSON/JSONL ke Supabase (idx_news)")
-    p.add_argument("--news-table", default=os.getenv("SUPABASE_NEWS_TABLE", "idx_news"))
+    p.add_argument("--news-table", default="idx_news")
     p.add_argument("--news-input", default=None,
                    help="Path articles (override). Default = --articles-out")
     p.add_argument("--news-dry-run", action="store_true")
@@ -950,6 +950,9 @@ def main():
 
     # 4.6) (Opsional) Upload news (articles) ke Supabase
     if args.upload_news:
+        if not (args.news_table and args.news_table.strip()):
+            LOG.error("[UPLOAD-NEWS] news table is empty; aborting upload_news step.")
+            return
         news_input = Path(args.news_input) if args.news_input else Path(args.articles_out)
         if not news_input.exists():
             LOG.warning("[UPLOAD-NEWS] %s not found; skip upload", news_input)
