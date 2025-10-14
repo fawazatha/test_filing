@@ -4,6 +4,7 @@ from typing import Any, Dict, List, Iterable, Optional
 from datetime import datetime, date
 import json
 import re
+from pathlib import PurePath
 
 # =====================================================================================
 # Table contract: must match Supabase table `idx_filings`
@@ -154,6 +155,17 @@ def _normalize_symbol(sym: Optional[str]) -> Optional[str]:
         return None
     return s if s.endswith(".JK") else f"{s}.JK"
 
+def _basename(s: Optional[str]) -> Optional[str]:
+    if not s:
+        return None
+    try:
+        p = str(s).strip()
+        if not p:
+            return None
+        return PurePath(p).name
+    except Exception:
+        return None
+
 # =====================================================================================
 # Title/Body formatting helpers
 # =====================================================================================
@@ -250,6 +262,102 @@ def _compose_title_body(out: Dict[str, Any], src: Dict[str, Any]) -> None:
         out["body"] = f"{lead}{delta}.{sector_sentence}{purpose_sentence}".strip()
 
 # =====================================================================================
+# Sub-sector + source normalizers
+# =====================================================================================
+
+def _normalize_sub_sector(val: Any) -> Optional[str]:
+    """
+    Always return a scalar kebab-case string for sub_sector.
+    Accepts:
+      - list/tuple -> first non-empty
+      - JSON-like string '["x"]' -> parse and take first
+      - plain string -> kebab-case
+    """
+    if val is None or val == "":
+        return None
+
+    # JSON-looking string list?
+    if isinstance(val, str):
+        s = val.strip()
+        if (s.startswith("[") and s.endswith("]")) or (s.startswith("(") and s.endswith(")")):
+            try:
+                parsed = json.loads(s)
+                if isinstance(parsed, list) and parsed:
+                    val = parsed[0]
+            except Exception:
+                # fall through: treat as plain string
+                pass
+
+    # list/tuple → first non-empty
+    if isinstance(val, (list, tuple)):
+        first = None
+        for x in val:
+            if x not in (None, "", []):
+                first = x
+                break
+        val = first
+
+    return _kebab(_first_scalar(val)) if val else None
+
+
+def _pick_url_from(obj: Dict[str, Any]) -> Optional[str]:
+    """
+    Try to pull a URL from common keys.
+    """
+    for k in ("pdf_url", "url", "attachment_url", "source_url"):
+        v = obj.get(k)
+        if isinstance(v, str) and "://" in v and v.lower().endswith(".pdf"):
+            return v
+    return None
+
+
+def _normalize_source(src_row: Dict[str, Any]) -> Optional[str]:
+    """
+    Prefer the full URL to the PDF.
+    Logic:
+      1) If 'source' is already a URL → keep it.
+      2) Else treat 'source' as a filename; try to find a matching URL in:
+         - top-level keys: pdf_url/url/attachment_url/source_url
+         - nested 'announcement' or 'announcement_meta'
+         - any field whose value is a URL string that endswith the filename
+      3) If nothing found, return original 'source'.
+    """
+    raw = src_row.get("source")
+    if isinstance(raw, str) and "://" in raw:
+        return raw  # already a URL
+
+    filename = _basename(raw) if isinstance(raw, str) else None
+
+    # direct candidates
+    for key in ("pdf_url", "url", "attachment_url", "source_url"):
+        v = src_row.get(key)
+        if isinstance(v, str) and "://" in v:
+            if not filename:
+                return v
+            # match filename tail
+            if _basename(v) == filename:
+                return v
+
+    # nested announcement blocks
+    for nest_key in ("announcement", "announcement_meta"):
+        blk = src_row.get(nest_key)
+        if isinstance(blk, dict):
+            cand = _pick_url_from(blk)
+            if cand:
+                if not filename or _basename(cand) == filename:
+                    return cand
+
+    # brute scan: any url string value that ends with our filename
+    if filename:
+        for v in src_row.values():
+            if isinstance(v, str) and "://" in v and v.lower().endswith(".pdf"):
+                if _basename(v) == filename:
+                    return v
+
+    # fallback: keep whatever we had
+    return raw if isinstance(raw, str) else None
+
+# =====================================================================================
 # Core normalizer (one row)
 # =====================================================================================
 
@@ -257,8 +365,13 @@ def _clean_one(row: Dict[str, Any]) -> Dict[str, Any]:
     src = row or {}
     out: Dict[str, Any] = {}
 
+    # --- source (upgrade filename -> URL when possible) ---
+    norm_source = _normalize_source(src)
+    if norm_source:
+        out["source"] = norm_source
+
     # --- direct copies (strings) ---
-    for k in ["title","body","source","holder_type","holder_name","UID"]:
+    for k in ["title","body","holder_type","holder_name","UID"]:
         if k in src and src[k] is not None:
             out[k] = _to_str(src[k])
 
@@ -269,22 +382,13 @@ def _clean_one(row: Dict[str, Any]) -> Dict[str, Any]:
     if src.get("timestamp"):
         out["timestamp"] = _to_datetime_iso(src["timestamp"])
 
-    # --- sector / sub_sector (force TEXT, kebab; flatten if list, take first) ---
+    # --- sector / sub_sector ---
     sector = src.get("sector")
     if isinstance(sector, list):
         sector = " ".join(str(x) for x in sector if x is not None)
     out["sector"] = _kebab(_first_scalar(sector)) if sector else None
 
-    sub_sector = src.get("sub_sector")
-    if isinstance(sub_sector, list):
-        # take first non-empty element (don't join arrays)
-        first = None
-        for x in sub_sector:
-            if x not in (None, "", []):
-                first = x
-                break
-        sub_sector = first
-    out["sub_sector"] = _kebab(_first_scalar(sub_sector)) if sub_sector else None
+    out["sub_sector"] = _normalize_sub_sector(src.get("sub_sector"))
 
     # --- tags / tickers (text[]) ---
     tags = _parse_json_list_or_csv(src.get("tags"))
