@@ -38,6 +38,12 @@ def _ensure_list(v: Any):
     except Exception:
         return [str(v)]
 
+def _first_scalar_from_list(v: List[Any]) -> Optional[str]:
+    for x in v:
+        if x not in (None, "", []):
+            return str(x).strip()
+    return None
+
 def _drop_none_keys(d: Dict[str, Any], keep_none: Iterable[str] = ()) -> Dict[str, Any]:
     """
     Drop keys whose value is None, EXCEPT those listed in keep_none.
@@ -51,21 +57,45 @@ def _drop_none_keys(d: Dict[str, Any], keep_none: Iterable[str] = ()) -> Dict[st
         out[k] = v
     return out
 
-def _sanitize_row_for_insert(row: Dict[str, Any]) -> Dict[str, Any]:
+def _sanitize_row_for_insert(row: Dict[str, Any], *, table: Optional[str] = None) -> Dict[str, Any]:
     """
-    - Ensure array-ish fields (tickers/tags/sub_sector) are lists.
-    - Force dimension/votes/score to NULL (None) so DB stores NULL.
-    - Do NOT null-out tickers (DB expects text[]).
+    Table-aware sanitizer:
+      - Only columns whitelisted as arrays for a given table are coerced to lists.
+      - Others (especially `sub_sector` for idx_filings) are kept/forced as strings.
+      - Force dimension/votes/score to NULL (None) so DB stores NULL.
     """
     r = dict(row)
 
-    # Arrays
-    if "tickers" in r:
+    # Define which columns are arrays per table
+    arrays_by_table = {
+        # Filings: only these are arrays
+        "idx_filings": {"tickers", "tags"},
+        # Example for news/articles: allow sub_sector list if desired
+        "idx_news": {"tickers", "tags", "sub_sector"},
+        # Fallback default (unknown table): conservative
+        "_default": {"tickers", "tags"},
+    }
+    tkey = (table or "").strip()
+    array_cols = arrays_by_table.get(tkey, arrays_by_table["_default"])
+
+    # Arrays (only those allowed)
+    if "tickers" in r and "tickers" in array_cols:
         r["tickers"] = _ensure_list(r.get("tickers"))
-    if "tags" in r:
+    if "tags" in r and "tags" in array_cols:
         r["tags"] = _ensure_list(r.get("tags"))
+
+    # sub_sector handling depends on table
     if "sub_sector" in r:
-        r["sub_sector"] = _ensure_list(r.get("sub_sector"))
+        if "sub_sector" in array_cols:
+            r["sub_sector"] = _ensure_list(r.get("sub_sector"))
+        else:
+            # Ensure plain string for filings
+            v = r.get("sub_sector")
+            if isinstance(v, list):
+                r["sub_sector"] = _first_scalar_from_list(v)
+            else:
+                # keep as-is (string or None)
+                r["sub_sector"] = v if (v is None or isinstance(v, str)) else str(v)
 
     # Force these columns to NULL (per requirement)
     for k in ("dimension", "votes", "score"):
@@ -145,11 +175,19 @@ class SupabaseUploader:
         tbl = table or self.default_table
         res = UploadResult()
         for row in rows:
-            r = _sanitize_row_for_insert(row)
+            r = _sanitize_row_for_insert(row, table=tbl)  # <<< pass table
             r = _filter_allowed(r, allowed_columns)
 
             # Keep explicit NULL for these columns
             r = _drop_none_keys(r, keep_none=("dimension", "votes", "score"))
+
+            # Extra guard: for filings, make sure sub_sector is string
+            if tbl == "idx_filings":
+                ss = r.get("sub_sector")
+                if isinstance(ss, list):
+                    r["sub_sector"] = _first_scalar_from_list(ss)
+                elif ss is not None and not isinstance(ss, str):
+                    r["sub_sector"] = str(ss)
 
             _debug_field_types(r)
             try:
@@ -173,7 +211,14 @@ class SupabaseUploader:
 
     def debug_probe(self, table: str, sample_row: Dict[str, Any]) -> str:
         # Probe with the same sanitation + keep_none policy
-        r = _drop_none_keys(_sanitize_row_for_insert(sample_row), keep_none=("dimension","votes","score"))
+        r = _drop_none_keys(_sanitize_row_for_insert(sample_row, table=table), keep_none=("dimension","votes","score"))
+        # Extra guard mirroring upload_records
+        if table == "idx_filings":
+            ss = r.get("sub_sector")
+            if isinstance(ss, list):
+                r["sub_sector"] = _first_scalar_from_list(ss)
+            elif ss is not None and not isinstance(ss, str):
+                r["sub_sector"] = str(ss)
         _debug_field_types(r)
         resp = self._post_one(table or self.default_table, r)
         try:

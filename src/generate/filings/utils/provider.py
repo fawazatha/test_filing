@@ -1,4 +1,4 @@
-# generate/filings/provider.py
+# generate/filings/utils/provider.py
 from __future__ import annotations
 
 import json
