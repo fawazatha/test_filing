@@ -297,17 +297,6 @@ def process_filing_row(
     row: Dict[str, Any],
     doc_meta: Optional[Union[Dict[str, Any], Any]] = None,
 ) -> Dict[str, Any]:
-    """
-    Memproses satu row filings:
-      - Suspicious price detection per-transaksi
-      - Recompute % (model vs PDF) → flag percent_discrepancy (tidak override)
-      - Kumpulkan reasons[] (row & tx)
-      - Set needs_review, suspicious_price_level, skip_reason (untuk gating di mailer)
-      - Tambah announcement block (untuk Alerts v2)
-      - Tambah doc_median & market_ref untuk konteks alert
-    Return: row (mutated) dengan field tambahan
-    """
-    # Persiapan struktur
     row.setdefault("reasons", [])
     reasons: List[Dict[str, Any]] = row["reasons"]
     row_flags: Dict[str, bool] = {}
@@ -321,6 +310,9 @@ def process_filing_row(
     symbol = (symbol or "").upper()
     if symbol and not symbol.endswith(".JK"):
         symbol = f"{symbol}.JK"
+    # persist the normalized symbol back to row
+    if symbol:
+        row["symbol"] = symbol
 
     # Doc-median price
     txs: List[Dict[str, Any]] = row.get("transactions") or []
@@ -332,6 +324,22 @@ def process_filing_row(
     market_ref = get_market_reference(symbol, n_days=MARKET_REF_N_DAYS)
     if market_ref:
         row["market_reference"] = market_ref
+    # -------- Backfill price & transaction_value at ROW-LEVEL (if null) --------
+    # Only fill top-level fields; do NOT touch price_transaction.{...}
+    try:
+        row_price = row.get("price")
+        if row_price in (None, "", 0, 0.0):
+            ref_p = (market_ref or {}).get("ref_price")
+            if ref_p is not None:
+                row["price"] = float(ref_p)
+        # transaction_value = price * amount_transaction (only if value is null and both operands exist)
+        if row.get("transaction_value") in (None, "", 0, 0.0):
+            amt = row.get("amount_transaction")
+            prc = row.get("price")
+            if isinstance(amt, (int, float)) and amt is not None and isinstance(prc, (int, float)) and prc is not None:
+                row["transaction_value"] = float(prc) * int(amt)
+    except Exception:
+        pass
 
     # -------- P0-4: Suspicious price detection per transaksi --------
     any_suspicious = False
