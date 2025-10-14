@@ -175,6 +175,41 @@ def _basename(s: Optional[str]) -> Optional[str]:
         return None
 
 # =====================================================================================
+# downloaded_pdfs.json index (filename -> url)
+# =====================================================================================
+
+_PDF_INDEX: Dict[str, str] = {}
+_PDF_INDEX_LOADED: bool = False
+
+def _load_pdf_index(path: str = "data/downloaded_pdfs.json") -> None:
+    """Build map filename(lower) -> url from downloaded_pdfs.json (load once)."""
+    global _PDF_INDEX_LOADED, _PDF_INDEX
+    if _PDF_INDEX_LOADED:
+        return
+    try:
+        with open(path, "r", encoding="utf-8") as f:
+            arr = json.load(f)
+        if isinstance(arr, list):
+            for it in arr:
+                if not isinstance(it, dict):
+                    continue
+                fn = (it.get("filename") or "").strip()
+                url = (it.get("url") or "").strip()
+                if fn and url and "://" in url:
+                    _PDF_INDEX[fn.lower()] = url
+    except Exception:
+        # silent fail: index optional
+        pass
+    _PDF_INDEX_LOADED = True
+
+def _lookup_pdf_url(filename: Optional[str]) -> Optional[str]:
+    """Return URL from index by filename (case-insensitive)."""
+    if not filename:
+        return None
+    _load_pdf_index()
+    return _PDF_INDEX.get(str(filename).strip().lower())
+
+# =====================================================================================
 # Title/Body formatting helpers
 # =====================================================================================
 
@@ -292,50 +327,69 @@ def _normalize_sub_sector(val: Any) -> Optional[str]:
     return _kebab(val) if val else None
 
 def _pick_url_from(obj: Dict[str, Any]) -> Optional[str]:
-    """
-    Try to pull a URL from common keys.
-    """
+    """Try to pull a PDF URL from common keys."""
     for k in ("pdf_url", "url", "attachment_url", "source_url"):
         v = obj.get(k)
         if isinstance(v, str) and "://" in v and v.lower().endswith(".pdf"):
             return v
     return None
 
-
 def _normalize_source(src_row: Dict[str, Any]) -> Optional[str]:
+    """
+    Target: kembalikan URL PDF final.
+    Prioritas:
+      (A) Jika 'source' sudah URL -> pakai itu, tapi coba map ke index via filename jika ada.
+      (B) Jika 'source' adalah filename -> map via downloaded_pdfs.json.
+      (C) Cek kandidat lain di row (pdf_url/url/attachment_url/source_url & nested blocks),
+          coba map via index; kalau tidak ada di index, pakai kandidat .pdf langsung.
+      (D) Fallback: kembalikan raw string jika tidak ketemu.
+    """
     raw = src_row.get("source")
+
+    # (A) already URL
     if isinstance(raw, str) and "://" in raw:
-        return raw  # already a URL
+        if raw.lower().endswith(".pdf"):
+            # already a pdf url; still try map by filename to get canonical url if exists
+            hit = _lookup_pdf_url(_basename(raw))
+            return hit or raw
+        # page/non-pdf: try map by filename tail if any
+        hit = _lookup_pdf_url(_basename(raw))
+        return hit or raw
 
+    # (B) source looks like filename -> index lookup
     filename = _basename(raw) if isinstance(raw, str) else None
+    if filename:
+        hit = _lookup_pdf_url(filename)
+        if hit:
+            return hit
 
-    # direct candidates
+    # (C) direct candidates from common keys
+    candidates: List[str] = []
     for key in ("pdf_url", "url", "attachment_url", "source_url"):
         v = src_row.get(key)
         if isinstance(v, str) and "://" in v:
-            if not filename:
-                return v
-            # match filename tail
-            if _basename(v) == filename:
-                return v
+            candidates.append(v)
 
-    # nested announcement blocks
+    # nested blocks
     for nest_key in ("announcement", "announcement_meta"):
         blk = src_row.get(nest_key)
         if isinstance(blk, dict):
             cand = _pick_url_from(blk)
             if cand:
-                if not filename or _basename(cand) == filename:
-                    return cand
+                candidates.append(cand)
 
-    # brute scan: any url string value that ends with our filename
-    if filename:
-        for v in src_row.values():
-            if isinstance(v, str) and "://" in v and v.lower().endswith(".pdf"):
-                if _basename(v) == filename:
-                    return v
+    # try mapping candidates via index using their filename
+    for cand in candidates:
+        hit = _lookup_pdf_url(_basename(cand))
+        if hit:
+            return hit
 
-    # fallback: keep whatever we had
+    # prefer a direct .pdf candidate if any
+    for cand in candidates:
+        if isinstance(cand, str) and cand.lower().endswith(".pdf"):
+            return cand
+
+    # fallback
     return raw if isinstance(raw, str) else None
 
 # =====================================================================================
@@ -367,6 +421,8 @@ def _clean_one(row: Dict[str, Any]) -> Dict[str, Any]:
     sector = src.get("sector")
     if isinstance(sector, list):
         sector = " ".join(str(x) for x in sector if x is not None)
+    elif isinstance(sector, str):
+        sector = _strip_brackets(sector)   # strip [](){} bila ada
     out["sector"] = _kebab(_first_scalar(sector)) if sector else None
 
     out["sub_sector"] = _normalize_sub_sector(src.get("sub_sector"))
@@ -439,6 +495,15 @@ def _clean_one(row: Dict[str, Any]) -> Dict[str, Any]:
 
     # --- final strip: keep only allowed & non-None ---
     out = {k: v for k, v in out.items() if (k in ALLOWED_COLUMNS and v is not None)}
+
+    # --- ensure source is a .pdf URL if present; try last mapping by filename ---
+    if "source" in out:
+        s = out["source"]
+        if not (isinstance(s, str) and "://" in s and s.lower().endswith(".pdf")):
+            hit = _lookup_pdf_url(_basename(s))
+            if hit:
+                out["source"] = hit
+
     return out
 
 # =====================================================================================
