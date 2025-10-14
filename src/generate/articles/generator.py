@@ -4,6 +4,7 @@ from typing import Dict, Any, Optional, List, Tuple
 from datetime import datetime, timezone
 import json
 import os
+from pathlib import Path, PurePath
 
 from .utils.company import CompanyCache
 from .utils.extractor import extract_info_from_text
@@ -35,7 +36,6 @@ def _dedup_preserve(seq: List[str]) -> List[str]:
             seen.add(x)
             out.append(x)
     return out
-
 
 def _ensure_list(x: Any) -> List[str]:
     if x is None:
@@ -108,9 +108,6 @@ def _fmt_idr(n: float) -> str:
         return f"IDR {n}"
 
 def _date_str(ts: Optional[str]) -> str:
-    """
-    Legacy formatter (kept for non-published dates if ever needed).
-    """
     if not ts:
         return ""
     try:
@@ -123,23 +120,15 @@ def _date_str(ts: Optional[str]) -> str:
         return ts
 
 def _date_str_wib(ts: Optional[str]) -> str:
-    """
-    Preferred human formatter for announcement_published_at (WIB label).
-    Accepts ISO8601 (with or without offset). Appends ' (WIB)'.
-    """
     if not ts:
         return ""
     try:
         dt = datetime.fromisoformat(ts.replace("Z", "+00:00"))
         return dt.strftime("%B %d, %Y") + " (WIB)"
     except Exception:
-        # If parsing fails, still show what we have + WIB hint.
         return f"{ts} (WIB)"
 
 def _opening_sentence(facts: Dict[str, Any]) -> str:
-    """
-    Build the mandatory opening using announcement_published_at.
-    """
     pub = facts.get("announcement_published_at")
     human = _date_str_wib(pub) if pub else None
     if human:
@@ -147,10 +136,6 @@ def _opening_sentence(facts: Dict[str, Any]) -> str:
     return "According to the published announcement, "
 
 def _to_narrative_if_keyfacts(title: str, body: str, facts: Dict[str, Any]) -> Tuple[str, str]:
-    """
-    If LLM produced a 'Key Facts' style body, convert it into a readable narrative.
-    Opening line MUST reference announcement_published_at (WIB).
-    """
     if not body or not body.lstrip().lower().startswith("key facts"):
         return title, body
 
@@ -158,7 +143,6 @@ def _to_narrative_if_keyfacts(title: str, body: str, facts: Dict[str, Any]) -> T
     sym = facts.get("symbol") or ""
     tx = (facts.get("transaction_type") or "transaction").lower()
     holder = facts.get("holder_name") or facts.get("holder_type") or "an insider"
-    # Use announcement_published_at for opening (WIB)
     opening = _opening_sentence(facts)
 
     prices: List[float] = facts.get("prices") or []
@@ -188,7 +172,6 @@ def _to_narrative_if_keyfacts(title: str, body: str, facts: Dict[str, Any]) -> T
             own = f" The filing notes a change in ownership from {hb} to {ha}."
 
     p1_core = f"{holder} {tx} " + (f"{_fmt_int(vol)} shares " if vol > 0 else "shares ")
-    # Opening sentence already contains the "According to..." and date.
     p1 = f"{p1_core}of {cname} ({sym}), {opening.rstrip()}{own}"
 
     reason = facts.get("reason")
@@ -200,6 +183,63 @@ def _to_narrative_if_keyfacts(title: str, body: str, facts: Dict[str, Any]) -> T
     new_body = f"{p1}\n\n{p2}\n\n{p3}"
     return title, new_body
 
+# ---------------- Download meta mapping (filename -> URL) ----------------
+def _basename(s: Optional[str]) -> Optional[str]:
+    if not s:
+        return None
+    try:
+        return PurePath(str(s)).name
+    except Exception:
+        return None
+
+def _build_download_index(path: str) -> Dict[str, str]:
+    """
+    Expect a JSON list:
+      [{"filename":"x.pdf","url":"https://.../x.pdf", ...}, ...]
+    Returns: { "x.pdf": "https://.../x.pdf" } (lowercased keys)
+    """
+    idx: Dict[str, str] = {}
+    p = Path(path)
+    if not p.exists():
+        return idx
+    try:
+        data = json.loads(p.read_text(encoding="utf-8"))
+    except Exception:
+        return idx
+    if not isinstance(data, list):
+        return idx
+    for item in data:
+        if not isinstance(item, dict):
+            continue
+        fn = _basename(item.get("filename")) or _basename(item.get("url"))
+        url = item.get("url")
+        if fn and url:
+            idx[fn.lower()] = str(url)
+    return idx
+
+def _candidate_filenames(row: Dict[str, Any]) -> List[str]:
+    cands: List[str] = []
+    for k in ("source", "pdf", "pdf_url", "url", "attachment_url", "filename"):
+        fn = _basename(row.get(k))
+        if fn:
+            cands.append(fn)
+    for nest in ("announcement", "announcement_meta"):
+        blk = row.get(nest)
+        if isinstance(blk, dict):
+            for k in ("pdf_url", "url", "attachment_url", "filename"):
+                fn = _basename(blk.get(k))
+                if fn:
+                    cands.append(fn)
+    # de-dup
+    out, seen = [], set()
+    for n in cands:
+        nl = n.lower()
+        if nl not in seen:
+            seen.add(nl)
+            out.append(n)
+    return out
+
+# ------------------------------------------------------------------------
 
 class ArticleGenerator:
     def __init__(
@@ -210,12 +250,38 @@ class ArticleGenerator:
         groq_model: str = "llama-3.3-70b-versatile",
         prefer_symbol: bool = True,
         provider: Optional[str] = None,
+        downloads_meta_path: str = "data/downloaded_pdfs.json",   # NEW
     ):
         self.company = CompanyCache(company_map_path, latest_prices_path)
-
         self.summarizer = Summarizer(use_llm=use_llm, groq_model=groq_model, provider=provider)
         self.classifier = Classifier(use_llm=use_llm, model_name=groq_model, provider=provider)
         self.prefer_symbol = prefer_symbol
+        # filename -> url index
+        self._dl_index = _build_download_index(downloads_meta_path)
+
+    # -- map filename/partial to full URL using downloads index --
+    def _map_source_url(self, row: Dict[str, Any]) -> str:
+        # 1) if any explicit URL present, prefer that
+        for k in ("pdf_url", "url", "attachment_url", "source"):
+            v = row.get(k)
+            if isinstance(v, str) and "://" in v and v.lower().endswith(".pdf"):
+                return v
+        for nest in ("announcement", "announcement_meta"):
+            blk = row.get(nest)
+            if isinstance(blk, dict):
+                for k in ("pdf_url", "url", "attachment_url"):
+                    v = blk.get(k)
+                    if isinstance(v, str) and "://" in v and v.lower().endswith(".pdf"):
+                        return v
+
+        # 2) try resolve filename via downloads index
+        for fn in _candidate_filenames(row):
+            key = fn.lower()
+            if key in self._dl_index:
+                return self._dl_index[key]
+
+        # 3) fallback: keep whatever 'source' string is
+        return str(row.get("source") or row.get("pdf_url") or "")
 
     def _enrich_company(self, symbol: Optional[str]) -> Dict[str, Any]:
         if not symbol:
@@ -260,7 +326,7 @@ class ArticleGenerator:
 
     # ---------- FROM FILINGS ----------
     def from_filing(self, filing: Dict[str, Any]) -> Optional[Dict[str, Any]]:
-        pdf_url = filing.get("pdf_url") or filing.get("source") or ""
+        pdf_url = self._map_source_url(filing)  # NEW: resolved URL
         symbol_raw = (filing.get("symbol") or (filing.get("tickers") or [None])[0])
         symbol = _with_jk(symbol_raw)
         meta = self._enrich_company(symbol)
@@ -297,14 +363,12 @@ class ArticleGenerator:
             "reason": reason,
             "timestamp": filing.get("timestamp"),
             "source": pdf_url,
-            # NEW: carry published announcement date through facts
             "announcement_published_at": filing.get("announcement_published_at"),
         }
 
         title, body = self.summarizer.summarize_from_facts(facts)
         title, body = _to_narrative_if_keyfacts(title, body, facts)
 
-        # If body isn't a Key Facts narrative, ensure the required opening is prepended
         if not body.lstrip().lower().startswith("according to the published announcement"):
             opening = _opening_sentence(facts)
             body = f"{opening}{body}"
@@ -325,7 +389,6 @@ class ArticleGenerator:
             score=0.0,
         ).to_dict()
 
-        # surface for downstream validation / display
         article["announcement_published_at"] = facts.get("announcement_published_at")
 
         return self._finalize(article)
@@ -335,7 +398,7 @@ class ArticleGenerator:
         text = item.get("text") or ""
         if not text.strip():
             return None
-        pdf_url = item.get("pdf_url") or ""
+        pdf_url = self._map_source_url(item)  # NEW: resolved URL
         symbol = _with_jk(item.get("symbol"))
         extracted = extract_info_from_text(text)
         sym = symbol or _with_jk(extracted.get("symbol"))
@@ -359,14 +422,12 @@ class ArticleGenerator:
             "reason": item.get("reason") or item.get("purpose"),
             "timestamp": item.get("timestamp"),
             "source": pdf_url,
-            # NEW: allow text item to provide published announcement date too
             "announcement_published_at": item.get("announcement_published_at"),
         }
 
         title, body = self.summarizer.summarize_from_facts(facts, text_hint=text)
         title, body = _to_narrative_if_keyfacts(title, body, facts)
 
-        # Ensure opening sentence present
         if not body.lstrip().lower().startswith("according to the published announcement"):
             opening = _opening_sentence(facts)
             body = f"{opening}{body}"
