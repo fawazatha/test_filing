@@ -4,6 +4,7 @@ from typing import Dict, Any, Optional, List, Tuple
 from datetime import datetime, timezone
 import json
 import os
+import re
 from pathlib import Path, PurePath
 
 from .utils.company import CompanyCache
@@ -135,6 +136,18 @@ def _opening_sentence(facts: Dict[str, Any]) -> str:
         return f"According to the published announcement on {human}, "
     return "According to the published announcement, "
 
+def _strip_redundant_on_date(text: str, pub_ts: Optional[str]) -> str:
+    """
+    Hapus leading 'On <Month DD, YYYY>, ' di awal text jika sama dengan tanggal announcement.
+    """
+    if not text or not pub_ts:
+        return text
+    ds = _date_str(pub_ts)  # 'October 08, 2025'
+    if not ds:
+        return text
+    pat = re.compile(rf'^\s*on\s+{re.escape(ds)}\s*,\s*', re.IGNORECASE)
+    return pat.sub("", text, count=1)
+
 def _to_narrative_if_keyfacts(title: str, body: str, facts: Dict[str, Any]) -> Tuple[str, str]:
     if not body or not body.lstrip().lower().startswith("key facts"):
         return title, body
@@ -261,7 +274,7 @@ class ArticleGenerator:
 
     # -- map filename/partial to full URL using downloads index --
     def _map_source_url(self, row: Dict[str, Any]) -> str:
-        # 1) if any explicit URL present, prefer that
+        # 1) prefer explicit PDF URL if present
         for k in ("pdf_url", "url", "attachment_url", "source"):
             v = row.get(k)
             if isinstance(v, str) and "://" in v and v.lower().endswith(".pdf"):
@@ -274,13 +287,13 @@ class ArticleGenerator:
                     if isinstance(v, str) and "://" in v and v.lower().endswith(".pdf"):
                         return v
 
-        # 2) try resolve filename via downloads index
+        # 2) resolve via downloads index by filename
         for fn in _candidate_filenames(row):
             key = fn.lower()
             if key in self._dl_index:
                 return self._dl_index[key]
 
-        # 3) fallback: keep whatever 'source' string is
+        # 3) fallback
         return str(row.get("source") or row.get("pdf_url") or "")
 
     def _enrich_company(self, symbol: Optional[str]) -> Dict[str, Any]:
@@ -319,6 +332,7 @@ class ArticleGenerator:
         core["symbol"] = symbol
         core["tickers"] = tickers_norm
 
+        # Articles prefer list-style sub_sector; (filings fix handled in uploader)
         core["sub_sector"] = _ensure_list(core.get("sub_sector", []))
         core.setdefault("dimension", {})
         core.setdefault("score", 0.0)
@@ -326,7 +340,7 @@ class ArticleGenerator:
 
     # ---------- FROM FILINGS ----------
     def from_filing(self, filing: Dict[str, Any]) -> Optional[Dict[str, Any]]:
-        pdf_url = self._map_source_url(filing)  # NEW: resolved URL
+        pdf_url = self._map_source_url(filing)
         symbol_raw = (filing.get("symbol") or (filing.get("tickers") or [None])[0])
         symbol = _with_jk(symbol_raw)
         meta = self._enrich_company(symbol)
@@ -370,6 +384,8 @@ class ArticleGenerator:
         title, body = _to_narrative_if_keyfacts(title, body, facts)
 
         if not body.lstrip().lower().startswith("according to the published announcement"):
+            # Hapus 'On <date>, ' jika sama dengan announcement date
+            body = _strip_redundant_on_date(body, facts.get("announcement_published_at"))
             opening = _opening_sentence(facts)
             body = f"{opening}{body}"
 
@@ -398,7 +414,7 @@ class ArticleGenerator:
         text = item.get("text") or ""
         if not text.strip():
             return None
-        pdf_url = self._map_source_url(item)  # NEW: resolved URL
+        pdf_url = self._map_source_url(item)
         symbol = _with_jk(item.get("symbol"))
         extracted = extract_info_from_text(text)
         sym = symbol or _with_jk(extracted.get("symbol"))
@@ -429,6 +445,7 @@ class ArticleGenerator:
         title, body = _to_narrative_if_keyfacts(title, body, facts)
 
         if not body.lstrip().lower().startswith("according to the published announcement"):
+            body = _strip_redundant_on_date(body, facts.get("announcement_published_at"))
             opening = _opening_sentence(facts)
             body = f"{opening}{body}"
 

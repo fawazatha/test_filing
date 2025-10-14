@@ -1,200 +1,196 @@
-# utils/uploader.py
 from __future__ import annotations
+
 import os
 import json
-from typing import Any, Dict, List, Optional, Tuple, Union
-from datetime import datetime
-import pathlib
-import re
+import logging
+from dataclasses import dataclass, field
+from typing import Any, Dict, List, Optional, Iterable
+import httpx
 
-from services.upload.supabase import SupabaseUploader
-from .io_utils import get_logger
+logger = logging.getLogger(__name__)
 
-log = get_logger(__name__)
-
-# ---------- helpers ----------
-def _ensure_list(v: Any) -> Optional[List[Any]]:
-    """Coerce value to list (or None). Accept list, JSON-encoded list string, or scalar."""
+# ---------------- helpers ----------------
+def _ensure_list(v: Any):
     if v is None:
         return None
     if isinstance(v, list):
-        return v if v else None
+        return v
     if isinstance(v, str):
         s = v.strip()
-        if not s:
-            return None
-        # coba parse JSON list; kalau gagal, jadikan single-item list
         try:
             parsed = json.loads(s)
             if isinstance(parsed, list):
-                return parsed if parsed else None
+                return parsed
         except Exception:
-            return [s]
-    return [v]
-
-def _ensure_str_list(v: Any) -> Optional[List[str]]:
-    lst = _ensure_list(v)
-    if lst is None:
-        return None
-    out: List[str] = []
-    for x in lst:
-        if x is None:
-            continue
-        s = str(x).strip()
-        if s:
-            out.append(s)
-    return out or None
-
-_ISO_TZ_RE = re.compile(r".*T.*([+-]\d{2}:\d{2}|Z)$")
-
-def _coerce_iso_with_z(ts: Optional[str]) -> Optional[str]:
-    """
-    Normalisasi ke ISO8601. Jika tanpa offset, tambahkan 'Z' (UTC).
-    Terima format umum: ISO, 'YYYY-MM-DD HH:MM:SS', 'YYYY/MM/DD HH:MM:SS', 'YYYY-MM-DD'.
-    """
-    if not ts:
-        return None
-    s = str(ts).strip()
-    if not s:
-        return None
-
-    # Sudah ISO valid?
+            pass
+        return [s]
     try:
-        if "T" in s:
-            datetime.fromisoformat(s.replace("Z", "+00:00"))
-            # tambah Z kalau belum ada offset & tidak diakhiri Z
-            if not _ISO_TZ_RE.match(s):
-                return s + "Z"
-            return s
+        return list(v)
     except Exception:
-        pass
+        return [str(v)]
 
-    # Coba format lazim
-    for fmt in ("%Y-%m-%d %H:%M:%S", "%Y/%m/%d %H:%M:%S", "%Y-%m-%d"):
-        try:
-            dt = datetime.strptime(s, fmt)
-            return dt.isoformat() + "Z"  # asumsikan UTC
-        except Exception:
+def _first_scalar_from_list(v: List[Any]) -> Optional[str]:
+    for x in v:
+        if x not in (None, "", []):
+            return str(x).strip()
+    return None
+
+def _drop_none_keys(d: Dict[str, Any], keep_none: Iterable[str] = ()) -> Dict[str, Any]:
+    keep = set(keep_none or ())
+    out: Dict[str, Any] = {}
+    for k, v in d.items():
+        if v is None and k not in keep:
             continue
+        out[k] = v
+    return out
 
-    # fallback
-    return s
-
-# ---------- kolom yang ADA di idx_news ----------
-_ALLOWED_COLS = {
-    "title", "body", "source", "timestamp",
-    "sector", "sub_sector", "tags", "tickers",
-    "dimension", "votes", "score",
-}
-
-def _normalize_article_row(row: Dict[str, Any]) -> Dict[str, Any]:
+def _sanitize_row_for_insert(row: Dict[str, Any], *, table: Optional[str] = None) -> Dict[str, Any]:
     """
-    Normalisasi ke skema idx_news:
-    - tickers/tags/sub_sector -> JSON array of text (atau NULL)
-    - timestamp -> ISO (append 'Z' jika tanpa offset)
-    - dimension/votes/score -> NULL
-    - hanya kirim kolom di _ALLOWED_COLS
+    Table-aware sanitizer:
+      - idx_filings: sub_sector must be STRING (not array). tags/tickers arrays OK.
+      - other tables (e.g., idx_news): sub_sector may be list.
     """
     r = dict(row)
 
-    # teks dasar
-    r["title"] = (r.get("title") or "").strip()
-    r["body"] = (r.get("body") or "").strip()
-    r["source"] = (r.get("source") or "idx").strip() or "idx"
+    arrays_by_table = {
+        "idx_filings": {"tickers", "tags"},                 # sub_sector => string
+        "idx_news": {"tickers", "tags", "sub_sector"},      # example: allow list
+        "_default": {"tickers", "tags"},
+    }
+    tkey = (table or "").strip()
+    array_cols = arrays_by_table.get(tkey, arrays_by_table["_default"])
 
-    # waktu
-    r["timestamp"] = _coerce_iso_with_z(r.get("timestamp") or r.get("date"))
+    if "tickers" in r and "tickers" in array_cols:
+        r["tickers"] = _ensure_list(r.get("tickers"))
+    if "tags" in r and "tags" in array_cols:
+        r["tags"] = _ensure_list(r.get("tags"))
 
-    # arrays → JSON array (list[str]) sesuai tipe text[]/varchar[]
-    r["tickers"] = _ensure_str_list(r.get("tickers")) or None
-    r["tags"] = _ensure_str_list(r.get("tags")) or None
-    r["sub_sector"] = _ensure_str_list(r.get("sub_sector")) or None
+    if "sub_sector" in r:
+        if "sub_sector" in array_cols:
+            r["sub_sector"] = _ensure_list(r.get("sub_sector"))
+        else:
+            v = r.get("sub_sector")
+            if isinstance(v, list):
+                r["sub_sector"] = _first_scalar_from_list(v)
+            else:
+                r["sub_sector"] = v if (v is None or isinstance(v, str)) else str(v)
 
-    # optional: sector tetap string plain
-    r["sector"] = (r.get("sector") or None)
+    for k in ("dimension", "votes", "score"):
+        if k in r:
+            r[k] = None
 
-    # force NULLs sesuai requirement
-    r["dimension"] = None
-    r["votes"] = None
-    r["score"] = None
+    return r
 
-    # Buat payload hanya untuk kolom yg diperbolehkan
-    keep: Dict[str, Any] = {}
-    for k in _ALLOWED_COLS:
-        keep[k] = r.get(k, None)
-    return keep
+def _debug_field_types(r: Dict[str, Any], fields=("symbol","tags","tickers","sub_sector","price_transaction")) -> None:
+    for k in fields:
+        v = r.get(k, None)
+        logger.debug("FIELD %s -> type=%s value=%r", k, type(v).__name__, v)
 
-def _read_json_or_jsonl(path: Union[str, pathlib.Path]) -> List[Dict[str, Any]]:
-    p = pathlib.Path(path)
-    if not p.exists():
-        raise FileNotFoundError(str(p))
-    if p.suffix.lower() == ".jsonl":
-        rows: List[Dict[str, Any]] = []
-        with p.open("r", encoding="utf-8") as f:
-            for line in f:
-                line = line.strip()
-                if not line:
-                    continue
-                rows.append(json.loads(line))
-        return rows
-    elif p.suffix.lower() == ".json":
-        data = json.loads(p.read_text(encoding="utf-8"))
-        if isinstance(data, list):
-            return data
-        if isinstance(data, dict):
-            # izinkan format {"rows":[...]}
-            if isinstance(data.get("rows"), list):
-                return data["rows"]
-            return [data]
-        raise ValueError("Unsupported JSON structure: expected list, dict (or dict.rows)")
-    else:
-        raise ValueError("Only .json or .jsonl is supported")
+def _filter_allowed(row: Dict[str, Any], allowed: Optional[Iterable[str]]) -> Dict[str, Any]:
+    if not allowed:
+        return row
+    allow = set(allowed)
+    return {k: v for k, v in row.items() if k in allow}
 
-def upload_news_file_cli(
-    input_path: str,
-    table: str = "idx_news",
-    dry_run: bool = False,
-    timeout: int = 30,  # dibiarkan untuk kompatibilitas; tidak dipakai di SupabaseUploader
-    supabase_url: Optional[str] = None,
-    supabase_key: Optional[str] = None,
-) -> Tuple[int, int]:
-    """
-    Upload file artikel (.json/.jsonl) ke tabel `table` (default: idx_news).
-    Return: (success_count, fail_count)
-    """
-    rows = _read_json_or_jsonl(input_path)
-    normed = [_normalize_article_row(r) for r in rows]
+# ---------------- result ----------------
+@dataclass
+class UploadResult:
+    inserted: int = 0
+    failed_rows: List[Dict[str, Any]] = field(default_factory=list)
+    errors: List[Any] = field(default_factory=list)
 
-    log.info("Loaded %d rows from %s", len(normed), input_path)
-    if dry_run:
-        preview = normed[0] if normed else {}
-        log.info("[DRY-RUN] sample row after normalization: %s", json.dumps(preview, ensure_ascii=False))
-        return (0, 0)
+# ---------------- main uploader ----------------
+class SupabaseUploader:
+    def __init__(self,
+                 url: Optional[str] = None,
+                 key: Optional[str] = None,
+                 table: Optional[str] = None) -> None:
+        effective_url = (url or os.getenv("SUPABASE_URL") or "").rstrip("/")
+        effective_key = (key or os.getenv("SUPABASE_KEY") or "")
+        effective_table = table or os.getenv("SUPABASE_TABLE", "idx_filings")
 
-    supabase_url = supabase_url or os.getenv("SUPABASE_URL", "")
-    supabase_key = supabase_key or os.getenv("SUPABASE_KEY", "")
-    if not supabase_url or not supabase_key:
-        raise RuntimeError("Missing SUPABASE_URL or SUPABASE_KEY in environment.")
+        self.url = effective_url
+        self.key = effective_key
+        self.default_table = effective_table
 
-    uploader = SupabaseUploader(
-        url=supabase_url,
-        key=supabase_key,
-    )
+        if not self.url or not self.key:
+            masked = (self.key[:4] + "…" + self.key[-4:]) if self.key else "None"
+            logger.error("SupabaseUploader missing URL/KEY. url=%r key=%s", self.url or None, masked)
+            raise RuntimeError(
+                "Supabase not configured. Provide SUPABASE_URL and SUPABASE_KEY via .env/ENV "
+                "or pass --supabase-url / --supabase-key flags."
+            )
 
-    res = uploader.upload_records(
-        table=table,
-        rows=normed,
-        allowed_columns=list(_ALLOWED_COLS),
-        normalize_keys=False,
-        stop_on_first_error=False,
-    )
-    ok = res.inserted
-    bad = len(res.failed_rows)
+        self._client = httpx.Client(
+            base_url=self.url,
+            headers={
+                "apikey": str(self.key),
+                "Authorization": f"Bearer {self.key}",
+                "Content-Type": "application/json",
+                "Prefer": "return=representation",
+            },
+            timeout=30.0,
+        )
 
-    if bad:
-        log.warning("Some rows failed to insert: %d failed / %d total", bad, len(normed))
-        for i, fr in enumerate(res.failed_rows[:5]):
-            log.error("Failed row %d: %s", i, fr)
-    else:
-        log.info("All rows inserted OK: %d", ok)
-    return (ok, bad)
+    def _post_one(self, table: str, payload: Dict[str, Any]) -> httpx.Response:
+        endpoint = f"/rest/v1/{table}"
+        resp = self._client.post(endpoint, json=payload)
+        logger.info('HTTP Request: POST %s "%s %s"', self.url + endpoint, resp.http_version, resp.status_code)
+        return resp
+
+    def upload_records(self,
+                       table: Optional[str],
+                       rows: List[Dict[str, Any]],
+                       allowed_columns: Optional[Iterable[str]] = None,
+                       normalize_keys: bool = False,
+                       stop_on_first_error: bool = False) -> UploadResult:
+        tbl = table or self.default_table
+        res = UploadResult()
+        for row in rows:
+            r = _sanitize_row_for_insert(row, table=tbl)
+            r = _filter_allowed(r, allowed_columns)
+            r = _drop_none_keys(r, keep_none=("dimension", "votes", "score"))
+
+            # Extra guard: for filings, ensure sub_sector is str
+            if tbl == "idx_filings":
+                ss = r.get("sub_sector")
+                if isinstance(ss, list):
+                    r["sub_sector"] = _first_scalar_from_list(ss)
+                elif ss is not None and not isinstance(ss, str):
+                    r["sub_sector"] = str(ss)
+
+            _debug_field_types(r)
+            try:
+                resp = self._post_one(tbl, r)
+                if resp.status_code >= 400:
+                    res.failed_rows.append(r)
+                    try:
+                        res.errors.append(resp.json())
+                    except Exception:
+                        res.errors.append(resp.text)
+                    if stop_on_first_error:
+                        break
+                else:
+                    res.inserted += 1
+            except Exception as e:
+                res.failed_rows.append(r)
+                res.errors.append(repr(e))
+                if stop_on_first_error:
+                    break
+        return res
+
+    def debug_probe(self, table: str, sample_row: Dict[str, Any]) -> str:
+        r = _drop_none_keys(_sanitize_row_for_insert(sample_row, table=table), keep_none=("dimension","votes","score"))
+        if table == "idx_filings":
+            ss = r.get("sub_sector")
+            if isinstance(ss, list):
+                r["sub_sector"] = _first_scalar_from_list(ss)
+            elif ss is not None and not isinstance(ss, str):
+                r["sub_sector"] = str(ss)
+        _debug_field_types(r)
+        resp = self._post_one(table or self.default_table, r)
+        try:
+            body = resp.json()
+        except Exception:
+            body = resp.text
+        return f'status={resp.status_code} body={body!r}'
