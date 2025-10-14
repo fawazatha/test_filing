@@ -21,8 +21,8 @@ ALLOWED_COLUMNS: List[str] = [
     "timestamp",
 
     # classification
-    "sector",           # text
-    "sub_sector",       # text
+    "sector",           # text (kebab)
+    "sub_sector",       # text (kebab)
 
     # arrays
     "tags",             # text[]
@@ -155,6 +155,101 @@ def _normalize_symbol(sym: Optional[str]) -> Optional[str]:
     return s if s.endswith(".JK") else f"{s}.JK"
 
 # =====================================================================================
+# Title/Body formatting helpers
+# =====================================================================================
+
+def _tt(s: Any) -> str:
+    """Title-case with graceful fallback."""
+    if not s:
+        return ""
+    try:
+        return str(s).strip().title()
+    except Exception:
+        return str(s)
+
+def _a_an(noun: str) -> str:
+    if not noun:
+        return "a"
+    return "an" if str(noun).strip()[:1].lower() in "aeiou" else "a"
+
+def _fmt_commas(x: Any) -> Optional[str]:
+    xi = _to_int(x)
+    return f"{xi:,}" if xi is not None else None
+
+def _compose_title_body(out: Dict[str, Any], src: Dict[str, Any]) -> None:
+    """
+    Title:
+      "<HolderName> Buy/Sell/Transfer Transaction of <CompanyName|Symbol>"
+
+    Body:
+      "<HolderName>, an <holder_type>, bought/sold/transferred <amount> shares of <CompanyName|Symbol>,
+       increasing/decreasing its holdings from <before> to <after>. The transaction occurred in the
+       <sector> sector, specifically <sub_sector>. The purpose of the transaction is <purpose|undisclosed>."
+    """
+    typ   = (out.get("transaction_type") or "").lower()
+    holder = out.get("holder_name") or src.get("holder_name_raw") or "Shareholder"
+    htype  = out.get("holder_type") or src.get("holder_type") or ""
+    symbol = out.get("symbol") or ""
+    company = src.get("company_name") or src.get("company_name_raw") or symbol
+
+    amt = _fmt_commas(out.get("amount_transaction"))
+    hb  = _fmt_commas(out.get("holding_before"))
+    ha  = _fmt_commas(out.get("holding_after"))
+
+    sector  = out.get("sector")
+    subsec  = out.get("sub_sector")
+    purpose = (src.get("purpose") or "").strip() or "undisclosed"
+
+    action_title = {"buy":"Buy", "sell":"Sell", "transfer":"Transfer"}.get(typ, "Transaction")
+    verb = {"buy":"bought", "sell":"sold", "transfer":"transferred"}.get(typ, "executed")
+
+    # Title
+    if not out.get("title"):
+        out["title"] = f"{_tt(holder)} {action_title} Transaction of {_tt(company)}"
+
+    # Body
+    if not out.get("body"):
+        who = _tt(holder)
+        type_phrase = ""
+        if htype:
+            type_phrase = f", {_a_an(htype)} {htype.lower()}"
+        amount_phrase = f"{amt} shares of {_tt(company)}" if amt else f"shares of {_tt(company)}"
+
+        # holdings delta phrase
+        delta = ""
+        if hb and ha:
+            try:
+                before = int(out.get("holding_before")) if out.get("holding_before") is not None else None
+                after  = int(out.get("holding_after"))  if out.get("holding_after")  is not None else None
+            except Exception:
+                before = after = None
+            if before is not None and after is not None:
+                if after > before:
+                    delta = f", increasing its holdings from {hb} to {ha}"
+                elif after < before:
+                    delta = f", decreasing its holdings from {hb} to {ha}"
+                else:
+                    delta = f", resulting in holdings of {ha}"
+
+        # sector sentence
+        sector_bits = []
+        if sector:
+            sector_bits.append(f"the {sector} sector")
+        if subsec:
+            sector_bits.append(f"specifically {subsec}")
+        sector_sentence = ""
+        if sector_bits:
+            sector_sentence = " The transaction occurred in " + ", ".join(sector_bits) + "."
+
+        purpose_sentence = f" The purpose of the transaction is {purpose}."
+
+        if verb == "executed":
+            lead = f"{who}{type_phrase} executed a transaction of {amount_phrase}"
+        else:
+            lead = f"{who}{type_phrase} {verb} {amount_phrase}"
+        out["body"] = f"{lead}{delta}.{sector_sentence}{purpose_sentence}".strip()
+
+# =====================================================================================
 # Core normalizer (one row)
 # =====================================================================================
 
@@ -174,7 +269,7 @@ def _clean_one(row: Dict[str, Any]) -> Dict[str, Any]:
     if src.get("timestamp"):
         out["timestamp"] = _to_datetime_iso(src["timestamp"])
 
-    # --- sector / sub_sector (force text, kebab; flatten if list) ---
+    # --- sector / sub_sector (force TEXT, kebab; flatten if list, take first) ---
     sector = src.get("sector")
     if isinstance(sector, list):
         sector = " ".join(str(x) for x in sector if x is not None)
@@ -182,7 +277,13 @@ def _clean_one(row: Dict[str, Any]) -> Dict[str, Any]:
 
     sub_sector = src.get("sub_sector")
     if isinstance(sub_sector, list):
-        sub_sector = " ".join(str(x) for x in sub_sector if x is not None)
+        # take first non-empty element (don't join arrays)
+        first = None
+        for x in sub_sector:
+            if x not in (None, "", []):
+                first = x
+                break
+        sub_sector = first
     out["sub_sector"] = _kebab(_first_scalar(sub_sector)) if sub_sector else None
 
     # --- tags / tickers (text[]) ---
@@ -193,11 +294,13 @@ def _clean_one(row: Dict[str, Any]) -> Dict[str, Any]:
     tickers = _parse_json_list_or_csv(src.get("tickers"))
     if tickers is not None:
         out["tickers"] = [t.upper() for t in tickers if t] or []
+    # If you prefer always-present tickers array, uncomment:
+    # elif "tickers" not in out:
+    #     out["tickers"] = []
 
     # --- transaction_type ---
     t = (src.get("transaction_type") or src.get("type") or "").strip().lower()
     if t not in {"buy","sell","transfer","other"}:
-        # derive from holdings if possible
         hb = _to_float(src.get("holding_before"))
         ha = _to_float(src.get("holding_after"))
         if isinstance(hb, (int,float)) and isinstance(ha, (int,float)):
@@ -207,7 +310,7 @@ def _clean_one(row: Dict[str, Any]) -> Dict[str, Any]:
         t = "other"
     out["transaction_type"] = t
 
-    # --- holdings / amount_transaction (map legacy amount_transacted) ---
+    # --- holdings / amount_transaction (map legacy amount_transacted/amount) ---
     if src.get("holding_before") is not None:
         out["holding_before"] = _to_int(src.get("holding_before"))
     if src.get("holding_after") is not None:
@@ -241,6 +344,9 @@ def _clean_one(row: Dict[str, Any]) -> Dict[str, Any]:
             out["transaction_value"] = float(out["price"]) * int(out["amount_transaction"])
         except Exception:
             pass
+
+    # === Compose title/body per requested template ===
+    _compose_title_body(out, src)
 
     # --- final strip: keep only allowed & non-None ---
     out = {k: v for k, v in out.items() if (k in ALLOWED_COLUMNS and v is not None)}
