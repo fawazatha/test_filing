@@ -135,6 +135,13 @@ def _parse_json_obj(x: Any) -> Optional[Dict[str, Any]]:
 
 # kebab helper for sector/sub_sector
 _NONALNUM = re.compile(r"[^0-9A-Za-z]+")
+_BRACKETS = re.compile(r"[\\[\\]\\(\\)\\{\\}]")
+
+def _strip_brackets(s: Optional[str]) -> Optional[str]:
+    if not s:
+        return None
+    return _BRACKETS.sub("", str(s))
+
 def _kebab(s: Optional[str]) -> Optional[str]:
     if not s:
         return None
@@ -190,15 +197,6 @@ def _fmt_commas(x: Any) -> Optional[str]:
     return f"{xi:,}" if xi is not None else None
 
 def _compose_title_body(out: Dict[str, Any], src: Dict[str, Any]) -> None:
-    """
-    Title:
-      "<HolderName> Buy/Sell/Transfer Transaction of <CompanyName|Symbol>"
-
-    Body:
-      "<HolderName>, an <holder_type>, bought/sold/transferred <amount> shares of <CompanyName|Symbol>,
-       increasing/decreasing its holdings from <before> to <after>. The transaction occurred in the
-       <sector> sector, specifically <sub_sector>. The purpose of the transaction is <purpose|undisclosed>."
-    """
     typ   = (out.get("transaction_type") or "").lower()
     holder = out.get("holder_name") or src.get("holder_name_raw") or "Shareholder"
     htype  = out.get("holder_type") or src.get("holder_type") or ""
@@ -216,51 +214,42 @@ def _compose_title_body(out: Dict[str, Any], src: Dict[str, Any]) -> None:
     action_title = {"buy":"Buy", "sell":"Sell", "transfer":"Transfer"}.get(typ, "Transaction")
     verb = {"buy":"bought", "sell":"sold", "transfer":"transferred"}.get(typ, "executed")
 
-    # Title
-    if not out.get("title"):
-        out["title"] = f"{_tt(holder)} {action_title} Transaction of {_tt(company)}"
+    # Title (selalu overwrite)
+    out["title"] = f"{_tt(holder)} {action_title} Transaction of {_tt(company)}"
 
-    # Body
-    if not out.get("body"):
-        who = _tt(holder)
-        type_phrase = ""
-        if htype:
-            type_phrase = f", {_a_an(htype)} {htype.lower()}"
-        amount_phrase = f"{amt} shares of {_tt(company)}" if amt else f"shares of {_tt(company)}"
+    # Body (selalu overwrite)
+    who = _tt(holder)
+    type_phrase = f", {_a_an(htype)} {htype.lower()}" if htype else ""
+    amount_phrase = f"{amt} shares of {_tt(company)}" if amt else f"shares of {_tt(company)}"
 
-        # holdings delta phrase
-        delta = ""
-        if hb and ha:
-            try:
-                before = int(out.get("holding_before")) if out.get("holding_before") is not None else None
-                after  = int(out.get("holding_after"))  if out.get("holding_after")  is not None else None
-            except Exception:
-                before = after = None
-            if before is not None and after is not None:
-                if after > before:
-                    delta = f", increasing its holdings from {hb} to {ha}"
-                elif after < before:
-                    delta = f", decreasing its holdings from {hb} to {ha}"
-                else:
-                    delta = f", resulting in holdings of {ha}"
-
-        # sector sentence
-        sector_bits = []
-        if sector:
-            sector_bits.append(f"the {sector} sector")
-        if subsec:
-            sector_bits.append(f"specifically {subsec}")
-        sector_sentence = ""
-        if sector_bits:
-            sector_sentence = " The transaction occurred in " + ", ".join(sector_bits) + "."
-
-        purpose_sentence = f" The purpose of the transaction is {purpose}."
-
-        if verb == "executed":
-            lead = f"{who}{type_phrase} executed a transaction of {amount_phrase}"
+    delta = ""
+    try:
+        before = int(out.get("holding_before")) if out.get("holding_before") is not None else None
+        after  = int(out.get("holding_after"))  if out.get("holding_after")  is not None else None
+    except Exception:
+        before = after = None
+    if before is not None and after is not None:
+        if after > before:
+            delta = f", increasing its holdings from {hb} to {ha}"
+        elif after < before:
+            delta = f", decreasing its holdings from {hb} to {ha}"
         else:
-            lead = f"{who}{type_phrase} {verb} {amount_phrase}"
-        out["body"] = f"{lead}{delta}.{sector_sentence}{purpose_sentence}".strip()
+            delta = f", resulting in holdings of {ha}"
+
+    sector_bits = []
+    if sector:
+        sector_bits.append(f"the {sector} sector")
+    if subsec:
+        sector_bits.append(f"specifically {subsec}")
+    sector_sentence = " The transaction occurred in " + ", ".join(sector_bits) + "." if sector_bits else ""
+
+    purpose_sentence = f" The purpose of the transaction is {purpose}."
+
+    if verb == "executed":
+        lead = f"{who}{type_phrase} executed a transaction of {amount_phrase}"
+    else:
+        lead = f"{who}{type_phrase} {verb} {amount_phrase}"
+    out["body"] = f"{lead}{delta}.{sector_sentence}{purpose_sentence}".strip()
 
 # =====================================================================================
 # Sub-sector + source normalizers
@@ -280,7 +269,6 @@ def _normalize_sub_sector(val: Any) -> Optional[str]:
                 if isinstance(parsed, list) and parsed:
                     val = parsed[0]
                 else:
-                    # fall through to literal_eval
                     raise ValueError
             except Exception:
                 # handle single-quoted list strings safely
@@ -289,8 +277,8 @@ def _normalize_sub_sector(val: Any) -> Optional[str]:
                     if isinstance(parsed, (list, tuple)) and parsed:
                         val = parsed[0]
                 except Exception:
-                    # keep original string if parsing fails
-                    pass
+                    # fallback: langsung strip bracket dan lanjutkan
+                    val = _strip_brackets(s)
 
     # Real list/tuple -> take first non-empty
     if isinstance(val, (list, tuple)):
@@ -299,9 +287,9 @@ def _normalize_sub_sector(val: Any) -> Optional[str]:
                 val = x
                 break
 
-    return _kebab(_first_scalar(val)) if val else None
-
-
+    # final cleanup: buang bracket sisa & kebab-case
+    val = _strip_brackets(_first_scalar(val))
+    return _kebab(val) if val else None
 
 def _pick_url_from(obj: Dict[str, Any]) -> Optional[str]:
     """
@@ -315,16 +303,6 @@ def _pick_url_from(obj: Dict[str, Any]) -> Optional[str]:
 
 
 def _normalize_source(src_row: Dict[str, Any]) -> Optional[str]:
-    """
-    Prefer the full URL to the PDF.
-    Logic:
-      1) If 'source' is already a URL → keep it.
-      2) Else treat 'source' as a filename; try to find a matching URL in:
-         - top-level keys: pdf_url/url/attachment_url/source_url
-         - nested 'announcement' or 'announcement_meta'
-         - any field whose value is a URL string that endswith the filename
-      3) If nothing found, return original 'source'.
-    """
     raw = src_row.get("source")
     if isinstance(raw, str) and "://" in raw:
         return raw  # already a URL
@@ -374,7 +352,7 @@ def _clean_one(row: Dict[str, Any]) -> Dict[str, Any]:
         out["source"] = norm_source
 
     # --- direct copies (strings) ---
-    for k in ["title","body","holder_type","holder_name","UID"]:
+    for k in ["holder_type","holder_name","UID"]:
         if k in src and src[k] is not None:
             out[k] = _to_str(src[k])
 
