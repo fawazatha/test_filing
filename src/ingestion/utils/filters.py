@@ -3,10 +3,11 @@ from datetime import datetime, timedelta
 from typing import Optional, Tuple
 import calendar
 
-from ingestion.utils.config import JKT
+from src.common.time import JAKARTA_TZ as JKT
 
-# ---------- Parsers & Validators ----------
+"""Date parsing, validation, and range helpers (WIB-aware)."""
 
+# Parsers & Validators
 def parse_publish_wib(publish_iso: str) -> datetime:
     """
     Parse IDX PublishDate in ISO forms:
@@ -52,8 +53,7 @@ def parse_year_month(year_month: str) -> Tuple[int, int]:
         raise ValueError("Month must be in 1..12")
     return year, month
 
-# ---------- Windows & Ranges ----------
-
+# Windows & Ranges
 def in_window(dt: datetime, start_dt: Optional[datetime], end_dt: Optional[datetime]) -> bool:
     """
     Inclusive window check in WIB. If no window provided, returns True.

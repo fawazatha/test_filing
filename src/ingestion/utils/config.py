@@ -1,9 +1,6 @@
-from zoneinfo import ZoneInfo
-from typing import Optional, Dict
-import os
+from typing import Mapping
 
-# Timezone used across the pipeline
-JKT = ZoneInfo("Asia/Jakarta")
+"""Ingestion-local constants (no side effects)."""
 
 # IDX API base
 IDX_API_URL = "https://www.idx.co.id/primary/NewsAnnouncement/GetAllAnnouncement"
@@ -11,8 +8,8 @@ IDX_API_URL = "https://www.idx.co.id/primary/NewsAnnouncement/GetAllAnnouncement
 # Default paging
 DEFAULT_PAGE_SIZE = 10
 
-# Minimal headers (stable, mirrors the downloader HTTP client)
-HEADERS = {
+# Default headers (aligned with downloader)
+HEADERS: Mapping[str, str] = {
     "User-Agent": (
         "Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
         "AppleWebKit/537.36 (KHTML, like Gecko) "
@@ -20,13 +17,3 @@ HEADERS = {
     ),
     "Accept": "application/json, text/plain, */*",
 }
-
-def proxies_from_env() -> Optional[Dict[str, str]]:
-    """
-    Read common proxy env vars. Returns a 'requests' proxies dict or None.
-    """
-    for key in ("PROXY", "HTTPS_PROXY", "HTTP_PROXY", "https_proxy", "http_proxy"):
-        v = os.getenv(key)
-        if v:
-            return {"http": v, "https": v}
-    return None
