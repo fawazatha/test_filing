@@ -119,12 +119,12 @@ def derive_sentiment(before: Any, after: Any) -> Optional[str]:
         return "bearish"
     return None
 
-def takeover_upward_only(before: Any, after: Any) -> bool:
+def takeover(before: Any, after: Any) -> bool:
     b = parse_pct(before)
     a = parse_pct(after)
     if b is None or a is None:
         return False
-    return (b < 50.0) and (a > 50.0)  # crossing >50 only
+    return (b < 50.0 and a > 50.0) or (b > 50.0 and a < 50.0)  
 
 def assemble_new_tags(existing: Any, before: Any, after: Any) -> List[str]:
     """Kembalikan daftar tag akhir (whitelist-only), unik, disortir (MESOP dulu)."""
@@ -132,7 +132,7 @@ def assemble_new_tags(existing: Any, before: Any, after: Any) -> List[str]:
     s = derive_sentiment(before, after)
     if s:
         out.append(s)
-    if takeover_upward_only(before, after):
+    if takeover(before, after):
         out.append("takeover")
     seen = set(); uniq = []
     for t in out:
@@ -222,7 +222,7 @@ def main():
                 s = derive_sentiment(before, after)
                 if s:
                     sentiment_cnt += 1
-                if takeover_upward_only(before, after):
+                if takeover(before, after):
                     takeover_cnt += 1
 
                 # compute tags baru
@@ -279,7 +279,7 @@ def main():
             csv_file.close()
 
     # ringkasan
-    print(f"[stats] legacy_null={legacy_null_cnt}, sentiment_added={sentiment_cnt}, takeover_added={takeover_cnt}")
+    print(f"[stats] legacy_null={legacy_null_cnt}, sentiment_added={sentiment_cnt}, added={takeover_cnt}")
     print(f"\n[done] scanned={scanned}, updated={0 if args.dry_run else updated}, dry_run={args.dry_run}")
     if args.report_csv:
         print(f"[report] CSV saved → {args.report_csv}")
