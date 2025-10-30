@@ -1,8 +1,16 @@
+from __future__ import annotations
 from typing import Optional
 import os
 import requests
 import urllib3
-from dotenv import load_dotenv
+
+try:
+    from dotenv import load_dotenv 
+except Exception:
+    def load_dotenv(*_a, **_k):  
+        return False
+
+"""Requests-based HTTP helpers for PDF downloads (env-proxy + silent SSL)."""
 
 UA = (
     "Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
@@ -13,6 +21,7 @@ REFERER = "https://www.idx.co.id/en/news-announcements/announcement-summary"
 
 
 def init_http(insecure: bool = True, silence_warnings: bool = True, load_env: bool = True) -> None:
+    """Prepare environment proxies and optionally silence SSL warnings."""
     if load_env:
         load_dotenv(override=True)
 
@@ -26,6 +35,7 @@ def init_http(insecure: bool = True, silence_warnings: bool = True, load_env: bo
 
 
 def _headers(seed: bool = False) -> dict:
+    """Minimal headers for PDF endpoints; add Referer when seeding cookies."""
     h = {
         "User-Agent": UA,
         "Accept": "application/pdf,application/octet-stream;q=0.9,*/*;q=0.8",
@@ -40,9 +50,7 @@ def _headers(seed: bool = False) -> dict:
 
 
 def get_pdf_bytes_minimal(url: str, timeout: int = 60) -> bytes:
-    """
-    Single-shot GET using UA + Referer. Proxies come from env (HTTP[S]_PROXY).
-    """
+    """Single-shot GET using UA (+Referer). Proxies come from env (HTTP[S]_PROXY)."""
     with requests.Session() as s:
         r = s.get(url, headers=_headers(seed=True), timeout=timeout, verify=False, allow_redirects=True)
         r.raise_for_status()
@@ -50,9 +58,7 @@ def get_pdf_bytes_minimal(url: str, timeout: int = 60) -> bytes:
 
 
 def seed_and_retry_minimal(url: str, timeout: int = 60) -> bytes:
-    """
-    Touch the announcement summary page to establish cookies, then retry the PDF.
-    """
+    """Touch the IDX summary page to establish cookies, then retry the PDF."""
     with requests.Session() as s:
         try:
             s.get(REFERER, headers=_headers(seed=True), timeout=timeout, verify=False)
