@@ -9,9 +9,7 @@ from typing import Any, Dict, List, Optional, Tuple, Union, Set, Protocol, Seque
 
 import httpx  # noqa: F401 (kept for parity with original; safe to remove if unused)
 
-# ---------------------------------------------------------------------
 # Uploader imports + UploadResult typing
-# ---------------------------------------------------------------------
 try:
     # If your supabase module already exports UploadResult, use it directly
     from .supabase import SupabaseUploader, UploadResult  # type: ignore[attr-defined]
@@ -26,9 +24,7 @@ except ImportError:
             inserted: int
             failed_rows: Sequence[Dict[str, Any]]
 
-# ---------------------------------------------------------------------
 # Fetcher (existing-row lookup) import
-# ---------------------------------------------------------------------
 try:
     from scripts.fetch_filings import get_idx_filings_by_days
 except ImportError:
@@ -41,17 +37,16 @@ except ImportError:
         )
         return []
 
-# ---------------------------------------------------------------------
 # Normalizers
-# ---------------------------------------------------------------------
 def _to_day(s: Optional[str]) -> str:
     """Convert an ISO-like string to 'YYYY-MM-DD' (best effort)."""
     if not s:
         return ""
     try:
-        return datetime.fromisoformat(s).date().isoformat()
+        # Mengambil 10 karakter pertama (YYYY-MM-DD) dari timestamp
+        return str(s)[:10]
     except Exception:
-        return str(s)[:10]  # best-effort slice
+        return ""
 
 def _norm_float(v: Any, ndigits: int = 6):
     """Normalize a numeric-like value to rounded float (or None)."""
@@ -62,19 +57,19 @@ def _norm_float(v: Any, ndigits: int = 6):
     except Exception:
         return None
 
-# ---------------------------------------------------------------------
 # Hashing (local)
-# ---------------------------------------------------------------------
 def make_filing_hash(row: Dict[str, Any]) -> str:
     """
     Create a SHA-256 hash from key fields of a filing row.
     Keys here must align with DB fetch mapping in _db_row_to_hashable().
     """
-    filing_date_key = _to_day(row.get("filing_date") or row.get("timestamp"))
+    # --- PERBAIKAN: Menggunakan 'timestamp' (bukan 'filing_date') ---
+    filing_date_key = _to_day(row.get("timestamp"))
+    # --- AKHIR PERBAIKAN ---
 
     key_data = {
         "symbol": (row.get("symbol") or "").strip().upper(),
-        "filing_date": filing_date_key,
+        "filing_date": filing_date_key, # Ini adalah 'YYYY-MM-DD' dari timestamp
         # --- PERBAIKAN: Hanya gunakan 'transaction_type' ---
         "transaction_type": (row.get("transaction_type") or "").strip().lower(),
         # --- AKHIR PERBAIKAN ---
@@ -92,13 +87,19 @@ def make_filing_hash(row: Dict[str, Any]) -> str:
     return hashlib.sha256(blob.encode("utf-8")).hexdigest()
 
 def _prepare_batch_rows(rows: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
-    """Ensure each row has 'filing_date' (YYYY-MM-DD) available."""
+    """
+    Ensure each row has 'date_for_query' (YYYY-MM-DD) available
+    for the DB lookup function.
+    """
     out: List[Dict[str, Any]] = []
     for r in rows:
         rr = dict(r)
-        day = _to_day(rr.get("filing_date") or rr.get("timestamp"))
+        # --- PERBAIKAN: Menggunakan 'timestamp' ---
+        day = _to_day(rr.get("timestamp"))
         if day:
-            rr["filing_date"] = day
+            # Kita buat kunci ini agar bisa diambil oleh 'days' set di bawah
+            rr["date_for_query"] = day 
+        # --- AKHIR PERBAIKAN ---
         out.append(rr)
     return out
 
@@ -114,9 +115,7 @@ def _intrarun_unique(rows: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
         out.append(r)
     return out
 
-# ---------------------------------------------------------------------
 # Fetch existing rows from Supabase (by days & symbols)
-# ---------------------------------------------------------------------
 def _fetch_existing_rows_same_days(
     uploader: SupabaseUploader,  # kept for signature parity / future use
     table: str,
@@ -129,11 +128,27 @@ def _fetch_existing_rows_same_days(
     """
     if not days:
         return []
+        
+    # --- PERBAIKAN: Tentukan 'select' secara eksplisit ---
+    # Ini untuk memastikan kita meminta kolom yang benar ('transaction_type' dan 'timestamp')
+    select_cols = ",".join([
+        "symbol", "timestamp", "transaction_type", "holder_name",
+        "holding_before", "holding_after",
+        "share_percentage_before", "share_percentage_after",
+        "amount_transaction", "transaction_value", "price",
+    ])
+    # --- AKHIR PERBAIKAN ---
+
     try:
-        # Memanggil fungsi yang diperbarui (dari fetch_filings.py)
-        # yang sekarang akan me-request 'transaction_type'
+        # Panggil fungsi yang diperbarui (dari fetch_filings.py)
+        # yang sekarang akan me-query 'timestamp'
         return asyncio.run(
-            get_idx_filings_by_days(days=days, symbols=symbols, table=table)
+            get_idx_filings_by_days(
+                days=days, 
+                symbols=symbols, 
+                table=table,
+                select=select_cols # Teruskan 'select' yang sudah benar
+            )
         )
     except Exception as e:
         logging.error(f"Failed to fetch existing rows from Supabase: {e}", exc_info=True)
@@ -148,13 +163,10 @@ def _db_row_to_hashable(db_row: Dict[str, Any]) -> Dict[str, Any]:
         out["amount"] = db_row.get("amount_transaction")
     if "value" not in out:
         out["value"] = db_row.get("transaction_value")
-    # 'transaction_type' sudah memiliki nama yang benar dari select,
-    # jadi tidak perlu me-mapping 'type'.
+    # 'transaction_type' dan 'timestamp' sudah memiliki nama yang benar dari select
     return out
 
-# ---------------------------------------------------------------------
 # Public entry
-# ---------------------------------------------------------------------
 def upload_filings_with_dedup(
     *,
     uploader: SupabaseUploader,
@@ -165,21 +177,23 @@ def upload_filings_with_dedup(
 ) -> Tuple[UploadResult, Dict[str, int]]:
     """
     Upload filings to Supabase with deduplication:
-      1) Normalize rows and ensure 'filing_date'
+      1) Normalize rows and ensure 'date_for_query'
       2) Drop duplicates within the batch
       3) Pull existing rows for same day(s) & symbols
       4) Hash-compare to filter out rows already in DB
       5) Upload only new, unique rows
     """
 
-    # 1) Ensure 'filing_date' present
+    # 1) Ensure 'date_for_query' present
     prepared = _prepare_batch_rows(rows)
 
     # 2) Intra-batch dedup
     intra = _intrarun_unique(prepared)
 
     # 3) Identify days & symbols for DB look-up
-    days = sorted({r.get("filing_date") for r in intra if r.get("filing_date")})
+    # --- PERBAIKAN: Menggunakan 'date_for_query' ---
+    days = sorted({r.get("date_for_query") for r in intra if r.get("date_for_query")})
+    # --- AKHIR PERBAIKAN ---
     symbols = [r.get("symbol") for r in intra if r.get("symbol")] or None
 
     # 4) Fetch existing rows (same days/symbols)
