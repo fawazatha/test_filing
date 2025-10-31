@@ -1,3 +1,4 @@
+# src/pipeline/orchestrator.py
 from __future__ import annotations
 import argparse
 import json
@@ -11,36 +12,6 @@ from datetime import datetime, timedelta
 from pathlib import Path
 from typing import List, Dict, Any, Optional, Tuple
 
-# --- Layanan Inti yang Direfaktor ---
-# Mengimpor DEDUP dari layanan yang sudah kita refaktor
-from services.upload.dedup import upload_filings_with_dedup
-# Mengimpor Uploader dari layanan yang sudah kita refaktor
-from services.upload.supabase import SupabaseUploader
-# Mengimpor Tipe Inti dari refaktor 'filings'
-# (Kita gunakan ini untuk mendapatkan daftar kolom yang valid)
-from src.core.types import FilingRecord 
-# -----------------------------------
-
-
-# Unifier + Decimal-safe JSON encoder 
-from decimal import Decimal
-try:
-    # Unifier step (vectorized) — if missing, pipeline still runs
-    from src.app.steps.transform_rows import transform_rows
-except Exception:
-    transform_rows = None  # keep pipeline working if unifier module not present
-
-try:
-    # Decimal encoder so we preserve precision in artifacts
-    from src.services.jsonenc import DecimalJSONEncoder
-except Exception:
-    class DecimalJSONEncoder(json.JSONEncoder):
-        def default(self, o):
-            if isinstance(o, Decimal):
-                return str(o)
-            return super().default(o)
-
-# Timezone for WIB
 try:
     import zoneinfo
     JKT = zoneinfo.ZoneInfo("Asia/Jakarta")
@@ -53,34 +24,31 @@ from ingestion.runner import (
     save_json as save_ann_json,
 )
 from downloader.runner import download_pdfs
-from downloader.utils.announcement import Announcement
+from models.announcement import Announcement
 
 from parser import parser_idx as parser_idx_mod
 from parser import parser_non_idx as parser_non_idx_mod
 
-# Ini adalah 'run' dari 'filings' yang sudah kita refaktor
-from generate.filings.runner import run as run_generate 
+from generate.filings.runner import run as run_generate
 from services.email.bucketize import bucketize as bucketize_alerts
 from services.io.artifacts import make_artifact_zip
 
-# Upload (filings)
-# --- DIHAPUS ---
-# Impor 'clean_rows', 'ALLOWED_COLUMNS', 'REQUIRED_COLUMNS' yang lama dihapus
-# karena logika ini sekarang ada di 'step_unify_filings' / 'step_generate_filings'
-# ---
+# --- Upload (filings) ---
+from services.upload.supabase import SupabaseUploader
+from services.transform.filings_schema import clean_rows, ALLOWED_COLUMNS, REQUIRED_COLUMNS
 
-# Email alerts
+# --- Email alerts ---
 from services.email.ses_email import send_attachments
 from services.email.alerts_mailer import _render_email_content
 
-# Articles generate + upload news
+# --- NEW: Articles generate + upload news ---
 from generate.articles.runner import run_from_filings as run_articles_from_filings
 from generate.articles.utils.uploader import upload_news_file_cli
 
 LOG = logging.getLogger("orchestrator")
 
 
-# Logging / Time utils
+# ========== Logging / Time utils ==========
 def _setup_logging(verbose: bool) -> None:
     level = logging.DEBUG if verbose else logging.INFO
     logging.basicConfig(level=level, format="%(asctime)s [%(levelname)s] %(message)s")
@@ -96,7 +64,7 @@ def _fmt(dt: datetime, fmt: str) -> str:
     return dt.strftime(fmt)
 
 
-# IO helpers
+# ========== IO helpers ==========
 def _safe_mkdirs(*dirs: str) -> None:
     for d in dirs:
         Path(d).mkdir(parents=True, exist_ok=True)
@@ -147,19 +115,8 @@ def _compute_window_from_minutes(window_minutes: int) -> Tuple[str, str, str, st
 
 
 def _save_json(obj: Any, path: Path) -> None:
-    path.parent.mkdir(parents=True, exist_ok=True
-                      )
-    path.write_text(json.dumps(obj, ensure_ascii=False, indent=2), encoding="utf-8")
-
-
-def _save_json_decimal(obj: Any, path: Path) -> None:
-    """
-    Write JSON preserving Decimal precision (as strings in JSON artifacts).
-    Use this when writing normalized rows.
-    """
     path.parent.mkdir(parents=True, exist_ok=True)
-    with path.open("w", encoding="utf-8") as f:
-        json.dump(obj, f, ensure_ascii=False, indent=2, cls=DecimalJSONEncoder)
+    path.write_text(json.dumps(obj, ensure_ascii=False, indent=2), encoding="utf-8")
 
 
 def _write_jsonl(path: Path, rows: List[Dict[str, Any]]) -> None:
@@ -169,13 +126,12 @@ def _write_jsonl(path: Path, rows: List[Dict[str, Any]]) -> None:
             f.write(json.dumps(r, ensure_ascii=False))
             f.write("\n")
 
-# Enrich timestamps from downloads metadata 
+# === Enrich timestamps from downloads metadata ===
 def _load_json_silent(path: Path) -> Any:
     try:
         return json.loads(path.read_text(encoding="utf-8"))
     except Exception:
         return None
-
 
 def _basename(s: Optional[str]) -> Optional[str]:
     if not s:
@@ -185,10 +141,11 @@ def _basename(s: Optional[str]) -> Optional[str]:
     except Exception:
         return None
 
-
 def _build_download_ts_index(downloads_meta: Path) -> Dict[str, str]:
     """
     Build index: filename (lower) -> ISO timestamp (string).
+    downloads_meta format (list of dict):
+      [{"filename": "...pdf", "timestamp": "YYYY-MM-DDTHH:MM:SS", ...}, ...]
     """
     idx: Dict[str, str] = {}
     data = _load_json_silent(downloads_meta)
@@ -203,10 +160,12 @@ def _build_download_ts_index(downloads_meta: Path) -> Dict[str, str]:
             idx[fn.lower()] = str(ts)
     return idx
 
-
 def _candidate_filenames_from_row(row: Dict[str, Any]) -> List[str]:
     """
-    Candidate filenames to match from various fields that may appear in a row.
+    Ambil kandidat nama file untuk matching dari berbagai field yang mungkin ada di row:
+    - source
+    - announcement.{pdf_url,url}
+    - pdf_url / url langsung di top-level (kalau ada)
     """
     cands: List[str] = []
     for k in ("source", "pdf", "pdf_url", "url", "attachment_url", "filename"):
@@ -230,18 +189,10 @@ def _candidate_filenames_from_row(row: Dict[str, Any]) -> List[str]:
             out.append(n)
     return out
 
-
 def step_enrich_filings_timestamps(*, filings_json: Path, downloads_meta: Path) -> int:
-    """
-    DEPRECATED? This logic is now handled by core.transformer.
-    Kept for compatibility, but 'transform_rows' or 'run_generate' should be the source of truth.
-    """
     if (not filings_json.exists()) or (not downloads_meta.exists()):
         LOG.warning("[ENRICH-TS] skip: %s or %s not found", filings_json, downloads_meta)
         return 0
-    
-    # --- CATATAN: Logika ini sekarang duplikat dengan yang ada di core.transformer ---
-    LOG.info("[ENRICH-TS] Running step_enrich_filings_timestamps. This may be redundant.")
 
     rows_or_obj = _load_json_silent(filings_json)
     if isinstance(rows_or_obj, dict) and "rows" in rows_or_obj and isinstance(rows_or_obj["rows"], list):
@@ -263,11 +214,6 @@ def step_enrich_filings_timestamps(*, filings_json: Path, downloads_meta: Path) 
     for r in rows:
         if not isinstance(r, dict):
             continue
-        
-        # Hanya patch jika timestamp kosong, untuk menghindari penimpaan data dari ingestion_map
-        if r.get("timestamp") or r.get("announcement_published_at"):
-            continue
-
         matched_ts: Optional[str] = None
         for nm in _candidate_filenames_from_row(r):
             key = nm.lower()
@@ -279,22 +225,20 @@ def step_enrich_filings_timestamps(*, filings_json: Path, downloads_meta: Path) 
             r["announcement_published_at"] = matched_ts
             patched += 1
 
-    if patched > 0:
-        if wrapper_dict:
-            _save_json({"rows": rows}, filings_json)
-        else:
-            _save_json(rows, filings_json)
-        LOG.info("[ENRICH-TS] enriched %d rows with timestamps from %s", patched, downloads_meta)
+    if wrapper_dict:
+        filings_json.write_text(json.dumps({"rows": rows}, ensure_ascii=False, indent=2), encoding="utf-8")
     else:
-        LOG.info("[ENRICH-TS] no rows needed timestamp enrichment.")
-        
+        filings_json.write_text(json.dumps(rows, ensure_ascii=False, indent=2), encoding="utf-8")
+
+    LOG.info("[ENRICH-TS] enriched %d rows with timestamps from %s", patched, downloads_meta)
     return patched
 
 
-# Company assets via single-source script
+
+# ========== Company assets via single-source script ==========
 def _run_company_map_cli(script_path: str, subcmd: str) -> subprocess.CompletedProcess:
     """
-    Run company_map single-source script with subcommands:
+    Jalankan company_map single-source script dengan subcommand:
     get | refresh | reset | status | print
     """
     script = Path(script_path)
@@ -307,7 +251,8 @@ def _run_company_map_cli(script_path: str, subcmd: str) -> subprocess.CompletedP
 
 def step_company_map_ensure(script_path: str) -> None:
     """
-    Ensure local cache exists. Try 'get' first; if it fails, try 'refresh'.
+    Pastikan cache lokal ada. Kalau belum ada → refresh, kalau sudah → get (invalidasi ringan).
+    Implementasi minimal: coba get dulu, kalau gagal baru refresh.
     """
     try:
         cp = _run_company_map_cli(script_path, "get")
@@ -348,7 +293,10 @@ def step_company_map_status(script_path: str) -> None:
 
 def _run_latest_prices_script(script_path: str, lookback_days: int, use_fallback: bool) -> None:
     """
-    Optional: refresh latest_prices.json via dedicated script.
+    Opsional: jalankan script terpisah untuk refresh latest_prices.json.
+    Jika script tidak ada, di-skip dengan log info.
+    Kontrak CLI disarankan:
+      python latest_prices.py --lookback-days N [--no-fallback]
     """
     sp = Path(script_path)
     if not sp.exists():
@@ -371,7 +319,7 @@ def _run_latest_prices_script(script_path: str, lookback_days: int, use_fallback
 
 def step_check_company_map(company_map_script: str) -> None:
     """
-    Lightweight cache validity check (no forced refresh).
+    Minimal check untuk memastikan cache tidak basi (tanpa refresh paksa).
     """
     step_company_map_status(company_map_script)
     try:
@@ -392,14 +340,15 @@ def step_refresh_company_assets_single_source(
     latest_prices_script: Optional[str] = None,
 ) -> None:
     """
-    Refresh company_map via single-source script. Optionally refresh latest_prices.
+    Refresh company_map via single-source script.
+    (Opsional) refresh latest_prices jika script disediakan.
     """
     step_company_map_refresh(company_map_script)
     if latest_prices_script:
         _run_latest_prices_script(latest_prices_script, lookback_days, use_fallback)
 
 
-# Ingestion / Download / Parse
+# ========== Ingestion / Download / Parse ==========
 def step_fetch_announcements(
     *,
     date_yyyymmdd: Optional[str],
@@ -412,7 +361,7 @@ def step_fetch_announcements(
 ) -> List[Dict[str, Any]]:
     data: List[Dict[str, Any]]
     if date_yyyymmdd:
-        LOG.info("[FETCH] Single-day (WIB) %s -> %s", date_yyyymmdd, start_hhmm, end_hhmm)
+        LOG.info("[FETCH] Single-day (WIB) %s %s→%s", date_yyyymmdd, start_hhmm, end_hhmm)
         data = get_ownership_announcements(
             date_yyyymmdd=date_yyyymmdd,
             start_hhmm=start_hhmm,
@@ -497,20 +446,18 @@ def step_parse_pdfs(
     nonidx_parser.parse_folder()
 
 
-# Generate / Alerts / Upload / Artifacts
+# ========== Generate / Alerts / Upload / Artifacts ==========
 def step_generate_filings(
     *,
     idx_parsed: Path,
     non_idx_parsed: Path,
     downloads_meta: Path,
-    ingestion_file: Path, # --- Argumen baru ditambahkan ---
     filings_out: Path,
     alerts_out: Path,
 ) -> int:
     cnt = run_generate(
         parsed_files=[str(non_idx_parsed), str(idx_parsed)],
         downloads_file=str(downloads_meta),
-        ingestion_file=str(ingestion_file), # --- Diteruskan ke 'run_generate' ---
         output_file=str(filings_out),
         alerts_file=str(alerts_out),
     )
@@ -524,9 +471,10 @@ def step_alerts_v2_from_filings(
     date_str: Optional[str] = None,
 ) -> Tuple[Optional[Path], Optional[Path]]:
     """
-    Build Alerts v2 from filings JSON:
+    Build Alerts v2 langsung dari filings_data.json:
       - alerts/alerts_inserted_{date}.json
       - alerts/alerts_not_inserted_{date}.json
+    Memakai gating rules dari services.send_alerts.split_alerts().
     """
     from services.email.send_alerts import write_alert_files
 
@@ -566,7 +514,7 @@ def step_bucketize_alerts(
     LOG.info("[BUCKETIZE] inserted=%d not_inserted=%d", stats["inserted"], stats["not_inserted"])
 
 
-# Email helpers & step =====
+# ===== Email helpers & step =====
 def _gather_json_files(dir_path: Path) -> List[Path]:
     if not dir_path.exists() or not dir_path.is_dir():
         return []
@@ -602,7 +550,7 @@ def _pick_attachments(paths: List[Path], max_bytes: int) -> Tuple[List[Path], in
             files.append((p, p.stat().st_size))
         except Exception:
             LOG.warning("[EMAIL] cannot stat %s (skipped)", p)
-    files.sort(key=lambda t: t[1])  # smallest first
+    files.sort(key=lambda t: t[1])  # kecil dulu
     picked: List[Path] = []
     total = 0
     for p, sz in files:
@@ -680,13 +628,7 @@ def step_zip_artifacts(
     include_pdfs: bool = False,
     artifact_dir: Path = Path("artifacts"),
 ) -> Path:
-    includes = [
-        "data/*.json",
-        "data/*.normalized.json",  # include normalized output in artifacts
-        "alerts/*.json",
-        "alerts_inserted/*.json",
-        "alerts_not_inserted/*.json",
-    ]
+    includes = ["data/*.json", "alerts/*.json", "alerts_inserted/*.json", "alerts_not_inserted/*.json"]
     if include_pdfs:
         includes += ["downloads/**/*.pdf", "downloads/**/*.PDF"]
     zip_path, manifest = make_artifact_zip(
@@ -701,64 +643,46 @@ def step_zip_artifacts(
     return zip_path
 
 
-# --- FUNGSI DIPERBARUI ---
 def step_upload_supabase(
     *,
     input_json: Path,
     table: str,
     supabase_url: Optional[str],
     supabase_key: Optional[str],
-    stop_on_missing: bool = False, # Argumen ini tidak digunakan lagi, tapi disimpan untuk kompatibilitas
+    stop_on_missing: bool = False,
     strict_exit: bool = False,
     send_email: bool = False,  # reserved
 ) -> None:
     if not supabase_url or not supabase_key:
         LOG.warning("SUPABASE_URL/KEY missing; skip upload.")
         return
-    
-    if not input_json.exists():
-        LOG.error("[UPLOAD] Input file not found: %s. Skipping upload.", input_json)
-        return
 
     uploader = SupabaseUploader(url=supabase_url, key=supabase_key)
-    
-    # 1. Muat data yang sudah dinormalisasi
-    raw = _load_json_silent(input_json)
+    raw = json.loads(input_json.read_text(encoding="utf-8"))
     rows = raw["rows"] if isinstance(raw, dict) and "rows" in raw else (raw if isinstance(raw, list) else [])
-    
-    if not rows:
-        LOG.warning("[UPLOAD] No rows found in %s to upload.", input_json)
-        return
+    rows_clean = clean_rows(rows)
 
-    # 2. Dapatkan daftar kolom yang valid dari Tipe Inti kita
-    # Ini menggantikan impor ALLOWED_COLUMNS yang lama
-    try:
-        valid_columns = set(FilingRecord.__annotations__.keys())
-        # Tambahkan kolom DB yang mungkin tidak ada di FilingRecord (jika ada)
-        valid_columns.update(["id", "created_at", "dedup_hash"]) 
-    except Exception:
-        LOG.error("[UPLOAD] Could not get valid columns from FilingRecord. Upload may fail.")
-        valid_columns = None # Lanjutkan tanpa memfilter
+    any_missing = False
+    for i, r in enumerate(rows_clean):
+        miss = [k for k in REQUIRED_COLUMNS if (r.get(k) is None or r.get(k) == "")]
+        if miss:
+            any_missing = True
+            LOG.error("Row %d missing required fields: %s", i, ", ".join(miss))
+            if stop_on_missing:
+                raise SystemExit(3)
+    if any_missing:
+        LOG.warning("Some rows missing required fields; continuing.")
 
-    LOG.info("[UPLOAD] Loaded %d rows from %s. Starting deduplication and upload...", len(rows), input_json)
-
-    # 3. Panggil layanan dedup
-    # 'rows' di sini sudah berupa dict yang bersih dari 'core.transformer'
-    res, stats = upload_filings_with_dedup(
-        uploader=uploader,
+    res = uploader.upload_records(
         table=table,
-        rows=rows,
-        allowed_columns=valid_columns,
+        rows=rows_clean,
+        allowed_columns=ALLOWED_COLUMNS,
+        normalize_keys=False,
         stop_on_first_error=False,
     )
-    
-    LOG.info("[DEDUP] stats=%s", stats)
     LOG.info("[UPLOAD] inserted=%d failed=%d", res.inserted, len(res.failed_rows))
-    
-    # 4. Handle exit
     if strict_exit and res.failed_rows:
         raise SystemExit(4)
-# --- AKHIR FUNGSI DIPERBARUI ---
 
 
 def step_generate_articles(
@@ -772,14 +696,10 @@ def step_generate_articles(
     model_name: Optional[str],
     prefer_symbol: bool,
 ) -> int:
-    data = _load_json_silent(filings_json)
+    data = json.loads(filings_json.read_text(encoding="utf-8"))
     if not isinstance(data, list):
-        # Coba lagi jika terbungkus
-        if isinstance(data, dict) and "rows" in data and isinstance(data["rows"], list):
-            data = data["rows"]
-        else:
-            LOG.error("[ARTICLES] %s must be a JSON array or {'rows': [...]}, got %s", filings_json, type(data).__name__)
-            return 0
+        LOG.error("[ARTICLES] %s must be a JSON array", filings_json)
+        return 0
 
     articles = run_articles_from_filings(
         data,
@@ -791,46 +711,10 @@ def step_generate_articles(
         prefer_symbol=prefer_symbol,
     )
     _write_jsonl(articles_out, articles)
-    LOG.info("[ARTICLES] wrote %d articles -> %s", len(articles), articles_out)
+    LOG.info("[ARTICLES] wrote %d articles → %s", len(articles), articles_out)
     return len(articles)
 
 
-# ---- NEW: Unifier step wrapper ----
-def step_unify_filings(*, filings_in: Path, filings_out: Path) -> int:
-    """
-    Standardize rows to the unified schema (non-destructive).
-    """
-    if transform_rows is None:
-        # --- PERBAIKAN: Peringatan yang lebih jelas ---
-        LOG.warning("[UNIFIER] 'transform_rows' from 'src.app.steps' not found. Skipping Unifier step.")
-        # ---
-        return 0
-
-    if not filings_in.exists():
-        LOG.warning("[UNIFIER] %s not found; skip.", filings_in)
-        return 0
-
-    try:
-        raw = _load_json_silent(filings_in)
-    except Exception as e:
-        LOG.error("[UNIFIER] failed reading %s: %s", filings_in, e)
-        return 0
-
-    rows = raw["rows"] if isinstance(raw, dict) and "rows" in raw else raw
-    if not isinstance(rows, list):
-        LOG.error("[UNIFIER] input must be a JSON array or {'rows': [...]} — got %s", type(raw).__name__)
-        return 0
-
-    try:
-        normalized = transform_rows(rows)
-    except Exception as e:
-        LOG.error("[UNIFIER] transform_rows failed: %s", e, exc_info=True)
-        return 0
-
-    # Write as a plain array for simplicity
-    _save_json_decimal(normalized, filings_out)
-    LOG.info("[UNIFIER] wrote %d rows -> %s", len(normalized), filings_out)
-    return len(normalized)
 
 
 # ========== CLI ==========
@@ -856,11 +740,6 @@ def build_argparser() -> argparse.ArgumentParser:
     # Full-day range mode
     p.add_argument("--from-date", dest="from_date", default=None, help="YYYYMMDD (WIB)")
     p.add_argument("--to-date", default=None, help="YYYYMMDD (WIB)")
-    
-    # --- ARGUMEN BARU DITAMBAHKAN ---
-    p.add_argument("--ingestion-file", default="data/ingestion.json", 
-                   help="Path to ingestion file with announcement dates and links.")
-    # --- AKHIR ARGUMEN BARU ---
 
     # Downloader
     p.add_argument("--retries", type=int, default=3)
@@ -893,7 +772,6 @@ def build_argparser() -> argparse.ArgumentParser:
     p.add_argument("--email-to-not-inserted",
                    default=os.getenv("ALERT_TO_EMAIL_NOT_INSERTED") or os.getenv("ALERT_TO_EMAIL"),
                    help="Comma-separated recipients for NOT_INSERTED alerts")
-    # ... (sisa argumen email tetap sama) ...
     p.add_argument("--email-cc-inserted", default=os.getenv("ALERT_CC_EMAIL_INSERTED"))
     p.add_argument("--email-cc-not-inserted", default=os.getenv("ALERT_CC_EMAIL_NOT_INSERTED"))
     p.add_argument("--email-bcc-inserted", default=os.getenv("ALERT_BCC_EMAIL_INSERTED"))
@@ -907,30 +785,29 @@ def build_argparser() -> argparse.ArgumentParser:
                    default=int(os.getenv("ATTACH_BUDGET_BYTES", "7500000")),
                    help="Total attachment size budget in bytes (default ~7.5MB)")
 
-
-    # === Articles generate & upload news ===
+    # === NEW: Articles generate & upload news ===
     p.add_argument("--generate-articles", action="store_true",
-                   help="Generate articles.jsonl from filings_data.json")
+                   help="Generate articles.jsonl dari filings_data.json")
     p.add_argument("--articles-out", default="data/articles.jsonl",
                    help="Path output articles JSONL")
     p.add_argument("--company-map", default="data/company/company_map.json",
-                   help="Path to cached company_map used by articles generator")
+                   help="Path cache company_map untuk generator articles")
     p.add_argument("--latest-prices", default="data/company/latest_prices.json",
-                   help="Path to cached latest_prices used by articles generator")
+                   help="Path cache latest_prices untuk generator articles")
     p.add_argument("--use-llm", action="store_true",
-                   help="Use LLM for article summarization/classification")
+                   help="Gunakan LLM untuk ringkasan/klasifikasi artikel")
     p.add_argument("--llm-provider", default=os.getenv("LLM_PROVIDER") or "",
-                   help="groq|openai|gemini (leave blank to autodetect via API key)")
+                   help="groq|openai|gemini (kosongkan untuk autodetect via API key)")
     p.add_argument("--llm-model", default=os.getenv("GROQ_MODEL") or os.getenv("OPENAI_MODEL") or os.getenv("GEMINI_MODEL") or "llama-3.3-70b-versatile",
-                   help="LLM model name (match the provider)")
+                   help="Nama model LLM (sesuaikan providernya)")
     p.add_argument("--prefer-symbol", action="store_true",
-                   help="When both tickers and symbol exist, prefer 'symbol'")
+                   help="Jika ada tickers & symbol, utamakan 'symbol' (untuk articles)")
 
     p.add_argument("--upload-news", action="store_true",
-                   help="Upload articles JSON/JSONL to Supabase (idx_news)")
+                   help="Upload articles JSON/JSONL ke Supabase (idx_news)")
     p.add_argument("--news-table", default="idx_news")
     p.add_argument("--news-input", default=None,
-                   help="Path to articles (override). Default = --articles-out")
+                   help="Path articles (override). Default = --articles-out")
     p.add_argument("--news-dry-run", action="store_true")
     p.add_argument("--news-timeout", type=int, default=int(os.getenv("SUPABASE_TIMEOUT", "30")))
 
@@ -938,9 +815,9 @@ def build_argparser() -> argparse.ArgumentParser:
     p.add_argument("--refresh-company-assets", action="store_true",
                    help="Refresh company_map (via single-source script) and optional latest_prices before running")
     p.add_argument("--company-map-script", default=os.getenv("COMPANY_MAP_SCRIPT", "company_map_hybrid.py"),
-                   help="Path to company_map_hybrid.py single-source script")
+                   help="Path ke script single-source company_map_hybrid.py")
     p.add_argument("--latest-prices-script", default=os.getenv("LATEST_PRICES_SCRIPT", ""),
-                   help="(Optional) path to refresh latest_prices; skip if empty/missing")
+                   help="(Opsional) path ke script refresh latest_prices; skip jika kosong/tidak ada")
     p.add_argument("--prices-lookback-days", type=int, default=14,
                    help="Lookback days for latest prices refresh (default 14)")
     p.add_argument("--no-price-fallback", action="store_true",
@@ -958,7 +835,7 @@ def main():
         LOG.info("[CLEAN] removing generated outputs")
         pre_clean_outputs()
 
-    # 0) company assets
+    # 0) company assets (single-source)
     if args.refresh_company_assets:
         step_refresh_company_assets_single_source(
             company_map_script=args.company_map_script,
@@ -967,22 +844,18 @@ def main():
             latest_prices_script=(args.latest_prices_script or None),
         )
     else:
+        # minimal check (no forced refresh)
         step_check_company_map(args.company_map_script)
 
     # 1) Decide fetch window
     ann_out: Path
     anns: List[Dict[str, Any]]
-    
-    # --- PERBAIKAN: Gunakan file ingestion.json sebagai output fetch ---
-    # Ini memastikan nama filenya konsisten
-    ann_out = Path(args.ingestion_file)
-    # --- AKHIR PERBAIKAN ---
 
     if args.date:
         if not (args.start_hhmm and args.end_hhmm):
             ap.error("--start-hhmm and --end-hhmm are required with --date")
-        # stub = f"{args.date}_{re.sub(r'[:]', '', args.start_hhmm)}_{re.sub(r'[:]', '', args.end_hhmm)}"
-        # ann_out = Path(f"data/idx_ann_{stub}.json") # Dihapus, gunakan nama file dari arg
+        stub = f"{args.date}_{re.sub(r'[:]', '', args.start_hhmm)}_{re.sub(r'[:]', '', args.end_hhmm)}"
+        ann_out = Path(f"data/idx_ann_{stub}.json")
         anns = step_fetch_announcements(
             date_yyyymmdd=args.date,
             start_hhmm=args.start_hhmm,
@@ -994,8 +867,8 @@ def main():
     elif args.from_date or args.to_date:
         if not (args.from_date and args.to_date):
             ap.error("--from-date and --to-date must be provided together")
-        # stub = f"{args.from_date}_{args.to_date}" # Dihapus
-        # ann_out = Path(f"data/idx_ann_{stub}.json") # Dihapus
+        stub = f"{args.from_date}_{args.to_date}"
+        ann_out = Path(f"data/idx_ann_{stub}.json")
         anns = step_fetch_announcements(
             date_yyyymmdd=None,
             start_hhmm=None,
@@ -1007,7 +880,7 @@ def main():
     else:
         minutes = args.window_minutes if args.window_minutes is not None else (args.window_hours or 2) * 60
         date, sh, eh, stub = _compute_window_from_minutes(minutes)
-        # ann_out = Path(f"data/idx_ann_{stub}.json") # Dihapus
+        ann_out = Path(f"data/idx_ann_{stub}.json")
         anns = step_fetch_announcements(
             date_yyyymmdd=date,
             start_hhmm=sh,
@@ -1034,7 +907,7 @@ def main():
     idx_out = Path("data/parsed_idx_output.json")
     non_idx_out = Path("data/parsed_non_idx_output.json")
     if args.parser in ("idx", "both"):
-        pass
+        pass  # run both anyway for simplicity; parsers will skip if folder empty
     step_parse_pdfs(
         idx_folder=Path("downloads/idx-format"),
         non_idx_folder=Path("downloads/non-idx-format"),
@@ -1050,32 +923,22 @@ def main():
         idx_parsed=idx_out,
         non_idx_parsed=non_idx_out,
         downloads_meta=Path("data/downloaded_pdfs.json"),
-        ingestion_file=ann_out, # --- Meneruskan file ingestion ---
         filings_out=filings_out,
         alerts_out=suspicious_out,
     )
 
-    # 4.1) Enrich (Langkah ini mungkin redundan, tapi kita jalankan untuk jaga-jaga)
     step_enrich_filings_timestamps(
         filings_json=filings_out,
         downloads_meta=Path("data/downloaded_pdfs.json"),
     )
 
-    # 4.2) Normalize to the new standard schema (non-destructive)
-    normalized_out = Path("data/filings_data.normalized.json")
-    step_unify_filings(
-        filings_in=filings_out,
-        filings_out=normalized_out,
-    )
+    # 4.1) Alerts v2 langsung dari filings_data.json → inserted / not_inserted
+    step_alerts_v2_from_filings(filings_json=filings_out)
 
-    # 4.3) Alerts v2 from normalized (fallback to original if missing)
-    alerts_input = normalized_out if normalized_out.exists() else filings_out
-    step_alerts_v2_from_filings(filings_json=alerts_input)
-
-    # 4.5) (Optional) Generate articles
+    # 4.5) (Opsional) Generate articles dari filings
     if args.generate_articles:
         step_generate_articles(
-            filings_json=alerts_input,
+            filings_json=filings_out,
             articles_out=Path(args.articles_out),
             company_map_path=args.company_map,
             latest_prices_path=args.latest_prices,
@@ -1085,7 +948,7 @@ def main():
             prefer_symbol=args.prefer_symbol,
         )
 
-    # 4.6) (Optional) Upload news (articles)
+    # 4.6) (Opsional) Upload news (articles) ke Supabase
     if args.upload_news:
         if not (args.news_table and args.news_table.strip()):
             LOG.error("[UPLOAD-NEWS] news table is empty; aborting upload_news step.")
@@ -1094,7 +957,7 @@ def main():
         if not news_input.exists():
             LOG.warning("[UPLOAD-NEWS] %s not found; skip upload", news_input)
         else:
-            LOG.info("[UPLOAD-NEWS] uploading %s -> table=%s (dry_run=%s)",
+            LOG.info("[UPLOAD-NEWS] uploading %s → table=%s (dry_run=%s)",
                      news_input, args.news_table, args.news_dry_run)
             upload_news_file_cli(
                 input_path=str(news_input),
@@ -1102,7 +965,7 @@ def main():
                 dry_run=args.news_dry_run,
             )
 
-    # 5) Bucketize alerts
+    # 5) Bucketize alerts → alerts_inserted / alerts_not_inserted
     step_bucketize_alerts()
 
     # 6) Email alerts
@@ -1130,11 +993,10 @@ def main():
             artifact_dir=Path(args.artifact_dir),
         )
 
-    # 8) Optional upload filings
+    # 8) Optional upload filings to Supabase
     if args.upload:
-        upload_input = normalized_out if normalized_out.exists() else filings_out
         step_upload_supabase(
-            input_json=upload_input,
+            input_json=filings_out,
             table=args.table,
             supabase_url=args.supabase_url,
             supabase_key=args.supabase_key,
