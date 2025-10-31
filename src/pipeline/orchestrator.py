@@ -16,27 +16,7 @@ from services.upload.dedup import upload_filings_with_dedup
 from services.upload.supabase import SupabaseUploader, UploadResult
 # Impor Tipe Inti untuk mendapatkan daftar kolom DB yang valid
 from src.core.types import FilingRecord 
-# -----------------------------------
 
-
-# --- DIHAPUS: Impor Unifier dan DecimalJSONEncoder yang tidak terpakai ---
-# from decimal import Decimal
-# try:
-#     # Unifier step (vectorized) — if missing, pipeline still runs
-#     from src.app.steps.transform_rows import transform_rows
-# except Exception:
-#     transform_rows = None  # keep pipeline working if unifier module not present
-
-# try:
-#     # Decimal encoder so we preserve precision in artifacts
-#     from src.services.jsonenc import DecimalJSONEncoder
-# except Exception:
-#     class DecimalJSONEncoder(json.JSONEncoder):
-#         def default(self, o):
-#             if isinstance(o, Decimal):
-#                 return str(o)
-#             return super().default(o)
-# --- AKHIR PENGHAPUSAN ---
 
 # Timezone for WIB
 try:
@@ -1086,4 +1066,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-
