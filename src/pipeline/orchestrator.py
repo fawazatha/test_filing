@@ -16,9 +16,11 @@ from services.upload.dedup import upload_filings_with_dedup
 from services.upload.supabase import SupabaseUploader, UploadResult
 # Impor Tipe Inti untuk mendapatkan daftar kolom DB yang valid
 from src.core.types import FilingRecord 
+# -----------------------------------
 
-# Unifier + Decimal-safe JSON encoder 
-from decimal import Decimal
+
+# --- DIHAPUS: Impor Unifier dan DecimalJSONEncoder yang tidak terpakai ---
+# from decimal import Decimal
 # try:
 #     # Unifier step (vectorized) — if missing, pipeline still runs
 #     from src.app.steps.transform_rows import transform_rows
@@ -34,6 +36,7 @@ from decimal import Decimal
 #             if isinstance(o, Decimal):
 #                 return str(o)
 #             return super().default(o)
+# --- AKHIR PENGHAPUSAN ---
 
 # Timezone for WIB
 try:
@@ -138,7 +141,9 @@ def _compute_window_from_minutes(window_minutes: int) -> Tuple[str, str, str, st
 def _save_json(obj: Any, path: Path) -> None:
     path.parent.mkdir(parents=True, exist_ok=True
                       )
-    path.write_text(json.dumps(obj, ensure_ascii=False, indent=2), encoding="utf-8")
+    # --- PERBAIKAN: Selalu gunakan default=str untuk keamanan ---
+    path.write_text(json.dumps(obj, ensure_ascii=False, indent=2, default=str), encoding="utf-8")
+    # --- AKHIR PERBAIKAN ---
 
 
 # def _save_json_decimal(obj: Any, path: Path) -> None:
@@ -155,7 +160,7 @@ def _write_jsonl(path: Path, rows: List[Dict[str, Any]]) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
     with path.open("w", encoding="utf-8") as f:
         for r in rows:
-            f.write(json.dumps(r, ensure_ascii=False))
+            f.write(json.dumps(r, ensure_ascii=False, default=str)) # Menambahkan default=str
             f.write("\n")
 
 # Enrich timestamps from downloads metadata 
@@ -402,7 +407,7 @@ def step_fetch_announcements(
     data: List[Dict[str, Any]]
     if date_yyyymmdd:
         # --- PERBAIKAN: Menghapus '%' ekstra untuk memperbaiki ValueError ---
-        LOG.info("[FETCH] Single-day (WIB) %s -> %s", date_yyyymmdd, start_hhmm, end_hhmm)
+        LOG.info("[FETCH] Single-day (WIB) %s %s -> %s", date_yyyymmdd, start_hhmm, end_hhmm)
         # --- AKHIR PERBAIKAN ---
         data = get_ownership_announcements(
             date_yyyymmdd=date_yyyymmdd,
@@ -673,7 +678,6 @@ def step_zip_artifacts(
 ) -> Path:
     includes = [
         "data/*.json",
-        # "data/*.normalized.json", # Dihapus, 'filings_data.json' adalah file yang sudah dinormalisasi
         "alerts/*.json",
         "alerts_inserted/*.json",
         "alerts_not_inserted/*.json",
@@ -726,11 +730,8 @@ def step_upload_supabase(
         return
 
     # 2. Dapatkan daftar kolom yang valid dari Tipe Inti kita
-    # Ini menggantikan impor ALLOWED_COLUMNS yang lama
     try:
-        # Mengambil kunci dari dataclass FilingRecord
         valid_columns = set(FilingRecord.__annotations__.keys())
-        # Tambahkan kolom DB yang mungkin tidak ada di FilingRecord
         valid_columns.update(["id", "created_at", "dedup_hash"]) 
     except Exception:
         LOG.error("[UPLOAD] Could not get valid columns from FilingRecord. Upload may fail.")
@@ -739,7 +740,6 @@ def step_upload_supabase(
     LOG.info("[UPLOAD] Loaded %d rows from %s. Starting deduplication and upload...", len(rows), input_json)
 
     # 3. Panggil layanan dedup
-    # 'rows' di sini sudah berupa dict yang bersih dari 'core.transformer'
     res, stats = upload_filings_with_dedup(
         uploader=uploader,
         table=table,
@@ -770,7 +770,6 @@ def step_generate_articles(
 ) -> int:
     data = _load_json_silent(filings_json)
     if not isinstance(data, list):
-        # Coba lagi jika terbungkus
         if isinstance(data, dict) and "rows" in data and isinstance(data["rows"], list):
             data = data["rows"]
         else:
@@ -791,40 +790,7 @@ def step_generate_articles(
     return len(articles)
 
 
-# # ---- UNIFIER STEP (dipertahankan untuk saat ini) ----
-# def step_unify_filings(*, filings_in: Path, filings_out: Path) -> int:
-#     """
-#     Standardize rows to the unified schema (non-destructive).
-#     """
-#     if transform_rows is None:
-#         LOG.warning("[UNIFIER] 'transform_rows' from 'src.app.steps' not found. Skipping Unifier step.")
-#         return 0
-
-#     if not filings_in.exists():
-#         LOG.warning("[UNIFIER] %s not found; skip.", filings_in)
-#         return 0
-
-#     try:
-#         raw = _load_json_silent(filings_in)
-#     except Exception as e:
-#         LOG.error("[UNIFIER] failed reading %s: %s", filings_in, e)
-#         return 0
-
-#     rows = raw["rows"] if isinstance(raw, dict) and "rows" in raw else raw
-#     if not isinstance(rows, list):
-#         LOG.error("[UNIFIER] input must be a JSON array or {'rows': [...]} — got %s", type(raw).__name__)
-#         return 0
-
-#     try:
-#         normalized = transform_rows(rows)
-#     except Exception as e:
-#         LOG.error("[UNIFIER] transform_rows failed: %s", e, exc_info=True)
-#         return 0
-
-#     # Write as a plain array for simplicity
-#     _save_json_decimal(normalized, filings_out)
-#     LOG.info("[UNIFIER] wrote %d rows -> %s", len(normalized), filings_out)
-#     return len(normalized)
+# --- DIHAPUS: step_unify_filings (sudah usang) ---
 
 
 # ========== CLI ==========
@@ -881,7 +847,9 @@ def build_argparser() -> argparse.ArgumentParser:
     # Email alerts
     p.add_argument("--email-alerts", action="store_true",
                    help="Send inserted/not_inserted alert emails if available")
-    p.lstrip()
+    
+    # --- PERBAIKAN: Menghapus p.lstrip() ---
+    
     p.add_argument("--email-to-inserted",
                    default=os.getenv("ALERT_TO_EMAIL_INSERTED") or os.getenv("ALERT_TO_EMAIL"),
                    help="Comma-separated recipients for INSERTED alerts")
@@ -907,8 +875,10 @@ def build_argparser() -> argparse.ArgumentParser:
                    help="Generate articles.jsonl from filings_data.json")
     p.add_argument("--articles-out", default="data/articles.jsonl",
                    help="Path output articles JSONL")
-    p.add.argument("--company-map", default="data/company/company_map.json",
+    # --- PERBAIKAN: Mengganti p.add.argument menjadi p.add_argument ---
+    p.add_argument("--company-map", default="data/company/company_map.json",
                    help="Path to cached company_map used by articles generator")
+    # --- AKHIR PERBAIKAN ---
     p.add_argument("--latest-prices", default="data/company/latest_prices.json",
                    help="Path to cached latest_prices used by articles generator")
     p.add_argument("--use-llm", action="store_true",
@@ -1038,11 +1008,6 @@ def main():
         filings_out=filings_out,
         alerts_out=suspicious_out,
     )
-
-    # --- DIHAPUS: Langkah-langkah ini sekarang sudah usang ---
-    # step_enrich_filings_timestamps(...)
-    # step_unify_filings(...)
-    # ---
     
     # 4.3) Alerts v2 (Langsung dari filings_out)
     step_alerts_v2_from_filings(filings_json=filings_out)
