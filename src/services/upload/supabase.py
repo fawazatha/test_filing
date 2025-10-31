@@ -1,4 +1,3 @@
-# src/services/upload/supabase.py
 from __future__ import annotations
 
 import os
@@ -13,14 +12,14 @@ from src.core.types import FilingRecord
 
 logger = logging.getLogger(__name__)
 
-# ---------------- helpers ----------------
+# helpers
 def _debug_field_types(r: Dict[str, Any], fields=("symbol","tags","sub_sector","price_transaction")) -> None:
     """Helper to log types of key fields before upload."""
     for k in fields:
         v = r.get(k, None)
         logger.debug("FIELD %s -> type=%s value=%r", k, type(v).__name__, v)
 
-# ---------------- result ----------------
+# result
 @dataclass
 class UploadResult:
     """Dataclass to hold the result of an upload batch."""
@@ -28,7 +27,7 @@ class UploadResult:
     failed_rows: List[Dict[str, Any]] = field(default_factory=list)
     errors: List[Any] = field(default_factory=list)
 
-# ---------------- main uploader ----------------
+# main uploader
 class SupabaseUploader:
     def __init__(self,
                  url: Optional[str] = None,
@@ -72,13 +71,23 @@ class SupabaseUploader:
                        table: Optional[str],
                        rows: List[Dict[str, Any]],
                        allowed_columns: Optional[Iterable[str]] = None,
-                       stop_on_first_error: bool = False) -> UploadResult:
+                       stop_on_first_error: bool = False,
+                       **kwargs) -> UploadResult: # --- PERBAIKAN: Menambahkan **kwargs ---
         """
         Uploads a list of pre-cleaned DICTIONARIES to Supabase.
         
         This method assumes data is already clean and standardized.
         It no longer performs any sanitation logic.
+        
+        **kwargs is added to accept and ignore legacy arguments
+        like 'normalize_keys' for backward compatibility.
         """
+        
+        # --- PERBAIKAN: Memberi log jika ada argumen yang tidak terpakai ---
+        if 'normalize_keys' in kwargs:
+            logger.debug("Ignoring legacy argument 'normalize_keys' in upload_records.")
+        # --- AKHIR PERBAIKAN ---
+
         tbl = table or self.default_table
         res = UploadResult()
         
@@ -149,3 +158,4 @@ class SupabaseUploader:
         except Exception:
             body = resp.text
         return f'status={resp.status_code} body={body!r}'
+
