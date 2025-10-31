@@ -12,14 +12,14 @@ from src.core.types import FilingRecord
 
 logger = logging.getLogger(__name__)
 
-# helpers
+# ---------------- helpers ----------------
 def _debug_field_types(r: Dict[str, Any], fields=("symbol","tags","sub_sector","price_transaction")) -> None:
     """Helper to log types of key fields before upload."""
     for k in fields:
         v = r.get(k, None)
         logger.debug("FIELD %s -> type=%s value=%r", k, type(v).__name__, v)
 
-# result
+# ---------------- result ----------------
 @dataclass
 class UploadResult:
     """Dataclass to hold the result of an upload batch."""
@@ -27,7 +27,7 @@ class UploadResult:
     failed_rows: List[Dict[str, Any]] = field(default_factory=list)
     errors: List[Any] = field(default_factory=list)
 
-# main uploader
+# ---------------- main uploader ----------------
 class SupabaseUploader:
     def __init__(self,
                  url: Optional[str] = None,

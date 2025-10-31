@@ -1,4 +1,3 @@
-# src/services/upload/dedup.py
 from __future__ import annotations
 
 import logging
@@ -76,7 +75,9 @@ def make_filing_hash(row: Dict[str, Any]) -> str:
     key_data = {
         "symbol": (row.get("symbol") or "").strip().upper(),
         "filing_date": filing_date_key,
-        "type": (row.get("transaction_type") or row.get("type") or "").strip().lower(),
+        # --- PERBAIKAN: Hanya gunakan 'transaction_type' ---
+        "transaction_type": (row.get("transaction_type") or "").strip().lower(),
+        # --- AKHIR PERBAIKAN ---
         "holder_name": (row.get("holder_name") or "").strip().lower(),
         "holding_before": row.get("holding_before"),
         "holding_after": row.get("holding_after"),
@@ -129,23 +130,26 @@ def _fetch_existing_rows_same_days(
     if not days:
         return []
     try:
+        # Memanggil fungsi yang diperbarui (dari fetch_filings.py)
+        # yang sekarang akan me-request 'transaction_type'
         return asyncio.run(
             get_idx_filings_by_days(days=days, symbols=symbols, table=table)
         )
     except Exception as e:
-        logging.error(f"Failed to fetch existing rows from Supabase: {e}")
+        logging.error(f"Failed to fetch existing rows from Supabase: {e}", exc_info=True)
         return []
 
 def _db_row_to_hashable(db_row: Dict[str, Any]) -> Dict[str, Any]:
     """
     Map DB row keys so they line up with make_filing_hash expectations.
-    Adds aliases used in hashing when missing in DB row.
     """
     out = dict(db_row)
     if "amount" not in out:
         out["amount"] = db_row.get("amount_transaction")
     if "value" not in out:
         out["value"] = db_row.get("transaction_value")
+    # 'transaction_type' sudah memiliki nama yang benar dari select,
+    # jadi tidak perlu me-mapping 'type'.
     return out
 
 # ---------------------------------------------------------------------
@@ -210,3 +214,4 @@ def upload_filings_with_dedup(
         "failed": len(getattr(res, "failed_rows", [])),
     }
     return res, stats
+

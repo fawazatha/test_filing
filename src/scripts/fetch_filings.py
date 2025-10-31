@@ -1,4 +1,3 @@
-# src/scripts/fetch_filings.py
 from __future__ import annotations
 
 """
@@ -18,7 +17,7 @@ from typing import Any, Dict, Iterable, List, Optional, Sequence, Set, Tuple
 import httpx
 from dotenv import load_dotenv
 
-# Setup
+# --------- Setup ---------
 load_dotenv()
 logging.basicConfig(
     level=os.environ.get("LOGLEVEL", "INFO"),
@@ -49,7 +48,7 @@ def _sb_headers() -> Dict[str, str]:
     }
 
 
-# NOTE: Returns a LIST OF (key, value) to allow duplicated keys (e.g., timestamp=gt... & timestamp=lt...)
+# NOTE: Returns a LIST OF (key, value) to allow duplicated keys (e..g, timestamp=gt... & timestamp=lt...)
 def _build_query_params(
     *,
     select: str = "*",
@@ -198,7 +197,7 @@ def _fmt_for_ts_kind(dt: datetime, ts_kind: str) -> str:
     """
     if ts_kind == "timestamptz":
         return _to_utc_z(dt)
-    return dt.astimezone(JKT).strftime("%Y-MM-d %H:%M:%S")
+    return dt.astimezone(JKT).strftime("%Y-%m-%d %H:%M:%S")
 
 async def get_idx_filings_by_days(
     days: Sequence[str],
@@ -206,7 +205,11 @@ async def get_idx_filings_by_days(
     *,
     table: str = "idx_filings",
     select: str = ",".join([
-        "symbol","filing_date","type","holder_name",
+        "symbol","filing_date",
+        # --- PERBAIKAN: Mengganti 'type' dengan 'transaction_type' ---
+        "transaction_type", 
+        # --- AKHIR PERBAIKAN ---
+        "holder_name",
         "holding_before","holding_after",
         "share_percentage_before","share_percentage_after",
         "amount_transaction","transaction_value","price",
