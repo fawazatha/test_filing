@@ -217,7 +217,7 @@ jobs:
           # ===== Mode window / date =====
           if [[ "${{ github.event_name }}" == "schedule" ]]; then
             ARGS+=( "--window-minutes" "${DEFAULT_WINDOW_MINUTES}" "--upload" "--table" "idx_filings" )
-            # NOTE: refresh-company-assets SUDAH dilakukan di step warm-up → jangan tambah flag di sini
+            # NOTE: refresh-company-assets SUDAH dilakukan di step warm-up -> jangan tambah flag di sini
             add_arg_if_set "--prices-lookback-days" "${PRICES_LOOKBACK_DAYS}"
             if [[ "${{ inputs.no_price_fallback }}" == "true" ]]; then
               ARGS+=( "--no-price-fallback" )
@@ -258,7 +258,7 @@ jobs:
               ARGS+=( "--upload" "--table" "idx_filings" )
             fi
 
-            # NOTE: refresh-company-assets SUDAH dilakukan di step warm-up → jangan tambah flag di sini
+            # NOTE: refresh-company-assets SUDAH dilakukan di step warm-up -> jangan tambah flag di sini
             add_arg_if_set "--prices-lookback-days" "${PRICES_LOOKBACK_DAYS}"
             if [[ "${{ inputs.no_price_fallback }}" == "true" ]]; then
               ARGS+=( "--no-price-fallback" )
