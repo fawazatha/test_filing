@@ -3,60 +3,64 @@ from __future__ import annotations
 import json
 import logging
 from pathlib import Path
-from typing import List, Dict, Any, Optional, Tuple
+from typing import List, Dict, Any, Optional
 
-from .loaders import load_parsed_files, build_downloads_meta_map
-from .processors import process_all
-from .normalizers import normalize_all
+# Core transformer
+from src.core.transformer import transform_many
+
+# Pipeline steps
+# Impor build_ingestion_map yang sudah diperbarui
+from .loaders import load_parsed_files, build_downloads_meta_map, build_ingestion_map
+from .processors import process_all_records
 from .consolidators import dedupe_rows
 
 log = logging.getLogger("filings.pipeline")
 
-def _stage_log(label: str, chunks: List[List[Dict[str, Any]]]) -> None:
-    # Print ringkas per-file jumlahnya agar mudah dilihat
-    totals = [len(c) for c in chunks]
-    log.info("[STAGE] %-12s chunks=%s totals=%s sum=%d",
-             label, len(chunks), totals, sum(totals))
+def _stage_log(label: str, count: int, note: str = ""):
+    log.info("[STAGE] %-12s → %d records %s", label, count, note)
 
-def _split_by_source(rows: List[Dict[str, Any]]) -> Tuple[int, int]:
-    # Heuristik: parsed IDX biasanya punya path 'idx-format' di source/filename
-    idx = sum(1 for r in rows if str(r.get("source") or "").find("idx-format") >= 0)
-    non = len(rows) - idx
-    return idx, non
 
 def run(
     *,
     parsed_files: List[str],
     downloads_file: str,
     output_file: str,
+    ingestion_file: str, # Ini adalah argumen dari cli.py
     alerts_file: Optional[str] = None,
     **kwargs,
 ) -> int:
-    # 1) LOAD PARSED
+    
+    # 1) LOAD
     parsed_chunks = load_parsed_files(parsed_files)
-    _stage_log("loaded", parsed_chunks)
-
-    # 2) DOWNLOADS META (opsional)
+    raw_rows: List[Dict[str, Any]] = [row for chunk in parsed_chunks for row in chunk]
+    _stage_log("Loaded", len(raw_rows))
+    
+    # 2) LOAD MAPS
     downloads_meta_map = build_downloads_meta_map(downloads_file)
+    # Memuat peta ingestion (sekarang berisi dict penuh)
+    ingestion_map = build_ingestion_map(ingestion_file)
 
-    # 3) PROCESS
-    rows = process_all(parsed_chunks, downloads_meta_map)
-    idx_n, non_n = _split_by_source(rows)
-    log.info("[STAGE] processed  → total=%d (idx-like=%d, non-idx-like=%d)", len(rows), idx_n, non_n)
+    # 3) TRANSFORM (Meneruskan ingestion_map yang baru)
+    records = transform_many(raw_rows, ingestion_map=ingestion_map)
+    _stage_log("Transformed", len(records), "(Standardized to FilingRecord)")
 
-    # 4) NORMALIZE
-    rows = normalize_all(rows)
-    idx_n, non_n = _split_by_source(rows)
-    log.info("[STAGE] normalized → total=%d (idx-like=%d, non-idx-like=%d)", len(rows), idx_n, non_n)
+    # 4) PROCESS (Audit, Price Checks)
+    records = process_all_records(records, downloads_meta_map)
+    _stage_log("Processed", len(records), "(Price checks & audits done)")
 
-    # 5) DEDUPE
-    rows = dedupe_rows(rows)
-    idx_n, non_n = _split_by_source(rows)
-    log.info("[STAGE] deduped    → total=%d (idx-like=%d, non-idx-like=%d)", len(rows), idx_n, non_n)
+    # 5) DEDUPE (In-batch)
+    records = dedupe_rows(records)
+    _stage_log("Deduped", len(records))
 
     # 6) SAVE
     outp = Path(output_file)
     outp.parent.mkdir(parents=True, exist_ok=True)
-    outp.write_text(json.dumps(rows, ensure_ascii=False, indent=2), encoding="utf-8")
-    log.info("[STAGE] wrote      → %s", outp)
-    return len(rows)
+    
+    output_data = [rec.to_db_dict() for rec in records]
+    
+    outp.write_text(
+        json.dumps(output_data, ensure_ascii=False, indent=2, default=str), 
+        encoding="utf-8"
+    )
+    log.info("[STAGE] Wrote      → %s", outp)
+    return len(records)

@@ -1,40 +1,30 @@
+from __future__ import annotations
+
 import os
 import json
-import logging
 from abc import ABC, abstractmethod
 from typing import List, Dict, Any, Optional
+from pathlib import Path
+
+import logging
 import pdfplumber
 
-from ..utils.alert_manager import AlertManager
-from ..utils.company_resolver import (
-    load_symbol_to_name_from_file,
-    build_reverse_map,
-)
+from src.common.log import get_logger
+from src.parser.utils.alert_manager import AlertManager
+from src.parser.utils.company.io import load_symbol_to_name_from_file
+from src.parser.utils.company.resolver import build_reverse_map
 
-logger = logging.getLogger(__name__)
+logger = get_logger(__name__)
 
-# ============================================================
-# PDFMiner noise control (drop-in)
-# ============================================================
-
-# Logger pdfminer yang sering memunculkan noise (seek/xref/nextline/nexttoken)
+# PDFMiner loggers that are commonly noisy
 _PDFMINER_LOGGERS = [
-    "pdfminer",
-    "pdfminer.psparser",
-    "pdfminer.pdfparser",
-    "pdfminer.pdfdocument",
-    "pdfminer.pdfinterp",
-    "pdfminer.pdfpage",
-    "pdfminer.cmapdb",
-    "pdfminer.layout",
-    "pdfminer.image",
-    "pdfminer.converter",
-    "pdfminer.pdfdevice",
-    "pdfminer.utils",
+    "pdfminer", "pdfminer.psparser", "pdfminer.pdfparser", "pdfminer.pdfdocument",
+    "pdfminer.pdfinterp", "pdfminer.pdfpage", "pdfminer.cmapdb", "pdfminer.layout",
+    "pdfminer.image", "pdfminer.converter", "pdfminer.pdfdevice", "pdfminer.utils",
 ]
 
 def _basic_root_config():
-    """Set root logging jika belum ada handler (hindari double config)."""
+    """Initialize root logging only if not already configured."""
     root = logging.getLogger()
     if not root.handlers:
         logging.basicConfig(
@@ -43,14 +33,14 @@ def _basic_root_config():
         )
 
 def silence_pdfminer(level: int = logging.WARNING) -> None:
-    """Turunkan level logger pdfminer & matikan propagate agar tidak naik ke root."""
+    """Lower PDFMiner log level and disable propagation to root."""
     for name in _PDFMINER_LOGGERS:
         lg = logging.getLogger(name)
         lg.setLevel(level)
         lg.propagate = False
 
 class _PdfMinerChatterFilter(logging.Filter):
-    """Filter isi pesan pdfminer yang sangat remeh sebagai lapisan tambahan."""
+    """Filter out extremely verbose PDFMiner messages."""
     NOISE = ("seek:", "find_xref", "xref found", "nextline:", "nexttoken:", "read_xref_from")
     def filter(self, record: logging.LogRecord) -> bool:
         try:
@@ -61,9 +51,7 @@ class _PdfMinerChatterFilter(logging.Filter):
 
 def init_logging(pdf_debug: Optional[bool] = None) -> None:
     """
-    Inisialisasi logging dan kendalikan kebisingan pdfminer.
-    - Jika pdf_debug None, baca dari ENV PDF_DEBUG (1/true/on).
-    - Saat pdf_debug False (default), pdfminer dibisukan ke WARNING + filter isi.
+    Initialize logging and control PDFMiner verbosity.
     """
     _basic_root_config()
 
@@ -75,14 +63,12 @@ def init_logging(pdf_debug: Optional[bool] = None) -> None:
         silence_pdfminer(logging.WARNING)
         logging.getLogger("pdfminer").addFilter(_PdfMinerChatterFilter())
 
-    # Reduksi kebisingan lib lain yang umum
+    # Reduce noise from other common libs
     logging.getLogger("urllib3").setLevel(logging.WARNING)
     logging.getLogger("PIL").setLevel(logging.WARNING)
 
-# ============================================================
-# Base Parser
-# ============================================================
 
+# Base Parser
 class BaseParser(ABC):
     """Base class for PDF parsers."""
 
@@ -94,7 +80,6 @@ class BaseParser(ABC):
         alerts_file: Optional[str] = None,
         alerts_not_inserted_file: Optional[str] = None,
     ):
-        # Pastikan kontrol logging aktif sedini mungkin (honor PDF_DEBUG env)
         init_logging(pdf_debug=None)
 
         self.pdf_folder = pdf_folder
@@ -116,7 +101,7 @@ class BaseParser(ABC):
             alert_file=alerts_not_inserted_file,
             preload_existing=False
         )
-
+        
         self.symbol_to_name: Dict[str, str] = load_symbol_to_name_from_file() or {}
         self.rev_company_map: Dict[str, List[str]] = build_reverse_map(self.symbol_to_name)
         self.company_names: List[str] = sorted({
@@ -124,12 +109,12 @@ class BaseParser(ABC):
         })
 
         if self.company_names:
-            logger.info(f"Loaded {len(self.company_names)} company names from company_map.json")
+            logger.info(f"Loaded {len(self.company_names)} company names")
         else:
-            logger.warning("No company names loaded. Check data/company/company_map.json or env COMPANY_MAP_FILE")
+            logger.warning("No company names loaded. Check COMPANY_MAP_FILE env var.")
 
     def build_pdf_mapping(self) -> Dict[str, Any]:
-        """Build mapping from PDF files to announcement metadata."""
+        """Build mapping from PDF filenames to announcement metadata."""
         if not self.announcement_json or not os.path.exists(self.announcement_json):
             return {}
 
@@ -161,7 +146,7 @@ class BaseParser(ABC):
         return file_to_announcement
 
     def extract_text_from_pdf(self, filepath: str) -> Optional[str]:
-        """Extract text from PDF file."""
+        """Extract plain text from a PDF file using pdfplumber."""
         try:
             with pdfplumber.open(filepath) as pdf:
                 logger.debug(f"Opened {filepath} with {len(pdf.pages)} pages")
@@ -181,41 +166,42 @@ class BaseParser(ABC):
             return None
 
     @abstractmethod
-    def parse_single_pdf(self, filepath: str, filename: str, pdf_mapping: Dict[str, Any]) -> Optional[Dict[str, Any]]:
-        """Parse a single PDF file. Must be implemented by subclasses."""
+    def parse_single_pdf(self, filepath: str, filename: str, pdf_mapping: Dict[str, Any]) -> Optional[Any]:
+        """Parse a single PDF file and return a structured dict or list."""
         pass
 
     @abstractmethod
-    def validate_parsed_data(self, data: Dict[str, Any]) -> bool:
-        """Validate parsed data. Must be implemented by subclasses."""
+    def validate_parsed_data(self, data: Any) -> bool:
+        """Return True if parsed data is structurally valid and complete."""
         pass
 
     def save_debug_output(self, filename: str, text: str):
-        """Save extracted text for debugging."""
+        """Persist extracted raw text for debugging purposes."""
         debug_dir = "debug_output"
         os.makedirs(debug_dir, exist_ok=True)
-        debug_file = os.path.join(debug_dir, f"{filename}.txt")
+        debug_file = Path(debug_dir) / f"{Path(filename).name}.txt"
 
         try:
-            with open(debug_file, "w", encoding="utf-8") as f:
-                f.write(text)
+            debug_file.write_text(text, encoding="utf-8")
         except Exception as e:
             logger.error(f"Error saving debug output for {filename}: {e}")
 
-    def parse_folder(self) -> List[Dict[str, Any]]:
+    def parse_folder(self) -> List[Any]:
+        """Parse all PDFs in the configured folder and persist results + alerts."""
         if not os.path.exists(self.pdf_folder):
             logger.error(f"Folder not found: {self.pdf_folder}")
             return []
         self.alert_manager.reset_file()
         self.alert_manager_not_inserted.reset_file()
 
+        # Pre-reset output file
         try:
             with open(self.output_file, "w", encoding="utf-8") as f:
                 json.dump([], f, ensure_ascii=False, indent=2)
         except Exception as e:
             logger.error(f"Error pre-reset output file {self.output_file}: {e}")
 
-        parsed_results: List[Dict[str, Any]] = []
+        parsed_results: List[Any] = []
         pdf_mapping = self.build_pdf_mapping()
         pdf_files = [f for f in os.listdir(self.pdf_folder) if f.lower().endswith(".pdf")]
 
@@ -241,7 +227,7 @@ class BaseParser(ABC):
                     logger.warning(f"Validation failed for {filename}")
 
             except Exception as e:
-                logger.error(f"Error processing {filename}: {e}")
+                logger.error(f"Error processing {filename}: {e}", exc_info=True)
                 self.alert_manager.log_alert(
                     filename,
                     f"Processing error: {str(e)}",
@@ -256,11 +242,12 @@ class BaseParser(ABC):
         logger.info(f"Processing complete. {len(parsed_results)} files successfully parsed")
         return parsed_results
 
-    def save_results(self, results: List[Dict[str, Any]]):
-        """Save parsing results to output file (overwrite)."""
+    def save_results(self, results: List[Any]):
+        """Write parsing results to the configured output file (overwrite)."""
         try:
             with open(self.output_file, "w", encoding="utf-8") as f:
                 json.dump(results, f, indent=2, ensure_ascii=False)
             logger.info(f"Saved {len(results)} results to {self.output_file}")
         except Exception as e:
             logger.error(f"Error saving results: {e}")
+

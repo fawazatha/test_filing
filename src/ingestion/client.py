@@ -36,7 +36,7 @@ def make_client(timeout: float = 60.0, transport: Optional[httpx.BaseTransport] 
         headers=HEADERS,
         verify=False,          # keep parity with legacy; flip to True when server certs are stable
         transport=transport,   # optional: enables mocking in tests
-        # trust_env=True is default → httpx reads HTTP(S)_PROXY automatically
+        # trust_env=True is default -> httpx reads HTTP(S)_PROXY automatically
     )
 
 

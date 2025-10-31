@@ -1,10 +1,14 @@
-# src/generate/filings/processors.py
+# src/generate/filings/utils/processors.py
 from __future__ import annotations
 
 import logging
 from typing import Any, Dict, List, Optional, Tuple, Union
+from statistics import median
 
-# Local imports (relative)
+# Import the new standard type
+from src.core.types import FilingRecord, PriceTransaction
+
+# Keep all your config and provider imports
 try:
     from .config import (
         WITHIN_DOC_RATIO_LOW,
@@ -21,38 +25,25 @@ try:
     )
     from .provider import (
         get_market_reference,
-        compute_document_median_price,
+        # compute_document_median_price, # We'll redefine this locally
         suggest_price_range,
         build_announcement_block,
     )
 except Exception:
-    # flat layout fallback for test runners
+    # flat layout fallback
     from config import (
-        WITHIN_DOC_RATIO_LOW,
-        WITHIN_DOC_RATIO_HIGH,
-        MARKET_REF_N_DAYS,
-        MARKET_RATIO_LOW,
-        MARKET_RATIO_HIGH,
-        ZERO_MISSING_X10_MIN,
-        ZERO_MISSING_X10_MAX,
-        ZERO_MISSING_X100_MIN,
-        ZERO_MISSING_X100_MAX,
-        PERCENT_TOL_PP,
-        GATE_REASONS,
+        WITHIN_DOC_RATIO_LOW, WITHIN_DOC_RATIO_HIGH, MARKET_REF_N_DAYS,
+        MARKET_RATIO_LOW, MARKET_RATIO_HIGH, ZERO_MISSING_X10_MIN,
+        ZERO_MISSING_X10_MAX, ZERO_MISSING_X100_MIN, ZERO_MISSING_X100_MAX,
+        PERCENT_TOL_PP, GATE_REASONS,
     )
     from provider import (
-        get_market_reference,
-        compute_document_median_price,
-        suggest_price_range,
-        build_announcement_block,
+        get_market_reference, suggest_price_range, build_announcement_block,
     )
 
 logger = logging.getLogger(__name__)
 
-# ======================================================================================
 # Utilities
-# ======================================================================================
-
 def _safe_float(x: Any) -> Optional[float]:
     try:
         if x is None or x == "":
@@ -61,19 +52,13 @@ def _safe_float(x: Any) -> Optional[float]:
     except Exception:
         return None
 
-def _first_non_empty(*vals):
-    for v in vals:
-        if v is not None:
-            return v
-    return None
-
 def _tx_direction_sign(tx_type: Optional[str]) -> int:
     t = (tx_type or "").strip().lower()
     if t == "buy":
         return +1
     if t == "sell":
         return -1
-    # transfer/other → 0 (tidak mengubah total outstanding; treat neutral)
+    # transfer/other -> 0
     return 0
 
 def _infer_total_shares(
@@ -83,26 +68,26 @@ def _infer_total_shares(
     pp_after: Optional[float],
 ) -> Optional[float]:
     """
-    Infer total_shares dari kombinasi holding + percentage, prioritaskan before.
+    Infer total_shares from holding + percentage, prioritizing 'before'.
     """
     hb = _safe_float(holding_before)
     pb = _safe_float(pp_before)
     ha = _safe_float(holding_after)
     pa = _safe_float(pp_after)
 
-    if hb is not None and pb and pb > 0:
+    if hb is not None and pb is not None and pb > 0:
         return hb / (pb / 100.0)
-    if ha is not None and pa and pa > 0:
+    if ha is not None and pa is not None and pa > 0:
         return ha / (pa / 100.0)
     return None
 
-def _median_price_from_transactions(transactions: List[Dict[str, Any]]) -> Optional[float]:
-    prices = []
-    for tx in transactions or []:
-        p = _safe_float(tx.get("price"))
-        if p is not None and p > 0:
-            prices.append(p)
-    return compute_document_median_price(prices)
+def _compute_document_median_price(prices: List[Union[int, float]]) -> Optional[float]:
+    """Helper to compute median from a list of prices."""
+    vals = [float(x) for x in prices if isinstance(x, (int, float)) and x > 0]
+    if not vals:
+        return None
+    return float(median(vals))
+
 
 def _ratio(a: Optional[float], b: Optional[float]) -> Optional[float]:
     if a is None or b is None:
@@ -116,7 +101,7 @@ def _ratio(a: Optional[float], b: Optional[float]) -> Optional[float]:
 
 def _is_x10_or_x100(a: Optional[float], ref: Optional[float]) -> Tuple[bool, Optional[str]]:
     """
-    Deteksi kandidat nol hilang (x10/x100). Kembalikan (flag, label).
+    Detects potential missing zero candidates (x10/x100).
     """
     r = _ratio(a, ref)
     if r is None:
@@ -128,28 +113,25 @@ def _is_x10_or_x100(a: Optional[float], ref: Optional[float]) -> Tuple[bool, Opt
         return (True, "x100_candidate")
     return (False, None)
 
-# ======================================================================================
-# P0-4 • Suspicious price detection (within-doc + market sanity + magnitude)
-# ======================================================================================
 
+# P0-4 • Suspicious price detection
 def _check_tx_price_outlier(
-    tx: Dict[str, Any],
+    tx_price: Optional[float],
     doc_median: Optional[float],
     market_ref: Optional[Dict[str, Any]],
 ) -> Tuple[bool, List[Dict[str, Any]]]:
     """
-    Kembalikan:
-      suspicious (bool),
-      reasons (list of reason objects for this tx)
+    Checks a single transaction price for deviations.
+    Returns: suspicious (bool), reasons (list)
     """
     reasons: List[Dict[str, Any]] = []
-    price = _safe_float(tx.get("price"))
+    price = _safe_float(tx_price)
     if price is None or price <= 0:
         return (False, reasons)
 
     suspicious = False
 
-    # Within-doc deviation
+    # 1. Within-doc deviation
     if doc_median:
         r = _ratio(price, doc_median)
         if r is not None and (r < WITHIN_DOC_RATIO_LOW or r > WITHIN_DOC_RATIO_HIGH):
@@ -157,52 +139,35 @@ def _check_tx_price_outlier(
             reasons.append({
                 "scope": "tx",
                 "code": "price_deviation_within_doc",
-                "message": f"Price deviates vs doc-median by ratio {r:.3f} "
-                           f"(thresholds {WITHIN_DOC_RATIO_LOW}-{WITHIN_DOC_RATIO_HIGH})",
-                "details": {
-                    "price": price,
-                    "doc_median_price": doc_median,
-                    "ratio": r,
-                    "suggest_price_range": suggest_price_range(doc_median),
-                },
+                "message": f"Price deviates vs doc-median by ratio {r:.3f}",
+                "details": { "price": price, "doc_median_price": doc_median, "ratio": r },
             })
 
-    # Market sanity vs N-day VWAP/median-close
-    if market_ref and "ref_price" in market_ref:
-        ref_p = _safe_float(market_ref.get("ref_price"))
-        r = _ratio(price, ref_p)
+    # 2. Market sanity vs N-day VWAP/median-close
+    market_ref_price = _safe_float((market_ref or {}).get("ref_price"))
+    if market_ref_price:
+        r = _ratio(price, market_ref_price)
         if r is not None and (r < MARKET_RATIO_LOW or r > MARKET_RATIO_HIGH):
             suspicious = True
             reasons.append({
                 "scope": "tx",
                 "code": "price_deviation_market",
-                "message": f"Price deviates vs market-ref by ratio {r:.3f} "
-                           f"(thresholds {MARKET_RATIO_LOW}-{MARKET_RATIO_HIGH})",
-                "details": {
-                    "price": price,
-                    "market_ref": market_ref,
-                    "ratio": r,
-                    "suggest_price_range": suggest_price_range(ref_p),
-                },
+                "message": f"Price deviates vs market-ref by ratio {r:.3f}",
+                "details": { "price": price, "market_ref": market_ref, "ratio": r },
             })
 
-        # Magnitude anomaly (possible zero missing)
-        zflag, zlabel = _is_x10_or_x100(price, ref_p)
+        # 3. Magnitude anomaly (possible zero missing)
+        zflag, zlabel = _is_x10_or_x100(price, market_ref_price)
         if zflag:
             suspicious = True
             reasons.append({
                 "scope": "tx",
                 "code": "possible_zero_missing",
                 "message": f"Price magnitude anomaly vs market-ref ({zlabel})",
-                "details": {
-                    "price": price,
-                    "market_ref": market_ref,
-                    "ratio": r,
-                    "magnitude_label": zlabel,
-                },
+                "details": { "price": price, "market_ref": market_ref, "ratio": r },
             })
 
-    # Magnitude anomaly vs doc median as alternate reference if market missing
+    # 4. Magnitude anomaly vs doc median (if market is missing)
     elif doc_median:
         zflag, zlabel = _is_x10_or_x100(price, doc_median)
         if zflag:
@@ -211,42 +176,26 @@ def _check_tx_price_outlier(
                 "scope": "tx",
                 "code": "possible_zero_missing",
                 "message": f"Price magnitude anomaly vs doc-median ({zlabel})",
-                "details": {
-                    "price": price,
-                    "doc_median_price": doc_median,
-                    "ratio": _ratio(price, doc_median),
-                    "magnitude_label": zlabel,
-                },
+                "details": { "price": price, "doc_median_price": doc_median, "ratio": _ratio(price, doc_median) },
             })
 
     return (suspicious, reasons)
 
-# ======================================================================================
-# P0-5 • Recompute ownership % (model vs PDF → flag only)
-# ======================================================================================
 
-def _recompute_percentages_model(row: Dict[str, Any]) -> Dict[str, Any]:
+# P0-5 • Recompute ownership %
+def _recompute_percentages_model(record: FilingRecord) -> Dict[str, Any]:
     """
-    Hitung pp_after_model dan delta_pp_model berbasis total_shares inferred.
-    Tidak override nilai PDF; hanya menambahkan field audit:
-      - total_shares_model
-      - delta_pp_model  (pp transact total)
-      - pp_after_model
-      - percent_discrepancy (bool)
+    Calculates ownership percentages based on transactions and compares
+    to the PDF values. Writes results to record.audit_flags.
     """
-    # Ambil basis "before"
-    share_pct_before_pdf = _safe_float(_first_non_empty(
-        row.get("share_percentage_before"),
-        row.get("pp_before"),
-    ))
-    share_pct_after_pdf = _safe_float(_first_non_empty(
-        row.get("share_percentage_after"),
-        row.get("pp_after"),
-    ))
-
-    holding_before = _safe_float(row.get("holding_before"))
-    holding_after = _safe_float(row.get("holding_after"))
-    total_shares = _safe_float(row.get("total_shares"))  # kalau sudah tersedia
+    # Get clean data from the record
+    share_pct_before_pdf = record.share_percentage_before
+    share_pct_after_pdf = record.share_percentage_after
+    holding_before = record.holding_before
+    holding_after = record.holding_after
+    
+    # Check raw data for total_shares if provided by parser
+    total_shares = _safe_float(record.raw_data.get("total_shares"))
 
     if total_shares is None:
         total_shares = _infer_total_shares(
@@ -254,12 +203,11 @@ def _recompute_percentages_model(row: Dict[str, Any]) -> Dict[str, Any]:
             holding_after, share_pct_after_pdf,
         )
 
-    # Sum semua transaksi (buy + / sell -)
-    txs: List[Dict[str, Any]] = row.get("transactions") or []
+    # Sum all transactions (buy + / sell -)
     signed_amount = 0.0
-    for tx in txs:
-        amt = _safe_float(tx.get("amount")) or 0.0
-        sgn = _tx_direction_sign(tx.get("type"))
+    for tx in record.price_transaction:
+        amt = _safe_float(tx.transaction_share_amount) or 0.0
+        sgn = _tx_direction_sign(tx.transaction_type)
         signed_amount += sgn * amt
 
     delta_pp_model = None
@@ -272,13 +220,13 @@ def _recompute_percentages_model(row: Dict[str, Any]) -> Dict[str, Any]:
         if share_pct_before_pdf is not None:
             pp_after_model = share_pct_before_pdf + delta_pp_model
 
-    # Bandingkan pp_after_model vs pp_after_pdf (kalau keduanya ada)
+    # Compare model's 'after' vs PDF's 'after'
     if pp_after_model is not None and share_pct_after_pdf is not None:
         discrepancy_pp = abs(pp_after_model - share_pct_after_pdf)
         if discrepancy_pp > PERCENT_TOL_PP:
             percent_discrepancy = True
 
-    # Tambahkan hasil audit ke row
+    # Add audit results to the record's audit_flags
     audit = {
         "total_shares_model": total_shares,
         "delta_pp_model": delta_pp_model,
@@ -286,164 +234,103 @@ def _recompute_percentages_model(row: Dict[str, Any]) -> Dict[str, Any]:
         "percent_discrepancy": percent_discrepancy,
         "discrepancy_pp": discrepancy_pp,
     }
-    row.update(audit)
+    record.audit_flags.update(audit)
     return audit
 
-# ======================================================================================
-# Processor entry (single row)
-# ======================================================================================
 
-def process_filing_row(
-    row: Dict[str, Any],
+# Processor entry (single record)
+def process_filing_record(
+    record: FilingRecord,
     doc_meta: Optional[Union[Dict[str, Any], Any]] = None,
-) -> Dict[str, Any]:
-    row.setdefault("reasons", [])
-    reasons: List[Dict[str, Any]] = row["reasons"]
-    row_flags: Dict[str, bool] = {}
+) -> FilingRecord:
+    """
+    This function "enriches" a FilingRecord with audit flags
+    and checks. It does NOT transform data.
+    """
+    reasons: List[Dict[str, Any]] = []
+    row_flags: Dict[str, bool] = {} # e.g., suspicious_price_level
 
-    # Announcement block (Alerts v2)
+    # 1. Announcement block (for Alerts v2)
     if doc_meta is not None:
-        row["announcement"] = build_announcement_block(doc_meta)
+        record.audit_flags["announcement"] = build_announcement_block(doc_meta)
 
-    # Context symbol & prices
-    symbol = row.get("symbol") or row.get("issuer_code") or row.get("ticker")
-    symbol = (symbol or "").upper()
-    if symbol and not symbol.endswith(".JK"):
-        symbol = f"{symbol}.JK"
-    # persist the normalized symbol back to row
-    if symbol:
-        row["symbol"] = symbol
+    # 2. Get symbol (already clean)
+    symbol = record.symbol
 
-    # Doc-median price
-    txs: List[Dict[str, Any]] = row.get("transactions") or []
-    doc_median_price = _median_price_from_transactions(txs)
+    # 3. Doc-median price
+    tx_prices = [tx.transaction_price for tx in record.price_transaction if tx.transaction_price]
+    doc_median_price = _compute_document_median_price(tx_prices)
     if doc_median_price is not None:
-        row["document_median_price"] = doc_median_price
+        record.audit_flags["document_median_price"] = doc_median_price
 
-    # Market reference (N-day)
+    # 4. Market reference (N-day)
     market_ref = get_market_reference(symbol, n_days=MARKET_REF_N_DAYS)
     if market_ref:
-        row["market_reference"] = market_ref
-    # -------- Backfill price & transaction_value at ROW-LEVEL (if null) --------
-    # Only fill top-level fields; do NOT touch price_transaction.{...}
-    try:
-        row_price = row.get("price")
-        if row_price in (None, "", 0, 0.0):
-            ref_p = (market_ref or {}).get("ref_price")
-            if ref_p is not None:
-                row["price"] = float(ref_p)
-        # transaction_value = price * amount_transaction (only if value is null and both operands exist)
-        if row.get("transaction_value") in (None, "", 0, 0.0):
-            amt = row.get("amount_transaction")
-            prc = row.get("price")
-            if isinstance(amt, (int, float)) and amt is not None and isinstance(prc, (int, float)) and prc is not None:
-                row["transaction_value"] = float(prc) * int(amt)
-    except Exception:
-        pass
+        record.audit_flags["market_reference"] = market_ref
 
-    # -------- P0-4: Suspicious price detection per transaksi --------
+    # 5. P0-4: Suspicious price detection per transaction
     any_suspicious = False
-    for tx in txs:
-        suspicious, tx_reasons = _check_tx_price_outlier(tx, doc_median_price, market_ref)
+    for tx in record.price_transaction:
+        suspicious, tx_reasons = _check_tx_price_outlier(
+            tx.transaction_price, doc_median_price, market_ref
+        )
         if tx_reasons:
-            # Tambahkan reasons ke level transaksi
-            tx.setdefault("reasons", [])
-            tx["reasons"].extend(tx_reasons)
-            # Promosikan juga ke level row untuk Alerts v2 (dengan penanda scope=tx)
             reasons.extend(tx_reasons)
         if suspicious:
             any_suspicious = True
-            tx["suspicious_price_level"] = True
 
     if any_suspicious:
         row_flags["suspicious_price_level"] = True
 
-    # -------- P0-5: Recompute % kepemilikan (model vs PDF) --------
-    audit = _recompute_percentages_model(row)
+    # 6. P0-5: Recompute % kepemilikan (model vs PDF)
+    audit = _recompute_percentages_model(record)
     if audit.get("percent_discrepancy"):
         reasons.append({
             "scope": "row",
             "code": "percent_discrepancy",
-            "message": (
-                f"Model pp_after={audit.get('pp_after_model')} deviates from PDF "
-                f"pp_after={row.get('share_percentage_after')} by {audit.get('discrepancy_pp')} pp "
-                f"(> {PERCENT_TOL_PP} pp)"
-            ),
-            "details": {
-                "pp_after_pdf": row.get("share_percentage_after"),
-                "pp_after_model": audit.get("pp_after_model"),
-                "delta_pp_model": audit.get("delta_pp_model"),
-                "total_shares_model": audit.get("total_shares_model"),
-                "tolerance_pp": PERCENT_TOL_PP,
-            },
+            "message": f"Model pp_after deviates from PDF by {audit.get('discrepancy_pp')} pp",
+            "details": audit,
         })
         row_flags["percent_discrepancy"] = True
 
-    # -------- Needs review + skip_reason (for gating in send_alerts.py) --------
+    # 7. Set 'needs_review' and 'skip_reason' for alerts
     needs_review = False
     skip_reason: Optional[str] = None
 
-    # Urutan prioritas skip_reason: ambil reason pertama yang termasuk GATE_REASONS
+    # Find the first reason code that is in GATE_REASONS
     for r in reasons:
         code = (r.get("code") or "").strip()
         if code in GATE_REASONS:
             needs_review = True
             skip_reason = code
             break
-
-    # Jika tidak ada reasons-ber-gate namun ada suspicious_price_level
+            
     if not skip_reason and row_flags.get("suspicious_price_level"):
         needs_review = True
         skip_reason = "suspicious_price_level"
 
-    # Set summary flags
-    row["needs_review"] = bool(needs_review)
-    row["skip_reason"] = skip_reason
-    row.update(row_flags)
+    # Set final flags
+    record.audit_flags["needs_review"] = needs_review
+    record.audit_flags.update(row_flags)
+    record.skip_reason = skip_reason # This is used by alerts
 
-    return row
+    return record
 
-# ======================================================================================
-# Convenience: process a document with multiple rows
-# ======================================================================================
 
-def process_document_rows(
-    rows: List[Dict[str, Any]],
-    doc_meta: Optional[Union[Dict[str, Any], Any]] = None,
-) -> List[Dict[str, Any]]:
+# Main Processor 
+def process_all_records(
+    records: List[FilingRecord],
+    downloads_meta_map: Dict[str, Any] | None = None,
+) -> List[FilingRecord]:
     """
-    Helper untuk memproses banyak row dari satu dokumen.
+    New adapter that processes a list of FilingRecord objects.
+    
+    (Future improvement: group records by document_id and
+    pass 'doc_meta' to process_filing_record)
     """
-    out = []
-    for r in rows or []:
-        out.append(process_filing_row(r, doc_meta=doc_meta))
-    return out
-
-# ======================================================================================
-# Adapter: process_all (untuk kompatibilitas pipeline lama)
-# ======================================================================================
-
-def process_all(
-    parsed_lists: List[List[Dict[str, Any]]],
-    downloads_meta_map: Dict[str, Any] | None = None,  # tidak dipakai di adaptor ini
-) -> List[Dict[str, Any]]:
-    """
-    Minimal adapter: flatten parsed chunks lalu kirim ke processor baru.
-    CATATAN:
-    - Jika pipeline lamamu biasanya membentuk row via builder khusus di utils.processors,
-      lebih baik pakai kembali builder itu, lalu panggil process_document_rows(rows, doc_meta).
-      Adaptor ini hanya mem-forward apa adanya agar tidak error import.
-    """
-    flat_rows: List[Dict[str, Any]] = []
-    for chunk in (parsed_lists or []):
-        for r in (chunk or []):
-            if isinstance(r, dict):
-                flat_rows.append(r)
-    # doc_meta tidak tersedia di level ini → kirim None
-    return process_document_rows(flat_rows, doc_meta=None)
-
-__all__ = [
-    "process_filing_row",
-    "process_document_rows",
-    "process_all",
-]
+    processed_records = []
+    for rec in records:
+        # TODO: Find the doc_meta from downloads_meta_map if needed
+        doc_meta = None
+        processed_records.append(process_filing_record(rec, doc_meta=doc_meta))
+    return processed_records

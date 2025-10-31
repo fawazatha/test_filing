@@ -18,7 +18,7 @@ INSERTED_CANDIDATES: List[Tuple[str, str]] = [
     ("correction_filings.json", "correction_filings.json"),
     # alias: beberapa pipeline lama tulis "inconsistent_alerts.json"
     ("suspicious_alerts.json", "suspicious_alerts.json"),
-    ("inconsistent_alerts.json", "suspicious_alerts.json"),  # alias → disimpan sebagai suspicious_alerts.json
+    ("inconsistent_alerts.json", "suspicious_alerts.json"),  # alias -> disimpan sebagai suspicious_alerts.json
 ]
 
 NOT_INSERTED_CANDIDATES: List[Tuple[str, str]] = [
@@ -47,7 +47,7 @@ def _json_nonempty(p: Path) -> bool:
             return len(data) > 0
         return True  # kalau bukan JSON list/dict tapi ada isinya, anggap non-empty
     except Exception:
-        # bukan JSON valid → kalau file ada & size>0 anggap non-empty
+        # bukan JSON valid -> kalau file ada & size>0 anggap non-empty
         return True
 
 
@@ -61,10 +61,10 @@ def _copy_if_nonempty(src: Path, dst: Path, dry_run: bool = False) -> bool:
         return False
     _ensure_dir(dst.parent)
     if dry_run:
-        log.info("[DRY RUN] would copy %s → %s", src, dst)
+        log.info("[DRY RUN] would copy %s -> %s", src, dst)
         return True
     shutil.copy2(src, dst)
-    log.info("copied: %s → %s", src, dst)
+    log.info("copied: %s -> %s", src, dst)
     return True
 
 
@@ -78,7 +78,7 @@ def bucketize(
     """
     Pindahkan (copy) file alert non-kosong dari from_dir ke dua bucket:
     - inserted_dir: alerts_idx.json, alerts_non_idx.json, correction_filings.json, suspicious_alerts.json
-      (alias accepted: inconsistent_alerts.json → suspicious_alerts.json)
+      (alias accepted: inconsistent_alerts.json -> suspicious_alerts.json)
     - not_inserted_dir: alerts_not_inserted_idx.json, alerts_not_inserted_non_idx.json, low_title_similarity_alerts.json
     """
     from_dir = from_dir.resolve()

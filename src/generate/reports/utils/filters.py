@@ -8,9 +8,7 @@ from ..core import fetch_company_report_symbols, load_companies_from_json
 from . import sb as sbapi  # keep import if used elsewhere
 
 
-# -----------------------------
 # Parsing & normalization
-# -----------------------------
 def parse_symbols_arg(arg: Optional[str]) -> List[str]:
     out: List[str] = []
     if not arg:
@@ -53,9 +51,7 @@ def _load_rows(path: str) -> List[Dict[str, Any]]:
     return []
 
 
-# -----------------------------
 # Symbol resolvers (watchlist-first)
-# -----------------------------
 async def fetch_watchlist_symbols(
     *,
     companies_json_in: Optional[str] = None,
@@ -130,9 +126,7 @@ async def resolve_symbols_priority(
     return await fetch_insider_tagged_symbols(companies_json_in=companies_json_in, symbol_col=symbol_col)
 
 
-# -----------------------------
 # Client-side sweeps / filters
-# -----------------------------
 def _extract_symbol_from_obj(obj: Any) -> str:
     """
     Ambil symbol dari:

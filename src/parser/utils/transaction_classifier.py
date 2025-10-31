@@ -1,13 +1,14 @@
 from __future__ import annotations
 from typing import List, Dict, Optional, Tuple
 
-import logging
-logger = logging.getLogger(__name__)
+from src.common.log import get_logger
 
-# === Canonical whitelist (exactly 9) ===
+logger = get_logger(__name__)
+
+# Canonical whitelist (9 items, kebab-case lowercase)
 TAGS_WHITELIST = {
     "bullish", "bearish", "takeover", "investment", "divestment",
-    "free-float-requirement", "MESOP", "inheritance", "share-transfer",
+    "free-float-requirement", "mesop", "inheritance", "share-transfer",
 }
 
 # Keyword banks for side-signals (parser may pass text here)
@@ -71,12 +72,11 @@ class TransactionClassifier:
         tl = (text or "").lower()
         prelim: List[str] = []
 
-        # Correction (we keep tx_type 'neutral', add no tags; downstream can still compute tags from data)
+        # Correction documents -> treat as neutral (no tags)
         if any(k in tl for k in ["perbaikan", "koreksi", "ralat", "errata", "amendment"]):
             return "neutral", []
 
-        is_takeover = _crosses_50(pct_before, pct_after)
-        if is_takeover:
+        if _crosses_50(pct_before, pct_after):
             prelim.append("takeover")
 
         # Keyword-driven type
@@ -129,7 +129,6 @@ class TransactionClassifier:
         net_amount = 0.0
         has_buy = has_sell = False
         has_transfer = False
-        explicit_inheritance = False
 
         for t in (txns or []):
             ttype = (t.get("type") or "").lower().strip()
@@ -143,11 +142,15 @@ class TransactionClassifier:
             elif ttype == "transfer":
                 has_transfer = True
 
-        # investment/divestment/share-transfer(+inheritance)
+        # investment/divestment/share-transfer/inheritance
         if has_buy and not has_sell:
             tags.add("investment")
+            
+        # --- FIX: Replaced 'not_buy' with 'not has_buy' ---
         if has_sell and not has_buy:
             tags.add("divestment")
+        # --- End FIX ---
+            
         if has_transfer or flags.get("share_transfer_hint"):
             tags.add("share-transfer")
         if flags.get("inheritance"):
@@ -167,14 +170,10 @@ class TransactionClassifier:
         if flags.get("free_float_requirement") or flags.get("free_float"):
             tags.add("free-float-requirement")
         if flags.get("mesop"):
-            tags.add("MESOP")
+            tags.add("mesop")
 
         # Enforce whitelist & normalize
-        clean = []
-        for t in {t.lower().strip() for t in tags}:
-            if t in TAGS_WHITELIST:
-                clean.append(t)
-        clean.sort()
+        clean = sorted({t for t in (tag.lower().strip() for tag in tags) if t in TAGS_WHITELIST})
         return clean
 
     @staticmethod
@@ -184,9 +183,7 @@ class TransactionClassifier:
         pct_before: Optional[float],
         pct_after: Optional[float]
     ) -> str:
-        """
-        Infer 'buy'/'sell'/'neutral' from holdings/percentages.
-        """
+        """Infer 'buy'/'sell'/'neutral' from holdings/percentages."""
         try:
             if isinstance(holding_before, (int, float)) and isinstance(holding_after, (int, float)):
                 if holding_after > holding_before:
@@ -214,9 +211,7 @@ class TransactionClassifier:
         pct_before: Optional[float],
         pct_after: Optional[float]
     ) -> Optional[Dict]:
-        """
-        Returns a payload when document label conflicts with inferred direction (observability).
-        """
+        """Return a payload when document label conflicts with inferred direction (observability)."""
         doc = (doc_type or "").strip().lower()
         if doc in {"buy", "sell"} and inferred in {"buy", "sell"} and doc != inferred:
             return {
@@ -238,9 +233,7 @@ class TransactionClassifier:
         tx_type: str,
         eps: float = 1e-3
     ) -> Tuple[bool, Optional[str]]:
-        """
-        Sanity for direction vs percentages.
-        """
+        """Sanity check for direction vs percentages."""
         try:
             b = float(before) if before is not None else None
             a = float(after) if after is not None else None
@@ -267,3 +260,4 @@ class TransactionClassifier:
         if t in {"buy", "sell"}:
             return TransactionClassifier.validate_direction(pct_before, pct_after, t, eps=eps)
         return True, None
+

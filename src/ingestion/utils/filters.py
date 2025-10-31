@@ -3,7 +3,7 @@ from datetime import datetime, timedelta
 from typing import Optional, Tuple
 import calendar
 
-from src.common.time import JAKARTA_TZ as JKT
+from src.common.datetime import JAKARTA_TZ as JKT
 
 """Date parsing, validation, and range helpers (WIB-aware)."""
 
@@ -69,7 +69,7 @@ def compute_range_and_window(
 ) -> Tuple[str, str, Optional[datetime], Optional[datetime]]:
     """
     Build dateFrom/dateTo (YYYYMMDD) and WIB-aware start/end datetimes for a single-day time window.
-    If the time window crosses midnight (e.g., 22:00→02:00), extend dateTo +1 day and move end_dt accordingly.
+    If the time window crosses midnight (e.g., 22:00 -> 02:00), extend dateTo +1 day and move end_dt accordingly.
     """
     validate_yyyymmdd(date_yyyymmdd)
 

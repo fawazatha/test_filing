@@ -1,19 +1,25 @@
 from __future__ import annotations
 import os
-import json
-import shutil
 from pathlib import Path
 from typing import List, Any, Optional, Dict
 
 from src.common.log import get_logger
-from src.common.time import timestamp_jakarta
-from src.common.files import ensure_dir, ensure_parent, safe_filename_from_url
+from src.common.datetime import timestamp_jakarta
+from src.common.files import (
+    ensure_dir,
+    ensure_parent,
+    ensure_clean_dir,
+    safe_filename_from_url,
+    atomic_write_json,
+    safe_unlink,
+)
 
 from downloader.utils.classifier import classify_format
 from downloader.client import init_http, get_pdf_bytes_minimal, seed_and_retry_minimal
-from models.announcement import Announcement
+from downloader.utils.announcement import Announcement
 
 """Download PDFs (IDX / non-IDX) and emit lightweight metadata & alerts."""
+
 
 # helpers
 def _attachment_to_url(att: Any) -> Optional[str]:
@@ -38,32 +44,38 @@ def _derive_ticker(title: str, company_name: Optional[str]) -> Optional[str]:
     return m.group(1) if m else None
 
 
-def _maybe_clean_outputs(paths: Dict[str, str], logger) -> None:
-    """Optionally clean output folders/files."""
-    for d in (paths["out_idx"], paths["out_non_idx"]):
-        try:
-            if os.path.isdir(d):
-                shutil.rmtree(d)
-                logger.info("Cleaned output folder: %s", d)
-        except Exception as e:
-            logger.warning("Failed to remove folder %s: %s", d, e)
+def _clean_outputs(paths: Dict[str, str], logger) -> None:
+    """
+    Hard clean outputs safely:
+    - Recreate out_idx & out_non_idx as empty dirs (protected).
+    - Remove meta_out & alerts_out files if exist; ensure parents exist.
+    """
+    out_idx_abs = Path(paths["out_idx"]).expanduser().resolve()
+    out_non_abs = Path(paths["out_non_idx"]).expanduser().resolve()
+    logger.info("Cleaning output folders:\n  out_idx=%s\n  out_non_idx=%s", out_idx_abs, out_non_abs)
 
-    for f in (paths["meta_out"], paths["alerts_out"]):
-        try:
-            os.remove(f)
-            logger.info("Removed file: %s", f)
-        except FileNotFoundError:
-            pass
-        except Exception as e:
-            logger.warning("Failed to remove file %s: %s", f, e)
+    ensure_clean_dir(out_idx_abs)
+    ensure_clean_dir(out_non_abs)
 
+    removed_meta = safe_unlink(paths["meta_out"])
+    removed_alerts = safe_unlink(paths["alerts_out"])
+    if removed_meta:
+        logger.info("Removed meta_out file: %s", paths["meta_out"])
+    if removed_alerts:
+        logger.info("Removed alerts_out file: %s", paths["alerts_out"])
 
-def _prepare_outputs(paths: Dict[str, str]) -> None:
-    """Create required folders."""
-    ensure_dir(paths["out_idx"])
-    ensure_dir(paths["out_non_idx"])
+    # Make sure parents exist for later atomic writes
     ensure_parent(paths["meta_out"])
     ensure_parent(paths["alerts_out"])
+
+
+def _prepare_outputs(paths: Dict[str, str], logger) -> None:
+    """Create required folders & parent dirs."""
+    p_idx = ensure_dir(paths["out_idx"]).resolve()
+    p_non = ensure_dir(paths["out_non_idx"]).resolve()
+    ensure_parent(paths["meta_out"])
+    ensure_parent(paths["alerts_out"])
+    logger.debug("Using output folders:\n  out_idx=%s\n  out_non_idx=%s", p_idx, p_non)
 
 
 def _download_with_retries(url: str, out_path: Path, retries: int, logger) -> bool:
@@ -75,20 +87,21 @@ def _download_with_retries(url: str, out_path: Path, retries: int, logger) -> bo
     try:
         blob = get_pdf_bytes_minimal(url, timeout=60)
         out_path.write_bytes(blob)
-        logger.info("Downloaded → %s", out_path)
+        logger.info("Downloaded: %s", out_path)
         return True
     except Exception as e1:
-        logger.error("Minimal GET failed (%s): %s", url, e1)
+        logger.warning("Minimal GET failed (%s): %s", url, e1)
 
     # Attempts 2..retries: seed referer then retry
-    for attempt in range(2, max(2, retries) + 1):
+    total = max(1, int(retries))
+    for attempt in range(2, total + 1):
         try:
             blob = seed_and_retry_minimal(url, timeout=60)
             out_path.write_bytes(blob)
-            logger.info("[retry %d/%d] Downloaded → %s", attempt, retries, out_path)
+            logger.info("[retry %d/%d] Downloaded -> %s", attempt, total, out_path)
             return True
         except Exception as e2:
-            logger.error("[retry %d/%d] Failed (%s): %s", attempt, retries, url, e2)
+            logger.warning("[retry %d/%d] Failed (%s): %s", attempt, total, url, e2)
 
     return False
 
@@ -108,9 +121,9 @@ def download_pdfs(
 ) -> None:
     """
     - Classify title as IDX / NON-IDX / UNKNOWN (fuzzy).
-    - IDX     → download main_link.
-    - NON-IDX → download all attachments URLs.
-    - UNKNOWN → no download; record alert.
+    - IDX     : download main_link.
+    - NON-IDX : download all attachments URLs.
+    - UNKNOWN : no download; record alert.
     - Write two JSONs: metadata list & low-similarity alerts.
     """
     logger = get_logger("downloader", verbose)
@@ -122,12 +135,15 @@ def download_pdfs(
         "alerts_out": alerts_out,
     }
 
+    # Clean outputs early if requested (delete then create empty)
     if clean_out:
-        _maybe_clean_outputs(paths, logger)
+        logger.info("Cleaning outputs...")
+        _clean_outputs(paths, logger)
+        logger.info("Outputs cleaned.")
 
     # Setup HTTP (proxies via env; SSL warnings silenced)
     init_http(insecure=True, silence_warnings=True, load_env=True)
-    _prepare_outputs(paths)
+    _prepare_outputs(paths, logger)
 
     # Log proxy presence (masking value)
     if any(os.getenv(k) for k in ("PROXY", "HTTPS_PROXY", "HTTP_PROXY", "https_proxy", "http_proxy")):
@@ -139,10 +155,10 @@ def download_pdfs(
 
     for i, ann in enumerate(announcements, start=1):
         label, best, sim_idx, sim_non = classify_format(ann.title, threshold=min_similarity)
-        logger.info("[%d] %s", i, ann.title)
+        logger.info("[%d/%d] %s", i, len(announcements), ann.title)
         logger.info("    Classification: %s (best=%d, idx=%d, non=%d)", label, best, sim_idx, sim_non)
 
-        ticker = _derive_ticker(ann.title, ann.company_name)
+        ticker = _derive_ticker(ann.title, getattr(ann, "company_name", None))
 
         if label == "UNKNOWN":
             ref_url = ann.main_link or (_attachment_to_url(ann.attachments[0]) if ann.attachments else None)
@@ -169,16 +185,22 @@ def download_pdfs(
             urls = [u for u in (_attachment_to_url(x) for x in ann.attachments) if u]
             out_folder = paths["out_non_idx"]
 
+        # Dedup & guard
+        urls = list(dict.fromkeys(urls))
         if not urls:
             logger.warning("    No URLs found for this announcement (label=%s).", label)
             continue
 
+        # Ensure destination folder exists (in case user changed CLI paths mid-run)
+        out_folder_p = ensure_dir(out_folder).resolve()
+        logger.debug("Using out folder: %s", out_folder_p)
+
         for url in urls:
             filename = safe_filename_from_url(url)
-            out_path = Path(out_folder) / filename
+            out_path = out_folder_p / filename
 
             if dry_run:
-                logger.info("    [DRY] Would download → %s -> %s", url, out_path)
+                logger.info("    [DRY] Would download -> %s -> %s", url, out_path)
                 records.append({
                     "ticker": ticker,
                     "title": ann.title,
@@ -198,7 +220,11 @@ def download_pdfs(
                     "timestamp": ann.date,
                 })
 
-    # Write outputs
-    Path(paths["meta_out"]).write_text(json.dumps(records, indent=2, ensure_ascii=False), encoding="utf-8")
-    Path(paths["alerts_out"]).write_text(json.dumps(alerts, indent=2, ensure_ascii=False), encoding="utf-8")
-    logger.info("Finished. %d announcements processed.", len(announcements))
+    # Write outputs atomically
+    atomic_write_json(paths["meta_out"], records)
+    atomic_write_json(paths["alerts_out"], alerts)
+
+    logger.info(
+        "Finished. %d announcements processed. %d files recorded. %d alerts.",
+        len(announcements), len(records), len(alerts)
+    )

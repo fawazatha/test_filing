@@ -50,9 +50,9 @@ def is_gated(row: Dict[str, Any]) -> Tuple[bool, Optional[str]]:
     """
     Tentukan apakah baris ini harus DICORET dari email 'Inserted'.
     Urutan prioritas:
-      1) Jika row.needs_review True → gated, skip_reason = row.skip_reason atau reason pertama yang ada di GATE_REASONS
-      2) Jika ada reason.code ⊂ GATE_REASONS → gated
-      3) Jika ada flag umum (fallback): suspicious_price_level/percent_discrepancy/stale_price/missing_price/delta_pp_mismatch → gated
+      1) Jika row.needs_review True -> gated, skip_reason = row.skip_reason atau reason pertama yang ada di GATE_REASONS
+      2) Jika ada reason.code ⊂ GATE_REASONS -> gated
+      3) Jika ada flag umum (fallback): suspicious_price_level/percent_discrepancy/stale_price/missing_price/delta_pp_mismatch -> gated
     """
     if row.get("needs_review") is True:
         sr = (row.get("skip_reason") or "").strip() or None
@@ -176,10 +176,8 @@ def split_alerts(alerts: List[Dict[str, Any]]) -> Tuple[List[Dict[str, Any]], Li
     return inserted, not_inserted
 
 
-# --------------------------------------------------------------------------------------
 # Optional helpers untuk menulis file alerts_* sesuai pola config
 # (boleh diabaikan jika kamu sudah pakai services.email.bucketize)
-# --------------------------------------------------------------------------------------
 def _resolve_filename(pattern: str, date_str: str) -> str:
     try:
         return pattern.format(date=date_str)

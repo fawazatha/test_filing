@@ -5,7 +5,7 @@ from pathlib import Path
 import json
 
 from src.common.log import get_logger
-from src.common.time import timestamp_jakarta, JAKARTA_TZ as JKT
+from src.common.datetime import timestamp_jakarta, JAKARTA_TZ as JKT
 
 from ingestion.utils.config import DEFAULT_PAGE_SIZE
 from ingestion.client import make_client, fetch_page
@@ -18,7 +18,7 @@ from ingestion.utils.filters import (
 )
 from ingestion.utils.normalizer import normalize_item
 
-"""Orchestrates fetch → normalize → save for IDX announcements."""
+"""Orchestrates fetch -> normalize -> save for IDX announcements."""
 
 def _daterange_yyyymmdd(a: str, b: str) -> Iterable[str]:
     """Yield YYYYMMDD from a..b inclusive."""
@@ -62,7 +62,7 @@ def get_ownership_announcements_range(
         end_dt = end_dt.replace(tzinfo=JKT)
 
     if start_dt and end_dt:
-        logger.info("Window: %s → %s", start_dt, end_dt)
+        logger.info("Window: %s -> %s", start_dt, end_dt)
     else:
         logger.info("Window: full days")
 
@@ -142,4 +142,4 @@ def save_json(data: List[Dict], out_path: Path, logger_name: str = "ingestion") 
     logger = get_logger(logger_name)
     out_path.parent.mkdir(parents=True, exist_ok=True)
     out_path.write_text(json.dumps(data, ensure_ascii=False, indent=2), encoding="utf-8")
-    logger.info("Saved %d announcements → %s", len(data), out_path)
+    logger.info("Saved %d announcements -> %s", len(data), out_path)

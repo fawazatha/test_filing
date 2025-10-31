@@ -1,4 +1,4 @@
-# generate/filings/utils/provider.py
+# src/generate/filings/utils/provider.py
 from __future__ import annotations
 
 import json
@@ -31,41 +31,30 @@ except Exception:  # pragma: no cover
 
 logger = logging.getLogger(__name__)
 
-# Optional: classifier (tetap robust kalau tak ada)
-try:
-    from parser.utils.transaction_classifier import TransactionClassifier as _TC  # type: ignore
-except Exception:  # pragma: no cover
-    _TC = None
 
-# =============================================================================
-# In-memory caches (thread-safe)
-# =============================================================================
+# In-memory caches
 _lock = threading.RLock()
 
 _company_map_raw: Optional[Dict[str, Any]] = None
 _company_map_mtime: Optional[float] = None
-
-# Fast indexes
 _sym_index: Dict[str, Dict[str, Any]] = {}
 _name_index: Dict[str, Dict[str, Any]] = {}
 
 _prices_cache: Optional[Dict[str, Any]] = None
 _prices_mtime: Optional[float] = None
 
-# Allow multiple candidate paths (beberapa repo simpan beda lokasi)
+# Allow multiple candidate paths
 COMPANY_MAP_PATHS: Tuple[str, ...] = (
     os.getenv("FILINGS_COMPANY_MAP", COMPANY_MAP_PATH if "COMPANY_MAP_PATH" in globals() else "data/company/company_map.json"),
-    "data/company/company_map.hydrated.json",  # optional (hasil hydrate)
+    "data/company/company_map.hydrated.json",
 )
 
-# Pastikan latest prices tidak menunjuk company_map.json
 LATEST_PRICE_PATHS: Tuple[str, ...] = (
     os.getenv("FILINGS_LATEST_PRICES", LATEST_PRICES_PATH if "LATEST_PRICES_PATH" in globals() else "data/company/latest_prices.json"),
 )
 
-# =============================================================================
+
 # Helpers
-# =============================================================================
 def _load_json(path: Path) -> Any:
     with path.open("r", encoding="utf-8") as f:
         return json.load(f)
@@ -79,21 +68,19 @@ def _normalize_symbol(sym: Optional[str]) -> Optional[str]:
     return s if s.endswith(".JK") else f"{s}.JK"
 
 def _sym_key_variants(k: str) -> List[str]:
-    """Bangun beberapa varian key untuk index (dengan/tanpa .JK)."""
+    """Build multiple key variants for index (with/without .JK)."""
     s = str(k).strip().upper()
     out = set()
     if s:
         out.add(s)
         if s.endswith(".JK"):
-            out.add(s[:-3])  # tanpa suffix
+            out.add(s[:-3])  # without suffix
         else:
             out.add(f"{s}.JK")
     return list(out)
 
 def _first_scalar(x: Any) -> Optional[str]:
-    """
-    Ambil elemen pertama bila list-like; kalau string/angka → string; selain itu → None.
-    """
+    """Get the first non-empty item if list-like; else stringify."""
     if x is None:
         return None
     if isinstance(x, list):
@@ -126,7 +113,7 @@ def _ensure_company_map_loaded() -> None:
                 found = p
                 break
         if not found:
-            logger.debug("company_map not found in %s", COMPANY_MAP_PATHS)
+            # logger.debug("company_map not found in %s", COMPANY_MAP_PATHS)
             _company_map_raw = {}
             _sym_index = {}
             _name_index = {}
@@ -139,7 +126,6 @@ def _ensure_company_map_loaded() -> None:
 
         try:
             data = _load_json(found)
-            # Terima bentuk {"map": {...}} atau dict langsung
             cmap = data.get("map") if isinstance(data, dict) else None
             if isinstance(cmap, dict):
                 _company_map_raw = cmap
@@ -178,6 +164,7 @@ def _ensure_company_map_loaded() -> None:
             _company_map_mtime = None
 
 def _ensure_prices_loaded() -> None:
+    """Load latest_prices cache."""
     global _prices_cache, _prices_mtime
     with _lock:
         found: Optional[Path] = None
@@ -189,7 +176,7 @@ def _ensure_prices_loaded() -> None:
                 found = p
                 break
         if not found:
-            logger.debug("latest_prices not found in %s", LATEST_PRICE_PATHS)
+            # logger.debug("latest_prices not found in %s", LATEST_PRICE_PATHS)
             _prices_cache = {}
             _prices_mtime = None
             return
@@ -200,7 +187,6 @@ def _ensure_prices_loaded() -> None:
 
         try:
             data = _load_json(found)
-            # Terima {"prices": {...}} atau dict langsung
             if isinstance(data, dict) and "prices" in data and isinstance(data["prices"], dict):
                 _prices_cache = data["prices"]
             elif isinstance(data, dict):
@@ -229,13 +215,11 @@ def _days_between(d1: Optional[str], d2: Optional[str]) -> Optional[int]:
     except Exception:
         return None
 
-# =============================================================================
+
 # Public API
-# =============================================================================
 def get_company_info(symbol: Optional[str]) -> CompanyInfo:
     """
-    Lookup company information untuk simbol. Robust pada kunci dengan/ tanpa '.JK'.
-    Selalu kebab-case sector/sub_sector. Prefer isi dari map.
+    Lookup company information for a symbol.
     """
     _ensure_company_map_loaded()
 
@@ -244,21 +228,15 @@ def get_company_info(symbol: Optional[str]) -> CompanyInfo:
     if sym_norm and sym_norm in _sym_index:
         info = _sym_index[sym_norm]
     elif symbol:
-        # coba raw symbol (bila map disimpan tanpa .JK)
         raw = str(symbol).strip().upper()
         if raw in _sym_index:
             info = _sym_index[raw]
 
-    # ambil variasi key & first scalar
     company_name = _first_scalar(info.get("company_name") or info.get("name"))
-    sector_raw = (
-        info.get("sector") or info.get("Sector")
-    )
+    sector_raw = info.get("sector") or info.get("Sector")
     subsec_raw = (
-        info.get("sub_sector")
-        or info.get("subsector")
-        or info.get("Sub-Sector")
-        or info.get("SubSector")
+        info.get("sub_sector") or info.get("subsector") or 
+        info.get("Sub-Sector") or info.get("SubSector")
     )
 
     sector = _kebab(_first_scalar(sector_raw))
@@ -272,8 +250,7 @@ def get_company_info(symbol: Optional[str]) -> CompanyInfo:
 
 def get_latest_price(symbol: Optional[str]) -> Optional[Dict[str, Any]]:
     """
-    Return latest price info from local cache:
-    { "close": float, "vwap": float?, "date": "YYYY-MM-DD" }
+    Return latest price info from local cache.
     """
     _ensure_prices_loaded()
     sym = _normalize_symbol(symbol)
@@ -303,9 +280,7 @@ def get_latest_price(symbol: Optional[str]) -> Optional[Dict[str, Any]]:
 
 def get_market_reference(symbol: Optional[str], n_days: int = None) -> Optional[Dict[str, Any]]:
     """
-    Compute market reference price untuk sanity checks:
-      - Prefer N-day VWAP/median-close kalau ada series
-      - Fallback ke latest close
+    Compute market reference price for sanity checks.
     """
     _ensure_prices_loaded()
     if n_days is None:
@@ -317,22 +292,19 @@ def get_market_reference(symbol: Optional[str], n_days: int = None) -> Optional[
     if not isinstance(entry, dict):
         return None
 
-    # Jika historical series tersedia: [{"date":..,"close":..,"vwap":..}, ...]
+    # If historical series is available
     series = entry.get("series")
     if isinstance(series, list) and series:
         last_n = series[-n_days:] if n_days > 0 else series[:]
-        # prefer VWAP jika mayoritas tersedia
+        # prefer VWAP
         v_list = [float(x["vwap"]) for x in last_n if isinstance(x, dict) and x.get("vwap") is not None]
         if len(v_list) >= max(1, len(last_n) // 2):
             ref = sum(v_list) / len(v_list)
             asof = str(last_n[-1].get("date"))[:10] if last_n else None
             fres = _days_between(asof, _today_iso())
             return {
-                "ref_price": float(ref),
-                "ref_type": f"vwap_{len(last_n)}",
-                "asof_date": asof,
-                "n_days": len(last_n),
-                "freshness_days": fres,
+                "ref_price": float(ref), "ref_type": f"vwap_{len(last_n)}",
+                "asof_date": asof, "n_days": len(last_n), "freshness_days": fres,
             }
         # else median close
         c_list = [float(x["close"]) for x in last_n if isinstance(x, dict) and x.get("close") is not None]
@@ -341,32 +313,20 @@ def get_market_reference(symbol: Optional[str], n_days: int = None) -> Optional[
             asof = str(last_n[-1].get("date"))[:10]
             fres = _days_between(asof, _today_iso())
             return {
-                "ref_price": float(ref),
-                "ref_type": f"median_close_{len(c_list)}",
-                "asof_date": asof,
-                "n_days": len(c_list),
-                "freshness_days": fres,
+                "ref_price": float(ref), "ref_type": f"median_close_{len(c_list)}",
+                "asof_date": asof, "n_days": len(c_list), "freshness_days": fres,
             }
 
-    # Fallback ke single latest close
+    # Fallback to single latest close
     latest = get_latest_price(sym) or {}
     if "close" in latest:
         asof = latest.get("date")
         fres = _days_between(asof, _today_iso())
         return {
-            "ref_price": float(latest["close"]),
-            "ref_type": "close",
-            "asof_date": asof,
-            "n_days": 1,
-            "freshness_days": fres,
+            "ref_price": float(latest["close"]), "ref_type": "close",
+            "asof_date": asof, "n_days": 1, "freshness_days": fres,
         }
     return None
-
-def compute_document_median_price(prices: List[Union[int, float]]) -> Optional[float]:
-    vals = [float(x) for x in prices if isinstance(x, (int, float))]
-    if not vals:
-        return None
-    return float(median(vals))
 
 def suggest_price_range(ref_price: Optional[float]) -> Optional[Dict[str, float]]:
     if ref_price is None:
@@ -379,6 +339,7 @@ def suggest_price_range(ref_price: Optional[float]) -> Optional[Dict[str, float]
         return None
 
 def build_announcement_block(meta: Optional[Union[DownloadMeta, Dict[str, Any]]]) -> Optional[Dict[str, Any]]:
+    """Builds a standardized 'announcement' block from metadata."""
     if meta is None:
         return None
     if is_dataclass(meta):
@@ -390,12 +351,9 @@ def build_announcement_block(meta: Optional[Union[DownloadMeta, Dict[str, Any]]]
 
     url = m.get("url") or m.get("link") or m.get("announcement_url")
     pdf_url = m.get("pdf_url") or m.get("pdf") or m.get("attachment_url")
-    # Best-effort id
     doc_id = (
-        m.get("id")
-        or m.get("doc_id")
-        or m.get("uuid")
-        or (Path(m.get("filename")).stem if m.get("filename") else None)
+        m.get("id") or m.get("doc_id") or m.get("uuid") or 
+        (Path(m.get("filename")).stem if m.get("filename") else None)
     )
     title = m.get("title") or m.get("subject") or m.get("heading")
     src = None
@@ -412,43 +370,3 @@ def build_announcement_block(meta: Optional[Union[DownloadMeta, Dict[str, Any]]]
         "pdf_url": pdf_url,
         "source_type": src,
     }
-
-# =============================================================================
-# Optional: tag computation passthrough
-# =============================================================================
-_TAG_WHITELIST = {
-    "bullish", "bearish", "takeover", "investment", "divestment",
-    "free-float-requirement", "mesop", "inheritance", "share-transfer",
-}
-
-def get_tags(
-    tx_type: Optional[str] = None,
-    before_pct: Optional[float] = None,
-    after_pct: Optional[float] = None,
-    body: Optional[str] = None,
-) -> List[str]:
-    if _TC is not None:
-        tx = (tx_type or "").strip().lower()
-        txns: List[Dict[str, Any]] = []
-        if tx in {"buy", "sell", "transfer"}:
-            txns = [{"type": tx, "amount": 1}]
-        flags: Dict[str, bool] = _TC.detect_flags_from_text(body or "") if body else {}
-        tags = _TC.compute_filings_tags(
-            txns=txns,
-            share_percentage_before=before_pct,
-            share_percentage_after=after_pct,
-            flags=flags,
-        )
-        tags = [t.lower() for t in tags if isinstance(t, str)]
-        return [t for t in tags if t in _TAG_WHITELIST]
-    return []
-
-__all__ = [
-    "get_company_info",
-    "get_latest_price",
-    "get_market_reference",
-    "compute_document_median_price",
-    "suggest_price_range",
-    "build_announcement_block",
-    "get_tags",
-]

@@ -1,3 +1,4 @@
+# src/services/upload/supabase.py
 from __future__ import annotations
 
 import os
@@ -7,117 +8,22 @@ from dataclasses import dataclass, field
 from typing import Any, Dict, List, Optional, Iterable
 import httpx
 
+# Import the new core type
+from src.core.types import FilingRecord
+
 logger = logging.getLogger(__name__)
 
 # ---------------- helpers ----------------
-def _ensure_list(v: Any):
-    """
-    Normalize value into a Python list.
-    - If v is JSON list string (e.g., '["A","B"]') -> parse to list.
-    - If v is plain string -> wrap as [v].
-    - If v is already list -> return as-is.
-    - If v is None -> return None (so caller can decide to keep/drop).
-    """
-    if v is None:
-        return None
-    if isinstance(v, list):
-        return v
-    if isinstance(v, str):
-        s = v.strip()
-        # Try JSON parse first (common for '["X","Y"]')
-        try:
-            parsed = json.loads(s)
-            if isinstance(parsed, list):
-                return parsed
-        except Exception:
-            pass
-        # Fallback: treat string as single item
-        return [s]
-    try:
-        return list(v)
-    except Exception:
-        return [str(v)]
-
-def _first_scalar_from_list(v: List[Any]) -> Optional[str]:
-    for x in v:
-        if x not in (None, "", []):
-            return str(x).strip()
-    return None
-
-def _drop_none_keys(d: Dict[str, Any], keep_none: Iterable[str] = ()) -> Dict[str, Any]:
-    """
-    Drop keys whose value is None, EXCEPT those listed in keep_none.
-    This lets us explicitly insert NULL for some columns.
-    """
-    keep = set(keep_none or ())
-    out: Dict[str, Any] = {}
-    for k, v in d.items():
-        if v is None and k not in keep:
-            continue
-        out[k] = v
-    return out
-
-def _sanitize_row_for_insert(row: Dict[str, Any], *, table: Optional[str] = None) -> Dict[str, Any]:
-    """
-    Table-aware sanitizer:
-      - Only columns whitelisted as arrays for a given table are coerced to lists.
-      - Others (especially `sub_sector` for idx_filings) are kept/forced as strings.
-      - Force dimension/votes/score to NULL (None) so DB stores NULL.
-    """
-    r = dict(row)
-
-    # Define which columns are arrays per table
-    arrays_by_table = {
-        # Filings: only these are arrays
-        "idx_filings": {"tickers", "tags"},
-        # Example for news/articles: allow sub_sector list if desired
-        "idx_news": {"tickers", "tags", "sub_sector"},
-        # Fallback default (unknown table): conservative
-        "_default": {"tickers", "tags"},
-    }
-    tkey = (table or "").strip()
-    array_cols = arrays_by_table.get(tkey, arrays_by_table["_default"])
-
-    # Arrays (only those allowed)
-    if "tickers" in r and "tickers" in array_cols:
-        r["tickers"] = _ensure_list(r.get("tickers"))
-    if "tags" in r and "tags" in array_cols:
-        r["tags"] = _ensure_list(r.get("tags"))
-
-    # sub_sector handling depends on table
-    if "sub_sector" in r:
-        if "sub_sector" in array_cols:
-            r["sub_sector"] = _ensure_list(r.get("sub_sector"))
-        else:
-            # Ensure plain string for filings
-            v = r.get("sub_sector")
-            if isinstance(v, list):
-                r["sub_sector"] = _first_scalar_from_list(v)
-            else:
-                # keep as-is (string or None)
-                r["sub_sector"] = v if (v is None or isinstance(v, str)) else str(v)
-
-    # Force these columns to NULL (per requirement)
-    for k in ("dimension", "votes", "score"):
-        if k in r:
-            r[k] = None
-
-    return r
-
-def _debug_field_types(r: Dict[str, Any], fields=("symbol","tags","tickers","sub_sector","price_transaction")) -> None:
+def _debug_field_types(r: Dict[str, Any], fields=("symbol","tags","sub_sector","price_transaction")) -> None:
+    """Helper to log types of key fields before upload."""
     for k in fields:
         v = r.get(k, None)
         logger.debug("FIELD %s -> type=%s value=%r", k, type(v).__name__, v)
 
-def _filter_allowed(row: Dict[str, Any], allowed: Optional[Iterable[str]]) -> Dict[str, Any]:
-    if not allowed:
-        return row
-    allow = set(allowed)
-    return {k: v for k, v in row.items() if k in allow}
-
 # ---------------- result ----------------
 @dataclass
 class UploadResult:
+    """Dataclass to hold the result of an upload batch."""
     inserted: int = 0
     failed_rows: List[Dict[str, Any]] = field(default_factory=list)
     errors: List[Any] = field(default_factory=list)
@@ -128,7 +34,7 @@ class SupabaseUploader:
                  url: Optional[str] = None,
                  key: Optional[str] = None,
                  table: Optional[str] = None) -> None:
-        # BACA ENV DI RUNTIME (setelah .env diload)
+        # Read ENV vars at runtime
         effective_url = (url or os.getenv("SUPABASE_URL") or "").rstrip("/")
         effective_key = (key or os.getenv("SUPABASE_KEY") or "")
         effective_table = table or os.getenv("SUPABASE_TABLE", "idx_filings")
@@ -141,8 +47,7 @@ class SupabaseUploader:
             masked = (self.key[:4] + "…" + self.key[-4:]) if self.key else "None"
             logger.error("SupabaseUploader missing URL/KEY. url=%r key=%s", self.url or None, masked)
             raise RuntimeError(
-                "Supabase not configured. Provide SUPABASE_URL and SUPABASE_KEY via .env/ENV "
-                "or pass --supabase-url / --supabase-key flags."
+                "Supabase not configured. Provide SUPABASE_URL and SUPABASE_KEY."
             )
 
         self._client = httpx.Client(
@@ -157,43 +62,40 @@ class SupabaseUploader:
         )
 
     def _post_one(self, table: str, payload: Dict[str, Any]) -> httpx.Response:
+        """Sends a single row to Supabase."""
         endpoint = f"/rest/v1/{table}"
         resp = self._client.post(endpoint, json=payload)
-        logger.info('HTTP Request: POST %s "%s %s"', self.url + endpoint, resp.http_version, resp.status_code)
+        logger.debug('HTTP Request: POST %s "%s %s"', self.url + endpoint, resp.http_version, resp.status_code)
         return resp
 
     def upload_records(self,
                        table: Optional[str],
                        rows: List[Dict[str, Any]],
                        allowed_columns: Optional[Iterable[str]] = None,
-                       normalize_keys: bool = False,
                        stop_on_first_error: bool = False) -> UploadResult:
         """
-        allowed_columns: whitelist kolom yang boleh dikirim (mis. dari header CSV Supabase)
-        stop_on_first_error: berhenti di error pertama (kalau True), default False (lanjutkan upload lainnya)
+        Uploads a list of pre-cleaned DICTIONARIES to Supabase.
+        
+        This method assumes data is already clean and standardized.
+        It no longer performs any sanitation logic.
         """
         tbl = table or self.default_table
         res = UploadResult()
+        
+        allow_set = set(allowed_columns) if allowed_columns else None
+
         for row in rows:
-            r = _sanitize_row_for_insert(row, table=tbl)  # <<< pass table
-            r = _filter_allowed(r, allowed_columns)
+            # 1. Filter by allowed_columns if provided
+            payload = {k: v for k, v in row.items() if k in allow_set} if allow_set else row
+            
+            # 2. Drop None keys (still good practice)
+            payload = {k: v for k, v in payload.items() if v is not None}
 
-            # Keep explicit NULL for these columns
-            r = _drop_none_keys(r, keep_none=("dimension", "votes", "score"))
-
-            # Extra guard: for filings, make sure sub_sector is string
-            if tbl == "idx_filings":
-                ss = r.get("sub_sector")
-                if isinstance(ss, list):
-                    r["sub_sector"] = _first_scalar_from_list(ss)
-                elif ss is not None and not isinstance(ss, str):
-                    r["sub_sector"] = str(ss)
-
-            _debug_field_types(r)
+            _debug_field_types(payload)
             try:
-                resp = self._post_one(tbl, r)
+                resp = self._post_one(tbl, payload)
                 if resp.status_code >= 400:
-                    res.failed_rows.append(r)
+                    res.failed_rows.append(row) # Log original row
                     try:
                         res.errors.append(resp.json())
                     except Exception:
@@ -203,23 +105,44 @@ class SupabaseUploader:
                 else:
                     res.inserted += 1
             except Exception as e:
-                res.failed_rows.append(r)
+                res.failed_rows.append(row)
                 res.errors.append(repr(e))
                 if stop_on_first_error:
                     break
         return res
 
+    def upload_filing_records(self,
+                       table: Optional[str],
+                       records: List[FilingRecord],
+                       allowed_columns: Optional[Iterable[str]] = None,
+                       stop_on_first_error: bool = False) -> UploadResult:
+        """
+        New convenience method to upload FilingRecord objects directly.
+        This should be the new standard method for uploads.
+        """
+        # Convert dataclasses to the clean DB dict format
+        rows_to_upload = [rec.to_db_dict() for rec in records]
+        
+        # Use the list of columns from the record's converter if not provided
+        if not allowed_columns and rows_to_upload:
+            allowed_columns = list(rows_to_upload[0].keys())
+        
+        return self.upload_records(
+            table=table,
+            rows=rows_to_upload,
+            allowed_columns=allowed_columns,
+            stop_on_first_error=stop_on_first_error
+        )
+
     def debug_probe(self, table: str, sample_row: Dict[str, Any]) -> str:
-        # Probe with the same sanitation + keep_none policy
-        r = _drop_none_keys(_sanitize_row_for_insert(sample_row, table=table), keep_none=("dimension","votes","score"))
-        # Extra guard mirroring upload_records
-        if table == "idx_filings":
-            ss = r.get("sub_sector")
-            if isinstance(ss, list):
-                r["sub_sector"] = _first_scalar_from_list(ss)
-            elif ss is not None and not isinstance(ss, str):
-                r["sub_sector"] = str(ss)
+        """
+        Sends one sample row to Supabase to debug insertion errors.
+        Assumes sample_row is a clean dict.
+        """
+        # Simple cleanup, mirroring the upload loop
+        r = {k: v for k, v in sample_row.items() if v is not None}
         _debug_field_types(r)
+        
         resp = self._post_one(table or self.default_table, r)
         try:
             body = resp.json()

@@ -1,7 +1,7 @@
 from __future__ import annotations
 from typing import Dict, List, Optional
 
-from src.common.text import kebab
+from src.common.strings import kebab
 from src.common.files import safe_filename_from_url
 
 """Shape raw IDX items into a stable schema consumed by the pipeline."""

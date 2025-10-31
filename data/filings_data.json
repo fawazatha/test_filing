@@ -1,0 +1,282 @@
+[
+  {
+    "price_transaction": [
+      {
+        "transaction_date": "2025-10-23",
+        "transaction_type": "sell",
+        "transaction_price": 55.0,
+        "transaction_share_amount": 14838000
+      }
+    ],
+    "tags": [],
+    "price": 55.0,
+    "purpose_of_transaction": "Investment",
+    "symbol": "DADA.JK",
+    "holder_type": "institution",
+    "timestamp": "2025-10-26T22:58:11",
+    "holding_after": 1644781900,
+    "share_percentage_before": 22.33,
+    "holder_name": "PT Karya Permata Inovasi Indonesia",
+    "body": "PT Karya Permata Inovasi Indonesia sold 14,838,000 shares of PT. Diamond Citra Propertindo Tbk. This decreases their holdings from 1,659,619,900 to 1,644,781,900 shares. The stated purpose of the transaction was investment.",
+    "share_percentage_after": 22.13,
+    "share_percentage_transaction": 0.2,
+    "title": "PT Karya Permata Inovasi Indonesia Sell Transaction of PT. Diamond Citra Propertindo Tbk",
+    "amount_transaction": 14838000,
+    "transaction_type": "sell",
+    "holding_before": 1659619900,
+    "transaction_value": 816090000.0,
+    "source": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_EREP/202510/cf407cd3dc_68b663c32f.pdf"
+  },
+  {
+    "price_transaction": [
+      {
+        "transaction_date": "2025-10-23",
+        "transaction_type": "sell",
+        "transaction_price": 51.0,
+        "transaction_share_amount": 437661900
+      }
+    ],
+    "tags": [],
+    "price": 51.0,
+    "purpose_of_transaction": "Investment",
+    "symbol": "DADA.JK",
+    "holder_type": "institution",
+    "timestamp": "2025-10-26T22:55:13",
+    "holding_after": 1792620000,
+    "share_percentage_before": 30.01,
+    "holder_name": "PT Karya Permata Inovasi Indonesia",
+    "body": "PT Karya Permata Inovasi Indonesia sold 437,661,900 shares of PT. Diamond Citra Propertindo Tbk. This decreases their holdings from 2,230,281,900 to 1,792,620,000 shares. The stated purpose of the transaction was investment.",
+    "share_percentage_after": 24.12,
+    "share_percentage_transaction": 5.89,
+    "title": "PT Karya Permata Inovasi Indonesia Sell Transaction of PT. Diamond Citra Propertindo Tbk",
+    "amount_transaction": 437661900,
+    "transaction_type": "sell",
+    "holding_before": 2230281900,
+    "transaction_value": 22320756900.0,
+    "source": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_EREP/202510/5774cd02a8_1b8dfda15c.pdf"
+  },
+  {
+    "price_transaction": [
+      {
+        "transaction_date": "2025-10-23",
+        "transaction_type": "sell",
+        "transaction_price": 80.0,
+        "transaction_share_amount": 20000000
+      }
+    ],
+    "tags": [],
+    "price": 80.0,
+    "purpose_of_transaction": "Investment",
+    "symbol": "DADA.JK",
+    "holder_type": "institution",
+    "timestamp": "2025-10-26T23:02:29",
+    "holding_after": 1624281900,
+    "share_percentage_before": 22.13,
+    "holder_name": "PT Karya Permata Inovasi Indonesia",
+    "body": "PT Karya Permata Inovasi Indonesia sold 20,000,000 shares of PT. Diamond Citra Propertindo Tbk. This decreases their holdings from 1,644,281,900 to 1,624,281,900 shares. The stated purpose of the transaction was investment.",
+    "share_percentage_after": 21.86,
+    "share_percentage_transaction": 0.27,
+    "title": "PT Karya Permata Inovasi Indonesia Sell Transaction of PT. Diamond Citra Propertindo Tbk",
+    "amount_transaction": 20000000,
+    "transaction_type": "sell",
+    "holding_before": 1644281900,
+    "transaction_value": 1600000000.0,
+    "source": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_EREP/202510/70c5ac748f_a778a1add8.pdf"
+  },
+  {
+    "price_transaction": [
+      {
+        "transaction_date": "2025-10-23",
+        "transaction_type": "sell",
+        "transaction_price": 55.0,
+        "transaction_share_amount": 14838000
+      }
+    ],
+    "tags": [],
+    "price": 55.0,
+    "purpose_of_transaction": "Investment",
+    "symbol": "DADA.JK",
+    "holder_type": "institution",
+    "timestamp": "2025-10-26T22:53:52",
+    "holding_after": 2230781900,
+    "share_percentage_before": 30.22,
+    "holder_name": "PT Karya Permata Inovasi Indonesia",
+    "body": "PT Karya Permata Inovasi Indonesia sold 14,838,000 shares of PT. Diamond Citra Propertindo Tbk. This decreases their holdings from 2,245,619,900 to 2,230,781,900 shares. The stated purpose of the transaction was investment.",
+    "share_percentage_after": 30.02,
+    "share_percentage_transaction": 0.2,
+    "title": "PT Karya Permata Inovasi Indonesia Sell Transaction of PT. Diamond Citra Propertindo Tbk",
+    "amount_transaction": 14838000,
+    "transaction_type": "sell",
+    "holding_before": 2245619900,
+    "transaction_value": 816090000.0,
+    "source": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_EREP/202510/2b8f83f0d8_12b6e70417.pdf"
+  },
+  {
+    "price_transaction": [
+      {
+        "transaction_date": "2025-10-23",
+        "transaction_type": "sell",
+        "transaction_price": 54.0,
+        "transaction_share_amount": 95262000
+      }
+    ],
+    "tags": [],
+    "price": 54.0,
+    "purpose_of_transaction": "Investment",
+    "symbol": "DADA.JK",
+    "holder_type": "institution",
+    "timestamp": "2025-10-26T22:57:20",
+    "holding_after": 1659619900,
+    "share_percentage_before": 23.61,
+    "holder_name": "PT Karya Permata Inovasi Indonesia",
+    "body": "PT Karya Permata Inovasi Indonesia sold 95,262,000 shares of PT. Diamond Citra Propertindo Tbk. This decreases their holdings from 1,754,881,900 to 1,659,619,900 shares. The stated purpose of the transaction was investment.",
+    "share_percentage_after": 22.33,
+    "share_percentage_transaction": 1.28,
+    "title": "PT Karya Permata Inovasi Indonesia Sell Transaction of PT. Diamond Citra Propertindo Tbk",
+    "amount_transaction": 95262000,
+    "transaction_type": "sell",
+    "holding_before": 1754881900,
+    "transaction_value": 5144148000.0,
+    "source": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_EREP/202510/0cc43b0b2d_1e39e25e80.pdf"
+  },
+  {
+    "price_transaction": [
+      {
+        "transaction_date": "2025-10-23",
+        "transaction_type": "sell",
+        "transaction_price": 52.0,
+        "transaction_share_amount": 17738100
+      }
+    ],
+    "tags": [],
+    "price": 52.0,
+    "purpose_of_transaction": "Investment",
+    "symbol": "DADA.JK",
+    "holder_type": "institution",
+    "timestamp": "2025-10-26T22:55:44",
+    "holding_after": 1774881900,
+    "share_percentage_before": 24.12,
+    "holder_name": "PT Karya Permata Inovasi Indonesia",
+    "body": "PT Karya Permata Inovasi Indonesia sold 17,738,100 shares of PT. Diamond Citra Propertindo Tbk. This decreases their holdings from 1,792,620,000 to 1,774,881,900 shares. The stated purpose of the transaction was investment.",
+    "share_percentage_after": 23.88,
+    "share_percentage_transaction": 0.24,
+    "title": "PT Karya Permata Inovasi Indonesia Sell Transaction of PT. Diamond Citra Propertindo Tbk",
+    "amount_transaction": 17738100,
+    "transaction_type": "sell",
+    "holding_before": 1792620000,
+    "transaction_value": 922381200.0,
+    "source": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_EREP/202510/c49cd8c770_045edbbe0e.pdf"
+  },
+  {
+    "price_transaction": [
+      {
+        "transaction_date": "2025-10-23",
+        "transaction_type": "sell",
+        "transaction_price": 56.0,
+        "transaction_share_amount": 500000
+      }
+    ],
+    "tags": [],
+    "price": 56.0,
+    "purpose_of_transaction": "Investment",
+    "symbol": "DADA.JK",
+    "holder_type": "institution",
+    "timestamp": "2025-10-26T22:54:38",
+    "holding_after": 2230281900,
+    "share_percentage_before": 30.02,
+    "holder_name": "PT Karya Permata Inovasi Indonesia",
+    "body": "PT Karya Permata Inovasi Indonesia sold 500,000 shares of PT. Diamond Citra Propertindo Tbk. This decreases their holdings from 2,230,781,900 to 2,230,281,900 shares. The stated purpose of the transaction was investment.",
+    "share_percentage_after": 30.01,
+    "share_percentage_transaction": 0.01,
+    "title": "PT Karya Permata Inovasi Indonesia Sell Transaction of PT. Diamond Citra Propertindo Tbk",
+    "amount_transaction": 500000,
+    "transaction_type": "sell",
+    "holding_before": 2230781900,
+    "transaction_value": 28000000.0,
+    "source": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_EREP/202510/19c1357527_9ba9fcefc3.pdf"
+  },
+  {
+    "price_transaction": [
+      {
+        "transaction_date": "2025-10-23",
+        "transaction_type": "sell",
+        "transaction_price": 53.0,
+        "transaction_share_amount": 20000000
+      }
+    ],
+    "tags": [],
+    "price": 53.0,
+    "purpose_of_transaction": "Investment",
+    "symbol": "DADA.JK",
+    "holder_type": "institution",
+    "timestamp": "2025-10-26T22:56:38",
+    "holding_after": 1754881900,
+    "share_percentage_before": 23.88,
+    "holder_name": "PT Karya Permata Inovasi Indonesia",
+    "body": "PT Karya Permata Inovasi Indonesia sold 20,000,000 shares of PT. Diamond Citra Propertindo Tbk. This decreases their holdings from 1,774,881,900 to 1,754,881,900 shares. The stated purpose of the transaction was investment.",
+    "share_percentage_after": 23.61,
+    "share_percentage_transaction": 0.27,
+    "title": "PT Karya Permata Inovasi Indonesia Sell Transaction of PT. Diamond Citra Propertindo Tbk",
+    "amount_transaction": 20000000,
+    "transaction_type": "sell",
+    "holding_before": 1774881900,
+    "transaction_value": 1060000000.0,
+    "source": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_EREP/202510/13698e98a4_1e1cefa1fc.pdf"
+  },
+  {
+    "price_transaction": [
+      {
+        "transaction_date": "2025-10-23",
+        "transaction_type": "sell",
+        "transaction_price": 56.0,
+        "transaction_share_amount": 500000
+      }
+    ],
+    "tags": [],
+    "price": 56.0,
+    "purpose_of_transaction": "Investment",
+    "symbol": "DADA.JK",
+    "holder_type": "institution",
+    "timestamp": "2025-10-26T23:01:13",
+    "holding_after": 1644281900,
+    "share_percentage_before": 22.13,
+    "holder_name": "PT Karya Permata Inovasi Indonesia",
+    "body": "PT Karya Permata Inovasi Indonesia sold 500,000 shares of PT. Diamond Citra Propertindo Tbk. This decreases their holdings from 1,644,781,900 to 1,644,281,900 shares. The stated purpose of the transaction was investment.",
+    "share_percentage_after": 22.13,
+    "share_percentage_transaction": 0.0,
+    "title": "PT Karya Permata Inovasi Indonesia Sell Transaction of PT. Diamond Citra Propertindo Tbk",
+    "amount_transaction": 500000,
+    "transaction_type": "sell",
+    "holding_before": 1644781900,
+    "transaction_value": 28000000.0,
+    "source": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_EREP/202510/dac91da2ef_607a350f05.pdf"
+  },
+  {
+    "price_transaction": [
+      {
+        "transaction_date": "2025-10-23",
+        "transaction_type": "sell",
+        "transaction_price": 54.0,
+        "transaction_share_amount": 95262000
+      }
+    ],
+    "tags": [],
+    "price": 54.0,
+    "purpose_of_transaction": "Investment",
+    "symbol": "DADA.JK",
+    "holder_type": "institution",
+    "timestamp": "2025-10-26T22:53:09",
+    "holding_after": 2245619900,
+    "share_percentage_before": 31.5,
+    "holder_name": "PT Karya Permata Inovasi Indonesia",
+    "body": "PT Karya Permata Inovasi Indonesia sold 95,262,000 shares of PT. Diamond Citra Propertindo Tbk. This decreases their holdings from 2,340,881,900 to 2,245,619,900 shares. The stated purpose of the transaction was investment.",
+    "share_percentage_after": 30.22,
+    "share_percentage_transaction": 1.28,
+    "title": "PT Karya Permata Inovasi Indonesia Sell Transaction of PT. Diamond Citra Propertindo Tbk",
+    "amount_transaction": 95262000,
+    "transaction_type": "sell",
+    "holding_before": 2340881900,
+    "transaction_value": 5144148000.0,
+    "source": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_EREP/202510/33510189d0_5fc572fb8a.pdf"
+  }
+]

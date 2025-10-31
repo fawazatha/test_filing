@@ -45,7 +45,7 @@ def main():
     if args.start and args.end:
         s_date, s_hour = args.start[0], int(args.start[1])
         e_date, e_hour = args.end[0], int(args.end[1])
-        logger.info("Mode: span (WIB) %s %02d:00 → %s %02d:59", s_date, s_hour, e_date, e_hour)
+        logger.info("Mode: span (WIB) %s %02d:00 -> %s %02d:59", s_date, s_hour, e_date, e_hour)
         data = get_ownership_announcements_span(s_date, s_hour, e_date, e_hour)
     elif args.date:
         logger.info("Mode: single-day (WIB) %s", args.date)
@@ -55,11 +55,11 @@ def main():
             p.error("--from-date and --to-date must be provided together.")
         validate_yyyymmdd(args.from_date)
         validate_yyyymmdd(args.to_date)
-        logger.info("Mode: range (WIB) %s → %s", args.from_date, args.to_date)
+        logger.info("Mode: range (WIB) %s -> %s", args.from_date, args.to_date)
         data = get_ownership_announcements_range(args.from_date, args.to_date)
     elif args.month:
         start, end = compute_month_range(args.month)
-        logger.info("Mode: month (WIB) %s → %s", start, end)
+        logger.info("Mode: month (WIB) %s -> %s", start, end)
         data = get_ownership_announcements_range(start, end)
     else:
         p.error("Choose a mode: (--start ... --end ...) | --date | --from-date/--to-date | --month")
@@ -67,7 +67,7 @@ def main():
     # Sort + save
     data = sort_announcements(data, order=args.sort)
     save_json(data, Path(args.out))
-    logger.info("Done. Wrote %d items → %s", len(data), args.out)
+    logger.info("Done. Wrote %d items -> %s", len(data), args.out)
 
 
 if __name__ == "__main__":

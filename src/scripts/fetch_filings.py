@@ -1,25 +1,8 @@
+# src/scripts/fetch_filings.py
 from __future__ import annotations
 
 """
-Fetch rows from Supabase `idx_filings` for a flexible time window and write them to JSON.
-
-Features
-- Time window:
-  * --from / --to (ISO). If timezone missing, assumed Asia/Jakarta (+07:00).
-  * --use-checkpoint: use last saved end as the next start; first run falls back to (now-24h, now).
-  * --working-days-only: skip Sat/Sun.
-  * Half-open window (gt start, lt end) to avoid duplicates.
-- Column/time-kind:
-  * --ts-col <column> (default: inserted_at)  e.g., created_at, inserted_at (timestamptz) OR timestamp (no tz).
-  * --ts-kind timestamptz|timestamp (default: timestamptz).
-- Symbols filter:
-  * --symbols "AAA.JK,BBB.JK"
-  * --company-report-json path/to/company_report.json (expects array of objects with "symbol")
-- Output:
-  * --out path/to/output.json
-
-Env
-- SUPABASE_URL, SUPABASE_KEY (loaded via dotenv if present)
+Fetch rows from Supabase `idx_filings` for a flexible time window.
 """
 
 import argparse
@@ -35,7 +18,7 @@ from typing import Any, Dict, Iterable, List, Optional, Sequence, Set, Tuple
 import httpx
 from dotenv import load_dotenv
 
-# --------- Setup ---------
+# Setup
 load_dotenv()
 logging.basicConfig(
     level=os.environ.get("LOGLEVEL", "INFO"),
@@ -66,7 +49,7 @@ def _sb_headers() -> Dict[str, str]:
     }
 
 
-# NOTE: Return a LIST OF (key, value) to allow duplicated keys (e.g., timestamp=gt... & timestamp=lt...)
+# NOTE: Returns a LIST OF (key, value) to allow duplicated keys (e.g., timestamp=gt... & timestamp=lt...)
 def _build_query_params(
     *,
     select: str = "*",
@@ -160,20 +143,15 @@ async def _rest_get_all(
     page_size: int = 1000,
     timeout: float = 60.0,
 ) -> List[Dict[str, Any]]:
+    """Paginates through all results from a Supabase query."""
     out: List[Dict[str, Any]] = []
     start = 0
     while True:
         batch, headers = await _rest_get(
             table,
             select=select,
-            eq=eq,
-            gte=gte,
-            lte=lte,
-            gt=gt,
-            lt=lt,
-            ilike=ilike,
-            in_=in_,
-            order=order,
+            eq=eq, gte=gte, lte=lte, gt=gt, lt=lt,
+            ilike=ilike, in_=in_, order=order,
             range_=(start, start + page_size - 1),
             timeout=timeout,
         )
@@ -194,7 +172,7 @@ async def _rest_get_all(
     return out
 
 
-# High-level fetch (ts-col aware)
+# High-level fetch functions
 def _parse_dt_iso(s: Optional[str]) -> Optional[datetime]:
     if not s:
         return None
@@ -220,8 +198,37 @@ def _fmt_for_ts_kind(dt: datetime, ts_kind: str) -> str:
     """
     if ts_kind == "timestamptz":
         return _to_utc_z(dt)
-    return dt.astimezone(JKT).strftime("%Y-%m-%d %H:%M:%S")
+    return dt.astimezone(JKT).strftime("%Y-MM-d %H:%M:%S")
 
+async def get_idx_filings_by_days(
+    days: Sequence[str],
+    symbols: Optional[Sequence[str]] = None,
+    *,
+    table: str = "idx_filings",
+    select: str = ",".join([
+        "symbol","filing_date","type","holder_name",
+        "holding_before","holding_after",
+        "share_percentage_before","share_percentage_after",
+        "amount_transaction","transaction_value","price",
+    ]),
+    page_size: int = 1000,
+    timeout: float = 60.0,
+) -> List[Dict[str, Any]]:
+    """
+    Fetches filings for specific dates. Used by the deduplicator.
+    """
+    in_filter = {"filing_date": days}
+    if symbols:
+        in_filter["symbol"] = [s.upper() for s in symbols]
+        
+    return await _rest_get_all(
+        table,
+        select=select,
+        in_=in_filter,
+        order="filing_date.asc,id.asc",
+        page_size=page_size,
+        timeout=timeout,
+    )
 
 async def get_idx_filings_between(
     ts_col: str,
@@ -234,7 +241,7 @@ async def get_idx_filings_between(
     select: str = "*",  
 ) -> List[Dict[str, Any]]:
     """
-    Fetch rows from `table` where ts_col is (gt start_dt) and (lt end_dt), ordered by ts_col then id.
+    Fetch rows from `table` where ts_col is (gt start_dt) and (lt end_dt).
     """
     start_val = _fmt_for_ts_kind(start_dt, ts_kind)
     end_val = _fmt_for_ts_kind(end_dt, ts_kind)
@@ -295,8 +302,6 @@ def _merge_symbols(symbols_arg: Optional[str], company_report_json: Optional[str
                     sym = str(row.get("symbol", "")).strip().upper()
                     if sym:
                         symset.add(sym)
-            else:
-                logger.warning("company_report_json is not a JSON array; ignoring.")
         except Exception as e:
             logger.error("Failed reading company_report_json: %s", e)
 
@@ -306,25 +311,16 @@ def _merge_symbols(symbols_arg: Optional[str], company_report_json: Optional[str
 # CLI & window resolution
 def build_argparser():
     p = argparse.ArgumentParser(description="Fetch idx_filings for a time window and write to JSON.")
-
-    # Window options
-    p.add_argument("--from", dest="from_iso", help="Start datetime (ISO). If omitted, uses checkpoint or (now-24h).")
+    # (Args remain the same)
+    p.add_argument("--from", dest="from_iso", help="Start datetime (ISO).")
     p.add_argument("--to", dest="to_iso", help="End datetime (ISO). If omitted, uses 'now' (JKT).")
-    p.add_argument("--use-checkpoint", action="store_true", help="Use checkpoint as 'from' if --from not given.")
+    p.add_argument("--use-checkpoint", action="store_true", help="Use checkpoint as 'from'.")
     p.add_argument("--checkpoint", default="data/reports/.filings_checkpoint.json", help="Checkpoint path.")
     p.add_argument("--working-days-only", action="store_true", help="Skip Sat/Sun.")
-
-    # Time column config
-    p.add_argument("--ts-col", default="inserted_at",
-                   help="Time column to filter: e.g. inserted_at|created_at (timestamptz) or timestamp (no tz).")
-    p.add_argument("--ts-kind", default="timestamptz", choices=["timestamptz", "timestamp"],
-                   help="Column type: 'timestamptz' (UTC Z) or 'timestamp' (no timezone).")
-
-    # Symbol universe
+    p.add_argument("--ts-col", default="inserted_at", help="Time column to filter.")
+    p.add_argument("--ts-kind", default="timestamptz", choices=["timestamptz", "timestamp"])
     p.add_argument("--symbols", help="Comma-separated symbols, e.g. 'BBRI.JK,TLKM.JK'.")
-    p.add_argument("--company-report-json", help="Path to company_report_YYYY-MM.json to derive symbols.")
-
-    # Output
+    p.add_argument("--company-report-json", help="Path to company_report_YYYY-MM.json.")
     p.add_argument("--out", default="data/reports/today_filings.json", help="Output JSON path.")
     return p
 
@@ -341,12 +337,7 @@ def resolve_window(
     use_checkpoint: bool,
     checkpoint_path: str,
 ) -> Window:
-    """
-    Priority:
-      1) If --from provided -> use [--from, --to or now]
-      2) Else if --use-checkpoint -> [checkpoint or (now-24h), now]
-      3) Else -> [now-24h, now]
-    """
+    """Resolves the time window for the query."""
     now = _now_jkt()
     ws = _parse_dt_iso(from_iso)
     we = _parse_dt_iso(to_iso) or now
@@ -370,25 +361,21 @@ def resolve_window(
 async def main():
     args = build_argparser().parse_args()
 
-    # Weekend guard
     if args.working_days_only:
         dow = _now_jkt().weekday()  # 0=Mon..6=Sun
         if dow >= 5:
             logger.info("Weekend detected; skipping run.")
             return
 
-    # Resolve window
     window = resolve_window(args.from_iso, args.to_iso, args.use_checkpoint, args.checkpoint)
     logger.info("Window: %s -> %s (JKT)", window.start.isoformat(), window.end.isoformat())
 
-    # Symbols (optional)
     symbols = _merge_symbols(args.symbols, args.company_report_json)
     if symbols:
         logger.info("Filter symbols: %d symbols", len(symbols))
     else:
         logger.info("No symbol filter; querying ALL symbols in idx_filings")
 
-    # Query Supabase using chosen time column/kind
     filings = await get_idx_filings_between(
         ts_col=args.ts_col,
         ts_kind=args.ts_kind,
@@ -396,15 +383,13 @@ async def main():
         end_dt=window.end,
         symbols=symbols or None,
         table="idx_filings",
-        select="*",  # change to a comma-list if you want fewer columns
+        select="*",
     )
 
-    # Output
     _ensure_parent(args.out)
-    Path(args.out).write_text(json.dumps(filings, ensure_ascii=False, indent=2), encoding="utf-8")
+    Path(args.out).write_text(json.dumps(filings, ensure_ascii=False, indent=2, default=str), encoding="utf-8")
     logger.info("Wrote %d rows to %s", len(filings), args.out)
 
-    # Save checkpoint
     if args.use_checkpoint and args.checkpoint:
         _save_checkpoint(args.checkpoint, window.end)
         logger.info("Saved checkpoint at %s", args.checkpoint)

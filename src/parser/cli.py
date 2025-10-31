@@ -5,8 +5,9 @@ import logging
 from pathlib import Path
 from typing import Any, Dict, Tuple
 
-from . import parser_idx as parser_idx_mod
-from . import parser_non_idx as parser_non_idx_mod
+# Use absolute imports now that 'src' is a package
+from src.parser import parser_idx as parser_idx_mod
+from src.parser import parser_non_idx as parser_non_idx_mod
 
 LOGGER = logging.getLogger("parser.cli")
 
@@ -56,7 +57,11 @@ def _load_counts(out_path: str, alerts_path: str) -> Tuple[int, int]:
 
 def run_idx_parser(args: argparse.Namespace):
     IDXClass = getattr(parser_idx_mod, "IDXParser", None)
-    LOGGER.info("IDXParser symbol origin: %s", inspect.getsourcefile(IDXClass))  # type: ignore[arg-type]
+    if not IDXClass:
+        LOGGER.error("Could not find IDXParser class.")
+        return
+        
+    LOGGER.info("IDXParser symbol origin: %s", inspect.getsourcefile(IDXClass))
     parser = IDXClass(
         pdf_folder=args.idx_folder,
         output_file=args.idx_output,
@@ -71,7 +76,11 @@ def run_idx_parser(args: argparse.Namespace):
 
 def run_non_idx_parser(args: argparse.Namespace):
     NonIDXClass = getattr(parser_non_idx_mod, "NonIDXParser", None)
-    LOGGER.info("NonIDXParser symbol origin: %s", inspect.getsourcefile(NonIDXClass)) 
+    if not NonIDXClass:
+        LOGGER.error("Could not find NonIDXParser class.")
+        return
+        
+    LOGGER.info("NonIDXParser symbol origin: %s", inspect.getsourcefile(NonIDXClass))
     parser = NonIDXClass(
         pdf_folder=args.non_idx_folder,
         output_file=args.non_idx_output,

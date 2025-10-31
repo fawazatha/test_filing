@@ -7,6 +7,7 @@ from typing import Any, Dict, List, Tuple
 log = logging.getLogger("filings.loaders")
 
 def load_json(path: str | Path) -> Any:
+    """Loads a JSON file, returning None on error or if missing."""
     p = Path(path)
     if not p.exists():
         log.info("[LOAD] missing: %s", p)
@@ -22,24 +23,23 @@ def load_json(path: str | Path) -> Any:
         return None
 
 def _coerce_list(data: Any) -> List[dict]:
-    # Parser kita menyimpan LIST of dict untuk parsed_*_output.json
-    # Namun jaga-jaga kalau ada wrapper {"items": [...]}.
+    """
+    Finds the list of records within a loaded JSON structure.
+    (e.g., handles {"items": [...]}).
+    """
     if data is None:
         return []
     if isinstance(data, list):
-        return data
+        return [d for d in data if isinstance(d, dict)]
     if isinstance(data, dict):
         items = data.get("items") or data.get("data") or data.get("rows") or []
         if isinstance(items, list):
-            return items
-    # fallback: tidak dikenal
+            return [d for d in items if isinstance(d, dict)]
     return []
 
 def load_parsed_files(paths: List[str | Path]) -> List[List[dict]]:
     """
-    Return list of chunks; setiap elemen = list[dict] untuk satu file parsed.
-    Selain mengembalikan data, fungsi ini juga melakukan logging jumlah
-    per file agar terlihat mana yang kosong/terbaca.
+    Return list of chunks; each element = list[dict] for one parsed file.
     """
     out: List[List[dict]] = []
     for p in paths:
@@ -50,9 +50,8 @@ def load_parsed_files(paths: List[str | Path]) -> List[List[dict]]:
 
 def build_downloads_meta_map(path: str | Path) -> Dict[str, Any]:
     """
-    Build index metadata dari downloads (opsional). Kami index-kan berdasarkan:
-    - pdf_url / source / filename
-    - basename(filename) sebagai convenience key
+    Build index metadata from downloads (optional).
+    Indexed by: pdf_url / source / filename
     """
     data = load_json(path)
     if not data:
@@ -60,11 +59,12 @@ def build_downloads_meta_map(path: str | Path) -> Dict[str, Any]:
     items = data if isinstance(data, list) else data.get("items", [])
     m: Dict[str, Any] = {}
     for it in items:
+        if not isinstance(it, dict):
+            continue
         k = it.get("pdf_url") or it.get("source") or it.get("filename")
         if not k:
             continue
         m[k] = it
-        # juga map by basename
         try:
             from pathlib import Path as _P
             m[_P(k).name] = it
@@ -72,3 +72,25 @@ def build_downloads_meta_map(path: str | Path) -> Dict[str, Any]:
             pass
     log.info("[LOAD] downloads meta: %d keys", len(m))
     return m
+
+def build_ingestion_map(path: str | Path) -> Dict[str, Dict[str, Any]]:
+    """
+    Loads the ingestion file (e.g., ingestion.json) and creates
+    a lookup map of {filename: {date: "...", "main_link": "..."}}.
+    """
+    log.info(f"Building ingestion map from: {path}")
+    data = load_json(path)
+    items = _coerce_list(data)
+    
+    # Mengubah dari Dict[str, str] menjadi Dict[str, Dict[str, Any]]
+    ingestion_map: Dict[str, Dict[str, Any]] = {}
+    for item in items:
+        if not isinstance(item, dict):
+            continue
+        filename = item.get("filename")
+        if filename:
+            # Menyimpan seluruh item untuk fleksibilitas
+            ingestion_map[str(filename)] = item
+            
+    log.info(f"Built ingestion map with {len(ingestion_map)} entries.")
+    return ingestion_map

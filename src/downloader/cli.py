@@ -5,7 +5,7 @@ from pathlib import Path
 
 from src.common.log import get_logger
 from downloader.runner import download_pdfs
-from models.announcement import Announcement
+from downloader.utils.announcement import Announcement
 
 """CLI wrapper to download PDFs from announcements JSON."""
 

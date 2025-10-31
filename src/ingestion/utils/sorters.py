@@ -2,7 +2,7 @@ from __future__ import annotations
 from typing import List, Dict
 from datetime import datetime
 
-from src.common.time import JAKARTA_TZ as JKT
+from src.common.datetime import JAKARTA_TZ as JKT
 from ingestion.utils.filters import parse_publish_wib
 
 """Sorting utilities for announcements."""

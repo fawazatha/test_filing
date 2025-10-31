@@ -1,3 +1,4 @@
+# src/generate/filings/utils/config.py
 import os
 
 # -----------------------------------------------------------------------------
@@ -27,13 +28,13 @@ USE_LIVE_SUPABASE_ON_MISS = os.getenv("FILINGS_LIVE_ON_MISS", "0").lower() in ("
 # P0-4 • Suspicious price detection (flag & gate)
 # -----------------------------------------------------------------------------
 # Within-doc: bandingkan harga transaksi vs median harga di dokumen yang sama
-WITHIN_DOC_RATIO_LOW  = float(os.getenv("FILINGS_WITHIN_DOC_RATIO_LOW",  "0.5"))  # < 0.5x median → outlier
-WITHIN_DOC_RATIO_HIGH = float(os.getenv("FILINGS_WITHIN_DOC_RATIO_HIGH", "1.5"))  # > 1.5x median → outlier
+WITHIN_DOC_RATIO_LOW  = float(os.getenv("FILINGS_WITHIN_DOC_RATIO_LOW",  "0.5"))  # < 0.5x median -> outlier
+WITHIN_DOC_RATIO_HIGH = float(os.getenv("FILINGS_WITHIN_DOC_RATIO_HIGH", "1.5"))  # > 1.5x median -> outlier
 
 # Market sanity: bandingkan harga transaksi vs Close/VWAP N-day (default 20)
 MARKET_REF_N_DAYS       = int(os.getenv("FILINGS_MARKET_REF_N_DAYS", "20"))
-MARKET_RATIO_LOW        = float(os.getenv("FILINGS_MARKET_RATIO_LOW",  "0.6"))  # < 0.6x market ref → outlier
-MARKET_RATIO_HIGH       = float(os.getenv("FILINGS_MARKET_RATIO_HIGH", "1.4"))  # > 1.4x market ref → outlier
+MARKET_RATIO_LOW        = float(os.getenv("FILINGS_MARKET_RATIO_LOW",  "0.6"))  # < 0.6x market ref -> outlier
+MARKET_RATIO_HIGH       = float(os.getenv("FILINGS_MARKET_RATIO_HIGH", "1.4"))  # > 1.4x market ref -> outlier
 
 # Magnitude anomaly: deteksi kemungkinan "nol hilang" (x10 / x100)
 # Jika harga ≈ 10x atau 100x referensi (median dokumen / market), flag possible_zero_missing=True
@@ -46,7 +47,7 @@ ZERO_MISSING_X100_MAX   = float(os.getenv("FILINGS_ZERO_MISSING_X100_MAX","150.0
 SUGGEST_PRICE_RATIO = float(os.getenv("FILINGS_SUGGEST_PRICE_RATIO", "0.15"))  # ±15%
 
 # -----------------------------------------------------------------------------
-# P0-5 • Recompute ownership % (model vs PDF → flag, tidak override)
+# P0-5 • Recompute ownership % (model vs PDF -> flag, tidak override)
 # -----------------------------------------------------------------------------
 # Toleransi selisih dalam satuan "percentage points (pp)". Misal 0.25 berarti 0.25pp (bukan 25%).
 PERCENT_TOL_PP = float(os.getenv("FILINGS_PERCENT_TOL_PP", "0.25"))  # default 0.25pp

@@ -1,3 +1,4 @@
+# src/generate/filings/cli.py
 from __future__ import annotations
 import argparse
 import logging
@@ -7,29 +8,45 @@ import os
 from pathlib import Path
 from typing import List, Dict, Any
 
-from utils.config import LOG_LEVEL
-from .runner import run as run_generate
+# Core Imports
+from src.core.types import FilingRecord
+from src.core.transformer import transform_many
 
-from services.io.paths import data_file, list_alert_files
-from services.upload.supabase import SupabaseUploader
+# Local & Service Imports
+from src.generate.filings.utils.config import LOG_LEVEL
+from src.generate.filings.runner import run as run_generate # This is the pipeline.py runner
+from src.services.io.paths import data_file, list_alert_files
+from src.services.upload.supabase import SupabaseUploader, UploadResult
+from src.services.upload.dedup import upload_filings_with_dedup
 from services.email.manager import AlertManager
-# === GANTI KE SES ===
 from services.email.ses_email import send_attachments
-from services.transform.filings_schema import (
-    clean_rows, ALLOWED_COLUMNS, REQUIRED_COLUMNS
-)
+
+# This list now defines the *exact* columns to be uploaded.
+ALLOWED_DB_COLUMNS: List[str] = [
+    "symbol", "timestamp", "transaction_type", "holder_name",
+    "holding_before", "holding_after", "amount_transaction",
+    "share_percentage_before", "share_percentage_after", "share_percentage_transaction",
+    "price", "transaction_value", "price_transaction", "title", "body",
+    "purpose_of_transaction", "tags", "sector", "sub_sector", "source", "holder_type",
+]
+
+# These are the minimum fields a record must have to be valid.
+REQUIRED_COLUMNS: List[str] = [
+    "symbol",
+    "timestamp",
+    "holder_name",
+    "transaction_type",
+]
 
 
-# -----------------------------
 # Utils
-# -----------------------------
 def _setup_logging(verbose: bool) -> None:
     level = logging.DEBUG if verbose else getattr(logging, LOG_LEVEL, logging.INFO)
     logging.basicConfig(level=level, format="%(asctime)s [%(levelname)s] %(message)s")
 
 
 def _load_env_file() -> None:
-    """Load .env kalau ada (tidak wajib)."""
+    """Load .env if it exists (optional)."""
     try:
         from dotenv import load_dotenv, find_dotenv
         env_path = find_dotenv(usecwd=True)
@@ -50,8 +67,8 @@ def _parse_recipients(raw: str | None) -> List[str]:
 
 def _resolve_recipients_and_cfg(args):
     """
-    Menggabungkan flag CLI dan ENV untuk penerima & config SES.
-    Prioritas: flags > ENV > default kosong.
+    Combine CLI flags and ENV vars for recipients & SES config.
+    Priority: flags > ENV > default.
     """
     to = _parse_recipients(getattr(args, "to", None)) or _parse_recipients(os.getenv("ALERTS_TO"))
     cc = _parse_recipients(getattr(args, "cc", None)) or _parse_recipients(os.getenv("ALERTS_CC"))
@@ -78,7 +95,7 @@ def _send_bucket(bucket: str,
                  from_email: str | None,
                  aws_region: str | None) -> bool:
     """
-    Kirim email SES untuk satu bucket alert.
+    Send an SES email for a single alert bucket.
     """
     files = list_alert_files("filings", bucket)
     files = [p for p in files if p.exists()]
@@ -107,6 +124,7 @@ def _send_bucket(bucket: str,
 
 
 def _load_json(path: Path) -> List[Dict[str, Any]]:
+    """Loads raw JSON from the pipeline output."""
     try:
         raw = json.loads(path.read_text(encoding="utf-8"))
     except Exception as e:
@@ -126,11 +144,12 @@ def _load_json(path: Path) -> List[Dict[str, Any]]:
         raise ValueError("Unsupported JSON format")
 
 
-def _record_alerts(am: AlertManager, res, table: str) -> None:
-    # sukses
+def _record_alerts(am: AlertManager, res: UploadResult, table: str) -> None:
+    """Record upload successes and failures to the AlertManager."""
+    # success
     for _ in range(res.inserted):
         am.record({"message": f"Inserted to DB ({table})"}, inserted=True)
-    # gagal
+    # failure
     for row, err in zip(res.failed_rows, res.errors):
         am.record(
             {
@@ -143,7 +162,8 @@ def _record_alerts(am: AlertManager, res, table: str) -> None:
         )
 
 
-def _first_failure_debug(uploader: SupabaseUploader, table: str, res) -> None:
+def _first_failure_debug(uploader: SupabaseUploader, table: str, res: UploadResult) -> None:
+    """Run a debug probe on the first row that failed to insert."""
     if not res.failed_rows:
         return
     sample = res.failed_rows[0]
@@ -154,74 +174,99 @@ def _first_failure_debug(uploader: SupabaseUploader, table: str, res) -> None:
         logging.error("debug_probe failed: %s", e)
 
 
-# -----------------------------
-# Commands
-# -----------------------------
+# Command Functions
 def _cmd_run(args) -> None:
+    """Runs the data generation pipeline (load -> transform -> process -> save)."""
     cnt = run_generate(
         parsed_files=[args.non_idx, args.idx],
         downloads_file=args.downloads,
         output_file=args.out,
+        ingestion_file=args.ingestion_file, # Added this argument
         alerts_file=args.alerts,
     )
     print(f"[SUCCESS] Generated {cnt} filings -> {args.out}")
 
 
+def _load_and_transform_data(input_path: Path) -> List[FilingRecord]:
+    """Loads raw JSON and transforms it into clean FilingRecord objects."""
+    # 1) Load raw JSON
+    rows_raw: List[Dict[str, Any]] = _load_json(input_path)
+    logging.info("Loaded %d raw rows from %s", len(rows_raw), input_path)
+
+    # 2) Clean & normalize using the new central transformer
+    # We pass an empty ingestion_map because 'upload' assumes data is *already*
+    # processed by 'run', which *did* use the ingestion_map.
+    records = transform_many(rows_raw, ingestion_map={})
+    logging.info("Transformed %d records (standardized format).", len(records))
+    
+    return records
+
+
+def _validate_records(records: List[FilingRecord], stop_on_missing: bool) -> bool:
+    """Validates records against REQUIRED_COLUMNS."""
+    missing_any = False
+    for i, r in enumerate(records):
+        missing = [k for k in REQUIRED_COLUMNS if not getattr(r, k, None)]
+        if missing:
+            missing_any = True
+            logging.error("Record %d missing required fields: %s", i, ", ".join(missing))
+            if stop_on_missing:
+                sys.exit(3)
+                
+    if missing_any:
+        logging.warning("Some records are missing required fields; continuing (stop_on_missing=off).")
+        
+    return not missing_any # True if valid
+
+
 def _cmd_upload(args) -> None:
-    # 0) Inisialisasi uploader (ENV sudah diload di main())
+    """Transforms, validates, and uploads filings to Supabase with deduplication."""
+    # 0) Init uploader
     try:
         uploader = SupabaseUploader(url=args.supabase_url, key=args.supabase_key)
     except RuntimeError as e:
         logging.error(str(e))
         logging.error(
-            "Set ENV di .env atau shell (SUPABASE_URL, SUPABASE_KEY), "
-            "atau pakai flags --supabase-url / --supabase-key."
+            "Set ENV in .env or shell (SUPABASE_URL, SUPABASE_KEY), "
+            "or use flags --supabase-url / --supabase-key."
         )
         sys.exit(2)
 
     table = args.table or (args.env_table or "idx_filings")
     input_path = Path(args.input)
     if not input_path.exists():
-        input_path = data_file("filings")
+        input_path = data_file("filings") # Assumes this resolves correctly
 
-    # 1) Load JSON mentah
-    rows_raw: List[Dict[str, Any]] = _load_json(input_path)
-    logging.info("Loaded %d raw rows from %s", len(rows_raw), input_path)
-
-    # 2) Clean & normalize
-    rows_clean = clean_rows(rows_raw)
-    logging.info("Cleaned rows -> ready for upload (tickers set to NULL).")
-
-    # Sanity sample
-    if rows_clean:
-        sample = rows_clean[0]
-        for k in ("symbol", "sector", "tags", "tickers", "price_transaction"):
-            v = sample.get(k, None)
-            logging.debug("FIELD %s -> type=%s value=%r", k, type(v).__name__, v)
-
-    # Required fields
-    missing_any = False
-    for i, r in enumerate(rows_clean):
-        missing = [k for k in REQUIRED_COLUMNS if (r.get(k) is None or r.get(k) == "")]
-        if missing:
-            missing_any = True
-            logging.error("Row %d missing required fields: %s", i, ", ".join(missing))
-            if args.stop_on_missing:
-                sys.exit(3)
-    if missing_any:
-        logging.warning("Some rows are missing required fields; continuing (stop_on_missing=off).")
-
-    # 3) Upload
+    # 1) Load and Transform
+    records = _load_and_transform_data(input_path)
+    
+    # 2) Validate
+    if not _validate_records(records, args.stop_on_missing):
+        logging.error("Validation failed. Exiting.")
+        sys.exit(3)
+    
+    # 3) Upload with Deduplication
     if args.dry_run:
         logging.info("[DRY RUN] Skipping upload to Supabase.")
+        logging.info("[DRY RUN] Would have attempted to upload %d records.", len(records))
         return
 
-    res = uploader.upload_records(
+    # Convert FilingRecord objects to dicts for the dedup service
+    rows_to_upload = [rec.to_db_dict() for rec in records]
+    
+    # Use the dedup service
+    res, stats = upload_filings_with_dedup(
+        uploader=uploader,
         table=table,
-        rows=rows_clean,
-        allowed_columns=ALLOWED_COLUMNS,
-        normalize_keys=False,
-        stop_on_first_error=False,
+        rows=rows_to_upload,
+        allowed_columns=ALLOWED_DB_COLUMNS,
+        stop_on_first_error=False
+    )
+    
+    logging.info(
+        "Deduplication stats: input=%(input)d, intrarun_unique=%(intrarun_unique)d, "
+        "existing_db_rows=%(existing_same_day_rows)d, to_insert=%(to_insert)d", 
+        stats
     )
 
     # 4) Alerts + snapshot
@@ -263,12 +308,13 @@ def _cmd_upload(args) -> None:
 
         print("[ALERT EMAIL SENT]" if sent_any else "[NO ALERT EMAIL SENT]")
 
-    # 7) Exit code (opsional strict)
+    # 7) Exit code (optional strict)
     if args.strict_exit and res.failed_rows:
         sys.exit(4)
 
 
 def _cmd_send_alerts(args) -> None:
+    """Manually triggers the sending of existing alerts."""
     cfg = _resolve_recipients_and_cfg(args)
     sent_any = False
 
@@ -295,9 +341,9 @@ def _cmd_send_alerts(args) -> None:
     print("[ALERTS SENT]" if sent_any else "[NO ALERTS TO SEND]")
 
 
-# -----------------------------
-# CLI
-# -----------------------------
+#--
+# CLI Entrypoint
+#--
 def main():
     parser = argparse.ArgumentParser(description="Filings pipeline CLI")
     sub = parser.add_subparsers(dest="cmd")
@@ -308,6 +354,7 @@ def main():
     parser.add_argument("--downloads", default="data/downloaded_pdfs.json")
     parser.add_argument("--out", default="data/filings_data.json")
     parser.add_argument("--alerts", default="alerts/suspicious_alerts.json")
+    parser.add_argument("--ingestion-file", default="data/ingestion.json", help="Path to ingestion file with announcement dates.")
     parser.add_argument("-v", "--verbose", action="store_true")
 
     # run
@@ -317,45 +364,41 @@ def main():
     p_run.add_argument("--downloads", default="data/downloaded_pdfs.json")
     p_run.add_argument("--out", default="data/filings_data.json")
     p_run.add_argument("--alerts", default="alerts/suspicious_alerts.json")
+    p_run.add_argument("--ingestion-file", default="data/ingestion.json", help="Path to ingestion file with announcement dates.")
     p_run.add_argument("-v", "--verbose", action="store_true")
     p_run.set_defaults(func=_cmd_run)
 
-    # upload (+ optional email via SES)
+    # upload
     p_up = sub.add_parser("upload", help="Upload generated filings to Supabase (and optionally email alerts via SES)")
     p_up.add_argument("--input", default=str(data_file("filings")))
     p_up.add_argument("--table", default=None)
     p_up.add_argument("--env-table", default="idx_filings")
-    # Email controls
     p_up.add_argument("--send-email", action="store_true", help="Send SES email after upload")
     p_up.add_argument("--email-bucket", choices=["in_db", "not_inserted", "both"], default="both")
     p_up.add_argument("--subject-inserted", default="[FILINGS] Alerts (Inserted)")
     p_up.add_argument("--subject-not-inserted", default="[FILINGS] Alerts (Not Inserted)")
     p_up.add_argument("--body-text-inserted", default=None, help="Custom body text for Inserted email")
     p_up.add_argument("--body-text-not-inserted", default=None, help="Custom body text for Not Inserted email")
-    # Recipients & SES config (flags override ENV)
     p_up.add_argument("--to", default=None, help="Comma-separated recipients (overrides ALERTS_TO)")
     p_up.add_argument("--cc", default=None, help="Comma-separated CC (overrides ALERTS_CC)")
     p_up.add_argument("--bcc", default=None, help="Comma-separated BCC (overrides ALERTS_BCC)")
     p_up.add_argument("--from-email", default=None, help="Override SES_FROM_EMAIL")
     p_up.add_argument("--aws-region", default=None, help="Override AWS_REGION/SES_REGION")
-    # Controls
     p_up.add_argument("--dry-run", action="store_true", help="Do not post to Supabase")
     p_up.add_argument("--stop-on-missing", action="store_true", help="Fail if required fields are missing")
     p_up.add_argument("--strict-exit", action="store_true", help="Exit 4 if any row failed to insert")
-    # Supabase creds override
     p_up.add_argument("--supabase-url", default=None, help="Override SUPABASE_URL (optional)")
     p_up.add_argument("--supabase-key", default=None, help="Override SUPABASE_KEY (optional)")
     p_up.add_argument("-v", "--verbose", action="store_true")
     p_up.set_defaults(func=_cmd_upload)
 
-    # send-alerts (manual) via SES
+    # send-alerts
     p_alert = sub.add_parser("send-alerts", help="Send alert emails per bucket via SES")
     p_alert.add_argument("--bucket", choices=["in_db", "not_inserted", "both"], default="both")
     p_alert.add_argument("--subject-inserted", default="[FILINGS] Alerts (Inserted)")
     p_alert.add_argument("--subject-not-inserted", default="[FILINGS] Alerts (Not Inserted)")
     p_alert.add_argument("--body-text-inserted", default=None, help="Custom body text for Inserted email")
     p_alert.add_argument("--body-text-not-inserted", default=None, help="Custom body text for Not Inserted email")
-    # Recipients & SES config (flags override ENV)
     p_alert.add_argument("--to", default=None, help="Comma-separated recipients (overrides ALERTS_TO)")
     p_alert.add_argument("--cc", default=None, help="Comma-separated CC (overrides ALERTS_CC)")
     p_alert.add_argument("--bcc", default=None, help="Comma-separated BCC (overrides ALERTS_BCC)")
@@ -365,13 +408,12 @@ def main():
     p_alert.set_defaults(func=_cmd_send_alerts)
 
     args = parser.parse_args()
-    _load_env_file()                # load .env duluan
+    _load_env_file()
     _setup_logging(args.verbose)
     if args.cmd is None:
         _cmd_run(args)
     else:
         args.func(args)
-
 
 if __name__ == "__main__":
     main()

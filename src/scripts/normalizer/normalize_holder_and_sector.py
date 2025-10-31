@@ -240,7 +240,7 @@ def main():
     print(f"  updated = {0 if args.dry_run else updated_total}")
     print(f"  dry_run = {args.dry_run}")
     if args.report_csv:
-        print(f"[report] CSV saved → {args.report_csv}")
+        print(f"[report] CSV saved -> {args.report_csv}")
 
 if __name__ == "__main__":
     main()

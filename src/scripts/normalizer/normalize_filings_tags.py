@@ -282,7 +282,7 @@ def main():
     print(f"[stats] legacy_null={legacy_null_cnt}, sentiment_added={sentiment_cnt}, added={takeover_cnt}")
     print(f"\n[done] scanned={scanned}, updated={0 if args.dry_run else updated}, dry_run={args.dry_run}")
     if args.report_csv:
-        print(f"[report] CSV saved → {args.report_csv}")
+        print(f"[report] CSV saved -> {args.report_csv}")
 
 if __name__ == "__main__":
     main()
