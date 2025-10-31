@@ -36,7 +36,8 @@ def _translate_to_english(text: str) -> str:
         "bagian dari proses akuisisi": "Part of the acquisition process",
         "strategi internal": "Internal strategy",
         "pengembangan usaha": "Business expansion",
-        "investasi": "Investment",
+        "investasi": "investment",
+        "divestasi": "divestment",
     }
     normalized_text = text.strip().lower()
     if normalized_text in known_phrases:
