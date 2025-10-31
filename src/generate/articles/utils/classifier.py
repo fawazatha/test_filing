@@ -1,3 +1,4 @@
+# src/generate/articles/utils/classifier.py
 from __future__ import annotations
 import os
 from typing import Dict, Any, List, Optional
@@ -41,7 +42,7 @@ def _pick_provider(explicit: Optional[str]) -> str:
     Resolve provider priority:
     1) explicit arg
     2) LLM_PROVIDERS (first item) or LLM_PROVIDER env
-    3) if GROQ_API_KEY exists -> groq, elif OPENAI_API_KEY -> openai, else openai
+    3) if GROQ_API_KEY exists -> groq, elif OPENAI_API_KEY -> openai, elif GEMINI_API_KEY/GOOGLE_API_KEY -> gemini, else openai
     """
     if explicit:
         return explicit.lower().strip().strip('"').strip("'")
@@ -54,7 +55,13 @@ def _pick_provider(explicit: Optional[str]) -> str:
     if env in {"openai", "groq", "gemini"}:
         return env
 
-    return "groq" if _env("GROQ_API_KEY") else ("openai" if _env("OPENAI_API_KEY") else "openai")
+    if _env("GROQ_API_KEY"):
+        return "groq"
+    if _env("OPENAI_API_KEY"):
+        return "openai"
+    if _env("GEMINI_API_KEY") or _env("GOOGLE_API_KEY"):
+        return "gemini"
+    return "openai"
 
 def _normalize_model(provider: str, name: Optional[str]) -> str:
     """
@@ -72,7 +79,7 @@ def _normalize_model(provider: str, name: Optional[str]) -> str:
         if not raw:
             return "gpt-4.1-mini"
         # prevent llama-* under openai
-        if raw.startswith("llama-"):
+        if raw.startswith("llama-") or raw.startswith("llama3"):
             return "gpt-4.1-mini"
         # keep user-provided non-llama model
         return raw
@@ -97,8 +104,9 @@ def _normalize_model(provider: str, name: Optional[str]) -> str:
 def _init_llm(provider: str, model_name: str):
     """
     Create a LangChain chat model bound to the requested provider/model.
-    Honors env overrides and fails back gracefully.
+    Returns a tuple: (llm, effective_model_name).
     """
+    provider = (provider or "").strip().lower()
     eff_model = _normalize_model(provider, model_name)
 
     if provider == "openai":
@@ -112,11 +120,6 @@ def _init_llm(provider: str, model_name: str):
             # older langchain_openai signatures
             llm = ChatOpenAI(model=eff_model or "gpt-4.1-mini", temperature=0.0)
         return llm, (eff_model or "gpt-4.1-mini")
-
-    elif provider == "gemini":
-        if not raw:
-            return "gemini-1.5-flash"
-        return raw
 
     if provider == "groq":
         from langchain_groq import ChatGroq
@@ -139,16 +142,28 @@ def _init_llm(provider: str, model_name: str):
 
         return llm, eff_model
 
-    elif provider == "gemini":
-        from ..model.llm_gemini import GeminiLLM
-        key = os.getenv("GEMINI_API_KEY") or os.getenv("GOOGLE_API_KEY")
-        if not key:
-            raise EnvironmentError("GEMINI_API_KEY/GOOGLE_API_KEY missing for classifier LLM.")
-        eff_model = _normalize_model(provider, model_name)
-        llm = GeminiLLM(api_key=key, model=eff_model, temperature=0.0, max_output_tokens=128)
-        return llm, eff_model
-    else:
-        raise ValueError(f"Unknown provider: {provider}")
+    if provider == "gemini":
+        # Your project-specific Gemini wrapper (preferred)
+        try:
+            from ..model.llm_gemini import GeminiLLM  # noqa
+            key = _env("GEMINI_API_KEY") or _env("GOOGLE_API_KEY")
+            if not key:
+                raise EnvironmentError("GEMINI_API_KEY/GOOGLE_API_KEY missing for classifier LLM.")
+            llm = GeminiLLM(api_key=key, model=eff_model, temperature=0.0, max_output_tokens=128)
+            return llm, eff_model
+        except Exception as e:
+            # Optional fallback to LangChain's Google wrapper if you have it
+            try:
+                from langchain_google_genai import ChatGoogleGenerativeAI
+                key = _env("GEMINI_API_KEY") or _env("GOOGLE_API_KEY")
+                if not key:
+                    raise EnvironmentError("GEMINI_API_KEY/GOOGLE_API_KEY missing for classifier LLM.")
+                llm = ChatGoogleGenerativeAI(model=eff_model, temperature=0.0, api_key=key)
+                return llm, eff_model
+            except Exception:
+                raise e
+
+    raise ValueError(f"Unknown provider: {provider}")
 
 class Classifier:
     """

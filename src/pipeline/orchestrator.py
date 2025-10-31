@@ -24,7 +24,7 @@ from ingestion.runner import (
     save_json as save_ann_json,
 )
 from downloader.runner import download_pdfs
-from models.announcement import Announcement
+from downloader.utils.announcement import Announcement
 
 from parser import parser_idx as parser_idx_mod
 from parser import parser_non_idx as parser_non_idx_mod
@@ -35,7 +35,7 @@ from services.io.artifacts import make_artifact_zip
 
 # --- Upload (filings) ---
 from services.upload.supabase import SupabaseUploader
-from services.transform.filings_schema import clean_rows, ALLOWED_COLUMNS, REQUIRED_COLUMNS
+from core.transformer import clean_rows, ALLOWED_COLUMNS, REQUIRED_COLUMNS
 
 # --- Email alerts ---
 from services.email.ses_email import send_attachments
