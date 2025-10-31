@@ -55,7 +55,7 @@ env:
   TZ: Asia/Jakarta
   OVERLAP_MINUTES: "1"
   # Lokasi script company_map single-source (ubah jika beda)
-  COMPANY_MAP_SCRIPT: company_map.py
+  COMPANY_MAP_SCRIPT: company_map_hybrid.py
   # (Opsional) script terpisah untuk latest prices; kalau tidak ada, biarkan kosong
   LATEST_PRICES_SCRIPT: ""
   # Optional: override default news table used by orchestrator (--news-table default)
