@@ -412,7 +412,7 @@ def step_fetch_announcements(
 ) -> List[Dict[str, Any]]:
     data: List[Dict[str, Any]]
     if date_yyyymmdd:
-        LOG.info("[FETCH] Single-day (WIB) %s % -> %s", date_yyyymmdd, start_hhmm, end_hhmm)
+        LOG.info("[FETCH] Single-day (WIB) %s -> %s", date_yyyymmdd, start_hhmm, end_hhmm)
         data = get_ownership_announcements(
             date_yyyymmdd=date_yyyymmdd,
             start_hhmm=start_hhmm,
