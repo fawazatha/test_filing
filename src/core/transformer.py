@@ -6,7 +6,7 @@ from datetime import datetime
 from typing import Any, Dict, List, Optional, Tuple
 
 from src.core.types import FilingRecord, PriceTransaction
-from src.common.strings import to_float, to_int, kebab, strip_diacritics  # noqa: F401 (strip_diacritics kept for parity)
+from src.common.strings import to_float, to_int, kebab, strip_diacritics  # noqa: F401
 
 # Constants & Tag Mappings
 TAG_WHITELIST = {
@@ -40,7 +40,7 @@ def _translate_to_english(text: str) -> str:
     logging.warning(f"No translation found for '{text}'. Using original.")
     return text
 
-# Small coercion helpers
+# Coercion & Date Helpers
 def _to_str(x: Any) -> Optional[str]:
     if x is None:
         return None
@@ -86,7 +86,7 @@ def _to_iso_date_short(x: Any) -> Optional[str]:
 def _ensure_date_yyyy_mm_dd(s: Optional[str]) -> Optional[str]:
     if not s:
         return None
-    # terima "YYYY-MM-DD" atau "YYYY-MM-DDTHH:MM:SS[Z]"
+    # accept "YYYY-MM-DD" or "YYYY-MM-DDTHH:MM:SS[Z]"
     return str(s)[:10]
 
 def _normalize_symbol(sym: Any) -> Optional[str]:
@@ -135,6 +135,9 @@ def _build_tx_list_from_dict(tx_dict: Dict[str, Any], raw_date: Any) -> List[Pri
         prices = tx_dict.get("prices", [])  # historical naming
         amounts = tx_dict.get("amount_transacted", [])
         types = tx_dict.get("type", [])
+        # types bisa string atau list; normalisasi ke list
+        if isinstance(types, str):
+            types = [types] * max(len(prices), len(amounts), 1)
         max_len = max(len(prices), len(amounts), len(types) if isinstance(types, list) else 0)
         for i in range(max_len):
             built_txs.append(PriceTransaction(
@@ -224,41 +227,6 @@ def _normalize_tags(raw_tags: Any, purpose_en: str) -> List[str]:
 
     return sorted(list(tags))
 
-def _collapse_price_transactions_for_db(
-    tx_list: List[PriceTransaction],
-    fallback_iso_timestamp: Optional[str],
-    default_type: Optional[str],
-) -> List[Dict[str, Any]]:
-    """
-    Convert internal List[PriceTransaction] -> 
-    [{"date":[...], "type":[...], "price":[...], "amount_transacted":[...]}]
-    (DB expects one-element array containing this object)
-    """
-    dates: List[Optional[str]] = []
-    types: List[Optional[str]] = []
-    prices: List[Optional[float]] = []
-    amounts: List[Optional[int]] = []
-
-    fallback_day = _ensure_date_yyyy_mm_dd(fallback_iso_timestamp)
-
-    for tx in (tx_list or []):
-        d = _ensure_date_yyyy_mm_dd(getattr(tx, "transaction_date", None)) or fallback_day
-        t = (getattr(tx, "transaction_type", None) or default_type or "other")
-        p = getattr(tx, "transaction_price", None)
-        a = getattr(tx, "transaction_share_amount", None)
-
-        dates.append(d)
-        types.append(t)
-        prices.append(p)
-        amounts.append(a)
-
-    return [{
-        "date": dates,
-        "type": types,
-        "price": prices,
-        "amount_transacted": amounts,
-    }]
-
 # Public Transformer
 def transform_raw_to_record(
     raw_dict: Dict[str, Any],
@@ -266,6 +234,7 @@ def transform_raw_to_record(
 ) -> FilingRecord:
     """
     Convert arbitrary parsed dict to canonical FilingRecord.
+    Keeps price_transaction as List[PriceTransaction] (internal!).
     """
     raw_purpose = _to_str(raw_dict.get("purpose"))
     purpose_en = _translate_to_english(raw_purpose)
@@ -287,7 +256,7 @@ def transform_raw_to_record(
     main_source_url: Optional[str] = None
     raw_filename = _to_str(raw_dict.get("source"))
 
-    # 1) ingestion_map priority
+    # 1) ingestion_map (authoritative for date/url)
     if raw_filename:
         ingestion_item = ingestion_map.get(raw_filename)
         if ingestion_item:
@@ -308,7 +277,7 @@ def transform_raw_to_record(
     if not main_source_url:
         main_source_url = _to_str(raw_dict.get("source") or raw_dict.get("pdf_url"))
 
-    # Build internal transaction list for calculations
+    # Build internal transaction list for calculations (INTERNAL FORMAT!)
     price_tx_list: List[PriceTransaction] = []
     if isinstance(raw_dict.get("transactions"), list):
         price_tx_list = _build_tx_list_from_list(raw_dict["transactions"], main_date)
@@ -332,13 +301,6 @@ def transform_raw_to_record(
 
     if value is None and price is not None and amount is not None:
         value = price * amount
-
-    # Collapse tx list to DB-ready structure
-    price_tx_for_db = _collapse_price_transactions_for_db(
-        price_tx_list,
-        fallback_iso_timestamp=_to_iso_date_full(main_date),
-        default_type=tx_type,
-    )
 
     holder_name = _to_str(raw_dict.get("holder_name")) or "Unknown Shareholder"
     company_name = _to_str(
@@ -378,12 +340,12 @@ def transform_raw_to_record(
         body=body,
         purpose_of_transaction=purpose_en,
 
-        # ==== DB-ready representation ====
-        price_transaction=price_tx_for_db,
+        # ==== INTERNAL representation (list of PriceTransaction) ====
+        price_transaction=price_tx_list,
 
         tags=tags,
-        sector=kebab(raw_dict.get("sector")),
-        sub_sector=kebab(raw_dict.get("sub_sector")),
+        sector=kebab(raw_dict.get("sector")) if raw_dict.get("sector") else None,
+        sub_sector=kebab(raw_dict.get("sub_sector")) if raw_dict.get("sub_sector") else None,
 
         source=main_source_url,
         holder_type=_to_str(raw_dict.get("holder_type")),
@@ -397,7 +359,6 @@ def transform_raw_to_record(
             record.audit_flags["needs_manual_uid"] = True
             record.audit_flags["reason"] = "share-transfer detected"
         except Exception:
-            # audit_flags exists with default_factory, but guard anyway
             pass
 
     return record
