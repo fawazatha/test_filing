@@ -1,6 +1,19 @@
+# src/core/types.py
 from __future__ import annotations
 from dataclasses import dataclass, field
 from typing import Optional, List, Dict, Any
+
+FILINGS_ALLOWED_COLUMNS = {
+    "symbol", "timestamp", "transaction_type", "holder_name",
+    "holding_before", "holding_after", "amount_transaction",
+    "share_percentage_before", "share_percentage_after", "share_percentage_transaction",
+    "price", "transaction_value",
+    "price_transaction",  # JSONB
+    "title", "body", "source",
+    "sector", "sub_sector",
+    "tags",              # array/jsonb
+    "holder_type",
+}
 
 @dataclass
 class PriceTransaction:

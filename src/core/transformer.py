@@ -15,7 +15,7 @@ from src.common.strings import (
     strip_diacritics
 )
 
-# --- Constants ---
+# Constants
 TAG_WHITELIST = {
     "takeover", "mesop", "inheritance", "award", 
     "share-transfer", "internal-strategy"
@@ -28,7 +28,7 @@ PURPOSE_TAG_MAP = {
     "penghargaan": "award", "award": "award", "transfer": "share-transfer",
 }
 
-# --- Translation Placeholder ---
+# Translation Placeholder
 def _translate_to_english(text: str) -> str:
     if not text:
         return ""
@@ -47,14 +47,14 @@ def _translate_to_english(text: str) -> str:
     logging.warning(f"No translation found for '{text}'. Using original.")
     return text
 
-# --- Type Coercion Helpers (Specific to this file) ---
+# Type Coercion Helpers (Specific to this file)
 def _to_str(x: Any) -> Optional[str]:
     """Robustly converts a value to a stripped string."""
     if x is None: return None
     return str(x).strip()
 
 
-# --- PERBAIKAN: DUA FUNGSI TANGGAL ---
+# PERBAIKAN: DUA FUNGSI TANGGAL
 
 def _parse_date_obj(x: Any) -> Optional[datetime]:
     """Helper internal untuk mengubah input apa pun menjadi objek datetime."""
@@ -97,7 +97,7 @@ def _to_iso_date_short(x: Any) -> Optional[str]:
     if dt_obj:
         return dt_obj.strftime("%Y-%m-%d")
     return None
-# --- AKHIR PERBAIKAN ---
+# AKHIR PERBAIKAN
 
 
 def _normalize_symbol(sym: Any) -> Optional[str]:
@@ -107,7 +107,7 @@ def _normalize_symbol(sym: Any) -> Optional[str]:
     s_upper = s.upper()
     return s_upper if s_upper.endswith(".JK") else f"{s_upper}.JK"
 
-# --- Core Logic Functions ---
+# Core Logic Functions
 
 def _normalize_transaction_type(raw_type: Any, holding_before: Any, holding_after: Any) -> str:
     t = _to_str(raw_type)
@@ -216,7 +216,7 @@ def _normalize_tags(raw_tags: Any, purpose_en: str) -> List[str]:
     return sorted(list(tags))
 
 
-# --- Public Transformer Function (UPDATED) ---
+# Public Transformer Function (UPDATED)
 
 def transform_raw_to_record(
     raw_dict: Dict[str, Any], 
@@ -241,7 +241,7 @@ def transform_raw_to_record(
     pp_after = to_float(raw_dict.get("share_percentage_after"), ndigits=5)
     pp_tx = to_float(raw_dict.get("share_percentage_transaction"), ndigits=5)
     
-    # --- PERBAIKAN LOGIKA TANGGAL & SOURCE ---
+    # PERBAIKAN LOGIKA TANGGAL & SOURCE
     
     main_date = None
     main_source_url = None
@@ -299,7 +299,7 @@ def transform_raw_to_record(
     if value is None and price is not None and amount is not None:
         value = price * amount
         
-    # --- AKHIR PERBAIKAN ---
+    # AKHIR PERBAIKAN
         
     holder_name = _to_str(raw_dict.get("holder_name")) or "Unknown Shareholder"
     company_name = _to_str(raw_dict.get("company_name_raw") or raw_dict.get("company_name") or raw_dict.get("symbol")) or "Unknown Company"

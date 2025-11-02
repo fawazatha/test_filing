@@ -1,3 +1,4 @@
+# src/services/upload/supabase.py
 from __future__ import annotations
 
 import os
@@ -12,14 +13,14 @@ from src.core.types import FilingRecord
 
 logger = logging.getLogger(__name__)
 
-# ---------------- helpers ----------------
+# helpers
 def _debug_field_types(r: Dict[str, Any], fields=("symbol","tags","sub_sector","price_transaction")) -> None:
     """Helper to log types of key fields before upload."""
     for k in fields:
         v = r.get(k, None)
         logger.debug("FIELD %s -> type=%s value=%r", k, type(v).__name__, v)
 
-# ---------------- result ----------------
+# result
 @dataclass
 class UploadResult:
     """Dataclass to hold the result of an upload batch."""
@@ -27,7 +28,7 @@ class UploadResult:
     failed_rows: List[Dict[str, Any]] = field(default_factory=list)
     errors: List[Any] = field(default_factory=list)
 
-# ---------------- main uploader ----------------
+# main uploader
 class SupabaseUploader:
     def __init__(self,
                  url: Optional[str] = None,
@@ -104,11 +105,13 @@ class SupabaseUploader:
             try:
                 resp = self._post_one(tbl, payload)
                 if resp.status_code >= 400:
-                    res.failed_rows.append(row) # Log original row
+                    res.failed_rows.append(row)
                     try:
-                        res.errors.append(resp.json())
+                        err = resp.json()
                     except Exception:
-                        res.errors.append(resp.text)
+                        err = resp.text
+                    res.errors.append({"status": resp.status_code, "error": err})
+                    logger.error("Supabase insert failed: status=%s body=%r", resp.status_code, err)
                     if stop_on_first_error:
                         break
                 else:

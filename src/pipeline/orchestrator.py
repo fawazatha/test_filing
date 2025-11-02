@@ -1,3 +1,4 @@
+# src/pipeline/orchestrator.py
 from __future__ import annotations
 import argparse
 import json
@@ -15,8 +16,7 @@ from typing import List, Dict, Any, Optional, Tuple
 from services.upload.dedup import upload_filings_with_dedup
 from services.upload.supabase import SupabaseUploader, UploadResult
 # Impor Tipe Inti untuk mendapatkan daftar kolom DB yang valid
-from src.core.types import FilingRecord 
-
+from src.core.types import FilingRecord, FILINGS_ALLOWED_COLUMNS
 
 # Timezone for WIB
 try:
@@ -205,64 +205,64 @@ def _candidate_filenames_from_row(row: Dict[str, Any]) -> List[str]:
     return out
 
 
-def step_enrich_filings_timestamps(*, filings_json: Path, downloads_meta: Path) -> int:
-    """
-    DEPRECATED. This logic is now handled by core.transformer using the ingestion_map.
-    This step is kept to avoid breaking old workflows but will do nothing
-    if the new pipeline ran correctly (as timestamps will already be present).
-    """
-    if (not filings_json.exists()) or (not downloads_meta.exists()):
-        LOG.warning("[ENRICH-TS] skip: %s or %s not found", filings_json, downloads_meta)
-        return 0
+# def step_enrich_filings_timestamps(*, filings_json: Path, downloads_meta: Path) -> int:
+#     """
+#     DEPRECATED. This logic is now handled by core.transformer using the ingestion_map.
+#     This step is kept to avoid breaking old workflows but will do nothing
+#     if the new pipeline ran correctly (as timestamps will already be present).
+#     """
+#     if (not filings_json.exists()) or (not downloads_meta.exists()):
+#         LOG.warning("[ENRICH-TS] skip: %s or %s not found", filings_json, downloads_meta)
+#         return 0
     
-    LOG.info("[ENRICH-TS] Running (deprecated) step_enrich_filings_timestamps...")
+#     LOG.info("[ENRICH-TS] Running (deprecated) step_enrich_filings_timestamps...")
 
-    rows_or_obj = _load_json_silent(filings_json)
-    if isinstance(rows_or_obj, dict) and "rows" in rows_or_obj and isinstance(rows_or_obj["rows"], list):
-        rows = rows_or_obj["rows"]
-        wrapper_dict = True
-    elif isinstance(rows_or_obj, list):
-        rows = rows_or_obj
-        wrapper_dict = False
-    else:
-        LOG.warning("[ENRICH-TS] %s has unexpected format; skip", filings_json)
-        return 0
+#     rows_or_obj = _load_json_silent(filings_json)
+#     if isinstance(rows_or_obj, dict) and "rows" in rows_or_obj and isinstance(rows_or_obj["rows"], list):
+#         rows = rows_or_obj["rows"]
+#         wrapper_dict = True
+#     elif isinstance(rows_or_obj, list):
+#         rows = rows_or_obj
+#         wrapper_dict = False
+#     else:
+#         LOG.warning("[ENRICH-TS] %s has unexpected format; skip", filings_json)
+#         return 0
 
-    idx = _build_download_ts_index(downloads_meta)
-    if not idx:
-        LOG.warning("[ENRICH-TS] empty downloads index from %s; nothing to enrich", downloads_meta)
-        return 0
+#     idx = _build_download_ts_index(downloads_meta)
+#     if not idx:
+#         LOG.warning("[ENRICH-TS] empty downloads index from %s; nothing to enrich", downloads_meta)
+#         return 0
 
-    patched = 0
-    for r in rows:
-        if not isinstance(r, dict):
-            continue
+#     patched = 0
+#     for r in rows:
+#         if not isinstance(r, dict):
+#             continue
         
-        # Only patch if timestamp is missing
-        if r.get("timestamp") or r.get("announcement_published_at"):
-            continue
+#         # Only patch if timestamp is missing
+#         if r.get("timestamp") or r.get("announcement_published_at"):
+#             continue
 
-        matched_ts: Optional[str] = None
-        for nm in _candidate_filenames_from_row(r):
-            key = nm.lower()
-            if key in idx:
-                matched_ts = idx[key]
-                break
-        if matched_ts:
-            r["timestamp"] = matched_ts
-            r["announcement_published_at"] = matched_ts
-            patched += 1
+#         matched_ts: Optional[str] = None
+#         for nm in _candidate_filenames_from_row(r):
+#             key = nm.lower()
+#             if key in idx:
+#                 matched_ts = idx[key]
+#                 break
+#         if matched_ts:
+#             r["timestamp"] = matched_ts
+#             r["announcement_published_at"] = matched_ts
+#             patched += 1
 
-    if patched > 0:
-        if wrapper_dict:
-            _save_json({"rows": rows}, filings_json)
-        else:
-            _save_json(rows, filings_json)
-        LOG.info("[ENRICH-TS] enriched %d rows with timestamps from %s", patched, downloads_meta)
-    else:
-        LOG.info("[ENRICH-TS] no rows needed timestamp enrichment.")
+#     if patched > 0:
+#         if wrapper_dict:
+#             _save_json({"rows": rows}, filings_json)
+#         else:
+#             _save_json(rows, filings_json)
+#         LOG.info("[ENRICH-TS] enriched %d rows with timestamps from %s", patched, downloads_meta)
+#     else:
+#         LOG.info("[ENRICH-TS] no rows needed timestamp enrichment.")
         
-    return patched
+#     return patched
 
 
 # Company assets via single-source script
@@ -711,8 +711,8 @@ def step_upload_supabase(
 
     # 2. Dapatkan daftar kolom yang valid dari Tipe Inti kita
     try:
-        valid_columns = set(FilingRecord.__annotations__.keys())
-        valid_columns.update(["id", "created_at", "dedup_hash"]) 
+        valid_columns = FILINGS_ALLOWED_COLUMNS
+        valid_columns.update(["id", "created_at"]) 
     except Exception:
         LOG.error("[UPLOAD] Could not get valid columns from FilingRecord. Upload may fail.")
         valid_columns = None # Lanjutkan tanpa memfilter
@@ -730,11 +730,13 @@ def step_upload_supabase(
     
     LOG.info("[DEDUP] stats=%s", stats)
     LOG.info("[UPLOAD] inserted=%d failed=%d", res.inserted, len(res.failed_rows))
+    if getattr(res, "errors", None):
+        LOG.error("[UPLOAD] first_error=%r", res.errors[0])
     
     # 4. Handle exit
     if strict_exit and res.failed_rows:
         raise SystemExit(4)
-# --- AKHIR FUNGSI DIPERBARUI ---
+
 
 
 def step_generate_articles(
