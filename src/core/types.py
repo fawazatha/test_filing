@@ -124,15 +124,17 @@ class FilingRecord:
             )
         return out
 
-    def _collapse_price_transactions_for_db(self) -> Dict[str, Any]:
+    def _collapse_price_transactions_for_db(self) -> List[Dict[str, Any]]:
         """
-        Convert List[PriceTransaction] → DB format (a SINGLE object, no outer array):
-        {
+        Convert List[PriceTransaction] → DB format (array with a single object):
+        [
+          {
             "date": [...],
             "type": [...],
             "price": [...],
             "amount_transacted": [...]
-        }
+          }
+        ]
         - Falls back to self.timestamp's date if tx.date is missing.
         - Preserves the internal order of transactions.
         """
@@ -156,27 +158,29 @@ class FilingRecord:
             prices.append(p)
             amounts.append(a)
 
-        return {
+        return [{
             "date": dates,
             "type": types,
             "price": prices,
             "amount_transacted": amounts,
-        }
+        }]
 
     # Public: serialize for DB
+
     def to_db_dict(self) -> Dict[str, Any]:
         """
-        Serialize to a DB-safe dict (idx_filings).
-        - price_transaction becomes a single JSON object (no outer array).
-        - sector/sub_sector default to 'unknown' if missing.
-        - sub_sector is guaranteed to be a string.
+        Convert this dataclass into a safe dict for Supabase (idx_filings).
+        - Collapses price_transaction to the array-of-lists DB shape.
+        - Ensures sector/sub_sector are present (defaults to 'unknown').
+        - Ensures sub_sector is a string (not a list).
         """
+        # Exact DB columns we will insert. Keep in sync with table schema!
         ALLOWED_DB_COLUMNS = {
             "symbol", "timestamp", "transaction_type", "holder_name",
             "holding_before", "holding_after", "amount_transaction",
             "share_percentage_before", "share_percentage_after", "share_percentage_transaction",
             "price", "transaction_value",
-            "price_transaction",  
+            "price_transaction",  # serialized below
             "title", "body",
             "tags", "sector", "sub_sector",
             "source", "holder_type",
@@ -184,7 +188,7 @@ class FilingRecord:
 
         db_dict: Dict[str, Any] = {}
 
-        # 1) price_transaction → single object
+        # 1) price_transaction → collapse
         db_dict["price_transaction"] = self._collapse_price_transactions_for_db()
 
         # 2) remaining allowed fields (skip None values)
@@ -199,7 +203,7 @@ class FilingRecord:
         if isinstance(db_dict.get("sub_sector"), list):
             db_dict["sub_sector"] = db_dict["sub_sector"][0] if db_dict["sub_sector"] else None
 
-        # 4) defaults for NOT NULL-ish usage
+        # 4) default sector/sub_sector to satisfy NOT NULL constraints (if any)
         if not db_dict.get("sector"):
             db_dict["sector"] = "unknown"
         if not db_dict.get("sub_sector"):
