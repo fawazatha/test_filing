@@ -10,11 +10,12 @@ from src.core.types import FilingRecord, PriceTransaction
 from src.common.strings import to_float, to_int, kebab, strip_diacritics  # noqa: F401
 
 # Tag dictionaries / mappings
-# Keep whitelist minimal; 'share-transfer' will be gated by tx_type.
 TAG_WHITELIST = {
     "takeover", "mesop", "inheritance", "award",
     "share-transfer", "internal-strategy",
+    "bullish", "bearish", "investment", "divestment",
 }
+
 
 PURPOSE_TAG_MAP = {
     "akuisisi": "takeover", "acquisition": "takeover",
@@ -22,8 +23,9 @@ PURPOSE_TAG_MAP = {
     "pengembangan usaha": "internal-strategy", "business expansion": "internal-strategy",
     "mesop": "mesop", "warisan": "inheritance", "inheritance": "inheritance",
     "penghargaan": "award", "award": "award",
-    # Only allow 'share-transfer' if tx_type == 'share-transfer' (guard in _normalize_tags).
     "transfer": "share-transfer",
+    "investasi": "investment", "investment": "investment",
+    "divestasi": "divestment", "divestment": "divestment",
 }
 
 # Small helpers
@@ -215,45 +217,55 @@ def _generate_title_and_body(
         body += f" The stated purpose of the transaction was {purpose_en.lower()}."
     return title, body
 
-def _enrich_sector_from_map(
-    symbol: Optional[str],
-    raw_sector: Any,
-    raw_sub_sector: Any,
-    company_map: Optional[Dict[str, Dict[str, Any]]],
-) -> Tuple[str, str]:
+def _apply_bull_bear_tags(
+    tags: List[str],
+    tx_type: str,
+    hb: Optional[int],
+    ha: Optional[int],
+    pp_before: Optional[float],
+    pp_after: Optional[float],
+) -> List[str]:
     """
-    Fill sector/sub_sector from company_map if raw is empty/unknown.
-    Always return kebab-case strings (never None) to satisfy NOT NULL DB constraints.
+    Add 'bullish' for effective buys (holding or % up), 'bearish' for sells (down).
+    Works even when tx_type was inferred as 'other' but the delta is clear.
     """
-    sec = _to_str(raw_sector)
-    sub = _to_str(raw_sub_sector)
+    out = set(tags or [])
+    t = (tx_type or "").lower()
 
-    need_lookup = (not sec or sec.lower() == "unknown") or (not sub or sub.lower() == "unknown")
+    # Prefer explicit tx_type first
+    if t == "buy":
+        out.add("bullish")
+    elif t == "sell":
+        out.add("bearish")
+    else:
+        # Fall back to deltas if available
+        if hb is not None and ha is not None:
+            if ha > hb:
+                out.add("bullish")
+            elif ha < hb:
+                out.add("bearish")
+        elif pp_before is not None and pp_after is not None:
+            if pp_after > pp_before:
+                out.add("bullish")
+            elif pp_after < pp_before:
+                out.add("bearish")
 
-    if need_lookup and company_map and symbol:
-        sym_up = symbol.upper()
-        info = company_map.get(sym_up)
-        if not info:
-            # try without .JK or with .JK, depending on how keys are stored
-            base = sym_up.removesuffix(".JK")
-            info = company_map.get(base) or company_map.get(f"{base}.JK")
-        if info:
-            sec = sec or _to_str(info.get("sector"))
-            sub = sub or _to_str(info.get("sub_sector"))
+    return sorted(out)
 
-    # Fallback to 'unknown' to avoid NULL insert errors on DB
-    sec_out = kebab(sec) if sec else "unknown"
-    sub_out = kebab(sub) if sub else "unknown"
-    return sec_out, sub_out
+
+def _enrich_sector_from_provider(symbol: Optional[str], sec: Any, sub: Any) -> tuple[str, str]:
+    from src.generate.filings.utils.provider import get_company_info
+    s = _to_str(sec)
+    u = _to_str(sub)
+    if s and s.lower() != "unknown" and u and u.lower() != "unknown":
+        return kebab(s), kebab(u)
+    info = get_company_info(symbol)
+    s = s or info.sector
+    u = u or info.sub_sector
+    return kebab(s) if s else "unknown", kebab(u) if u else "unknown"
+
 
 def _normalize_tags(raw_tags: Any, purpose_en: str, tx_type: str) -> List[str]:
-    """
-    Normalize tags:
-      - keep only items in whitelist,
-      - allow 'share-transfer' ONLY if tx_type == 'share-transfer',
-      - add tags derived from purpose (with the same guard for share-transfer),
-      - optionally ensure the main tx_type (if whitelisted) is in the final set.
-    """
     tags = set()
     tag_list: List[str] = []
     if isinstance(raw_tags, list):
@@ -271,7 +283,6 @@ def _normalize_tags(raw_tags: Any, purpose_en: str, tx_type: str) -> List[str]:
         if not t_low:
             continue
         if t_low == "share-transfer" and tx_low != "share-transfer":
-            # prevent leaking 'share-transfer' when the main tx is not transfer
             continue
         if t_low in TAG_WHITELIST:
             tags.add(t_low)
@@ -280,38 +291,36 @@ def _normalize_tags(raw_tags: Any, purpose_en: str, tx_type: str) -> List[str]:
     for key, mapped in PURPOSE_TAG_MAP.items():
         if key in purpose_low:
             if mapped == "share-transfer" and tx_low != "share-transfer":
-                # same guard for purpose-derived tag
                 continue
             tags.add(mapped)
 
-    # Ensure primary tx_type is reflected if it's in the whitelist
     if tx_low in TAG_WHITELIST:
         tags.add(tx_low)
-
     return sorted(tags)
+
 
 # Public API
 def transform_raw_to_record(
     raw_dict: Dict[str, Any],
     ingestion_map: Dict[str, Dict[str, Any]],
-    company_map: Optional[Dict[str, Dict[str, Any]]] = None,
+    company_map: Optional[Dict[str, Dict[str, Any]]] = None,  # kept for compat; provider lookup is used below
 ) -> FilingRecord:
     """
     Convert arbitrary parsed dict to canonical FilingRecord.
 
     Notes
-    -----
+-
     - Keeps price_transaction as List[PriceTransaction] (internal format),
       so downstream processors can safely access tx.transaction_price, etc.
-    - Sector/sub_sector are enriched from company_map when missing/unknown.
+    - Sector/sub_sector are enriched from provider (company_map cache) when missing/unknown.
     """
     # Purpose (translated)
-    raw_purpose = _to_str(raw_dict.get("purpose"))
+    raw_purpose = _to_str(raw_dict.get("purpose") or raw_dict.get("purpose_of_transaction"))
     purpose_en = _translate_to_english(raw_purpose)
 
     # Holdings & transaction type
     holding_before = to_int(raw_dict.get("holding_before"))
-    holding_after = to_int(raw_dict.get("holding_after"))
+    holding_after  = to_int(raw_dict.get("holding_after"))
     tx_type = _normalize_transaction_type(
         raw_dict.get("transaction_type") or raw_dict.get("type"),
         holding_before, holding_after
@@ -322,7 +331,7 @@ def transform_raw_to_record(
     pp_after  = to_float(raw_dict.get("share_percentage_after"),  ndigits=5)
     pp_tx     = to_float(raw_dict.get("share_percentage_transaction"), ndigits=5)
 
-    # Timestamp & source (priority: ingestion_map → parser → first tx)
+    # Timestamp & source (ingestion_map → parser → first tx)
     main_date: Optional[str] = None
     main_source_url: Optional[str] = None
     raw_filename = _to_str(raw_dict.get("source"))
@@ -344,14 +353,14 @@ def transform_raw_to_record(
     if not main_source_url:
         main_source_url = _to_str(raw_dict.get("source") or raw_dict.get("pdf_url"))
 
-    # Build INTERNAL transaction list
+    # INTERNAL price_transaction list
     price_tx_list: List[PriceTransaction] = []
     if isinstance(raw_dict.get("transactions"), list):
         price_tx_list = _build_tx_list_from_list(raw_dict["transactions"], main_date)
     elif isinstance(raw_dict.get("price_transaction"), dict):
         price_tx_list = _build_tx_list_from_dict(raw_dict["price_transaction"], main_date)
 
-    # Aggregate price/amount/value (WAP if price missing)
+    # Aggregate price/amount/value (use WAP when needed)
     wap, total_amount_tx, total_value_tx = _calculate_wap_and_totals(price_tx_list)
 
     amount = to_int(raw_dict.get("amount_transaction") or raw_dict.get("amount"))
@@ -382,15 +391,51 @@ def transform_raw_to_record(
         holding_before, holding_after, purpose_en
     )
 
-    # Tags (guard 'share-transfer' with tx_type)
+    # Tags (with transfer guard)
     tags = _normalize_tags(raw_dict.get("tags"), purpose_en, tx_type)
 
-    # Symbol + sectors (enrich from company_map if needed)
-    symbol_norm = _normalize_symbol(raw_dict.get("symbol") or raw_dict.get("issuer_code"))
-    sec_raw = raw_dict.get("sector")
-    sub_raw = raw_dict.get("sub_sector")
-    sector, sub_sector = _enrich_sector_from_map(symbol_norm, sec_raw, sub_raw, company_map)
+    # Add bullish/bearish from direction (tx_type or holdings/% deltas)
+    t_low = (tx_type or "").lower()
+    if t_low == "buy":
+        tags = sorted(set(tags) | {"bullish"})
+    elif t_low == "sell":
+        tags = sorted(set(tags) | {"bearish"})
+    else:
+        # Infer from holdings or percentages when tx_type is "other"/"share-transfer"/etc.
+        if holding_before is not None and holding_after is not None:
+            if holding_after > holding_before:
+                tags = sorted(set(tags) | {"bullish"})
+            elif holding_after < holding_before:
+                tags = sorted(set(tags) | {"bearish"})
+        elif pp_before is not None and pp_after is not None:
+            if pp_after > pp_before:
+                tags = sorted(set(tags) | {"bullish"})
+            elif pp_after < pp_before:
+                tags = sorted(set(tags) | {"bearish"})
 
+    # Symbol + sector/sub_sector (provider enrichment)
+    symbol_norm = _normalize_symbol(raw_dict.get("symbol") or raw_dict.get("issuer_code"))
+
+    # Prefer raw sector if present & not "unknown"; otherwise query provider
+    sec_raw = _to_str(raw_dict.get("sector"))
+    sub_raw = _to_str(raw_dict.get("sub_sector"))
+
+    if (not sec_raw or sec_raw.lower() == "unknown") or (not sub_raw or sub_raw.lower() == "unknown"):
+        # Lazy import to avoid circulars; provider reads data/company/company_map*.json
+        try:
+            from src.generate.filings.utils.provider import get_company_info
+            info = get_company_info(symbol_norm)
+            sec = sec_raw or info.sector
+            sub = sub_raw or info.sub_sector
+        except Exception:
+            sec, sub = sec_raw, sub_raw
+    else:
+        sec, sub = sec_raw, sub_raw
+
+    sector     = kebab(sec) if sec else "unknown"
+    sub_sector = kebab(sub) if sub else "unknown"
+
+    # Build record
     record = FilingRecord(
         symbol=symbol_norm,
         timestamp=_to_iso_date_full(main_date),
@@ -410,9 +455,9 @@ def transform_raw_to_record(
 
         title=title,
         body=body,
-        purpose_of_transaction=purpose_en,
+        purpose_of_transaction=purpose_en,  # kept internally; to_db_dict() will NOT upload this column
 
-        # Keep INTERNAL representation; to_db_dict() will serialize properly.
+        # Keep INTERNAL representation; to_db_dict() serializes for DB.
         price_transaction=price_tx_list,
 
         tags=tags,
@@ -425,13 +470,14 @@ def transform_raw_to_record(
         raw_data=raw_dict,
     )
 
-    # For alerting later in processors.py:
-    # mark transfer/other rows for manual UID pairing checks.
-    if tx_type in {"share-transfer", "other"}:
+    # Alert flags for manual review
+    # Pairing/UID checks are important for transfers and "other".
+    if (record.transaction_type or "").lower() in {"share-transfer", "other"}:
         record.audit_flags["needs_manual_uid"] = True
-        record.audit_flags["reason"] = "manual UID check recommended for transfer/other"
+        record.audit_flags["reason"] = f"{record.transaction_type} detected"
 
     return record
+
 
 def transform_many(
     raw_dicts: List[Dict[str, Any]],
