@@ -3,8 +3,7 @@ from __future__ import annotations
 from dataclasses import dataclass, field
 from typing import Optional, List, Dict, Any
 
-# Columns that are truly allowed for uploader → DB.
-# IMPORTANT: Do NOT include 'purpose_of_transaction' here (no such column in DB).
+# Columns that are truly allowed for uploader 
 FILINGS_ALLOWED_COLUMNS = {
     "symbol", "timestamp", "transaction_type", "holder_name",
     "holding_before", "holding_after", "amount_transaction",
@@ -13,7 +12,7 @@ FILINGS_ALLOWED_COLUMNS = {
     "price_transaction",          # JSONB; collapsed in to_db_dict()
     "title", "body", "source",
     "sector", "sub_sector",
-    "tags",                       # array/jsonb
+    "tags",                      
     "holder_type",
 }
 
@@ -24,8 +23,8 @@ class PriceTransaction:
     Canonical internal representation of a single transaction event.
     This is kept as objects during processing and collapsed for DB insertion.
     """
-    transaction_date: Optional[str] = None        # "YYYY-MM-DD" preferred (ISO date ok)
-    transaction_type: Optional[str] = None        # 'buy' | 'sell' | 'other' | ...
+    transaction_date: Optional[str] = None     
+    transaction_type: Optional[str] = None        
     transaction_price: Optional[float] = None
     transaction_share_amount: Optional[int] = None
 
@@ -39,8 +38,8 @@ class FilingRecord:
     """
     # Core
     symbol: str
-    timestamp: str                  # ISO datetime string
-    transaction_type: str           # 'buy' | 'sell' | 'other' | ...
+    timestamp: str                  
+    transaction_type: str         
     holder_name: str
 
     # Holdings
@@ -128,42 +127,31 @@ class FilingRecord:
         """
         Convert List[PriceTransaction] → DB format (array with a single object):
         [
-          {
-            "date": [...],
-            "type": [...],
-            "price": [...],
-            "amount_transacted": [...]
-          }
+          {"
+            date": "2025-09-15",
+            "type": "buy",
+            "price": 198,
+            "amount_transacted": 143919497},
+          ...
         ]
-        - Falls back to self.timestamp's date if tx.date is missing.
-        - Preserves the internal order of transactions.
+        - Fallback date uses self.timestamp's date when missing.
+        - Keeps original ordering.
         """
-        tx_list = self._normalize_pt_list_to_objects()
-
-        dates: List[Optional[str]] = []
-        types: List[Optional[str]] = []
-        prices: List[Optional[float]] = []
-        amounts: List[Optional[int]] = []
-
+        items = self._normalize_pt_list_to_objects()
         fallback_day = self._ensure_date_yyyy_mm_dd(getattr(self, "timestamp", None))
-
-        for tx in (tx_list or []):
+        out: List[Dict[str, Any]] = []
+        for tx in (items or []):
             d = self._ensure_date_yyyy_mm_dd(getattr(tx, "transaction_date", None)) or fallback_day
             t = getattr(tx, "transaction_type", None) or self.transaction_type or "other"
             p = getattr(tx, "transaction_price", None)
             a = getattr(tx, "transaction_share_amount", None)
-
-            dates.append(d)
-            types.append(t)
-            prices.append(p)
-            amounts.append(a)
-
-        return [{
-            "date": dates,
-            "type": types,
-            "price": prices,
-            "amount_transacted": amounts,
-        }]
+            out.append({
+                "date": d,
+                "type": t,
+                "price": p,
+                "amount_transacted": a,
+            })
+        return out
 
     # Public: serialize for DB
 
