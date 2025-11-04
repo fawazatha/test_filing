@@ -3,27 +3,28 @@ from __future__ import annotations
 from dataclasses import dataclass, field
 from typing import Optional, List, Dict, Any
 
-# Kolom yang diizinkan untuk upload (boleh dipakai oleh uploader)
+# Columns that are truly allowed for uploader → DB.
+# IMPORTANT: Do NOT include 'purpose_of_transaction' here (no such column in DB).
 FILINGS_ALLOWED_COLUMNS = {
     "symbol", "timestamp", "transaction_type", "holder_name",
     "holding_before", "holding_after", "amount_transaction",
     "share_percentage_before", "share_percentage_after", "share_percentage_transaction",
     "price", "transaction_value",
-    "price_transaction",              # JSONB (akan di-collapse saat to_db_dict)
+    "price_transaction",          # JSONB; collapsed in to_db_dict()
     "title", "body", "source",
     "sector", "sub_sector",
-    "tags",                           # array/jsonb
+    "tags",                       # array/jsonb
     "holder_type",
-    "purpose_of_transaction",         # keep for completeness (walau bukan kolom wajib)
 }
 
 
 @dataclass
 class PriceTransaction:
     """
-    Standardized Price_Transaction (internal representation).
+    Canonical internal representation of a single transaction event.
+    This is kept as objects during processing and collapsed for DB insertion.
     """
-    transaction_date: Optional[str] = None        # "YYYY-MM-DD" (prefer) atau ISO full
+    transaction_date: Optional[str] = None        # "YYYY-MM-DD" preferred (ISO date ok)
     transaction_type: Optional[str] = None        # 'buy' | 'sell' | 'other' | ...
     transaction_price: Optional[float] = None
     transaction_share_amount: Optional[int] = None
@@ -32,12 +33,13 @@ class PriceTransaction:
 @dataclass
 class FilingRecord:
     """
-    Canonical filing record (internal). Semua sumber harus diubah ke format ini
-    sebelum diproses/diupload. Serialisasi ke DB dilakukan oleh to_db_dict().
+    Canonical filing record used across the pipeline.
+    All sources must be transformed into this structure before processing/upload.
+    DB serialization is handled by to_db_dict().
     """
     # Core
     symbol: str
-    timestamp: str                  # ISO string
+    timestamp: str                  # ISO datetime string
     transaction_type: str           # 'buy' | 'sell' | 'other' | ...
     holder_name: str
 
@@ -51,16 +53,17 @@ class FilingRecord:
     share_percentage_after: Optional[float] = None
     share_percentage_transaction: Optional[float] = None
 
-    # Price & Value (level atas)
+    # Price & Value (row-level)
     price: Optional[float] = None
     transaction_value: Optional[float] = None
 
-    # Standardized JSONB (internal list; akan di-collapse saat to_db_dict)
+    # Standardized JSONB (internal list; collapsed for DB in to_db_dict)
     price_transaction: List[PriceTransaction] = field(default_factory=list)
 
     # Generated content
     title: Optional[str] = None
     body: Optional[str] = None
+    # NOTE: This field does NOT exist in DB; we keep it for emails/summaries only.
     purpose_of_transaction: Optional[str] = None
 
     # Classification
@@ -72,7 +75,7 @@ class FilingRecord:
     source: Optional[str] = None
     holder_type: Optional[str] = None
 
-    # --- Non-DB fields (internal use only) ---
+    # Non-DB fields
     raw_data: Dict[str, Any] = field(default_factory=dict, repr=False)
     audit_flags: Dict[str, Any] = field(default_factory=dict, repr=False)
     skip_reason: Optional[str] = None
@@ -81,7 +84,7 @@ class FilingRecord:
     @staticmethod
     def _ensure_date_yyyy_mm_dd(s: Optional[str]) -> Optional[str]:
         """
-        Terima "YYYY-MM-DD" atau ISO "YYYY-MM-DDTHH:MM:SS[Z]" → kembalikan "YYYY-MM-DD".
+        Accept "YYYY-MM-DD" or ISO "YYYY-MM-DDTHH:MM:SS[Z]" → return "YYYY-MM-DD".
         """
         if not s:
             return None
@@ -90,24 +93,22 @@ class FilingRecord:
     def _normalize_pt_list_to_objects(self) -> List[PriceTransaction]:
         """
         Backward compatibility:
-        - Jika self.price_transaction sudah List[PriceTransaction], return apa adanya.
-        - Jika ternyata List[dict] (legacy), konversi ke PriceTransaction.
+        - If self.price_transaction is already List[PriceTransaction], return it.
+        - If it's a List[dict] (legacy), convert each dict to PriceTransaction.
         """
         if not self.price_transaction:
             return []
 
-        # Sudah object?
+        # Already objects?
         if isinstance(self.price_transaction[0], PriceTransaction):
             return self.price_transaction
 
-        # Legacy: list of dicts
         out: List[PriceTransaction] = []
         for item in self.price_transaction:
             if isinstance(item, PriceTransaction):
                 out.append(item)
                 continue
             if not isinstance(item, dict):
-                # skip yang tidak valid
                 continue
             out.append(
                 PriceTransaction(
@@ -125,7 +126,7 @@ class FilingRecord:
 
     def _collapse_price_transactions_for_db(self) -> List[Dict[str, Any]]:
         """
-        Konversi List[PriceTransaction] -> FORMAT DB:
+        Convert List[PriceTransaction] → DB format (array with a single object):
         [
           {
             "date": [...],
@@ -134,8 +135,8 @@ class FilingRecord:
             "amount_transacted": [...]
           }
         ]
-        - Fallback tanggal ambil dari self.timestamp kalau tx.date kosong.
-        - Pertahankan urutan transaksi seperti internal list.
+        - Falls back to self.timestamp's date if tx.date is missing.
+        - Preserves the internal order of transactions.
         """
         tx_list = self._normalize_pt_list_to_objects()
 
@@ -165,20 +166,24 @@ class FilingRecord:
         }]
 
     # Public: serialize for DB
+
     def to_db_dict(self) -> Dict[str, Any]:
         """
-        Ubah dataclass → dict aman untuk insert Supabase (idx_filings).
-        - price_transaction di-collapse ke array-of-lists (sesuai requirement).
-        - sector/sub_sector diisi 'unknown' bila None (untuk NOT NULL di DB).
-        - sub_sector dipastikan string (bukan list).
+        Convert this dataclass into a safe dict for Supabase (idx_filings).
+        - Collapses price_transaction to the array-of-lists DB shape.
+        - Ensures sector/sub_sector are present (defaults to 'unknown').
+        - Ensures sub_sector is a string (not a list).
         """
-        # Kolom DB yang digunakan
+        # Exact DB columns we will insert. Keep in sync with table schema!
         ALLOWED_DB_COLUMNS = {
             "symbol", "timestamp", "transaction_type", "holder_name",
             "holding_before", "holding_after", "amount_transaction",
             "share_percentage_before", "share_percentage_after", "share_percentage_transaction",
-            "price", "transaction_value", "price_transaction", "title", "body",
-            "purpose_of_transaction", "tags", "sector", "sub_sector", "source", "holder_type",
+            "price", "transaction_value",
+            "price_transaction",  # serialized below
+            "title", "body",
+            "tags", "sector", "sub_sector",
+            "source", "holder_type",
         }
 
         db_dict: Dict[str, Any] = {}
@@ -186,7 +191,7 @@ class FilingRecord:
         # 1) price_transaction → collapse
         db_dict["price_transaction"] = self._collapse_price_transactions_for_db()
 
-        # 2) kolom lain
+        # 2) remaining allowed fields (skip None values)
         for key in ALLOWED_DB_COLUMNS:
             if key == "price_transaction":
                 continue
@@ -194,11 +199,11 @@ class FilingRecord:
             if val is not None:
                 db_dict[key] = val
 
-        # 3) sub_sector harus string tunggal
+        # 3) sub_sector must be a single string
         if isinstance(db_dict.get("sub_sector"), list):
             db_dict["sub_sector"] = db_dict["sub_sector"][0] if db_dict["sub_sector"] else None
 
-        # 4) default sector/sub_sector (NOT NULL safety)
+        # 4) default sector/sub_sector to satisfy NOT NULL constraints (if any)
         if not db_dict.get("sector"):
             db_dict["sector"] = "unknown"
         if not db_dict.get("sub_sector"):
