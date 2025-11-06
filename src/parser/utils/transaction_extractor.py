@@ -131,9 +131,7 @@ class TransactionExtractor:
         self.lines = extractor.lines or []
         self.ticker = ticker or "UNKNOWN"
 
---------------------------------------
     # Public API
---------------------------------------
     def extract_transaction_rows(self) -> List[Dict[str, Any]]:
         """
         Try parsers in order of reliability:
@@ -185,9 +183,7 @@ class TransactionExtractor:
 
         return []
 
---------------------------------------
     # Fallback heuristic for missing price (from body text)
---------------------------------------
     def _extract_price_from_body(self, body: str) -> Optional[float]:
         """Recover plausible transaction price from narrative text."""
         if not body:
@@ -207,9 +203,7 @@ class TransactionExtractor:
             return None
         return min(candidates)  # smaller value more likely to be price
 
---------------------------------------
     # Transfer detection
---------------------------------------
     def contains_transfer_transaction(self) -> bool:
         for line in self.lines:
             lo = (line or "").lower()
@@ -247,9 +241,7 @@ class TransactionExtractor:
             })
         return rows
 
---------------------------------------
     # Core parsing methods
---------------------------------------
     def _push_row(self, kind: str, price_s: str, date_s: Optional[str], amount_s: str) -> Dict[str, Any]:
         k = (kind or "").strip().lower()
         if k in ("buy", "pembelian"):
