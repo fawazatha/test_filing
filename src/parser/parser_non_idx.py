@@ -53,61 +53,71 @@ def _span_contains(idx: int, spans: List[tuple[int, int]]) -> bool:
     return False
 
 def _prefer_price_from_line(line: str) -> Optional[str]:
-    """
-    Pick a 'price-looking' token from a single line with heuristics:
-    - Exclude tokens that lie inside a date span or right before month words
-    - Prefer tokens if the line hints price/harga
-    - Exclude thousands-formatted integers (likely amounts)
-    """
     if not line:
         return None
     s = line.strip()
+    lwr = s.lower()
     date_spans = _date_spans_in_text(s)
 
-    # candidate numeric tokens
+    has_price_hint = ("harga transaksi" in lwr) or ("transaction price" in lwr) or ("harga:" in lwr)
+    is_amount_line = ("jumlah saham" in lwr) or ("number of shares" in lwr)
+
     tokens = list(re.finditer(r"[0-9][0-9\.,]*", s))
     if not tokens:
         return None
 
     def score(tok: str, start: int) -> int:
         sc = 0
+        # jangan ambil token yang nempel tanggal
         if _span_contains(start, date_spans):
             return -999
-        # immediate month after? e.g., "30 Okt"
+        # hindari angka tepat sebelum/ sesudah kata bulan
         after = s[start:start + 12]
         if _MONTH_RE.search(after):
             return -998
-        lwr = s.lower()
-        # line-level hints
-        if ("harga" in lwr and "transaksi" in lwr) or ("transaction price" in lwr) or ("harga transaksi" in lwr):
-            sc += 5
+
+        if has_price_hint:
+            sc += 6
         if ("rp" in lwr) or ("idr" in lwr):
             sc += 2
-        # decimals are slightly preferred
-        if ("," in tok or "." in tok) and not _RE_BIG_INT.fullmatch(tok):
+        if ("," in tok or "." in tok):
             sc += 1
-        # very small (<= 31) are suspicious unless hinted as price
+
         try:
             val = NumberParser.parse_number(tok) or 0
-            if val <= 31 and sc < 5:
-                sc -= 2
+            # kurangi skor kalau kemungkinan hari kalender (≤31) tanpa hint
+            if not has_price_hint and val <= 31:
+                sc -= 3
+            # angka sangat besar cenderung amount
+            if val > 100_000:
+                sc -= 4
         except Exception:
             pass
+
+        # penalti kuat jika barisnya jelas-jelas baris jumlah saham
+        if is_amount_line:
+            sc -= 8
+
         return sc
 
     best_tok, best_sc = None, -999
     for m in tokens:
         t = m.group(0)
-        if not _RE_PRICE.fullmatch(t):
+        # kandidat yang diizinkan sebagai harga:
+        is_candidate = (
+            _RE_PRICE.fullmatch(t) or           # 55 / 1250 / 75.5
+            _RE_BIG_INT.fullmatch(t) or         # 1.370 / 2.000 / 1,485
+            (has_price_hint and _RE_ANYNUM.fullmatch(t))
+        )
+        if not is_candidate:
             continue
-        if _RE_BIG_INT.fullmatch(t):  # skip big ints (likely amounts)
-            continue
+
         sc = score(t, m.start())
         if sc > best_sc:
             best_sc, best_tok = sc, t
 
     return best_tok
-#
+
 
 
 def _clean_cell(s: Any) -> str:

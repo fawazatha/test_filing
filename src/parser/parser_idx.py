@@ -357,11 +357,14 @@ class IDXParser(BaseParser):
         # 1) Prefer explicit price lines
         for i, ln in enumerate(lines):
             L = (ln or "").lower()
-            if ("harga" in L and "transaksi" in L) or ("transaction price" in L):
-                cand = _prefer_price_from_line(ln)
-                if cand:
-                    price_s = cand
-                    price_line_idx = i
+            if ("harga transaksi" in L) or ("transaction price" in L) or (L.strip() == "harga"):
+                for k in range(i + 1, min(i + 4, len(lines))):
+                    cand = _prefer_price_from_line(lines[k])
+                    if cand:
+                        price_s = cand
+                        price_line_idx = k
+                        break
+                if price_s:
                     break
 
         # 2) Fallback: sweep for best price token
