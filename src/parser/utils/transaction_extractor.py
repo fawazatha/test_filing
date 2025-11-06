@@ -18,10 +18,14 @@ It supports:
 3) Last-resort fallback that assembles a quartet (type, price, date, amount)
    from a small window after the header, without assuming strict order.
 4) Loose single-line rows when no explicit header is found.
+5) Final fallback: extract price directly from body narrative if table missing.
 """
 
 logger = get_logger(__name__)
 logger.debug("[transaction_extractor] imported from: %s", __file__)
+
+# Global constants
+MAX_PRICE_IDR = float(os.getenv("PRICE_MAX_IDR", "100000"))
 
 # Date patterns (EN/ID)
 _DATE_ANY_STR = f"(?:{PAT_EN_FULL.pattern}|{PAT_ID_FULL.pattern})"
@@ -36,11 +40,14 @@ _MONTH_WORD = (
 )
 _MONTH_RE = re.compile(rf"\b{_MONTH_WORD}\b", re.IGNORECASE)
 
-MAX_PRICE_IDR = float(os.getenv("PRICE_MAX_IDR", "100000"))
+# Common numeric patterns
+_RE_BIG_INT = re.compile(r"^\d{1,3}(?:[.,]\d{3})+$")   # e.g. 14.838.000
+_RE_PRICE   = re.compile(r"^\d{1,6}(?:[.,]\d{1,2})?$") # e.g. 55, 198, 1250, 75.5
+_RE_ANYNUM  = re.compile(r"^\d+(?:[.,]\d+)*$")
 
 
+# Helper functions
 def _date_spans_in_text(s: str) -> List[tuple[int, int]]:
-    """Return spans (start, end) of any date-like substring in s."""
     spans: List[tuple[int, int]] = []
     for m in _DATE_ANY.finditer(s or ""):
         spans.append(m.span())
@@ -53,26 +60,14 @@ def _span_contains(idx: int, spans: List[tuple[int, int]]) -> bool:
     return any(a <= idx < b for (a, b) in spans)
 
 
-_RE_BIG_INT = re.compile(r"^\d{1,3}(?:[.,]\d{3})+$")   # e.g. 14.838.000
-_RE_PRICE   = re.compile(r"^\d{1,6}(?:[.,]\d{1,2})?$") # e.g. 55, 198, 1250
-_RE_ANYNUM  = re.compile(r"^\d+(?:[.,]\d+)*$")
-
-
 def _prefer_price_from_line(line: str) -> Optional[str]:
-    """
-    Improved price selector that avoids using 'amount' as price.
-    """
     if not line:
         return None
     s = line.strip()
     lwr = s.lower()
+    date_spans = _date_spans_in_text(s)
 
     has_price_hint = ("harga transaksi" in lwr) or ("transaction price" in lwr) or ("harga:" in lwr)
-    is_amount_line = ("jumlah saham" in lwr) or ("number of shares" in lwr) or ("shares transacted" in lwr)
-    if is_amount_line and not has_price_hint:
-        return None
-
-    date_spans = _date_spans_in_text(s)
     tokens = list(re.finditer(r"[0-9][0-9\.,]*", s))
     if not tokens:
         return None
@@ -100,27 +95,26 @@ def _prefer_price_from_line(line: str) -> Optional[str]:
                 sc -= 4
         except Exception:
             pass
-        if is_amount_line:
-            sc -= 8
         return sc
 
     best_tok, best_sc = None, -999
     for m in tokens:
         t = m.group(0)
-        is_plain_price = _RE_PRICE.fullmatch(t)
-        is_thousands_int = _RE_BIG_INT.fullmatch(t)
-        if not (is_plain_price or (has_price_hint and is_thousands_int)):
+        is_candidate = (
+            _RE_PRICE.fullmatch(t) or
+            _RE_BIG_INT.fullmatch(t) or
+            (has_price_hint and _RE_ANYNUM.fullmatch(t))
+        )
+        if not is_candidate:
             continue
         sc = score(t, m.start())
         if sc > best_sc:
             best_sc, best_tok = sc, t
-
     return best_tok
 
 
-# Transaction keywords
+# Regex for block-style format
 _TYPES_ANY = r"(Buy|Sell|Transfer|Pembelian|Penjualan|Pengalihan)"
-
 _BLOCK_RE = re.compile(
     rf"Type of Transaction:\s*({_TYPES_ANY}).*?"
     rf"Transaction Price:\s*([0-9\.,]+).*?"
@@ -130,32 +124,92 @@ _BLOCK_RE = re.compile(
 )
 
 
+# Main extractor class
 class TransactionExtractor:
     def __init__(self, extractor: TextExtractor, ticker: Optional[str] = None):
         self.ex = extractor
         self.lines = extractor.lines or []
         self.ticker = ticker or "UNKNOWN"
 
+--------------------------------------
+    # Public API
+--------------------------------------
     def extract_transaction_rows(self) -> List[Dict[str, Any]]:
+        """
+        Try parsers in order of reliability:
+        1) Stacked-cell line parser
+        2) Block-format parser
+        3) Window fallback
+        4) Loose single-line parser
+        5) Final fallback: narrative price from body
+        """
+        # 1) stacked-cell
         rows, header_idx = self._parse_transactions_lines()
         if rows:
             logger.debug("Found %d transaction(s) via STACKED-CELL parser.", len(rows))
             return rows
+
+        # 2) block
         rows = self._parse_transactions_block()
         if rows:
             logger.debug("Found %d transaction(s) via BLOCK parser.", len(rows))
             return rows
+
+        # 3) window fallback
         if header_idx is not None and header_idx >= 0:
             window = self.lines[header_idx + 1: header_idx + 15]
             row = self._parse_transactions_window_fallback(window)
             if row:
                 logger.debug("Found 1 transaction via WINDOW fallback.")
                 return [row]
+
+        # 4) loose-line
         rows = self._parse_transactions_loose_lines()
         if rows:
             logger.debug("Found %d transaction(s) via LOOSE-LINE parser.", len(rows))
-        return rows
+            return rows
 
+        # 5) NEW FINAL FALLBACK (recover price from body narrative)
+        body_text = getattr(self.ex, "full_text", "\n".join(self.lines))
+        price = self._extract_price_from_body(body_text)
+        if price:
+            logger.debug("Recovered narrative price %.2f from body fallback.", price)
+            return [{
+                "type": None,
+                "price": price,
+                "amount": None,
+                "value": None,
+                "date": None,
+                "date_raw": None
+            }]
+
+        return []
+
+--------------------------------------
+    # Fallback heuristic for missing price (from body text)
+--------------------------------------
+    def _extract_price_from_body(self, body: str) -> Optional[float]:
+        """Recover plausible transaction price from narrative text."""
+        if not body:
+            return None
+        tokens = re.findall(r"[0-9][0-9\.,]*", body)
+        candidates = []
+        for tok in tokens:
+            try:
+                val = NumberParser.parse_number(tok)
+            except Exception:
+                continue
+            if not val:
+                continue
+            if 10 <= val <= MAX_PRICE_IDR:
+                candidates.append(val)
+        if not candidates:
+            return None
+        return min(candidates)  # smaller value more likely to be price
+
+--------------------------------------
+    # Transfer detection
+--------------------------------------
     def contains_transfer_transaction(self) -> bool:
         for line in self.lines:
             lo = (line or "").lower()
@@ -193,6 +247,9 @@ class TransactionExtractor:
             })
         return rows
 
+--------------------------------------
+    # Core parsing methods
+--------------------------------------
     def _push_row(self, kind: str, price_s: str, date_s: Optional[str], amount_s: str) -> Dict[str, Any]:
         k = (kind or "").strip().lower()
         if k in ("buy", "pembelian"):
@@ -203,6 +260,7 @@ class TransactionExtractor:
             tx_type = "transfer"
         else:
             raise ValueError(f"Unknown transaction type: {kind}")
+
         price = NumberParser.parse_number(price_s)
         amount = NumberParser.parse_number(amount_s)
         date_norm = parse_id_en_date((date_s or "").strip())
@@ -228,6 +286,7 @@ class TransactionExtractor:
 
     def _parse_transactions_lines(self) -> tuple[List[Dict[str, Any]], Optional[int]]:
         rows: List[Dict[str, Any]] = []
+
         HEADER_TOKENS = (
             "type of transaction", "transaction price", "transaction date", "number of shares transacted",
             "jenis transaksi", "harga transaksi", "tanggal transaksi", "jumlah saham",
@@ -238,12 +297,15 @@ class TransactionExtractor:
             "number of shares owned after", "percentage of ownership after",
             "respectfully", "hormat",
         )
+
         def is_header_line(s: str) -> bool:
             ls = (s or "").lower()
             return any(tok in ls for tok in HEADER_TOKENS)
+
         def is_stop(s: str) -> bool:
             ls = (s or "").lower()
             return any(tok in ls for tok in STOP_TOKENS)
+
         header_idx = -1
         for i, line in enumerate(self.lines):
             if is_header_line(line):
@@ -264,21 +326,22 @@ class TransactionExtractor:
             if is_header_line(raw):
                 continue
             lo = raw.lower()
+
             if row_kind is None:
                 if any(k in lo for k in ("buy", "sell", "pembelian", "penjualan", "pengalihan", "transfer")):
                     row_kind = "buy" if ("buy" in lo or "pembelian" in lo) else \
                                "sell" if ("sell" in lo or "penjualan" in lo) else "transfer"
                     continue
-            if row_kind and row_price_s is None:
+            if row_kind and not row_price_s:
                 cand_price = _prefer_price_from_line(raw)
                 if cand_price:
                     row_price_s = cand_price
                     continue
-            if row_kind and row_price_s and row_date_s is None:
+            if row_kind and row_price_s and not row_date_s:
                 if parse_id_en_date(raw):
                     row_date_s = raw
                     continue
-            if row_kind and row_price_s and row_date_s and row_amt_s is None:
+            if row_kind and row_price_s and row_date_s and not row_amt_s:
                 if _RE_BIG_INT.match(raw) or _RE_ANYNUM.match(raw):
                     row_amt_s = raw
             if row_kind and row_price_s and row_date_s and row_amt_s:
@@ -287,6 +350,10 @@ class TransactionExtractor:
                 except Exception as e:
                     logger.warning("Line parser failed: %s", e)
                 row_kind = row_price_s = row_date_s = row_amt_s = None
+
+        if not rows:
+            logger.debug("Stacked-cell parser found 0 rows. Window after header: %s",
+                         self.lines[header_idx + 1: header_idx + 11])
         return rows, header_idx
 
     def _parse_transactions_window_fallback(self, window: List[str]) -> Optional[Dict[str, Any]]:
@@ -370,6 +437,5 @@ class TransactionExtractor:
                 try:
                     rows.append(self._push_row(kind, price_s, date_s, amount_s))
                 except Exception as e:
-                    logger.warning("Loose-line row failed: %s | data=(%s,%s,%s,%s)",
-                                   e, kind, price_s, date_s, amount_s)
+                    logger.warning("Loose-line row failed: %s", e)
         return rows
