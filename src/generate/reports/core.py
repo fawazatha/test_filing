@@ -1,3 +1,4 @@
+# src/generate/reports/core.py
 from __future__ import annotations
 from typing import Any, Dict, Iterable, List, Optional
 from dataclasses import dataclass, field
@@ -5,15 +6,13 @@ import json
 from pathlib import Path
 from datetime import datetime
 
-from .utils.logger import get_logger
+from src.common.log import get_logger
 from .utils.datetimes import Window, fmt_for_ts_kind, JKT
-from .utils import sb as sbapi
+from ...common import sb as sbapi
 
 logger = get_logger("report.core")
 
-# ===========================
 # Models
-# ===========================
 @dataclass
 class Filing:
     # Critical
@@ -42,9 +41,7 @@ class Filing:
     raw: Dict[str, Any] = field(default_factory=dict)
 
 
-# ===========================
 # I/O helpers
-# ===========================
 def load_json_array(path: str | Path) -> List[Dict[str, Any]]:
     """Load a JSON file that may be:
        - a list[dict]
@@ -72,9 +69,7 @@ def load_filings_from_json(path: str | Path) -> List[Filing]:
     return filings
 
 
-# ===========================
 # Transform
-# ===========================
 def rows_to_filings(rows: Iterable[Dict[str, Any]]) -> List[Filing]:
     """
     Convert heterogeneous Supabase rows (legacy/new schemas) into Filing objects.
@@ -181,9 +176,7 @@ def rows_to_filings(rows: Iterable[Dict[str, Any]]) -> List[Filing]:
     return out
 
 
-# ===========================
 # Company chooser (for fetch-first planning)
-# ===========================
 def _safe_list(v: Any) -> List[Any]:
     if v is None:
         return []
@@ -260,9 +253,7 @@ async def fetch_company_report_symbols(
     )
 
 
-# ===========================
 # Supabase fetchers
-# ===========================
 async def fetch_filings_for_symbols_between(
     symbols: List[str],
     window: Window,
@@ -340,12 +331,8 @@ def filter_filings_by_window(
     return out
 
 
-# ===========================
 # Grouping for email/report
-# ===========================
-# ===========================
 # Grouping for email/report
-# ===========================
 def group_report(*args) -> Dict[str, Any]:
     """
     Back-compatible adapter:

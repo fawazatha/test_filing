@@ -1,10 +1,11 @@
+# src/generate/reports/utils/symbol_sources.py
 from __future__ import annotations
 from typing import Iterable, List, Optional, Dict, Any
 import json
 from pathlib import Path
 
 from ..core import fetch_company_report_symbols, load_companies_from_json
-from . import sb as sbapi  # keep import if used elsewhere
+from ....common import sb as sbapi  # keep import if used elsewhere
 
 def parse_symbols_arg(arg: Optional[str]) -> List[str]:
     out: List[str] = []

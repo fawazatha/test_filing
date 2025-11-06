@@ -3,14 +3,14 @@ from typing import List, Dict, Optional, Tuple, Any
 import os
 import re
 
-# --- Core/Base ---
+# Core/Base
 from src.parser.core.base_parser import BaseParser
 
-# --- Common Libs ---
+# Common Libs
 from src.common.numbers import NumberParser
 from src.common.log import get_logger
 
-# --- Parser Utils ---
+# Parser Utils
 from src.parser.utils.text_extractor import TextExtractor
 from src.parser.utils.transaction_extractor import TransactionExtractor
 from src.parser.utils.name_cleaner import NameCleaner
@@ -21,9 +21,7 @@ from src.parser.utils.company import (
     suggest_symbols
 )
 
-
 logger = get_logger(__name__)
-
 SYMBOL_TOKEN_RE = re.compile(r"^[A-Z0-9]{3,6}$")
 
 
@@ -35,6 +33,7 @@ class IDXParser(BaseParser):
     - Use centralized TransactionClassifier.validate_direction
     - Use centralized TransactionExtractor for parsing rows (DRY)
     - Use CompanyService facade for all resolution
+    - Check transaction prices vs last_close_price (±50% rule) and alert
     """
 
     def __init__(
@@ -51,8 +50,8 @@ class IDXParser(BaseParser):
             alerts_not_inserted_file=os.getenv("ALERTS_NOT_INSERTED_IDX", "alerts/alerts_not_inserted_idx.json"),
         )
         self._current_alert_context: Optional[Dict[str, Any]] = None
-        
-        # Centralized service for all company logic
+
+        # Centralized service for all company logic (map + latest prices)
         self.company = CompanyService()
         self.company_map = self.company.symbol_to_name
         self._rev_company_map = self.company.rev_map
@@ -62,7 +61,7 @@ class IDXParser(BaseParser):
     def parse_single_pdf(
         self, filepath: str, filename: str, pdf_mapping: Dict[str, Any]
     ) -> Optional[Dict[str, Any]]:
-        
+
         self._current_alert_context = (pdf_mapping or {}).get(filename) or {}
 
         text = self.extract_text_from_pdf(filepath)
@@ -81,7 +80,7 @@ class IDXParser(BaseParser):
 
             flags = TransactionClassifier.detect_flags_from_text(text)
             txns = (data.get("transactions") or [])
-            
+
             # Synthesize txns if empty but type is known
             if not txns and data.get("transaction_type") in {"buy", "sell", "transfer"}:
                 txns = [{"type": data["transaction_type"], "amount": data.get("amount_transacted") or 0}]
@@ -93,7 +92,7 @@ class IDXParser(BaseParser):
                 flags=flags,
             )
             return data
-            
+
         except Exception as e:
             logger.error(f"extract_fields error {filename}: {e}", exc_info=True)
             self.alert_manager.log_alert(filename, f"field_extract_error: {e}", {
@@ -122,13 +121,12 @@ class IDXParser(BaseParser):
 
         self._extract_holdings_and_percentages(ex, res)
         self._extract_contact(ex, res)
-        
-        # --- FIX: Reverted to logic from your original working file ---
+
+        # Keep original working logic
         self._extract_purpose(ex, res)
-        # --- End FIX ---
 
         self._extract_transactions(ex, res)
-        self._postprocess_transactions(res)
+        self._postprocess_transactions(res, filename)  # filename needed for alerts
 
         tx_type = res.get("transaction_type")
         if tx_type in ("buy", "sell"):
@@ -147,7 +145,7 @@ class IDXParser(BaseParser):
         self._flag_type_mismatch_if_any(res, filename)
         return res
 
-    # ---- smaller helpers ----
+    #- smaller helpers-
     def _extract_headers(self, ex: TextExtractor, res: Dict[str, Any]) -> None:
         res["issuer_code"] = (
             ex.find_table_value("Issuer Name")
@@ -179,7 +177,7 @@ class IDXParser(BaseParser):
 
         if issuer_name_raw:
             token = issuer_name_raw.strip().upper()
-            
+
             if SYMBOL_TOKEN_RE.fullmatch(token) and (
                 token in self.company_map or f"{token}.JK" in self.company_map
             ):
@@ -187,7 +185,7 @@ class IDXParser(BaseParser):
                 if not sym.endswith(".JK"):
                     sym = f"{sym}.JK"
                 company_name_out = self.company.get_canonical_name(sym) or issuer_name_raw
-            
+
             if not sym:
                 min_score = int(os.getenv("COMPANY_RESOLVE_MIN_SCORE", "85"))
                 base = self.company.resolve_symbol(issuer_name_raw, issuer_name_raw, min_score_env=str(min_score))
@@ -291,7 +289,7 @@ class IDXParser(BaseParser):
         if phone:
             res["company_phone"] = phone
 
-    # --- FIX: Logic updated to match your working file ---
+    # Keep original working logic for purpose extraction
     def _extract_purpose(self, ex: TextExtractor, res: Dict[str, Any]) -> None:
         """Extracts the purpose of the transaction text."""
         purpose = (
@@ -304,12 +302,11 @@ class IDXParser(BaseParser):
             or ex.find_value_after_keyword("Purpose of transaction")
             or ""
         ).strip()
-            
         res["purpose"] = purpose
-    # --- End FIX ---
 
     # == Transactions ==
     def _extract_transactions(self, ex: TextExtractor, res: Dict[str, Any]) -> None:
+        # best-effort doc-level type (optional)
         for i, line in enumerate(ex.lines or []):
             if "transaction type" in (line or "").lower():
                 for j in range(i + 1, min(i + 8, len(ex.lines))):
@@ -324,14 +321,14 @@ class IDXParser(BaseParser):
 
         tx_ex = TransactionExtractor(ex, ticker=res.get("symbol"))
         rows = tx_ex.extract_transaction_rows()
-        
+
         if not rows and (res.get("transaction_type") == "transfer" or tx_ex.contains_transfer_transaction()):
-             rows = tx_ex.extract_transfer_transactions()
+            rows = tx_ex.extract_transfer_transactions()
 
         res["transactions"] = rows
 
     # == Post-processing & validation ==
-    def _postprocess_transactions(self, res: Dict[str, Any]) -> None:
+    def _postprocess_transactions(self, res: Dict[str, Any], filename: str) -> None:
         txs = res.get("transactions") or []
         buy_sell = [t for t in txs if t.get("type") in {"buy", "sell"}]
         transfers = [t for t in txs if t.get("type") == "transfer"]
@@ -363,6 +360,7 @@ class IDXParser(BaseParser):
             elif kinds <= {"buy", "sell"} and len({t["type"] for t in buy_sell}) == 1:
                 res["transaction_type"] = buy_sell[0]["type"]
 
+        # Weighted average price for buy/sell
         total_amt = sum(t.get("amount", 0) for t in buy_sell if t.get("amount", 0) > 0)
         if total_amt > 0:
             wavg = sum((t.get("price", 0.0) * t.get("amount", 0)) for t in buy_sell) / total_amt
@@ -370,12 +368,71 @@ class IDXParser(BaseParser):
         else:
             res["price"] = None
 
-        res["price_transaction"] = {
-            "prices": [t.get("price", 0.0) for t in buy_sell if t.get("amount", 0) > 0],
-            "amount_transacted": [t.get("amount", 0) for t in buy_sell if t.get("amount", 0) > 0],
-        }
+        # >>> Reformatted price_transaction: list of objects (date, type, price, amount_transacted)
+        res["price_transaction"] = [
+            {
+                "date": t.get("date"),
+                "type": t.get("type"),
+                "price": t.get("price", 0.0),
+                "amount_transacted": t.get("amount", 0),
+            }
+            for t in buy_sell
+            if (t.get("amount", 0) or 0) > 0
+        ]
 
+        # Flag price deviation > 50% vs last_close_price
+        self._check_price_deviation_vs_last_close(res, filename)
+
+        # Mirror transfer flag to top-level
         res["is_transfer"] = res.get("is_transfer", False) or res["has_transfer"]
+
+    def _check_price_deviation_vs_last_close(self, res: Dict[str, Any], filename: str) -> None:
+        """
+        Compare each buy/sell price to last_close_price from CompanyService/company_map.
+        If deviation > 50%, emit an alert per outlier (price_deviation_gt_50).
+        """
+        symbol = res.get("symbol")
+        if not symbol:
+            return
+
+        try:
+            # Prefer a dedicated accessor if available, else fall back to dict
+            if hasattr(self.company, "get_last_close"):
+                last_close = self.company.get_last_close(symbol)
+            else:
+                last_close = None
+                # Fallback to raw map if CompanyService exposes it
+                meta = getattr(self.company, "price_meta", None)
+                if isinstance(meta, dict):
+                    last_close = (meta.get(symbol) or {}).get("last_close_price")
+        except Exception:
+            last_close = None
+
+        if not last_close or last_close <= 0:
+            return
+
+        pts = res.get("price_transaction") or []
+        for idx, item in enumerate(pts):
+            price = item.get("price") or 0
+            if not price or price <= 0:
+                continue
+            dev = abs(price - last_close) / float(last_close)
+            if dev > 0.5:
+                self.alert_manager.log_alert(
+                    filename,
+                    "price_deviation_gt_50",
+                    {
+                        "symbol": symbol,
+                        "company_name": res.get("company_name"),
+                        "last_close_price": last_close,
+                        "observed_price": price,
+                        "deviation_pct": round(dev * 100.0, 2),
+                        "date": item.get("date"),
+                        "type": item.get("type"),
+                        "amount_transacted": item.get("amount_transacted"),
+                        "announcement": self._current_alert_context,
+                    },
+                )
 
     def _flag_type_mismatch_if_any(self, res: Dict[str, Any], filename: str) -> None:
         doc_type = (res.get("transaction_type") or "").lower()
@@ -385,7 +442,7 @@ class IDXParser(BaseParser):
             pct_before=res.get("share_percentage_before", 0.0),
             pct_after=res.get("share_percentage_after", 0.0),
         )
-        
+
         mismatch = TransactionClassifier.mismatch_flag(
             doc_type,
             inferred,
@@ -394,7 +451,7 @@ class IDXParser(BaseParser):
             res.get("share_percentage_before"),
             res.get("share_percentage_after"),
         )
-        
+
         if mismatch:
             hb = res.get("holding_before")
             ha = res.get("holding_after")
@@ -420,7 +477,7 @@ class IDXParser(BaseParser):
     def validate_parsed_data(self, d: Dict[str, Any]) -> bool:
         if d.get("skip_filing"):
             return False
-            
+
         all_zero = (
             not d.get("holder_name")
             and (d.get("holding_before", 0) == 0)
@@ -430,8 +487,7 @@ class IDXParser(BaseParser):
         )
         has_change = (d.get("holding_before") != d.get("holding_after")) or \
                      (d.get("share_percentage_before") != d.get("share_percentage_after"))
-        
-        has_txns = bool(d.get("transactions"))
-        
-        return not all_zero and (has_change or has_txns)
 
+        has_txns = bool(d.get("transactions"))
+
+        return not all_zero and (has_change or has_txns)

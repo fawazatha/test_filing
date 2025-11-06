@@ -1,3 +1,4 @@
+# src/generate/reports/cli.py
 from __future__ import annotations
 import argparse
 import asyncio
@@ -11,7 +12,7 @@ from typing import Any, Dict, List, Optional, Tuple
 
 from jinja2 import Template
 
-from .utils.logger import get_logger
+from src.common.log import get_logger
 from .utils.datetimes import resolve_window
 from .core import (
     group_report,
@@ -23,7 +24,7 @@ from .core import (
 from .utils.company_map import load_company_map, annotate_holder_tickers
 from .mailer import send_attachments  # SES sender
 
-# === NEW: filters helper (watchlist-first symbols + final sweep) ===
+# filters helper (watchlist-first symbols + final sweep)
 from .utils.filters import (
     resolve_symbols_priority,
     filter_filings_by_symbols,

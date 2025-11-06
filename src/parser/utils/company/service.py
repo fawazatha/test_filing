@@ -99,3 +99,29 @@ class CompanyService:
             if cand in self.symbol_to_name or f"{cand}.JK" in self.symbol_to_name:
                 return cand
         return None
+    
+    def get_last_close(self, symbol: str | None) -> float | None:
+        """
+        Return last_close_price (float) for a given symbol.
+        Accepts 'BBCA' or 'BBCA.JK'. Returns None if missing/invalid.
+        """
+        if not symbol:
+            return None
+        key = symbol if symbol.endswith(".JK") else f"{symbol}.JK"
+
+        # asumsi: self._raw_map atau self.company_map_like menyimpan meta per symbol
+        meta = None
+        try:
+
+            meta = getattr(self, "_raw_map", {}).get(key) \
+                or getattr(self, "_raw_map", {}).get(symbol)
+        except Exception:
+            meta = None
+
+        if not meta:
+            return None
+        try:
+            v = meta.get("last_close_price")
+            return float(v) if v is not None else None
+        except Exception:
+            return None

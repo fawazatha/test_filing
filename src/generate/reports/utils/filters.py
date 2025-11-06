@@ -5,7 +5,7 @@ import json
 from pathlib import Path
 
 from ..core import fetch_company_report_symbols, load_companies_from_json
-from . import sb as sbapi  # keep import if used elsewhere
+from ....common import sb as sbapi 
 
 
 # Parsing & normalization

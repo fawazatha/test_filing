@@ -26,6 +26,100 @@ logger.debug("[transaction_extractor] imported from: %s", __file__)
 _DATE_ANY_STR = f"(?:{PAT_EN_FULL.pattern}|{PAT_ID_FULL.pattern})"
 _DATE_ANY = re.compile(_DATE_ANY_STR, re.IGNORECASE)
 
+# Month tokens (EN/ID) for adjacency checks (e.g., "30 Okt")
+_MONTH_WORD = (
+    r"(?:Jan(?:uary)?|Feb(?:ruary)?|Mar(?:ch)?|Apr(?:il)?|May|Jun(?:e)?|Jul(?:y)?|"
+    r"Aug(?:ust)?|Sep(?:t(?:ember)?)?|Oct(?:ober)?|Nov(?:ember)?|Dec(?:ember)?|"
+    r"Jan(?:uari)?|Feb(?:ruari)?|Mar(?:et)?|Apr(?:il)?|Mei|Jun(?:i)?|Jul(?:i)?|"
+    r"Agu(?:stus)?|Sep(?:tember)?|Okt(?:ober)?|Nov(?:ember)?|Des(?:ember)?)"
+)
+_MONTH_RE = re.compile(rf"\b{_MONTH_WORD}\b", re.IGNORECASE)
+
+def _date_spans_in_text(s: str) -> List[tuple[int, int]]:
+    """Return spans (start, end) of any date-like substring in s."""
+    spans: List[tuple[int, int]] = []
+    for m in _DATE_ANY.finditer(s or ""):
+        spans.append(m.span())
+    # also catch simple 'dd Month' (optionally with year)
+    for m in re.finditer(rf"\b\d{{1,2}}\s+{_MONTH_WORD}(?:\s+\d{{2,4}})?\b", s or "", flags=re.IGNORECASE):
+        spans.append(m.span())
+    return spans
+
+def _token_spans_price_like(s: str) -> List[tuple[str, int, int]]:
+    """
+    Collect price-looking numeric tokens:
+    - 1..6 digits, optional decimal part (no thousands separators)
+    """
+    out: List[tuple[str, int, int]] = []
+    for m in re.finditer(r"[0-9][0-9\.,]*", s or ""):
+        t = m.group(0)
+        # allow up to 6 integer digits with optional decimal
+        if re.fullmatch(r"\d{1,6}(?:[.,]\d{1,2})?", t):
+            # exclude thousands-formatted integers like 14.838.000
+            if not re.fullmatch(r"\d{1,3}(?:[.,]\d{3})+", t):
+                out.append((t, m.start(), m.end()))
+    return out
+
+def _span_contains(idx: int, spans: List[tuple[int, int]]) -> bool:
+    return any(a <= idx < b for (a, b) in spans)
+
+def _prefer_price_from_line(line: str) -> Optional[str]:
+    """
+    Extract a 'price-looking' token from a single line with heuristics:
+    - Prefer tokens not inside a date span
+    - Prefer tokens preceded by Rp/IDR or when line hints price/harga
+    - Penalize tiny numbers (<=31) unless currency hint exists
+    """
+    if not line:
+        return None
+    s = line.strip()
+    date_spans = _date_spans_in_text(s)
+    cands = _token_spans_price_like(s)
+    if not cands:
+        return None
+
+    def score(tok: str, start: int) -> int:
+        sc = 0
+        # hard reject if inside date span
+        if _span_contains(start, date_spans):
+            return -999
+        # immediate month word after token? (e.g., "30 Okt")
+        after = s[start:start + 12]
+        if _MONTH_RE.search(after):
+            return -998
+
+        # currency hint nearby
+        prefix = s[max(0, start - 6):start].lower()
+        if "rp" in prefix or "idr" in prefix:
+            sc += 5
+
+        # line hints it's about price
+        lwr = s.lower()
+        if ("price" in lwr) or ("harga" in lwr and "transaksi" in lwr):
+            sc += 3
+
+        # mild preference if has decimal
+        if "." in tok or "," in tok and not re.fullmatch(r"\d{1,2},\d{2,4}", tok):
+            sc += 1
+
+        # penalize very small numbers (likely day-of-month) unless currency hint present
+        try:
+            val = NumberParser.parse_number(tok) or 0
+            if val <= 31 and sc < 5:
+                sc -= 2
+        except Exception:
+            pass
+        return sc
+
+    best_tok: Optional[str] = None
+    best_sc = -999
+    for tok, st, _ in cands:
+        sc = score(tok, st)
+        if sc > best_sc:
+            best_sc = sc
+            best_tok = tok
+    return best_tok
+
 # Transaction keywords
 _TYPES_ANY = r"(Buy|Sell|Transfer|Pembelian|Penjualan|Pengalihan)"
 
@@ -39,8 +133,8 @@ _BLOCK_RE = re.compile(
 )
 
 # Common numeric helpers
-_RE_BIG_INT = re.compile(r"^\d{1,3}(?:[.,]\d{3})+$")     # e.g. 14.838.000
-_RE_PRICE   = re.compile(r"^\d{1,3}(?:[.,]\d{1,2})?$")   # e.g. 55 or 55.5
+_RE_BIG_INT = re.compile(r"^\d{1,3}(?:[.,]\d{3})+$")   # e.g. 14.838.000
+_RE_PRICE   = re.compile(r"^\d{1,6}(?:[.,]\d{1,2})?$") # e.g. 55, 198, 1250, 10150, 75.5
 _RE_ANYNUM  = re.compile(r"^\d+(?:[.,]\d+)*$")
 
 
@@ -73,7 +167,7 @@ class TransactionExtractor:
 
         # 3) window fallback (only meaningful if we saw a header location)
         if header_idx is not None and header_idx >= 0:
-            window = self.lines[header_idx + 1 : header_idx + 15]
+            window = self.lines[header_idx + 1: header_idx + 15]
             row = self._parse_transactions_window_fallback(window)
             if row:
                 logger.debug("Found 1 transaction via WINDOW fallback.")
@@ -96,24 +190,32 @@ class TransactionExtractor:
         return False
 
     def extract_transfer_transactions(self) -> List[Dict[str, Any]]:
-        """Extract rudimentary 'transfer' rows from narrative lines."""
+        """
+        Extract rudimentary 'transfer' rows from narrative lines.
+        Use the same price heuristic to avoid catching day-of-month as price.
+        """
         rows: List[Dict[str, Any]] = []
         for line in self.lines:
             lo = (line or "").lower()
             if "pengalihan" not in lo:
                 continue
 
-            date_norm = parse_id_en_date(line)
-            m_price = re.search(r"\b\d{1,3}(?:[.,]\d{3})*(?:[.,]\d{1,2})?\b", line)
-            price = NumberParser.parse_number(m_price.group(0)) if m_price else 0
+            # price (robust, context-aware)
+            price_s = _prefer_price_from_line(line)
+            price = NumberParser.parse_number(price_s) if price_s else 0
 
-            amount_tokens = re.findall(r"\b\d{1,3}(?:[.,]\d{3})+\b", line) or re.findall(r"\b\d+\b", line)
-            if not amount_tokens:
+            # amount (prefer thousands-formatted; else last numeric)
+            tokens = re.findall(r"\b\d{1,3}(?:[.,]\d{3})+\b|\b\d+\b", line)
+            if not tokens:
                 continue
-
-            amt_s = amount_tokens[-1]
+            # choose thousands-formatted if exists, else the last numeric
+            amt_s = next((t for t in tokens if re.fullmatch(r"\d{1,3}(?:[.,]\d{3})+", t)), tokens[-1])
             amount = NumberParser.parse_number(amt_s)
+
+            # date
+            date_norm = parse_id_en_date(line)
             yyyymmdd = date_norm or ""
+
             uid_str = f"{self.ticker}-{yyyymmdd}-{amount}-{price}"
             transfer_uid = str(uuid.uuid5(uuid.NAMESPACE_DNS, uid_str))
 
@@ -231,6 +333,7 @@ class TransactionExtractor:
 
             # (2) price
             if row_kind is not None and row_price_s is None:
+                # stacked-cell line sering hanya angka; tetap pakai rule simpel
                 if _RE_PRICE.match(raw) and not _RE_BIG_INT.match(raw):
                     row_price_s = raw
                     continue
@@ -258,7 +361,7 @@ class TransactionExtractor:
         # diagnostic if nothing found
         if not rows:
             logger.debug("Stacked-cell parser found 0 rows. Window after header: %s",
-                         self.lines[header_idx + 1 : header_idx + 11])
+                         self.lines[header_idx + 1: header_idx + 11])
         return rows, header_idx
 
     def _parse_transactions_window_fallback(self, window: List[str]) -> Optional[Dict[str, Any]]:
@@ -279,18 +382,20 @@ class TransactionExtractor:
             if "transfer" in ls or "pengalihan" in ls:
                 kind = "transfer"; break
 
-        # price (small number, not thousands-separated)
+        # price (context-aware)
         price_s = None
         for s in window:
-            ss = (s or "").strip()
-            if _RE_PRICE.fullmatch(ss) and not _RE_BIG_INT.fullmatch(ss):
-                price_s = ss; break
+            cand = _prefer_price_from_line(s)
+            if cand:
+                price_s = cand
+                break
 
         # date
         date_s = None
         for s in window:
             if parse_id_en_date(s):
-                date_s = s.strip(); break
+                date_s = s.strip()
+                break
 
         # amount (prefer thousands-separated; else largest numeric)
         amount_s = None
@@ -298,7 +403,8 @@ class TransactionExtractor:
         for s in window:
             ss = (s or "").strip()
             if _RE_BIG_INT.fullmatch(ss):
-                amount_s = ss; break
+                amount_s = ss
+                break
             if _RE_ANYNUM.fullmatch(ss):
                 try:
                     val = NumberParser.parse_number(ss) or 0
@@ -323,7 +429,7 @@ class TransactionExtractor:
     def _parse_transactions_loose_lines(self) -> List[Dict[str, Any]]:
         """
         No header found. Scan all lines; if a line mentions buy/sell/transfer,
-        try to harvest price (first small number), date (first date), and amount
+        try to harvest price (context-aware), date (first date), and amount
         (largest number or thousands-separated).
         """
         rows: List[Dict[str, Any]] = []
@@ -342,13 +448,11 @@ class TransactionExtractor:
             elif "sell" in lo or "penjualan" in lo:
                 kind = "sell"
 
-            # price (first small number not thousand-formatted)
-            price_s = None
+            # price (context-aware)
+            price_s = _prefer_price_from_line(s)
+
+            # tokens for date/amount
             tokens = re.findall(r"[0-9][0-9\.,]*", s)
-            for t in tokens:
-                if _RE_PRICE.fullmatch(t) and not _RE_BIG_INT.fullmatch(t):
-                    price_s = t
-                    break
 
             # date
             dm = _DATE_ANY.search(s)

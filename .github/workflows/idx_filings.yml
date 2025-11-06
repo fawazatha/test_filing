@@ -14,13 +14,9 @@ on:
       time:
         description: |
           For single_day: YYYYMMDD|HH:MM|HH:MM
-          For range: YYYYMMDD..YYYYMMDD
-          For lookback: leave empty
+          For range     : YYYYMMDD..YYYYMMDD
+          For lookback  : minutes (integer). Example: 2 hours = 120
         required: false
-      window_minutes:
-        description: "Lookback minutes (lookback mode only)"
-        required: false
-        default: "120"
       refresh_company_assets:
         description: "Refresh company map + latest prices before run? (handled in a separate warm-up step)"
         type: boolean
@@ -37,6 +33,10 @@ on:
         description: "Upload filings to Supabase? (needs secrets)"
         type: boolean
         default: false
+      upload_filings_table:
+        description: "Supabase table for filings upload (with --upload)"
+        required: false
+        default: "idx_filings"
       send_alerts:
         description: "Send SES email alerts?"
         type: boolean
@@ -54,11 +54,8 @@ env:
   PYTHONPATH: src
   TZ: Asia/Jakarta
   OVERLAP_MINUTES: "1"
-  # Lokasi script company_map single-source (ubah jika beda)
   COMPANY_MAP_SCRIPT: src/scripts/company_map_hybrid.py
-  # (Opsional) script terpisah untuk latest prices; kalau tidak ada, biarkan kosong
   LATEST_PRICES_SCRIPT: ""
-  # Optional: override default news table used by orchestrator (--news-table default)
   # SUPABASE_NEWS_TABLE: idx_news
 
 concurrency:
@@ -105,7 +102,7 @@ jobs:
         run: |
           set -euo pipefail
 
-          # Pastikan deps minimal tersedia jika script single-source butuhnya
+          # Ensure minimal deps if the single-source script needs them
           python - <<'PY'
           import importlib, sys
           for m in ("requests","dotenv"):
@@ -116,13 +113,11 @@ jobs:
             pip install requests python-dotenv
           fi
 
-          # Jadwal = refresh penuh; Manual = ensure (bootstrap/invalidasi ringan)
           if [[ "${{ github.event_name }}" == "schedule" ]]; then
             echo "[Warm-up] Refresh company_map via ${COMPANY_MAP_SCRIPT}"
             python "${COMPANY_MAP_SCRIPT}" refresh || true
           else
             echo "[Warm-up] Ensure company_map via ${COMPANY_MAP_SCRIPT}"
-            # Coba get dulu (invalidasi ringan); jika gagal fallback ke refresh
             if ! python "${COMPANY_MAP_SCRIPT}" get; then
               python "${COMPANY_MAP_SCRIPT}" refresh || true
             fi
@@ -131,7 +126,7 @@ jobs:
           echo "[Warm-up] Status company_map:"
           python "${COMPANY_MAP_SCRIPT}" status || true
 
-          # (Opsional) refresh latest prices jika punya script terpisah
+          # (Optional) refresh latest prices if separate script is present
           if [[ -n "${LATEST_PRICES_SCRIPT}" && -f "${LATEST_PRICES_SCRIPT}" ]]; then
             LOOKBACK="${{ github.event_name == 'schedule' && '14' || inputs.prices_lookback_days }}"
             [[ -z "${LOOKBACK}" ]] && LOOKBACK="14"
@@ -159,12 +154,11 @@ jobs:
           HTTPS_PROXY: ${{ secrets.PROXY }}
           NO_PROXY: "localhost,127.0.0.1,supabase.co,.supabase.co,amazonaws.com,.amazonaws.com"
 
-          # ===== AWS / SES (for emailing alerts) =====
+          # ===== AWS / SES =====
           AWS_ACCESS_KEY_ID:     ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           AWS_REGION:            ${{ secrets.AWS_REGION }}
           SES_FROM_EMAIL:        ${{ secrets.SES_FROM_EMAIL }}
-
           ALERT_TO_EMAIL_INSERTED:     ${{ secrets.ALERT_TO_EMAIL }}
           ALERT_TO_EMAIL_NOT_INSERTED: ${{ secrets.ALERT_TO_EMAIL }}
 
@@ -172,7 +166,6 @@ jobs:
           GROQ_API_KEY:   ${{ secrets.GROQ_API_KEY }}
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
-          # Optionally set the news table name for articles upload
           SUPABASE_NEWS_TABLE:   ${{ secrets.SUPABASE_NEWS_TABLE }}
         shell: bash
         run: |
@@ -187,7 +180,7 @@ jobs:
           ARGS=( "--zip-artifacts" "--artifact-prefix" "filings"
                  "--company-map-script" "${COMPANY_MAP_SCRIPT}" )
 
-          # (opsional) teruskan latest prices script ke orchestrator untuk logging/status (tanpa refresh)
+          # Pass latest prices script (for logging/status only)
           if [[ -n "${LATEST_PRICES_SCRIPT}" ]]; then
             ARGS+=( "--latest-prices-script" "${LATEST_PRICES_SCRIPT}" )
           fi
@@ -209,19 +202,15 @@ jobs:
             PRICES_LOOKBACK_DAYS="${DEFAULT_PRICES_LOOKBACK_DAYS}"
           else
             PRICES_LOOKBACK_DAYS="${{ inputs.prices_lookback_days }}"
-            if [[ -z "${PRICES_LOOKBACK_DAYS:-}" ]]; then
-              PRICES_LOOKBACK_DAYS="${DEFAULT_PRICES_LOOKBACK_DAYS}"
-            fi
+            [[ -z "${PRICES_LOOKBACK_DAYS:-}" ]] && PRICES_LOOKBACK_DAYS="${DEFAULT_PRICES_LOOKBACK_DAYS}"
           fi
 
           # ===== Mode window / date =====
           if [[ "${{ github.event_name }}" == "schedule" ]]; then
+            # Cron: keep default window; upload to default table
             ARGS+=( "--window-minutes" "${DEFAULT_WINDOW_MINUTES}" "--upload" "--table" "idx_filings" )
-            # NOTE: refresh-company-assets SUDAH dilakukan di step warm-up -> jangan tambah flag di sini
             add_arg_if_set "--prices-lookback-days" "${PRICES_LOOKBACK_DAYS}"
-            if [[ "${{ inputs.no_price_fallback }}" == "true" ]]; then
-              ARGS+=( "--no-price-fallback" )
-            fi
+            [[ "${{ inputs.no_price_fallback }}" == "true" ]] && ARGS+=( "--no-price-fallback" )
           else
             case "${MODE}" in
               single_day)
@@ -248,21 +237,27 @@ jobs:
                 ARGS+=( "--from-date" "$FROMD" "--to-date" "$TOD" )
                 ;;
               lookback|*)
-                WIN="${{ inputs.window_minutes }}"
-                if [[ -z "${WIN:-}" ]]; then WIN="${DEFAULT_WINDOW_MINUTES}"; fi
+                # LOOKBACK: minutes only (integer)
+                if [[ -z "${TIME:-}" ]]; then
+                  WIN="${DEFAULT_WINDOW_MINUTES}"
+                else
+                  if [[ ! "${TIME}" =~ ^[0-9]+$ ]]; then
+                    echo "::error::For mode=lookback, 'time' must be an integer (minutes), e.g., 120"; exit 1;
+                  fi
+                  WIN="${TIME}"
+                fi
                 ARGS+=( "--window-minutes" "$WIN" )
                 ;;
             esac
 
             if [[ "${{ inputs.upload_to_supabase }}" == "true" ]]; then
-              ARGS+=( "--upload" "--table" "idx_filings" )
+              TABLE="${{ inputs.upload_filings_table }}"
+              [[ -z "${TABLE:-}" ]] && TABLE="idx_filings"
+              ARGS+=( "--upload" "--table" "$TABLE" )
             fi
 
-            # NOTE: refresh-company-assets SUDAH dilakukan di step warm-up -> jangan tambah flag di sini
             add_arg_if_set "--prices-lookback-days" "${PRICES_LOOKBACK_DAYS}"
-            if [[ "${{ inputs.no_price_fallback }}" == "true" ]]; then
-              ARGS+=( "--no-price-fallback" )
-            fi
+            [[ "${{ inputs.no_price_fallback }}" == "true" ]] && ARGS+=( "--no-price-fallback" )
           fi
 
           # ==== Articles generation ====
@@ -270,8 +265,7 @@ jobs:
 
           # ==== Optional upload news ====
           if [[ "${{ inputs.upload_news }}" == "true" || "${{ github.event_name }}" == "schedule" ]]; then
-            ARGS+=( "--upload-news" "--prefer-symbol" )
-            ARGS+=( "--news-table" "idx_news" )
+            ARGS+=( "--upload-news" "--prefer-symbol" "--news-table" "idx_news" )
           fi
 
           # ==== LLM toggling ====
