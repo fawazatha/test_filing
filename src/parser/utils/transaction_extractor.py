@@ -12,20 +12,21 @@ from .text_extractor import TextExtractor
 """
 Robust transaction extractor for IDX-format PDFs.
 
-It supports:
-1) Stacked-cell tables with headers possibly split across lines.
-2) "Block" format (Type/Price/Date/Amount in labeled paragraphs).
-3) Last-resort fallback that assembles a quartet (type, price, date, amount)
-   from a small window after the header, without assuming strict order.
-4) Loose single-line rows when no explicit header is found.
-5) Final fallback: extract price directly from body narrative if table missing.
+Parsers (urutan reliabilitas):
+1) Stacked-cell table (header bisa terpecah).
+2) Block-format (labeled paragraph).
+3) Window fallback (quartet dari jendela kecil setelah header).
+4) Loose single-line (tanpa header) — kini wajib konteks harga.
+5) Final fallback: estimate harga dari narasi — hanya jika benar-benar
+   tidak ada baris transaksi yang terdeteksi.
 """
 
 logger = get_logger(__name__)
 logger.debug("[transaction_extractor] imported from: %s", __file__)
 
 # Global constants
-MAX_PRICE_IDR = float(os.getenv("PRICE_MAX_IDR", "100000"))  # sensible upper bound for IDR/share
+# Batasi harga wajar (IDR per saham); bisa override via ENV
+MAX_PRICE_IDR = float(os.getenv("PRICE_MAX_IDR", "20000"))
 
 # Date patterns (EN/ID)
 _DATE_ANY_STR = f"(?:{PAT_EN_FULL.pattern}|{PAT_ID_FULL.pattern})"
@@ -41,16 +42,32 @@ _MONTH_WORD = (
 _MONTH_RE = re.compile(rf"\b{_MONTH_WORD}\b", re.IGNORECASE)
 
 # Common numeric patterns
-_RE_BIG_INT = re.compile(r"^\d{1,3}(?:[.,]\d{3})+$")   # e.g. 14.838.000
-_RE_PRICE   = re.compile(r"^\d{1,6}(?:[.,]\d{1,2})?$") # e.g. 55, 198, 1250, 75.5
+_RE_BIG_INT = re.compile(r"^\d{1,3}(?:[.,]\d{3})+$")     # e.g. 14.838.000
+_RE_PRICE   = re.compile(r"^\d{2,5}(?:[.,]\d{1,2})?$")   # 2–5 digit, opsional 2 desimal
 _RE_ANYNUM  = re.compile(r"^\d+(?:[.,]\d+)*$")
 
-# Small helpers
+# Context keywords
+PRICE_HINTS = (
+    "harga transaksi", "transaction price", "harga:", "price",
+    "harga per saham", "unit price"
+)
+AMOUNT_HINTS = (
+    "jumlah saham", "number of shares", "shares transacted",
+    "jumlah saham yang ditransaksikan", "shares"
+)
+PERCENT_HINTS = (
+    "persentase", "percentage", "%"
+)
+
+def _has_any(s: str, toks: tuple[str, ...] | List[str]) -> bool:
+    l = (s or "").lower()
+    return any(t in l for t in toks)
+
+# Helpers
 def _date_spans_in_text(s: str) -> List[tuple[int, int]]:
     spans: List[tuple[int, int]] = []
     for m in _DATE_ANY.finditer(s or ""):
         spans.append(m.span())
-    # also catch simple 'dd Month' (optionally with year)
     for m in re.finditer(rf"\b\d{{1,2}}\s+{_MONTH_WORD}(?:\s+\d{{2,4}})?\b", s or "", flags=re.IGNORECASE):
         spans.append(m.span())
     return spans
@@ -58,31 +75,33 @@ def _date_spans_in_text(s: str) -> List[tuple[int, int]]:
 def _span_contains(idx: int, spans: List[tuple[int, int]]) -> bool:
     return any(a <= idx < b for (a, b) in spans)
 
-def _looks_like_yyyymmdd_int(s: str) -> bool:
-    # 8-digit integer likely a compact date, e.g., 20251031
-    if not re.fullmatch(r"\d{8}", s or ""):
+def _looks_like_compact_date(tok: str) -> bool:
+    """
+    Deteksi token 'YYYYMMDD' (atau 'YYYYMMD', dll) yang sering tersedot sebagai amount.
+    """
+    if not re.fullmatch(r"\d{8}", tok):
         return False
-    try:
-        v = int(s)
-        return 19000101 <= v < 21000101
-    except Exception:
+    y = int(tok[0:4])
+    m = int(tok[4:6])
+    d = int(tok[6:8])
+    if not (1900 <= y <= 2100):
         return False
+    if not (1 <= m <= 12):
+        return False
+    if not (1 <= d <= 31):
+        return False
+    return True
 
-def _has_amount_hint(text: str) -> bool:
-    l = (text or "").lower()
-    return ("jumlah saham" in l) or ("number of shares" in l) or ("shares transacted" in l) or ("saham" in l)
+def _ok_price_token(tok: str) -> bool:
+    # kandidat harga yang wajar: 2–5 digit dgn opsional 2 desimal, TANPA format ribuan
+    if _RE_BIG_INT.fullmatch(tok):
+        return False
+    return bool(_RE_PRICE.fullmatch(tok))
 
-def _has_price_hint(text: str) -> bool:
-    l = (text or "").lower()
-    return ("harga transaksi" in l) or ("transaction price" in l) or ("harga:" in l) or (" price" in l) or ("rp" in l) or ("idr" in l)
-
-# Price chooser (context-aware)
 def _prefer_price_from_line(line: str) -> Optional[str]:
     """
-    Robust price extractor.
-    - Rejects 'amount' lines and very large values unless explicitly marked as price.
-    - Rejects very small values (e.g., '1' from 'Lampiran 1') unless price-hinted.
-    - Avoids tokens overlapping with dates/month words.
+    Pilih harga hanya dari baris ber-konteks harga.
+    Tolak baris persentase & jumlah saham; hindari angka tanggal.
     """
     if not line:
         return None
@@ -91,54 +110,58 @@ def _prefer_price_from_line(line: str) -> Optional[str]:
     lwr = s.lower()
     date_spans = _date_spans_in_text(s)
 
-    has_price_hint = _has_price_hint(s)
-    has_amount_hint = _has_amount_hint(s)
+    has_price_hint   = _has_any(lwr, PRICE_HINTS)
+    has_amount_hint  = _has_any(lwr, AMOUNT_HINTS)
+    has_percent_hint = _has_any(lwr, PERCENT_HINTS)
+
+    # Baris yang jelas bukan harga -> out
+    if has_amount_hint or has_percent_hint:
+        return None
+
     tokens = list(re.finditer(r"[0-9][0-9\.,]*", s))
     if not tokens:
         return None
 
-    best_tok, best_sc = None, -999
+    best_tok, best_sc = None, -10_000
     for m in tokens:
         t = m.group(0)
 
-        # drop thousands-formatted on obvious amount lines
-        if has_amount_hint and re.fullmatch(r"\d{1,3}(?:[.,]\d{3})+", t):
+        # tolak angka yang mirip tanggal kompak
+        if _looks_like_compact_date(t):
             continue
 
-        # numeric value
+        if not _ok_price_token(t):
+            continue
+
+        # tolak angka yang bagian dari tanggal / dekat nama bulan
+        if _span_contains(m.start(), date_spans):
+            continue
+        if _MONTH_RE.search(s[m.start():m.start()+12]):
+            continue
+
         try:
             val = NumberParser.parse_number(t) or 0
         except Exception:
             continue
 
-        # reject absurdly large prices unless explicitly price-hinted
-        if not has_price_hint and val > MAX_PRICE_IDR:
+        # rentang harga wajar
+        if not (20 <= val <= MAX_PRICE_IDR):
             continue
 
-        # reject tiny values without a price hint (e.g., '1')
-        if not has_price_hint and val < 10:
-            continue
-
-        # reject tokens overlapping a date region or adjacent month word
-        if _span_contains(m.start(), date_spans):
-            continue
-        if _MONTH_RE.search(s[m.start():m.start() + 12]):
-            continue
-
-        # scoring (kept simple)
         sc = 0
-        if has_price_hint: sc += 6
-        if ("rp" in lwr) or ("idr" in lwr): sc += 2
-        if ("," in t or "." in t): sc += 1
-        if val <= 31 and not has_price_hint: sc -= 3
-        if val > 100_000: sc -= 4
+        if has_price_hint:
+            sc += 100
+        if ("rp" in lwr) or ("idr" in lwr):
+            sc += 5
+        if 100 <= val <= 9999:
+            sc += 3
 
         if sc > best_sc:
             best_sc, best_tok = sc, t
 
     return best_tok
 
-# Block-format regex (labeled paragraph style)
+# Block-format
 _TYPES_ANY = r"(Buy|Sell|Transfer|Pembelian|Penjualan|Pengalihan)"
 _BLOCK_RE = re.compile(
     rf"Type of Transaction:\s*({_TYPES_ANY}).*?"
@@ -148,23 +171,14 @@ _BLOCK_RE = re.compile(
     re.IGNORECASE | re.DOTALL
 )
 
-# Extractor
+# Main extractor
 class TransactionExtractor:
     def __init__(self, extractor: TextExtractor, ticker: Optional[str] = None):
         self.ex = extractor
         self.lines = extractor.lines or []
         self.ticker = ticker or "UNKNOWN"
 
-    # Public API
     def extract_transaction_rows(self) -> List[Dict[str, Any]]:
-        """
-        Try parsers in order of reliability:
-        1) Stacked-cell line parser
-        2) Block-format parser
-        3) Window fallback
-        4) Loose single-line parser
-        5) Final fallback: narrative price from body
-        """
         rows, header_idx = self._parse_transactions_lines()
         if rows:
             logger.debug("Found %d transaction(s) via STACKED-CELL parser.", len(rows))
@@ -187,7 +201,7 @@ class TransactionExtractor:
             logger.debug("Found %d transaction(s) via LOOSE-LINE parser.", len(rows))
             return rows
 
-        # Final fallback: body narrative (price only)
+        # Final fallback: hanya jika benar-benar tidak ada baris transaksi
         body_text = getattr(self.ex, "full_text", "\n".join(self.lines))
         price = self._extract_price_from_body(body_text)
         if price:
@@ -200,28 +214,26 @@ class TransactionExtractor:
                 "date": None,
                 "date_raw": None
             }]
-
         return []
 
-    # Heuristics
     def _extract_price_from_body(self, body: str) -> Optional[float]:
-        """Recover plausible transaction price from narrative text."""
         if not body:
             return None
         tokens = re.findall(r"[0-9][0-9\.,]*", body)
         candidates = []
         for tok in tokens:
+            if _looks_like_compact_date(tok):
+                continue
             try:
                 val = NumberParser.parse_number(tok)
             except Exception:
                 continue
-            if not val:
-                continue
-            if 10 <= val <= MAX_PRICE_IDR:
+            if 20 <= (val or 0) <= MAX_PRICE_IDR:
                 candidates.append(val)
         if not candidates:
             return None
-        return min(candidates)  # smaller value more likely to be price
+        # ambil yang paling kecil (sering lebih dekat ke harga/unit)
+        return min(candidates)
 
     def contains_transfer_transaction(self) -> bool:
         for line in self.lines:
@@ -240,26 +252,27 @@ class TransactionExtractor:
                 continue
             price_s = _prefer_price_from_line(line)
             price = NumberParser.parse_number(price_s) if price_s else 0
-
-            # amount with guards
-            tokens = re.findall(r"[0-9][0-9\.,]*", line)
-            amt_s = None
-            max_val = -1
-            for t in tokens[::-1]:
-                if _looks_like_yyyymmdd_int(t):
-                    continue
-                if _RE_BIG_INT.fullmatch(t):
-                    amt_s = t
-                    break
-                if _RE_ANYNUM.fullmatch(t):
-                    try:
-                        val = NumberParser.parse_number(t) or 0
-                    except Exception:
-                        val = 0
-                    if _has_amount_hint(line) or val >= 1000:
-                        if val > max_val:
-                            max_val = val
-                            amt_s = t
+            tokens = re.findall(r"\b\d{1,3}(?:[.,]\d{3})+\b|\b\d+\b", line)
+            if not tokens:
+                continue
+            # pilih thousands-formatted; hindari tanggal kompak
+            amt_s = next(
+                (t for t in tokens if re.fullmatch(r"\d{1,3}(?:[.,]\d{3})+", t)),
+                None
+            )
+            if not amt_s:
+                # fallback: pilih angka terbesar yang bukan tanggal kompak
+                max_val, amt_s = -1, None
+                for t in tokens:
+                    if _looks_like_compact_date(t):
+                        continue
+                    if _RE_ANYNUM.fullmatch(t):
+                        try:
+                            v = NumberParser.parse_number(t) or 0
+                        except Exception:
+                            v = 0
+                        if v > max_val:
+                            max_val, amt_s = v, t
             if not amt_s:
                 continue
 
@@ -279,24 +292,7 @@ class TransactionExtractor:
             })
         return rows
 
-    # Core parsing helpers
-    def _row_is_plausible(self, tx_type: str, price: Optional[float], amount: Optional[float], date_s: Optional[str], line_text: Optional[str]) -> bool:
-        # Reject YYYYMMDD-shaped amounts
-        if amount is not None:
-            try:
-                amt_int_str = str(int(amount))
-                if _looks_like_yyyymmdd_int(amt_int_str):
-                    return False
-            except Exception:
-                pass
-        # Price sanity: without a price hint, reject tiny prices
-        if (price is not None) and (price < 10) and (not (line_text and _has_price_hint(line_text))):
-            return False
-        # Upper bound for price
-        if (price is not None) and (price > MAX_PRICE_IDR * 2):  # ultra safety
-            return False
-        return True
-
+    # ---------------- core parsers ----------------
     def _push_row(self, kind: str, price_s: str, date_s: Optional[str], amount_s: str) -> Dict[str, Any]:
         k = (kind or "").strip().lower()
         if k in ("buy", "pembelian"):
@@ -320,18 +316,13 @@ class TransactionExtractor:
             "date": date_norm,
         }
 
-    # Parsers
     def _parse_transactions_block(self) -> List[Dict[str, Any]]:
         rows: List[Dict[str, Any]] = []
         full = "\n".join(self.lines)
         for m in _BLOCK_RE.finditer(full):
             try:
                 kind, price_s, date_s, amt_s = m.group(1), m.group(2), m.group(3), m.group(4)
-                candidate = self._push_row(kind, price_s, date_s, amt_s)
-                if self._row_is_plausible(candidate["type"], candidate["price"], candidate["amount"], candidate["date_raw"], m.group(0)):
-                    rows.append(candidate)
-                else:
-                    logger.debug("Rejected implausible block row: %s", candidate)
+                rows.append(self._push_row(kind, price_s, date_s, amt_s))
             except Exception as e:
                 logger.warning("Block parser failed: %s", e)
         return rows
@@ -339,7 +330,9 @@ class TransactionExtractor:
     def _parse_transactions_lines(self) -> tuple[List[Dict[str, Any]], Optional[int]]:
         rows: List[Dict[str, Any]] = []
         HEADER_TOKENS = (
+            # EN
             "type of transaction", "transaction price", "transaction date", "number of shares transacted",
+            # ID
             "jenis transaksi", "harga transaksi", "tanggal transaksi", "jumlah saham",
         )
         STOP_TOKENS = (
@@ -384,52 +377,74 @@ class TransactionExtractor:
                                "sell" if ("sell" in lo or "penjualan" in lo) else "transfer"
                     continue
 
-            # (2) price
-            if row_kind and not row_price_s:
-                cand_price = _prefer_price_from_line(raw)
-                if cand_price:
-                    row_price_s = cand_price
+            # (2) price — cari baris berlabel harga dalam lookahead pendek;
+            # atau angka kecil wajar yang bukan jumlah & bukan tanggal.
+            if row_kind is not None and row_price_s is None:
+                lookahead = self.lines[j-1 : min(j-1+6, len(self.lines))]
+                chosen = None
+                for la in lookahead:
+                    la_s = (la or "").strip()
+                    la_l = la_s.lower()
+
+                    if _has_any(la_l, AMOUNT_HINTS) or _has_any(la_l, PERCENT_HINTS):
+                        continue
+
+                    cand = None
+                    # prioritas: baris berlabel harga
+                    if _has_any(la_l, PRICE_HINTS):
+                        cand = _prefer_price_from_line(la_s)
+                    # alternatif: angka kecil yang lolos aturan price
+                    if not cand:
+                        for m in re.finditer(r"[0-9][0-9\.,]*", la_s):
+                            t = m.group(0)
+                            if _looks_like_compact_date(t):
+                                continue
+                            if _ok_price_token(t):
+                                try:
+                                    v = NumberParser.parse_number(t) or 0
+                                except Exception:
+                                    v = 0
+                                if 20 <= v <= MAX_PRICE_IDR:
+                                    cand = t
+                                    break
+                    if cand:
+                        chosen = cand
+                        break
+                if chosen:
+                    row_price_s = chosen
+                    continue
+                else:
+                    # belum dapat price; lanjut scan
                     continue
 
             # (3) date
-            if row_kind and row_price_s and not row_date_s:
+            if row_kind is not None and row_price_s is not None and row_date_s is None:
                 if parse_id_en_date(raw):
                     row_date_s = raw
                     continue
 
-            # (4) amount (prefer thousands-separated; else largest numeric) with guards
-            if row_kind and row_price_s and row_date_s and not row_amt_s:
-                tokens = re.findall(r"[0-9][0-9\.,]*", raw)
-                cand = None
-                max_val = -1
-                for t in tokens[::-1]:
-                    if _looks_like_yyyymmdd_int(t):
-                        continue
-                    if _RE_BIG_INT.fullmatch(t):
-                        cand = t
-                        break
-                    if _RE_ANYNUM.fullmatch(t):
-                        try:
-                            val = NumberParser.parse_number(t) or 0
-                        except Exception:
-                            val = 0
-                        if _has_amount_hint(raw) or val >= 1000:
-                            if val > max_val:
-                                max_val = val
-                                cand = t
-                if cand:
-                    row_amt_s = cand
+            # (4) amount — utamakan thousands formatted; hindari tanggal kompak
+            if row_kind is not None and row_price_s is not None and row_date_s is not None and row_amt_s is None:
+                ss = raw.strip()
+                if _RE_BIG_INT.fullmatch(ss) and not _looks_like_compact_date(ss.replace(".", "").replace(",", "")):
+                    row_amt_s = ss
+                elif _RE_ANYNUM.fullmatch(ss):
+                    # pilih angka terbesar yang bukan tanggal kompak & >= 1000 sebagai jumlah
+                    try:
+                        val = NumberParser.parse_number(ss) or 0
+                    except Exception:
+                        val = 0
+                    if val >= 1000 and not _looks_like_compact_date(ss):
+                        row_amt_s = ss
 
-            # finalize
+            # finalize row
             if row_kind and row_price_s and row_date_s and row_amt_s:
                 try:
-                    candidate = self._push_row(row_kind, row_price_s, row_date_s, row_amt_s)
-                    if self._row_is_plausible(candidate["type"], candidate["price"], candidate["amount"], candidate["date_raw"], raw):
-                        rows.append(candidate)
-                    else:
-                        logger.debug("Rejected implausible stacked-cell row: %s", candidate)
+                    rows.append(self._push_row(row_kind, row_price_s, row_date_s, row_amt_s))
                 except Exception as e:
-                    logger.warning("Line parser failed: %s", e)
+                    logger.warning("Line parser failed: %s | data=(%s,%s,%s,%s)",
+                                   e, row_kind, row_price_s, row_date_s, row_amt_s)
+                # reset untuk menangkap baris berikutnya (multi-row table)
                 row_kind = row_price_s = row_date_s = row_amt_s = None
 
         if not rows:
@@ -441,7 +456,6 @@ class TransactionExtractor:
         if not window:
             return None
 
-        # kind
         kind = None
         for s in window:
             ls = (s or "").lower()
@@ -452,7 +466,6 @@ class TransactionExtractor:
             if "transfer" in ls or "pengalihan" in ls:
                 kind = "transfer"; break
 
-        # price
         price_s = None
         for s in window:
             cand = _prefer_price_from_line(s)
@@ -460,52 +473,40 @@ class TransactionExtractor:
                 price_s = cand
                 break
 
-        # date
         date_s = None
         for s in window:
             if parse_id_en_date(s):
                 date_s = s.strip()
                 break
 
-        # amount (prefer thousands-separated; else largest numeric) with guards
         amount_s = None
         max_val = -1
         for s in window:
             ss = (s or "").strip()
-            tokens = re.findall(r"[0-9][0-9\.,]*", ss)
-            for t in tokens[::-1]:
-                if _looks_like_yyyymmdd_int(t):
-                    continue
-                if _RE_BIG_INT.fullmatch(t):
-                    amount_s = t
-                    break
-                if _RE_ANYNUM.fullmatch(t):
-                    try:
-                        val = NumberParser.parse_number(t) or 0
-                    except Exception:
-                        val = 0
-                    if _has_amount_hint(ss) or val >= 1000:
-                        if val > max_val:
-                            max_val = val
-                            amount_s = t
-            if amount_s:
+            if _RE_BIG_INT.fullmatch(ss) and not _looks_like_compact_date(ss.replace(".", "").replace(",", "")):
+                amount_s = ss
                 break
+            if _RE_ANYNUM.fullmatch(ss):
+                try:
+                    val = NumberParser.parse_number(ss) or 0
+                except Exception:
+                    val = 0
+                if val >= 1000 and not _looks_like_compact_date(ss) and val > max_val:
+                    max_val = val
+                    amount_s = ss
 
         if kind and price_s and date_s and amount_s:
             try:
-                candidate = self._push_row(kind, price_s, date_s, amount_s)
-                if self._row_is_plausible(candidate["type"], candidate["price"], candidate["amount"], candidate["date_raw"], " ".join(window)):
-                    logger.debug("Window fallback produced row: %s", candidate)
-                    return candidate
-                logger.debug("Rejected implausible window row: %s", candidate)
+                return self._push_row(kind, price_s, date_s, amount_s)
             except Exception as e:
                 logger.warning("Window fallback failed: %s", e)
-        else:
-            logger.debug("Window fallback incomplete: kind=%s price=%s date=%s amount=%s",
-                         kind, price_s, date_s, amount_s)
         return None
 
     def _parse_transactions_loose_lines(self) -> List[Dict[str, Any]]:
+        """
+        Tanpa header: hanya ambil jika baris mengandung konteks harga.
+        Ini mencegah entri palsu (price=1, amount=YYYYMMDD).
+        """
         rows: List[Dict[str, Any]] = []
         for row in self.lines:
             s = (row or "").strip()
@@ -515,47 +516,50 @@ class TransactionExtractor:
             if not any(k in lo for k in ("buy", "sell", "pembelian", "penjualan", "transfer", "pengalihan")):
                 continue
 
-            # kind
+            # WAJIB ada konteks harga agar aman
+            if not _has_any(lo, PRICE_HINTS):
+                continue
+
             kind = "transfer"
             if "buy" in lo or "pembelian" in lo:
                 kind = "buy"
             elif "sell" in lo or "penjualan" in lo:
                 kind = "sell"
 
-            # price
             price_s = _prefer_price_from_line(s)
+            if not price_s:
+                continue
 
             # date
             dm = _DATE_ANY.search(s)
             date_s = dm.group(0) if dm else None
 
-            # amount with guards
+            # amount
             amount_s = None
             tokens = re.findall(r"[0-9][0-9\.,]*", s)
-            max_val = -1
-            for t in tokens[::-1]:
-                if _looks_like_yyyymmdd_int(t):
-                    continue
+            # utamakan thousands-formatted
+            for t in tokens:
                 if _RE_BIG_INT.fullmatch(t):
                     amount_s = t
                     break
-                if _RE_ANYNUM.fullmatch(t):
-                    try:
-                        val = NumberParser.parse_number(t) or 0
-                    except Exception:
-                        val = 0
-                    if _has_amount_hint(s) or val >= 1000:
-                        if val > max_val:
-                            max_val = val
+            if not amount_s:
+                max_val = -1
+                for t in tokens:
+                    if _looks_like_compact_date(t):
+                        continue
+                    if _RE_ANYNUM.fullmatch(t):
+                        try:
+                            v = NumberParser.parse_number(t) or 0
+                        except Exception:
+                            v = 0
+                        if v >= 1000 and v > max_val:
+                            max_val = v
                             amount_s = t
 
             if kind and price_s and amount_s:
                 try:
-                    candidate = self._push_row(kind, price_s, date_s, amount_s)
-                    if self._row_is_plausible(candidate["type"], candidate["price"], candidate["amount"], candidate["date_raw"], s):
-                        rows.append(candidate)
-                    else:
-                        logger.debug("Rejected implausible loose-line row: %s", candidate)
+                    rows.append(self._push_row(kind, price_s, date_s, amount_s))
                 except Exception as e:
-                    logger.warning("Loose-line row failed: %s", e)
+                    logger.warning("Loose-line row failed: %s | data=(%s,%s,%s,%s)",
+                                   e, kind, price_s, date_s, amount_s)
         return rows
