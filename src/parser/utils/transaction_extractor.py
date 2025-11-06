@@ -61,55 +61,60 @@ def _span_contains(idx: int, spans: List[tuple[int, int]]) -> bool:
 
 
 def _prefer_price_from_line(line: str) -> Optional[str]:
+    """
+    Robust price extractor.
+    Rejects 'amount' lines and overly large values unless explicitly marked as price.
+    """
     if not line:
         return None
+
     s = line.strip()
     lwr = s.lower()
     date_spans = _date_spans_in_text(s)
 
-    has_price_hint = ("harga transaksi" in lwr) or ("transaction price" in lwr) or ("harga:" in lwr)
+    has_price_hint = any(k in lwr for k in ("harga transaksi", "transaction price", "harga:", "price"))
+    has_amount_hint = any(k in lwr for k in ("jumlah saham", "shares", "saham", "number of shares"))
     tokens = list(re.finditer(r"[0-9][0-9\.,]*", s))
     if not tokens:
         return None
 
-    def score(tok: str, start: int) -> int:
+    best_tok, best_sc = None, -999
+    for m in tokens:
+        t = m.group(0)
+        try:
+            val = NumberParser.parse_number(t) or 0
+        except Exception:
+            continue
+
+        # Reject very large numbers unless price-labeled
+        if not has_price_hint and val > 50_000:
+            continue
+
+        # Reject thousands-separated numbers in "shares" lines
+        if has_amount_hint and re.fullmatch(r"\d{1,3}(?:[.,]\d{3})+", t):
+            continue
+
+        # Reject likely date tokens
+        if _span_contains(m.start(), date_spans):
+            continue
+        if _MONTH_RE.search(s[m.start():m.start() + 10]):
+            continue
+
         sc = 0
-        if _span_contains(start, date_spans):
-            return -999
-        after = s[start:start + 12]
-        if _MONTH_RE.search(after):
-            return -998
         if has_price_hint:
             sc += 6
         if ("rp" in lwr) or ("idr" in lwr):
             sc += 2
-        if ("," in tok or "." in tok):
+        if ("," in t or "." in t):
             sc += 1
-        try:
-            val = NumberParser.parse_number(tok) or 0
-            if not has_price_hint and val <= 31:
-                sc -= 3
-            if not has_price_hint and val > MAX_PRICE_IDR:
-                return -997
-            if val > 100_000:
-                sc -= 4
-        except Exception:
-            pass
-        return sc
+        if val <= 31 and not has_price_hint:
+            sc -= 3
+        if val > 100_000:
+            sc -= 4
 
-    best_tok, best_sc = None, -999
-    for m in tokens:
-        t = m.group(0)
-        is_candidate = (
-            _RE_PRICE.fullmatch(t) or
-            _RE_BIG_INT.fullmatch(t) or
-            (has_price_hint and _RE_ANYNUM.fullmatch(t))
-        )
-        if not is_candidate:
-            continue
-        sc = score(t, m.start())
         if sc > best_sc:
             best_sc, best_tok = sc, t
+
     return best_tok
 
 
@@ -141,19 +146,16 @@ class TransactionExtractor:
         4) Loose single-line parser
         5) Final fallback: narrative price from body
         """
-        # 1) stacked-cell
         rows, header_idx = self._parse_transactions_lines()
         if rows:
             logger.debug("Found %d transaction(s) via STACKED-CELL parser.", len(rows))
             return rows
 
-        # 2) block
         rows = self._parse_transactions_block()
         if rows:
             logger.debug("Found %d transaction(s) via BLOCK parser.", len(rows))
             return rows
 
-        # 3) window fallback
         if header_idx is not None and header_idx >= 0:
             window = self.lines[header_idx + 1: header_idx + 15]
             row = self._parse_transactions_window_fallback(window)
@@ -161,13 +163,12 @@ class TransactionExtractor:
                 logger.debug("Found 1 transaction via WINDOW fallback.")
                 return [row]
 
-        # 4) loose-line
         rows = self._parse_transactions_loose_lines()
         if rows:
             logger.debug("Found %d transaction(s) via LOOSE-LINE parser.", len(rows))
             return rows
 
-        # 5) NEW FINAL FALLBACK (recover price from body narrative)
+        # Final fallback: body narrative
         body_text = getattr(self.ex, "full_text", "\n".join(self.lines))
         price = self._extract_price_from_body(body_text)
         if price:
@@ -183,7 +184,6 @@ class TransactionExtractor:
 
         return []
 
-    # Fallback heuristic for missing price (from body text)
     def _extract_price_from_body(self, body: str) -> Optional[float]:
         """Recover plausible transaction price from narrative text."""
         if not body:
@@ -203,7 +203,6 @@ class TransactionExtractor:
             return None
         return min(candidates)  # smaller value more likely to be price
 
-    # Transfer detection
     def contains_transfer_transaction(self) -> bool:
         for line in self.lines:
             lo = (line or "").lower()
@@ -278,7 +277,6 @@ class TransactionExtractor:
 
     def _parse_transactions_lines(self) -> tuple[List[Dict[str, Any]], Optional[int]]:
         rows: List[Dict[str, Any]] = []
-
         HEADER_TOKENS = (
             "type of transaction", "transaction price", "transaction date", "number of shares transacted",
             "jenis transaksi", "harga transaksi", "tanggal transaksi", "jumlah saham",
@@ -291,12 +289,10 @@ class TransactionExtractor:
         )
 
         def is_header_line(s: str) -> bool:
-            ls = (s or "").lower()
-            return any(tok in ls for tok in HEADER_TOKENS)
+            return any(tok in (s or "").lower() for tok in HEADER_TOKENS)
 
         def is_stop(s: str) -> bool:
-            ls = (s or "").lower()
-            return any(tok in ls for tok in STOP_TOKENS)
+            return any(tok in (s or "").lower() for tok in STOP_TOKENS)
 
         header_idx = -1
         for i, line in enumerate(self.lines):
