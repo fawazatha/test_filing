@@ -67,46 +67,56 @@ def _span_contains(idx: int, spans: List[tuple[int, int]]) -> bool:
 def _prefer_price_from_line(line: str) -> Optional[str]:
     if not line:
         return None
+
     s = line.strip()
-    date_spans = _date_spans_in_text(s)
     lwr = s.lower()
+    date_spans = _date_spans_in_text(s)
 
     has_price_hint = ("harga transaksi" in lwr) or ("transaction price" in lwr) or ("harga:" in lwr)
+    is_amount_line = ("jumlah saham" in lwr) or ("number of shares" in lwr)
+
     tokens = list(re.finditer(r"[0-9][0-9\.,]*", s))
     if not tokens:
         return None
 
     def score(tok: str, start: int) -> int:
         sc = 0
+
         if _span_contains(start, date_spans):
             return -999
+
+
         after = s[start:start + 12]
         if _MONTH_RE.search(after):
             return -998
+
         if has_price_hint:
-            sc += 6
+            sc += 8          # sangat kuat
         if ("rp" in lwr) or ("idr" in lwr):
             sc += 2
         if ("," in tok or "." in tok):
             sc += 1
+
+        if is_amount_line:
+            sc -= 10
+
+
         try:
             val = NumberParser.parse_number(tok) or 0
             if not has_price_hint and val <= 31:
                 sc -= 3
-            if val > 100_000:
-                sc -= 4
         except Exception:
             pass
+
         return sc
 
     best_tok, best_sc = None, -999
     for m in tokens:
         t = m.group(0)
-
         is_candidate = (
-            _RE_PRICE.fullmatch(t) or
-            _RE_BIG_INT.fullmatch(t) or
-            (has_price_hint and _RE_ANYNUM.fullmatch(t))
+            _RE_PRICE.fullmatch(t) or      # 55 / 1250 / 75.5
+            _RE_BIG_INT.fullmatch(t) or    # 1.370 / 2.000 / 1,485
+            _RE_ANYNUM.fullmatch(t)
         )
         if not is_candidate:
             continue
