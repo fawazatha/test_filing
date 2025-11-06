@@ -1,3 +1,4 @@
+# src/parser/parser_idx.py
 from __future__ import annotations
 from typing import List, Dict, Optional, Tuple, Any
 import os
@@ -9,6 +10,7 @@ from src.parser.core.base_parser import BaseParser
 # Common Libs
 from src.common.numbers import NumberParser
 from src.common.log import get_logger
+from src.common.datetime import parse_id_en_date 
 
 # Parser Utils
 from src.parser.utils.text_extractor import TextExtractor
@@ -28,12 +30,11 @@ SYMBOL_TOKEN_RE = re.compile(r"^[A-Z0-9]{3,6}$")
 class IDXParser(BaseParser):
     """
     IDX-format parser (English page).
-    Refactored to:
-    - Use common NumberParser directly
-    - Use centralized TransactionClassifier.validate_direction
-    - Use centralized TransactionExtractor for parsing rows (DRY)
-    - Use CompanyService facade for all resolution
-    - Check transaction prices vs last_close_price (±50% rule) and alert
+    - Uses NumberParser, TransactionClassifier, TransactionExtractor (DRY)
+    - Resolves issuer/holder via CompanyService
+    - Synthesizes 1 transaction row if tables are missed but doc type + delta exist
+    - Builds price_transaction as list-of-objects (date, type, price, amount_transacted)
+    - Checks tx prices vs last_close_price (±50%) and alerts
     """
 
     def __init__(
@@ -81,7 +82,7 @@ class IDXParser(BaseParser):
             flags = TransactionClassifier.detect_flags_from_text(text)
             txns = (data.get("transactions") or [])
 
-            # Synthesize txns if empty but type is known
+            # Synthesize tags input if rows empty but type known
             if not txns and data.get("transaction_type") in {"buy", "sell", "transfer"}:
                 txns = [{"type": data["transaction_type"], "amount": data.get("amount_transacted") or 0}]
 
@@ -121,12 +122,10 @@ class IDXParser(BaseParser):
 
         self._extract_holdings_and_percentages(ex, res)
         self._extract_contact(ex, res)
-
-        # Keep original working logic
         self._extract_purpose(ex, res)
 
         self._extract_transactions(ex, res)
-        self._postprocess_transactions(res, filename)  # filename needed for alerts
+        self._postprocess_transactions(res, filename)
 
         tx_type = res.get("transaction_type")
         if tx_type in ("buy", "sell"):
@@ -145,7 +144,7 @@ class IDXParser(BaseParser):
         self._flag_type_mismatch_if_any(res, filename)
         return res
 
-    #- smaller helpers-
+    # ---- smaller helpers ----
     def _extract_headers(self, ex: TextExtractor, res: Dict[str, Any]) -> None:
         res["issuer_code"] = (
             ex.find_table_value("Issuer Name")
@@ -289,13 +288,11 @@ class IDXParser(BaseParser):
         if phone:
             res["company_phone"] = phone
 
-    # Keep original working logic for purpose extraction
     def _extract_purpose(self, ex: TextExtractor, res: Dict[str, Any]) -> None:
         """Extracts the purpose of the transaction text."""
         purpose = (
             ex.find_table_value("Purposes of transaction")
             or ex.find_value_in_line("Purposes of transaction")
-            # Add singular and fallbacks for robustness
             or ex.find_table_value("Purpose of transaction")
             or ex.find_value_in_line("Purpose of transaction")
             or ex.find_value_after_keyword("Purposes of transaction")
@@ -325,7 +322,94 @@ class IDXParser(BaseParser):
         if not rows and (res.get("transaction_type") == "transfer" or tx_ex.contains_transfer_transaction()):
             rows = tx_ex.extract_transfer_transactions()
 
+        # NEW: synthesize a row when doc says buy/sell and delta exists but rows are empty
+        if not rows and (res.get("transaction_type") in {"buy", "sell"}):
+            synth = self._synthesize_single_tx_from_text(ex, res)
+            if synth:
+                rows = [synth]
+
         res["transactions"] = rows
+
+    def _synthesize_single_tx_from_text(self, ex: TextExtractor, res: Dict[str, Any]) -> Optional[Dict[str, Any]]:
+        """
+        If line parsers failed but doc has type (buy/sell) and delta amount > 0, synthesize 1 transaction:
+        - price: from 'Harga Transaksi' / 'Transaction Price' lines (using _prefer_price_from_line)
+        - date : any date, preferring lines near the price line
+        - amount: |holding_after - holding_before|
+        """
+        from src.parser.utils.transaction_extractor import _prefer_price_from_line, _DATE_ANY  # reuse helpers
+
+        tx_type = (res.get("transaction_type") or "").lower()
+        if tx_type not in {"buy", "sell"}:
+            return None
+
+        hb, ha = res.get("holding_before"), res.get("holding_after")
+        if not isinstance(hb, (int, float)) or not isinstance(ha, (int, float)):
+            return None
+        amount = abs(int(ha) - int(hb))
+        if amount <= 0:
+            return None
+
+        lines = ex.lines or []
+        price_line_idx = -1
+        price_s = None
+
+        # 1) Prefer explicit price lines
+        for i, ln in enumerate(lines):
+            L = (ln or "").lower()
+            if ("harga" in L and "transaksi" in L) or ("transaction price" in L):
+                cand = _prefer_price_from_line(ln)
+                if cand:
+                    price_s = cand
+                    price_line_idx = i
+                    break
+
+        # 2) Fallback: sweep for best price token
+        if not price_s:
+            best_tok, best_sc = None, -999
+            for i, ln in enumerate(lines):
+                cand = _prefer_price_from_line(ln)
+                if not cand:
+                    continue
+                sc = 0
+                L = (ln or "").lower()
+                if ("harga" in L and "transaksi" in L) or ("transaction price" in L):
+                    sc += 3
+                if ("rp" in L) or ("idr" in L):
+                    sc += 1
+                if sc > best_sc:
+                    best_sc, best_tok, price_line_idx = sc, cand, i
+            price_s = best_tok
+
+        if not price_s:
+            return None
+
+        # 3) Find a date near the price line (±3), else global
+        date_s = None
+        if price_line_idx >= 0:
+            lo = max(0, price_line_idx - 3)
+            hi = min(len(lines), price_line_idx + 4)
+            for ln in lines[lo:hi]:
+                m = _DATE_ANY.search(ln or "")
+                if m:
+                    date_s = m.group(0)
+                    break
+        if not date_s:
+            for ln in lines:
+                m = _DATE_ANY.search(ln or "")
+                if m:
+                    date_s = m.group(0)
+                    break
+
+        price = NumberParser.parse_number(price_s)
+        return {
+            "type": tx_type,
+            "price": price,
+            "amount": amount,
+            "value": (price or 0) * amount,
+            "date_raw": (date_s or "").strip(),
+            "date": parse_id_en_date((date_s or "").strip()),
+        }
 
     # == Post-processing & validation ==
     def _postprocess_transactions(self, res: Dict[str, Any], filename: str) -> None:
@@ -368,7 +452,7 @@ class IDXParser(BaseParser):
         else:
             res["price"] = None
 
-        # >>> Reformatted price_transaction: list of objects (date, type, price, amount_transacted)
+        # Build list-of-objects price_transaction
         res["price_transaction"] = [
             {
                 "date": t.get("date"),
@@ -380,10 +464,10 @@ class IDXParser(BaseParser):
             if (t.get("amount", 0) or 0) > 0
         ]
 
-        # Flag price deviation > 50% vs last_close_price
+        # Price deviation alert vs last_close
         self._check_price_deviation_vs_last_close(res, filename)
 
-        # Mirror transfer flag to top-level
+        # Mirror transfer flag
         res["is_transfer"] = res.get("is_transfer", False) or res["has_transfer"]
 
     def _check_price_deviation_vs_last_close(self, res: Dict[str, Any], filename: str) -> None:
@@ -396,12 +480,10 @@ class IDXParser(BaseParser):
             return
 
         try:
-            # Prefer a dedicated accessor if available, else fall back to dict
             if hasattr(self.company, "get_last_close"):
                 last_close = self.company.get_last_close(symbol)
             else:
                 last_close = None
-                # Fallback to raw map if CompanyService exposes it
                 meta = getattr(self.company, "price_meta", None)
                 if isinstance(meta, dict):
                     last_close = (meta.get(symbol) or {}).get("last_close_price")
@@ -412,7 +494,7 @@ class IDXParser(BaseParser):
             return
 
         pts = res.get("price_transaction") or []
-        for idx, item in enumerate(pts):
+        for item in pts:
             price = item.get("price") or 0
             if not price or price <= 0:
                 continue
