@@ -63,62 +63,58 @@ def _token_spans_price_like(s: str) -> List[tuple[str, int, int]]:
 def _span_contains(idx: int, spans: List[tuple[int, int]]) -> bool:
     return any(a <= idx < b for (a, b) in spans)
 
+
 def _prefer_price_from_line(line: str) -> Optional[str]:
     """
-    Extract a 'price-looking' token from a single line with heuristics:
-    - Prefer tokens not inside a date span
-    - Prefer tokens preceded by Rp/IDR or when line hints price/harga
-    - Penalize tiny numbers (<=31) unless currency hint exists
+    Pilih token 'harga' dari satu baris dengan heuristik:
+    - Hindari token di dalam span tanggal
+    - IZINKAN angka bertitik ribuan JIKA ada hint harga ('harga transaksi', 'transaction price', 'harga:')
+    - Jika tidak ada hint harga, tetap hindari _RE_BIG_INT (kemungkinan amount)
     """
     if not line:
         return None
     s = line.strip()
     date_spans = _date_spans_in_text(s)
-    cands = _token_spans_price_like(s)
-    if not cands:
+    lwr = s.lower()
+    has_price_hint = ("harga transaksi" in lwr) or ("transaction price" in lwr) or ("harga:" in lwr)
+
+    tokens = list(re.finditer(r"[0-9][0-9\.,]*", s))
+    if not tokens:
         return None
 
     def score(tok: str, start: int) -> int:
         sc = 0
-        # hard reject if inside date span
         if _span_contains(start, date_spans):
             return -999
-        # immediate month word after token? (e.g., "30 Okt")
         after = s[start:start + 12]
         if _MONTH_RE.search(after):
             return -998
-
-        # currency hint nearby
-        prefix = s[max(0, start - 6):start].lower()
-        if "rp" in prefix or "idr" in prefix:
-            sc += 5
-
-        # line hints it's about price
-        lwr = s.lower()
-        if ("price" in lwr) or ("harga" in lwr and "transaksi" in lwr):
-            sc += 3
-
-        # mild preference if has decimal
-        if "." in tok or "," in tok and not re.fullmatch(r"\d{1,2},\d{2,4}", tok):
+        if has_price_hint:
+            sc += 6   # kuatkan jika ada hint harga
+        if ("rp" in lwr) or ("idr" in lwr):
+            sc += 2
+        if ("," in tok or "." in tok):
             sc += 1
-
-        # penalize very small numbers (likely day-of-month) unless currency hint present
         try:
             val = NumberParser.parse_number(tok) or 0
-            if val <= 31 and sc < 5:
+            if val <= 31 and sc < 6:
                 sc -= 2
         except Exception:
             pass
         return sc
 
-    best_tok: Optional[str] = None
-    best_sc = -999
-    for tok, st, _ in cands:
-        sc = score(tok, st)
+    best_tok, best_sc = None, -999
+    for m in tokens:
+        t = m.group(0)
+        # aturan lama: hindari _RE_BIG_INT
+        # revisi: jika ada hint harga, izinkan _RE_BIG_INT (contoh '2.000')
+        if not (_RE_PRICE.fullmatch(t) or (has_price_hint and _RE_BIG_INT.fullmatch(t))):
+            continue
+        sc = score(t, m.start())
         if sc > best_sc:
-            best_sc = sc
-            best_tok = tok
+            best_sc, best_tok = sc, t
     return best_tok
+
 
 # Transaction keywords
 _TYPES_ANY = r"(Buy|Sell|Transfer|Pembelian|Penjualan|Pengalihan)"
@@ -333,9 +329,9 @@ class TransactionExtractor:
 
             # (2) price
             if row_kind is not None and row_price_s is None:
-                # stacked-cell line sering hanya angka; tetap pakai rule simpel
-                if _RE_PRICE.match(raw) and not _RE_BIG_INT.match(raw):
-                    row_price_s = raw
+                cand_price = _prefer_price_from_line(raw)
+                if cand_price:
+                    row_price_s = cand_price
                     continue
 
             # (3) date
