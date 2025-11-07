@@ -1,6 +1,7 @@
 # src/core/transformer.py
 from __future__ import annotations
-
+import os
+from urllib.parse import urlparse
 import json
 import logging
 from datetime import datetime
@@ -29,6 +30,81 @@ PURPOSE_TAG_MAP = {
 }
 
 # Small helpers
+def _is_url(s: Optional[str]) -> bool:
+    if not s:
+        return False
+    try:
+        u = urlparse(s)
+        return bool(u.scheme in {"http", "https"} and u.netloc)
+    except Exception:
+        return False
+
+def _basename(s: Optional[str]) -> Optional[str]:
+    if not s:
+        return None
+    return os.path.basename(str(s))
+
+def _stem(s: Optional[str]) -> Optional[str]:
+    b = _basename(s)
+    if not b:
+        return None
+    return os.path.splitext(b)[0]
+
+def _pick_first(*vals):
+    for v in vals:
+        if v not in (None, "", [], {}):
+            return v
+    return None
+
+def _resolve_from_ingestion_map(
+    source_hint: Optional[str],
+    ingestion_map: Dict[str, Dict[str, Any]],
+) -> Tuple[Optional[str], Optional[str]]:
+    """
+    Best-effort resolver for (date, url) for IDX & NON-IDX.
+    Tries multiple keys (exact, basename, stem) and multiple url/date fields.
+    """
+    if not ingestion_map:
+        return None, None
+
+    # Candidate keys
+    keys = []
+    if source_hint:
+        keys.extend([source_hint, _basename(source_hint), _stem(source_hint)])
+    keys = [k for k in keys if k]
+
+    item = None
+    for k in keys:
+        if k in ingestion_map:
+            item = ingestion_map[k]
+            break
+        # Try loose matching against map keys
+        for mk, mv in ingestion_map.items():
+            if mk == k or _basename(mk) == k or _stem(mk) == k:
+                item = mv
+                break
+        if item:
+            break
+
+    if not item or not isinstance(item, dict):
+        return None, None
+
+    # Prefer explicit fields; keep broad compatibility
+    date = _pick_first(
+        item.get("date"),
+        item.get("timestamp"),
+        item.get("announcement_published_at"),
+    )
+    url = _pick_first(
+        item.get("main_link"),
+        item.get("link"),
+        item.get("url"),
+        item.get("pdf_url"),
+        item.get("original_url"),
+        item.get("public_url"),
+    )
+    return date, url
+
 def _translate_to_english(text: str) -> str:
     """Tiny phrase-level translator for titles/bodies and tag inference."""
     if not text:
@@ -332,26 +408,53 @@ def transform_raw_to_record(
     pp_tx     = to_float(raw_dict.get("share_percentage_transaction"), ndigits=5)
 
     # Timestamp & source (ingestion_map → parser → first tx)
+        # Timestamp & source (robust resolver for IDX & NON-IDX)
     main_date: Optional[str] = None
     main_source_url: Optional[str] = None
-    raw_filename = _to_str(raw_dict.get("source"))
 
-    if raw_filename:
-        ingestion_item = ingestion_map.get(raw_filename)
-        if ingestion_item:
-            main_date = ingestion_item.get("date")  # "YYYY-MM-DDTHH:MM:SS"
-            main_source_url = ingestion_item.get("main_link") or ingestion_item.get("link")
+    raw_source = _to_str(
+        raw_dict.get("source") or
+        raw_dict.get("pdf_path") or
+        raw_dict.get("file") or
+        raw_dict.get("filename")
+    )
 
+    # Case A: parser already stored a URL in 'source'
+    if _is_url(raw_source):
+        d_map, u_map = _resolve_from_ingestion_map(raw_source, ingestion_map)
+        main_source_url = raw_source  # trust the URL from parser
+        main_date = main_date or d_map
+        # keep looking for date below if still None
+    else:
+        # Case B: source is a local path/filename → resolve via map
+        d_map, u_map = _resolve_from_ingestion_map(raw_source, ingestion_map)
+        main_date = main_date or d_map
+        main_source_url = main_source_url or u_map
+        if not main_source_url:
+            # fallbacks from parser fields (common in NON-IDX)
+            main_source_url = _to_str(
+                raw_dict.get("pdf_url") or
+                raw_dict.get("original_url") or
+                raw_dict.get("url") or
+                raw_dict.get("main_link") or
+                raw_dict.get("link")
+            )
+
+    # Fallback date from raw fields / transactions
     if not main_date:
-        main_date = raw_dict.get("timestamp") or raw_dict.get("announcement_published_at")
-
+        main_date = (
+            raw_dict.get("timestamp") or
+            raw_dict.get("announcement_published_at") or
+            raw_dict.get("date")
+        )
     if not main_date:
         txs_for_date = raw_dict.get("transactions")
         if isinstance(txs_for_date, list) and txs_for_date:
             main_date = txs_for_date[0].get("date")
 
-    if not main_source_url:
-        main_source_url = _to_str(raw_dict.get("source") or raw_dict.get("pdf_url"))
+    # Absolute last resort for source_url: if original 'source' is URL, keep it
+    if not main_source_url and _is_url(_to_str(raw_dict.get("source"))):
+        main_source_url = _to_str(raw_dict.get("source"))
 
     # INTERNAL price_transaction list
     price_tx_list: List[PriceTransaction] = []

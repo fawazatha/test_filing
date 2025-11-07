@@ -7,6 +7,19 @@ from typing import Any, Dict, List, Tuple
 
 log = logging.getLogger("filings.loaders")
 
+def _basename(p: str) -> str:
+    try:
+        return Path(p).name
+    except Exception:
+        return p
+
+def _stem(p: str) -> str:
+    try:
+        return Path(p).stem
+    except Exception:
+        return p
+
+
 def load_json(path: str | Path) -> Any:
     """Loads a JSON file, returning None on error or if missing."""
     p = Path(path)
@@ -52,7 +65,7 @@ def load_parsed_files(paths: List[str | Path]) -> List[List[dict]]:
 def build_downloads_meta_map(path: str | Path) -> Dict[str, Any]:
     """
     Build index metadata from downloads (optional).
-    Indexed by: pdf_url / source / filename
+    Indexed by: pdf_url / source / filename + their basename/stem aliases.
     """
     data = load_json(path)
     if not data:
@@ -62,36 +75,80 @@ def build_downloads_meta_map(path: str | Path) -> Dict[str, Any]:
     for it in items:
         if not isinstance(it, dict):
             continue
-        k = it.get("pdf_url") or it.get("source") or it.get("filename")
-        if not k:
+
+        # normalize a canonical URL field for downstream usage
+        main_link = (
+            it.get("main_link") or
+            it.get("link") or
+            it.get("url") or
+            it.get("pdf_url") or
+            it.get("original_url") or
+            it.get("public_url")
+        )
+        if main_link:
+            it["main_link"] = main_link  # ensure present
+
+        # primary candidate keys
+        keys = []
+        for k in (it.get("pdf_url"), it.get("source"), it.get("filename")):
+            if k:
+                keys.extend([k, _basename(k), _stem(k)])
+
+        # Make sure we have at least one key; if none, skip
+        if not keys:
             continue
-        m[k] = it
-        try:
-            from pathlib import Path as _P
-            m[_P(k).name] = it
-        except Exception:
-            pass
+
+        for k in keys:
+            m[str(k)] = it
+
     log.info("[LOAD] downloads meta: %d keys", len(m))
     return m
 
+
 def build_ingestion_map(path: str | Path) -> Dict[str, Dict[str, Any]]:
     """
-    Loads the ingestion file (e.g., ingestion.json) and creates
-    a lookup map of {filename: {date: "...", "main_link": "..."}}.
+    Loads the ingestion file (e.g., ingestion.json) and creates a robust lookup map:
+      keys: filename / source / pdf_url (and their basename/stem aliases)
+      values: full item dict, with at least { "date": "...", "main_link": "..." } if available.
     """
     log.info(f"Building ingestion map from: {path}")
     data = load_json(path)
     items = _coerce_list(data)
-    
-    # Mengubah dari Dict[str, str] menjadi Dict[str, Dict[str, Any]]
+
     ingestion_map: Dict[str, Dict[str, Any]] = {}
     for item in items:
         if not isinstance(item, dict):
             continue
-        filename = item.get("filename")
-        if filename:
-            # Menyimpan seluruh item untuk fleksibilitas
-            ingestion_map[str(filename)] = item
-            
+
+        # normalize main_link for downstream consumers
+        item["main_link"] = (
+            item.get("main_link") or
+            item.get("link") or
+            item.get("url") or
+            item.get("pdf_url") or
+            item.get("original_url") or
+            item.get("public_url")
+        )
+
+        # keep whichever date-like field is present (no hard requirement)
+        item["date"] = item.get("date") or item.get("timestamp") or item.get("announcement_published_at")
+
+        # candidate keys (we’ll index each + basename + stem)
+        candidate_keys: List[str] = []
+        for k in (item.get("filename"), item.get("source"), item.get("pdf_url")):
+            if k:
+                candidate_keys.extend([k, _basename(k), _stem(k)])
+
+        # if still nothing, try to salvage from explicit filename-like fields
+        if not candidate_keys and item.get("file"):
+            candidate_keys.extend([item["file"], _basename(item["file"]), _stem(item["file"])])
+
+        # if we really have nothing to index by, skip
+        if not candidate_keys:
+            continue
+
+        for k in candidate_keys:
+            ingestion_map[str(k)] = item
+
     log.info(f"Built ingestion map with {len(ingestion_map)} entries.")
     return ingestion_map
