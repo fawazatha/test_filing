@@ -190,7 +190,7 @@ class Classifier:
     # Tag inference
     def infer_tags(self, facts: Dict[str, Any], text_hint: Optional[str]) -> List[str]:
         tx = (facts.get("transaction_type") or "").lower()
-        tags = ["insider-trading"]
+        tags = ["Insider Trading"]
         return tags
 
 
