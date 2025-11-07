@@ -6,16 +6,12 @@ from typing import Dict, Any, List, Optional
 from .io_utils import get_logger
 log = get_logger(__name__)
 
-# ----------------------------
 # Heuristic sets
-# ----------------------------
 BUY = {"buy", "pembelian", "acquire", "acquisition", "pembelian saham"}
 SELL = {"sell", "penjualan", "dispose", "divest", "penjualan saham"}
 TRANSFER = {"transfer", "pengalihan", "alih", "off-market transfer"}
 
-# ----------------------------
 # Model normalization helpers
-# ----------------------------
 # Map deprecated -> recommended
 DEPRECATED_MAP = {
     "llama-3.1-70b-versatile": "llama-3.3-70b-versatile",
@@ -190,37 +186,15 @@ class Classifier:
                 log.warning(f"Classifier LLM init failed; fallback to heuristics. {e}")
                 self.use_llm = False
 
-    # ----------------------------
+
     # Tag inference
-    # ----------------------------
     def infer_tags(self, facts: Dict[str, Any], text_hint: Optional[str]) -> List[str]:
         tx = (facts.get("transaction_type") or "").lower()
         tags = ["insider-trading"]
-        if tx in ("buy", "sell", "transfer"):
-            tags.append(tx)
-
-        # Optional LLM refinement
-        if self.use_llm and self._llm:
-            try:
-                base = (
-                    "Suggest up to 3 concise tags (comma-separated), lowercase, "
-                    "avoid duplicates of 'insider-trading', and avoid very generic terms.\n\n"
-                    f"Facts: {str({k: v for k, v in facts.items() if k in ['company_name','symbol','holder_name','transaction_type','prices','amount_transacted','holdings_before','holdings_after','reason']})}\n"
-                )
-                if text_hint:
-                    base += f"\nText hint:\n{text_hint[:800]}"
-                resp = self._llm.invoke(base)
-                content = (getattr(resp, "content", "") or "").strip().lower()
-                for t in [x.strip() for x in content.replace("\n", " ").split(",")]:
-                    if t and t not in tags and len(tags) < 5:
-                        tags.append(t)
-            except Exception as e:
-                log.debug(f"LLM tags failed: {e}")
         return tags
 
-    # ----------------------------
+
     # Sentiment inference
-    # ----------------------------
     def infer_sentiment(self, facts: Dict[str, Any], text_hint: Optional[str]) -> str:
         tx = (facts.get("transaction_type") or "").lower()
         if tx in BUY:
