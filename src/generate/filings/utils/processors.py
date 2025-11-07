@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 import logging
+from pathlib import Path
 from typing import Any, Dict, List, Optional, Tuple, Union
 from statistics import median
 
@@ -42,7 +43,9 @@ except Exception:
 
 logger = logging.getLogger(__name__)
 
+# -----------------------------
 # Generic helpers
+# -----------------------------
 def _safe_float(x: Any) -> Optional[float]:
     try:
         if x is None or x == "":
@@ -78,18 +81,95 @@ def _ratio(a: Optional[float], b: Optional[float]) -> Optional[float]:
     except Exception:
         return None
 
-# PriceTransaction normalization
-# Bentuk A: List[PriceTransaction]
-# Bentuk B (DB-collapsed): [{"date":[...], "type":[...], "price":[...], "amount_transacted":[...]}]
-# Bentuk C: List[dict per transaksi] dengan key "transaction_*" (atau alias singkat)
+# -----------------------------
+# Downloads/meta resolver
+# -----------------------------
+def _basename(s: Optional[str]) -> Optional[str]:
+    if not s:
+        return None
+    try:
+        return Path(str(s)).name
+    except Exception:
+        return str(s)
 
+def _stem(s: Optional[str]) -> Optional[str]:
+    b = _basename(s)
+    if not b:
+        return None
+    try:
+        return Path(b).stem
+    except Exception:
+        return b
+
+def _pick_first(*vals):
+    for v in vals:
+        if v not in (None, "", [], {}):
+            return v
+    return None
+
+def _resolve_doc_meta(
+    record: FilingRecord,
+    downloads_meta_map: Optional[Dict[str, Any]],
+) -> Optional[Dict[str, Any]]:
+    """
+    Resolve doc_meta from downloads_meta_map for one FilingRecord.
+    Tries:
+      1) record.source (URL in many cases)
+      2) basename(source), stem(source)
+      3) raw_data: source | pdf_url | original_url | url | filename | file
+         each tried as exact, basename, and stem.
+    """
+    if not downloads_meta_map:
+        return None
+
+    candidates: List[str] = []
+    # Primary hints
+    candidates.append(_pick_first(getattr(record, "source", None), record.raw_data.get("source")))
+    # Additional hints typical for NON-IDX
+    for k in ("pdf_url", "original_url", "url", "filename", "file"):
+        v = record.raw_data.get(k)
+        if v:
+            candidates.append(v)
+
+    # Deduplicate while preserving order
+    seen = set()
+    keys: List[str] = []
+    for c in candidates:
+        if c and c not in seen:
+            seen.add(c)
+            keys.append(c)
+
+    # Try exact → basename → stem
+    for key in keys:
+        for probe in (key, _basename(key), _stem(key)):
+            if not probe:
+                continue
+            # Fast path
+            if probe in downloads_meta_map:
+                it = downloads_meta_map[probe]
+                if isinstance(it, dict):
+                    return it
+            # Loose scan fallback
+            for mk, mv in downloads_meta_map.items():
+                if mk == probe or _basename(mk) == probe or _stem(mk) == probe:
+                    if isinstance(mv, dict):
+                        return mv
+
+    return None
+
+# -----------------------------
+# PriceTransaction normalization
+# -----------------------------
+# Shape A: List[PriceTransaction]
+# Shape B (DB-collapsed): [{"date":[...], "type":[...], "price":[...], "amount_transacted":[...]}]
+# Shape C: List[dict per transaction] with "transaction_*" (or short aliases)
 def _is_db_collapsed_block(obj: Any) -> bool:
     if not isinstance(obj, dict):
         return False
     return all(k in obj for k in ("date", "type", "price", "amount_transacted"))
 
 def _expand_db_collapsed_block(block: Dict[str, Any]) -> List[Dict[str, Any]]:
-    """Ubah 1 objek kolaps menjadi list per-transaksi {transaction_*}."""
+    """Expand one collapsed-DB object into list of per-transaction {transaction_*} dicts."""
     dates = block.get("date", []) or []
     types = block.get("type", []) or []
     prices = block.get("price", []) or []
@@ -108,43 +188,35 @@ def _expand_db_collapsed_block(block: Dict[str, Any]) -> List[Dict[str, Any]]:
 
 def _normalize_price_tx_list(maybe_list: Any) -> List[Any]:
     """
-    Kembalikan list item per-transaksi dalam bentuk dict/objek homogen.
-    Tidak memodifikasi record asli; hanya dipakai lokal untuk kalkulasi.
+    Return a homogeneous list of per-transaction dicts/objects for local calculations.
+    Does not mutate the original record.
     """
     if not isinstance(maybe_list, list):
         return []
-
     if not maybe_list:
         return []
 
     first = maybe_list[0]
 
-    # Bentuk B: satu elemen, kolaps DB object
+    # Shape B: one element collapsed DB object
     if isinstance(first, dict) and len(maybe_list) == 1 and _is_db_collapsed_block(first):
         return _expand_db_collapsed_block(first)
 
-    # Bentuk A: List[PriceTransaction]  -> langsung pakai
-    # Bentuk C: List[dict per transaksi] -> langsung pakai
+    # Shape A/C: use as is
     return maybe_list
 
 def _tx_get_type(tx: Any) -> Optional[str]:
     if isinstance(tx, PriceTransaction):
         return tx.transaction_type
     if isinstance(tx, dict):
-        return (
-            tx.get("transaction_type")
-            or tx.get("type")
-        )
+        return tx.get("transaction_type") or tx.get("type")
     return None
 
 def _tx_get_price(tx: Any) -> Optional[float]:
     if isinstance(tx, PriceTransaction):
         return tx.transaction_price
     if isinstance(tx, dict):
-        return _safe_float(
-            tx.get("transaction_price")
-            or tx.get("price")
-        )
+        return _safe_float(tx.get("transaction_price") or tx.get("price"))
     return None
 
 def _tx_get_amount(tx: Any) -> Optional[int]:
@@ -158,7 +230,9 @@ def _tx_get_amount(tx: Any) -> Optional[int]:
         )
     return None
 
+# -----------------------------
 # Inference helpers
+# -----------------------------
 def _infer_total_shares(
     holding_before: Optional[float],
     pp_before: Optional[float],
@@ -199,7 +273,9 @@ def _is_x10_or_x100(a: Optional[float], ref: Optional[float]) -> Tuple[bool, Opt
         return (True, "x100_candidate")
     return (False, None)
 
+# -----------------------------
 # P0-4 • Suspicious price detection
+# -----------------------------
 def _check_tx_price_outlier(
     tx_price: Optional[float],
     doc_median: Optional[float],
@@ -266,7 +342,9 @@ def _check_tx_price_outlier(
 
     return (suspicious, reasons)
 
+# -----------------------------
 # P0-5 • Recompute ownership %
+# -----------------------------
 def _recompute_percentages_model(record: FilingRecord) -> Dict[str, Any]:
     """
     Calculates ownership percentages based on transactions and compares
@@ -277,7 +355,7 @@ def _recompute_percentages_model(record: FilingRecord) -> Dict[str, Any]:
     holding_before = record.holding_before
     holding_after = record.holding_after
 
-    # total_shares dari parser jika ada
+    # total_shares from parser, if present
     total_shares = _safe_float(record.raw_data.get("total_shares"))
 
     if total_shares is None:
@@ -286,10 +364,10 @@ def _recompute_percentages_model(record: FilingRecord) -> Dict[str, Any]:
             holding_after, share_pct_after_pdf,
         )
 
-    # Normalisasi transaksi
+    # Normalize transactions
     tx_list = _normalize_price_tx_list(record.price_transaction)
 
-    # Akumulasi (buy + / sell -)
+    # Accumulate (+ for buy / - for sell)
     signed_amount = 0.0
     for tx in tx_list:
         amt = _safe_float(_tx_get_amount(tx)) or 0.0
@@ -321,7 +399,9 @@ def _recompute_percentages_model(record: FilingRecord) -> Dict[str, Any]:
     record.audit_flags.update(audit)
     return audit
 
+# -----------------------------
 # Processor entry (single record)
+# -----------------------------
 def process_filing_record(
     record: FilingRecord,
     doc_meta: Optional[Union[Dict[str, Any], Any]] = None,
@@ -368,7 +448,7 @@ def process_filing_record(
     if any_suspicious:
         row_flags["suspicious_price_level"] = True
 
-    # 6. P0-5: Recompute % kepemilikan (model vs PDF)
+    # 6. P0-5: Recompute ownership %
     audit = _recompute_percentages_model(record)
     if audit.get("percent_discrepancy"):
         reasons.append({
@@ -400,16 +480,20 @@ def process_filing_record(
 
     return record
 
-# Main Processor 
+# -----------------------------
+# Main Processor
+# -----------------------------
 def process_all_records(
     records: List[FilingRecord],
     downloads_meta_map: Dict[str, Any] | None = None,
 ) -> List[FilingRecord]:
     """
     Processes a list of FilingRecord objects.
+    - Tries to resolve doc_meta from downloads_meta_map for each record
+      so build_announcement_block(doc_meta) can include consistent source links.
     """
     processed_records: List[FilingRecord] = []
     for rec in records:
-        doc_meta = None  # (future) bisa dihubungkan ke downloads_meta_map bila perlu
+        doc_meta = _resolve_doc_meta(rec, downloads_meta_map)
         processed_records.append(process_filing_record(rec, doc_meta=doc_meta))
     return processed_records
