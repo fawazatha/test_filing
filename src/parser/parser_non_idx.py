@@ -1,143 +1,55 @@
+# parser_non_idx.py
 from __future__ import annotations
-from typing import Dict, Any, Optional, List, Tuple
+
 import os
 import re
+import logging
+import unicodedata
+from typing import Dict, Any, Optional, List, Tuple
+
 import pdfplumber
 
-# Core/Base
-from src.parser.core.base_parser import BaseParser
-
-# Common Libs
-from src.common.numbers import NumberParser
-from src.common.log import get_logger
-from src.common.strings import normalize_company_key as global_normalize_key
-
-# Parser Utils
-from src.parser.utils.name_cleaner import NameCleaner
-from src.parser.utils.transaction_classifier import TransactionClassifier
-from src.parser.utils.pdf_tables import extract_table_like
-from src.parser.utils.company import CompanyService
-from src.parser.utils.text_extractor import TextExtractor  # Import TextExtractor
-
-logger = get_logger(__name__)
-
-#- Heuristics for price extraction (non-IDX narrative)-
-# allow up to 6 digits, optional decimals; reject thousands-formatted ints
-_RE_BIG_INT = re.compile(r"^\d{1,3}(?:[.,]\d{3})+$")           # e.g. 14.838.000
-_RE_PRICE   = re.compile(r"^\d{1,6}(?:[.,]\d{1,2})?$")         # e.g. 55, 198, 10150, 75.5
-
-# Month tokens (EN/ID) to avoid picking day parts of dates as "prices"
-_MONTH_WORD = (
-    r"(?:Jan(?:uary)?|Feb(?:ruary)?|Mar(?:ch)?|Apr(?:il)?|May|Jun(?:e)?|Jul(?:y)?|"
-    r"Aug(?:ust)?|Sep(?:t(?:ember)?)?|Oct(?:ober)?|Nov(?:ember)?|Dec(?:ember)?|"
-    r"Jan(?:uari)?|Feb(?:ruari)?|Mar(?:et)?|Apr(?:il)?|Mei|Jun(?:i)?|Jul(?:i)?|"
-    r"Agu(?:stus)?|Sep(?:tember)?|Okt(?:ober)?|Nov(?:ember)?|Des(?:ember)?)"
-)
-_MONTH_RE = re.compile(rf"\b{_MONTH_WORD}\b", re.IGNORECASE)
-_DATE_ANY = re.compile(
-    rf"\b\d{{1,2}}\s+{_MONTH_WORD}(?:\s+\d{{2,4}})?\b|"
-    rf"\b\d{{1,2}}[/-]\d{{1,2}}[/-]\d{{2,4}}\b",
-    re.IGNORECASE,
+from .core.base_parser import BaseParser
+from .utils.number_parser import NumberParser
+from .utils.name_cleaner import NameCleaner
+from .utils.transaction_classifier import TransactionClassifier
+from .utils.company_resolver import (
+    load_symbol_to_name_from_file,
+    build_reverse_map,
+    resolve_symbol_from_emiten,
+    normalize_company_name,
 )
 
-def _date_spans_in_text(s: str) -> List[tuple[int, int]]:
-    spans: List[tuple[int, int]] = []
-    for m in _DATE_ANY.finditer(s or ""):
-        spans.append(m.span())
-    return spans
-
-def _span_contains(idx: int, spans: List[tuple[int, int]]) -> bool:
-    for a, b in spans:
-        if a <= idx < b:
-            return True
-    return False
-
-def _prefer_price_from_line(line: str) -> Optional[str]:
-    if not line:
-        return None
-    s = line.strip()
-    lwr = s.lower()
-    date_spans = _date_spans_in_text(s)
-
-    has_price_hint = ("harga transaksi" in lwr) or ("transaction price" in lwr) or ("harga:" in lwr)
-    is_amount_line = ("jumlah saham" in lwr) or ("number of shares" in lwr)
-
-    tokens = list(re.finditer(r"[0-9][0-9\.,]*", s))
-    if not tokens:
-        return None
-
-    def score(tok: str, start: int) -> int:
-        sc = 0
-        # jangan ambil token yang nempel tanggal
-        if _span_contains(start, date_spans):
-            return -999
-        # hindari angka tepat sebelum/ sesudah kata bulan
-        after = s[start:start + 12]
-        if _MONTH_RE.search(after):
-            return -998
-
-        if has_price_hint:
-            sc += 6
-        if ("rp" in lwr) or ("idr" in lwr):
-            sc += 2
-        if ("," in tok or "." in tok):
-            sc += 1
-
-        try:
-            val = NumberParser.parse_number(tok) or 0
-            # kurangi skor kalau kemungkinan hari kalender (≤31) tanpa hint
-            if not has_price_hint and val <= 31:
-                sc -= 3
-            # angka sangat besar cenderung amount
-            if val > 100_000:
-                sc -= 4
-        except Exception:
-            pass
-
-        # penalti kuat jika barisnya jelas-jelas baris jumlah saham
-        if is_amount_line:
-            sc -= 8
-
-        return sc
-
-    best_tok, best_sc = None, -999
-    for m in tokens:
-        t = m.group(0)
-        # kandidat yang diizinkan sebagai harga:
-        is_candidate = (
-            _RE_PRICE.fullmatch(t) or           # 55 / 1250 / 75.5
-            _RE_BIG_INT.fullmatch(t) or         # 1.370 / 2.000 / 1,485
-            (has_price_hint and _RE_ANYNUM.fullmatch(t))
-        )
-        if not is_candidate:
-            continue
-
-        sc = score(t, m.start())
-        if sc > best_sc:
-            best_sc, best_tok = sc, t
-
-    return best_tok
+logger = logging.getLogger(__name__)
 
 
+def _validate_tx_direction(
+    before: Optional[float],
+    after: Optional[float],
+    tx_type: str,
+    eps: float = 1e-3
+) -> Tuple[bool, Optional[str]]:
+    try:
+        b = float(before) if before is not None else None
+        a = float(after) if after is not None else None
+    except Exception:
+        return False, "non_numeric_before_after"
+    if b is None or a is None:
+        return False, "missing_before_or_after"
 
-def _clean_cell(s: Any) -> str:
-    return (str(s or "").replace("\n", " ").strip())
+    t = (tx_type or "").strip().lower()
+    if t == "buy" and a + eps < b:
+        return False, f"inconsistent_buy: after({a}) < before({b})"
+    if t == "sell" and a > b + eps:
+        return False, f"inconsistent_sell: after({a}) > before({b})"
+    return True, None
 
 
 class NonIDXParser(BaseParser):
-    """
-    Parser for non-IDX-format PDFs.
-    Refactored to:
-    - Use common NumberParser directly
-    - Use centralized TransactionClassifier.validate_direction
-    - Break down monolithic _parse_row into smaller helpers
-    - Extract "purpose" field
-    - Try to detect narrative transaction price and produce price_transaction[]
-    - Check price vs last_close_price (±50% alert)
-    """
-
-    EXCLUDED_ROWS = {"Masyarakat lainnya yang dibawah 5%"}  # exact blacklist
-    _HDR_HINTS = ("sebelum", "sesudah", "jumlah", "persen", "persentase", "percentage", "pemilikan %")
+    _CORP_STOPWORDS = {
+        "pt", "p.t", "perseroan", "terbatas", "tbk", "tbk.", "tbk,", "(tbk"
+    }
+    _TOKEN_SPLIT = re.compile(r"[^a-z0-9]+", re.UNICODE)
 
     def __init__(
         self,
@@ -152,78 +64,141 @@ class NonIDXParser(BaseParser):
             alerts_file=os.getenv("ALERTS_NON_IDX", "alerts/alerts_non_idx.json"),
             alerts_not_inserted_file=os.getenv("ALERTS_NOT_INSERTED_NON_IDX", "alerts/alerts_not_inserted_non_idx.json"),
         )
-        self.company = CompanyService()
-        self._debug_trace = os.getenv("COMPANY_RESOLVE_DEBUG", "0") in {"1", "true", "on"}
+
+        self.excluded_names = {"Masyarakat lainnya yang dibawah 5%"}
+
+        self._symbol_to_name: Optional[Dict[str, str]] = None
+        self._rev_company_map: Optional[Dict[str, List[str]]] = None
+
+        self._debug_trace = os.getenv("COMPANY_RESOLVE_DEBUG", "0") == "1"
+        self._synonym_enable = os.getenv("NONIDX_RESOLVE_SYNONYM_ENABLE", "1") != "0"
+
+    @staticmethod
+    def _normalize_symbol(sym: str) -> str:
+        s = (sym or "").strip().upper()
+        return s[:-3] if s.endswith(".JK") else s
+
+    @classmethod
+    def _normalize_name(cls, s: str) -> str:
+        s = unicodedata.normalize("NFKD", s or "").encode("ascii", "ignore").decode("ascii")
+        s = s.lower()
+        tokens = [t for t in cls._TOKEN_SPLIT.split(s) if t]
+        tokens = [t for t in tokens if t not in cls._CORP_STOPWORDS]
+        return " ".join(tokens)
+
+    def _ensure_company_maps(self):
+        if self._symbol_to_name is not None and self._rev_company_map is not None:
+            return
+        try:
+            symbol_to_name = load_symbol_to_name_from_file() or {}
+        except Exception as e:
+            logger.error(f"Failed to load company_map.json: {e}")
+            symbol_to_name = {}
+
+        self._symbol_to_name = symbol_to_name
+        self._rev_company_map = build_reverse_map(symbol_to_name)
+
+        logger.info(
+            "[company_map] file=%s symbols=%d reverse_keys=%d",
+            os.getenv("COMPANY_MAP_FILE", "data/company/company_map.json"),
+            len(symbol_to_name),
+            len(self._rev_company_map or {}),
+        )
+
+        if self._debug_trace:
+            probe = normalize_company_name("PT SUMBER ENERGI ANDALAN TBK")
+            exists = probe in (self._rev_company_map or {})
+            logger.info("[company_map] probe_key='%s' present=%s", probe, exists)
 
     # == Entry point ==
     def parse_single_pdf(
         self, filepath: str, filename: str, pdf_mapping: Dict[str, Any]
     ) -> Optional[List[Dict[str, Any]]]:
-
         ann_ctx = (pdf_mapping or {}).get(filename, {})
-
         try:
             with pdfplumber.open(filepath) as pdf:
-                all_text = "\n".join((_t or "") for _t in (p.extract_text() for p in pdf.pages if p.extract_text()))
-                if not all_text.strip():
-                    self.alert_manager_not_inserted.log_alert(filename, "no_text_extracted", {"announcement": ann_ctx})
-                    return None
+                all_text = "\n".join(page.extract_text() or "" for page in pdf.pages)
 
-                # Use TextExtractor for keyword searching
-                ex = TextExtractor(all_text)
-
-                title_line, _ = self._extract_metadata(all_text)
+                title_line, reporter_name = self._extract_metadata(all_text)
                 emiten_name = self._extract_emiten_name(all_text)
 
-                symbol = self.company.resolve_symbol(emiten_name, all_text, min_score_env="88")
-                if not symbol:
-                    self._log_symbol_alert(filename, emiten_name)
+                self._ensure_company_maps()
 
                 last_page = pdf.pages[-1]
-                table = extract_table_like(last_page)
-                if not table:
-                    self.alert_manager_not_inserted.log_alert(filename, "No Table Found", {"announcement": ann_ctx})
+                table = self._extract_last_page_table(last_page)
+                if not table or len(table) < 2:
+                    self.alert_manager_not_inserted.log_alert(
+                        filename, "No Table Found", {"announcement": ann_ctx}
+                    )
+                    self._blocked_already_logged = True
                     return None
 
-                rows: List[Dict[str, Any]] = []
-                # Try to grab a document-level narrative price once (shared by rows)
-                doc_price = self._extract_doc_level_price(ex)
+                data_rows = self._process_table_rows(
+                    table, all_text, title_line, emiten_name, filename
+                )
 
-                for row_cells in self._iter_data_rows(table):
-                    parsed = self._parse_row(
-                        row_cells=row_cells,
-                        all_text=all_text,
-                        extractor=ex,   # pass the extractor
-                        title_line=title_line,
-                        source_name=filename,
-                        doc_symbol=symbol,
-                        doc_price=doc_price,  # pass doc-level price
-                    )
-                    if parsed:
-                        # Check price deviation vs last_close if we had a price
-                        self._check_price_deviation_vs_last_close(parsed, filename, ann_ctx)
-                        rows.append(parsed)
-
-                filtered = [r for r in rows if self._is_valid_filing(r)]
-                return filtered or None
+                filtered_rows = [
+                    entry for entry in data_rows
+                    if entry.get("holder_name") not in self.excluded_names
+                    and "masyarakat lainnya" not in (entry.get("holder_name") or "").lower()
+                ]
+                return filtered_rows or None
 
         except Exception as e:
-            logger.error(f"Error parsing {filename}: {e}", exc_info=True)
+            logger.error(f"Error parsing {filename}: {e}")
             self.alert_manager_not_inserted.log_alert(
                 filename, "parsing_error", {"message": str(e), "announcement": ann_ctx}
             )
+            self._blocked_already_logged = True
             return None
 
-    # == PDF metadata ==
+    # == PDF helpers ==
+    def _extract_last_page_table(self, last_page) -> Optional[List[List[str]]]:
+        table_settings = {
+            "vertical_strategy": "lines",
+            "horizontal_strategy": "lines",
+            "intersection_tolerance": 5,
+            "snap_tolerance": 3,
+            "join_tolerance": 3,
+            "edge_min_length": 3,
+            "min_words_vertical": 1,
+            "min_words_horizontal": 1,
+        }
+
+        tbl = last_page.extract_table(table_settings=table_settings)
+        if tbl and len(tbl) >= 2:
+            return tbl
+
+        tables = last_page.extract_tables(table_settings=table_settings) or []
+        tables = [t for t in tables if t and len(t) >= 2]
+        if tables:
+            tables.sort(key=lambda t: len(t), reverse=True)
+            return tables[0]
+
+        tbl = last_page.extract_table()
+        if tbl and len(tbl) >= 2:
+            return tbl
+
+        tables = last_page.extract_tables() or []
+        tables = [t for t in tables if t and len(t) >= 2]
+        if tables:
+            tables.sort(key=lambda t: len(t), reverse=True)
+            return tables[0]
+
+        return None
+
     def _extract_metadata(self, text: str) -> Tuple[str, str]:
-        lines = [ln.strip() for ln in (text or "").splitlines() if ln.strip()]
-        title_line = next((ln for ln in lines if "LAPORAN KEPEMILIKAN EFEK" in ln.upper()), "")
-        bae_line = next((ln for ln in lines if "BAE" in ln.upper()), "")
+        lines = [line.strip() for line in text.split('\n') if line.strip()]
+        title_line = next(
+            (line for line in lines if "LAPORAN KEPEMILIKAN EFEK" in line.upper()),
+            ""
+        )
+        bae_line = next((line for line in lines if "BAE" in line.upper()), "")
         reporter_name = bae_line.split(":")[-1].strip() if ":" in bae_line else "UNKNOWN"
         return title_line, reporter_name
 
     def _extract_emiten_name(self, text: str) -> Optional[str]:
-        lines = [l.strip() for l in (text or "").splitlines() if l.strip()]
+        lines = [l.strip() for l in text.splitlines() if l.strip()]
         patterns = [
             r'^\s*nama\s+emiten\s*[:\-]\s*(.+)$',
             r'^\s*emiten\s*[:\-]\s*(.+)$',
@@ -239,150 +214,227 @@ class NonIDXParser(BaseParser):
                     name = re.sub(r'\(\s*"?perseroan"?\s*\)', '', name, flags=re.I).strip()
                     return name
 
-        m = re.search(r'(PT\s+.+?Tbk\.?)', text or "", flags=re.I)
-        return m.group(1).strip() if m else None
+        m = re.search(r'(PT\s+.+?Tbk\.?)', text, flags=re.I)
+        if m:
+            return m.group(1).strip()
+        return None
 
-    # == Row iteration ==
-    def _iter_data_rows(self, table: List[List[str]]):
-        for raw in table:
-            row = [_clean_cell(c) for c in (raw or [])]
-            if not row or len(row) < 5:
+    # == Company resolution ==
+    def _resolve_symbol_from_emiten_local(self, emiten_name: Optional[str], full_text: str) -> Optional[str]:
+        if not self._symbol_to_name or not self._rev_company_map:
+            return None
+
+        min_score = int(os.getenv("NONIDX_RESOLVE_MIN_SCORE", "88"))
+        query = emiten_name or ""
+        norm_query = normalize_company_name(query)
+
+        sym, key_used, tried = resolve_symbol_from_emiten(
+            query,
+            symbol_to_name=self._symbol_to_name,
+            rev_map=self._rev_company_map,
+            fuzzy=True,
+            min_score=min_score,
+        )
+
+        if self._debug_trace:
+            logger.info(
+                "[nonidx-resolve] query='%s' norm='%s' sym=%s key_used='%s' tried=%s",
+                query, norm_query, sym, key_used, tried
+            )
+
+        if sym:
+            base = sym[:-3] if sym.endswith(".JK") else sym
+            return base
+
+        m = re.search(r'(PT\s+.+?Tbk\.?)', full_text or "", flags=re.I)
+        if m:
+            alt = m.group(1)
+            sym2, key2, tried2 = resolve_symbol_from_emiten(
+                alt,
+                symbol_to_name=self._symbol_to_name,
+                rev_map=self._rev_company_map,
+                fuzzy=True,
+                min_score=min_score,
+            )
+            if self._debug_trace:
+                logger.info(
+                    "[nonidx-resolve] alt='%s' sym=%s key_used='%s' tried=%s",
+                    alt, sym2, key2, tried2
+                )
+            if sym2:
+                base2 = sym2[:-3] if sym2.endswith(".JK") else sym2
+                return base2
+
+        candidates = set(re.findall(r'\b([A-Z]{3,4})\b', full_text or ""))
+        for cand in candidates:
+            if cand in self._symbol_to_name or f"{cand}.JK" in self._symbol_to_name:
+                if self._debug_trace:
+                    logger.info("[nonidx-resolve] token-scan hit cand=%s", cand)
+                return cand
+
+        try:
+            if self._debug_trace:
+                self.alert_manager.log_alert(
+                    "symbol_resolve_trace",
+                    f"Symbol Not Resolved (min_score={min_score})",
+                    {"query": query, "normalized": norm_query}
+                )
+        except Exception:
+            pass
+        return None
+
+    # == Row processing ==
+    def _coerce_dash_zero(self, s: Any, as_percentage: bool = False):
+        txt = (str(s or "")).strip()
+        if txt in {"-", "–", "—", ""}:
+            return 0.0 if as_percentage else 0
+        try:
+            if as_percentage:
+                return NumberParser.parse_percentage(txt)
+            val = NumberParser.parse_number(txt, is_percentage=False)
+            return val if val is not None else 0
+        except Exception:
+            return 0.0 if as_percentage else 0
+
+    def _process_table_rows(self,
+                            table: List[List[str]],
+                            all_text: str,
+                            title_line: str,
+                            emiten_name: Optional[str],
+                            source_name: str) -> List[Dict[str, Any]]:
+        data_rows: List[Dict[str, Any]] = []
+
+        for i, row in enumerate(table):
+            if not row:
                 continue
+
             joined = " ".join((c or "").lower() for c in row)
-            if any(h in joined for h in self._HDR_HINTS):
+            if any(k in joined for k in ["sebelum", "sesudah", "jumlah", "persen", "persentase",
+                                         "percentage", "pemilikan %"]):
                 continue
             if "total" in joined:
                 continue
-            yield row
 
-    # == Row parsing (REFACTORED) ==
-    def _parse_row(
-        self,
-        row_cells: List[str],
-        all_text: str,
-        extractor: TextExtractor,  # <-- Added extractor
-        title_line: str,
-        source_name: str,
-        doc_symbol: Optional[str],
-        doc_price: Optional[float],   # <-- Added doc-level narrative price
-    ) -> Optional[Dict[str, Any]]:
-        """
-        Main parsing coordinator for a single row.
-        Delegates to smaller helper methods.
-        """
+            if len(row) < 5:
+                continue
 
-        holder_name_raw, data = self._extract_row_data(row_cells)
+            try:
+                result = self._process_single_row(
+                    row=row,
+                    all_text=all_text,
+                    title_line=title_line,
+                    source_name=source_name,
+                    emiten_name=emiten_name
+                )
+                if result:
+                    data_rows.append(result)
+                    logger.info(f"parsed row: {result['holder_name']}")
+            except Exception as e:
+                logger.warning(f"Row parse error: {e}")
+                continue
+
+        return data_rows
+
+    def _process_single_row(self,
+                            row: List[str],
+                            all_text: str,
+                            title_line: str,
+                            source_name: str,
+                            emiten_name: Optional[str]) -> Optional[Dict[str, Any]]:
+
+        safe_row = [(c or "").strip() for c in row]
+        if len(safe_row) < 5:
+            return None
+
+        if any("total" in (c or "").lower() for c in safe_row):
+            return None
+
+        holder_name_raw = safe_row[1] if len(safe_row) > 1 else ""
         if not holder_name_raw:
             return None
+        if "masyarakat lainnya" in holder_name_raw.lower():
+            return None
+
+        cols = safe_row[-4:] if len(safe_row) >= 4 else ["", "", "", ""]
+
+        holding_before = self._coerce_dash_zero(cols[0], as_percentage=False)
+        holding_after  = self._coerce_dash_zero(cols[1], as_percentage=False)
+        pct_before     = self._coerce_dash_zero(cols[2], as_percentage=True)
+        pct_after      = self._coerce_dash_zero(cols[3], as_percentage=True)
+
+        try:
+            if float(holding_before) == float(holding_after) and float(pct_before) == float(pct_after):
+                return None
+        except Exception:
+            pass
 
         holder_type = NameCleaner.classify_holder_type(holder_name_raw)
         holder_name = NameCleaner.clean_holder_name(holder_name_raw, holder_type)
+
         if not NameCleaner.is_valid_holder(holder_name):
             return None
 
-        data["holder_type"] = holder_type
-        data["holder_name"] = holder_name
+        share_pct_transaction = round(abs(float(pct_after) - float(pct_before)), 3)
 
-        if data["holding_before"] == data["holding_after"] and \
-           data["share_percentage_before"] == data["share_percentage_after"]:
-            return None
-
-        tx_type, prelim_tags = TransactionClassifier.classify_transaction_type(
-            all_text, data["share_percentage_before"], data["share_percentage_after"]
+        # Classify tx type from text/percentages (prelim; tags will be recomputed canonically)
+        tx_type, _prelim = TransactionClassifier.classify_transaction_type(
+            all_text, float(pct_before), float(pct_after)
         )
-        data["transaction_type"] = tx_type
 
-        if tx_type in {"buy", "sell"}:
-            ok, reason = TransactionClassifier.validate_direction(
-                data["share_percentage_before"], data["share_percentage_after"], tx_type
-            )
+        # Direction sanity
+        if tx_type in ("buy", "sell"):
+            ok, reason = _validate_tx_direction(pct_before, pct_after, tx_type)
             if not ok:
-                logger.debug("drop row: %s", reason)
                 return None
 
-        # Purpose from the full text (best-effort)
-        data["purpose"] = (
-            extractor.find_value_after_keyword("Tujuan Transaksi")
-            or extractor.find_value_after_keyword("Purposes of the transaction")
-            or extractor.find_value_after_keyword("Purpose of the Transaction")
-            or ""
-        ).strip()
-
-        filing = self._build_filing_dict(
-            data=data,
-            title=title_line,
-            source=source_name,
-            symbol=doc_symbol,
-            text=all_text,
-        )
-
-        #- NEW: attach price & price_transaction from narrative price-
-        if doc_price and tx_type in {"buy", "sell"} and (filing.get("amount_transaction") or 0) > 0:
-            amt = int(filing["amount_transaction"])
-            filing["price"] = float(doc_price)
-            filing["transaction_value"] = float(doc_price) * amt
-            # list-of-objects format requested
-            filing["price_transaction"] = [
-                {
-                    "date": None,  # non-IDX PDFs rarely provide per-transaction date per row
-                    "type": tx_type,
-                    "price": float(doc_price),
-                    "amount_transacted": amt,
-                }
-            ]
-        else:
-            filing["price"] = filing.get("price") or None
-            filing["transaction_value"] = filing.get("transaction_value") or None
-            filing["price_transaction"] = filing.get("price_transaction") or []
-
-        return filing
-
-    def _extract_row_data(self, row: List[str]) -> Tuple[Optional[str], Dict[str, Any]]:
-        """Extracts holder name and numerical data from table cells."""
-        holder_name_raw = row[1] if len(row) > 1 else ""
-        if not holder_name_raw or "masyarakat lainnya" in holder_name_raw.lower():
-            return None, {}
-
-        cols = row[-4:] if len(row) >= 4 else ["", "", "", ""]
-
-        try:
-            hb = NumberParser.parse_number(cols[0])
-            ha = NumberParser.parse_number(cols[1])
-            pb = NumberParser.parse_percentage(cols[2])
-            pa = NumberParser.parse_percentage(cols[3])
-        except Exception:
-            hb, ha, pb, pa = 0, 0, 0.0, 0.0
-
-        share_pct_tx = round(abs(pa - pb), 6)
-
-        data = {
-            "holding_before": hb,
-            "holding_after": ha,
-            "share_percentage_before": pb,
-            "share_percentage_after": pa,
-            "share_percentage_transaction": share_pct_tx,
-            "amount_transaction": abs(int(ha) - int(hb)),
-        }
-        return holder_name_raw, data
-
-    def _build_filing_dict(self, data: Dict, title: str, source: str, symbol: Optional[str], text: str) -> Dict[str, Any]:
-        """Assembles the final filing dictionary and computes tags."""
-
+        # Build base filing
         filing: Dict[str, Any] = {
-            "title": title.strip(),
-            "body": text.strip(),
-            "source": source,
-            "timestamp": None,
-            "symbol": symbol,
+            "title": title_line.strip(),
+            "body": all_text.strip(),
+            "source": source_name,
+            "timestamp": None,  # set upstream from announcement
+            "tags": [],         # filled below (standardized)
+            "symbol": None,
+            "transaction_type": tx_type,
+            "holder_type": holder_type,
+            "holding_before": holding_before,
+            "holding_after": holding_after,
+            "share_percentage_before": pct_before,
+            "share_percentage_after": pct_after,
+            "share_percentage_transaction": share_pct_transaction,
+            "amount_transaction": abs(int(float(holding_after)) - int(float(holding_before))),
+            "holder_name": holder_name,
             "price": None,
             "transaction_value": None,
-            "price_transaction": None,  # will become list[]
+            "price_transaction": None,
             "UID": None,
-            **data,
         }
 
-        flags = TransactionClassifier.detect_flags_from_text(text)
-        tx_type = filing["transaction_type"]
+        # Company symbol (best effort)
+        try:
+            sym = self._resolve_symbol_from_emiten_local(emiten_name, all_text)
+            if sym:
+                filing["symbol"] = sym
+        except Exception as e:
+            logger.debug(f"Local symbol resolution failed (emiten='{emiten_name}'): {e}")
+
+        if not filing["symbol"]:
+            try:
+                em_norm_internal = self._normalize_name(emiten_name or "")
+                em_norm_global = normalize_company_name(emiten_name or "")
+                payload = {
+                    "emiten": emiten_name,
+                    "normalized_internal": em_norm_internal,
+                    "normalized_global": em_norm_global,
+                    "min_score": int(os.getenv("NONIDX_RESOLVE_MIN_SCORE", "88")),
+                    "debug": self._debug_trace,
+                }
+                self.alert_manager.log_alert(source_name, "Symbol Not Resolved", payload)
+            except Exception:
+                logger.warning(f"[alert] Symbol Not Resolved for {source_name} (emiten='{emiten_name}')")
+
+        # === Standardized tags ===
+        flags = TransactionClassifier.detect_flags_from_text(all_text)
         txns = [{"type": tx_type, "amount": filing["amount_transaction"] or 0}] if tx_type else []
 
         filing["tags"] = TransactionClassifier.compute_filings_tags(
@@ -394,123 +446,15 @@ class NonIDXParser(BaseParser):
 
         return filing
 
-    def _is_valid_filing(self, r: Dict[str, Any]) -> bool:
-        """Final check to filter out excluded or noisy rows."""
-        holder = (r.get("holder_name") or "").lower()
-        if holder in self.EXCLUDED_ROWS:
-            return False
-        if "masyarakat lainnya" in holder:
-            return False
-        return True
-
-    # == Utilities ==
-    def _log_symbol_alert(self, source_name: str, emiten_name: Optional[str]) -> None:
-        """Helper to log a 'Symbol Not Resolved' alert."""
-        try:
-            self.alert_manager.log_alert(
-                source_name,
-                "Symbol Not Resolved",
-                {
-                    "emiten": emiten_name,
-                    "normalized_global": global_normalize_key(emiten_name or ""),
-                    "min_score": int(os.getenv("NONIDX_RESOLVE_MIN_SCORE", "88")),
-                    "debug": self._debug_trace,
-                },
-            )
-        except Exception:
-            logger.warning("[alert] Symbol Not Resolved for %s (emiten='%s')", source_name, emiten_name)
-
     # == Output ==
     def validate_parsed_data(self, data: List[Dict[str, Any]]) -> bool:
-        """Validate that the result is a non-empty list."""
-        return isinstance(data, list) and bool(data)
+        return bool(data)
 
-    def save_results(self, results: List[Any]):
-        """Flatten results (which are lists of dicts) and save."""
-        flattened: List[Dict[str, Any]] = []
-        for item in results:
-            if isinstance(item, list):
-                flattened.extend(item)
-            elif isinstance(item, dict):
-                flattened.append(item)
-
-        super().save_results(flattened)
-
-    #- NEW: helpers for doc-level price + deviation check-
-    def _extract_doc_level_price(self, ex: TextExtractor) -> Optional[float]:
-        """
-        Many non-IDX PDFs mention a single 'Harga Transaksi' in narrative.
-        We scan all lines and pick the best candidate once.
-        """
-        best: Optional[str] = None
-        best_sc = -999
-        for ln in ex.lines or []:
-            tok = _prefer_price_from_line(ln)
-            if not tok:
-                continue
-            # score again with simple line priority (contains harga/price)
-            sc = 0
-            L = (ln or "").lower()
-            if ("harga" in L and "transaksi" in L) or ("transaction price" in L):
-                sc += 3
-            if ("rp" in L) or ("idr" in L):
-                sc += 1
-            if sc > best_sc:
-                best_sc, best = sc, tok
-        if best is None:
-            return None
-        try:
-            return float(NumberParser.parse_number(best))
-        except Exception:
-            return None
-
-    def _get_last_close(self, symbol: Optional[str]) -> Optional[float]:
-        if not symbol:
-            return None
-        try:
-            if hasattr(self.company, "get_last_close"):
-                return self.company.get_last_close(symbol)
-            # fallback: if CompanyService exposes a dict meta
-            meta = getattr(self.company, "price_meta", None)
-            if isinstance(meta, dict):
-                lc = (meta.get(symbol) or {}).get("last_close_price")
-                return float(lc) if lc is not None else None
-        except Exception:
-            return None
-        return None
-
-    def _check_price_deviation_vs_last_close(
-        self,
-        filing: Dict[str, Any],
-        filename: str,
-        ann_ctx: Dict[str, Any],
-    ) -> None:
-        """
-        Compare each price in price_transaction to last_close_price; if deviation > 50%, alert.
-        """
-        symbol = filing.get("symbol")
-        last_close = self._get_last_close(symbol)
-        if not last_close or last_close <= 0:
-            return
-
-        pts = filing.get("price_transaction") or []
-        for item in pts:
-            price = item.get("price") or 0
-            if not price or price <= 0:
-                continue
-            dev = abs(price - last_close) / float(last_close)
-            if dev > 0.5:
-                self.alert_manager.log_alert(
-                    filename,
-                    "price_deviation_gt_50",
-                    {
-                        "symbol": symbol,
-                        "last_close_price": last_close,
-                        "observed_price": price,
-                        "deviation_pct": round(dev * 100.0, 2),
-                        "date": item.get("date"),
-                        "type": item.get("type"),
-                        "amount_transacted": item.get("amount_transacted"),
-                        "announcement": ann_ctx,
-                    },
-                )
+    def save_results(self, results: List[List[Dict[str, Any]]]):
+        flattened_results: List[Dict[str, Any]] = []
+        for result_list in results:
+            if isinstance(result_list, list):
+                flattened_results.extend(result_list)
+            elif result_list:
+                flattened_results.append(result_list)
+        super().save_results(flattened_results)
