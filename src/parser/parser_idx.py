@@ -28,8 +28,30 @@ EN_DATE_PATTERN = (
     r"(?:January|February|March|April|May|June|July|August|September|October|November|December)\s+"
     r"\d{4}"
 )
+
+_EN_MONTHS = {
+    "january":1, "february":2, "march":3, "april":4, "may":5, "june":6,
+    "july":7, "august":8, "september":9, "october":10, "november":11, "december":12
+}
+_EN_DATE_RE = re.compile(
+    r"\b(?P<d>\d{1,2})\s+(?P<m>January|February|March|April|May|June|July|August|September|October|November|December)\s+(?P<y>\d{4})\b",
+    flags=re.I
+)
+
 SYMBOL_TOKEN_RE = re.compile(r"^[A-Z0-9]{3,6}$")
 
+def _en_date_to_iso(s: Optional[str]) -> Optional[str]:
+    if not s:
+        return None
+    m = _EN_DATE_RE.search(s)
+    if not m:
+        return None
+    d = int(m.group("d"))
+    mnum = _EN_MONTHS.get(m.group("m").lower())
+    y = int(m.group("y"))
+    if not mnum:
+        return None
+    return f"{y:04d}-{mnum:02d}-{d:02d}"
 
 def _validate_tx_direction(
     before: Optional[float],
@@ -435,14 +457,17 @@ class IDXParser(BaseParser):
             typ = "buy" if typ_raw.startswith("b") else ("sell" if typ_raw.startswith("s") else "transfer")
             price = NumberParser.parse_number(m.group("price")) or 0.0
             amt = NumberParser.parse_number(m.group("amount")) or 0
+            datestr = (m.group("date") or "").strip()
             out.append({
                 "type": typ,
                 "price": price,
                 "amount": amt,
-                "date": m.group("date"),
+                "date": datestr,
+                "date_iso": _en_date_to_iso(datestr),  # <-- ISO per baris
                 "value": price * amt,
             })
         return out
+
 
     def _parse_transactions_lines_en(self, lines: List[str]) -> List[Dict[str, Any]]:
         if not lines:
@@ -460,23 +485,28 @@ class IDXParser(BaseParser):
             typ = "buy" if typ_raw.startswith("b") else ("sell" if typ_raw.startswith("s") else "transfer")
             price = NumberParser.parse_number(m.group("price")) or 0.0
             amt = NumberParser.parse_number(m.group("amount")) or 0
+            datestr = (m.group("date") or "").strip()
             out.append({
                 "type": typ,
                 "price": price,
                 "amount": amt,
-                "date": m.group("date"),
+                "date": datestr,
+                "date_iso": _en_date_to_iso(datestr),  # <-- ISO per baris
                 "value": price * amt,
             })
         return out
+
 
     def _postprocess_transactions(self, res: Dict[str, Any]) -> None:
         txs = res.get("transactions") or []
         buy_sell = [t for t in txs if t.get("type") in {"buy", "sell"}]
         transfers = [t for t in txs if t.get("type") == "transfer"]
 
-        rows_amt = sum(t.get("amount", 0) for t in buy_sell)
-        rows_val = sum(t.get("value", 0.0) for t in buy_sell)
+        # Totals dari baris
+        rows_amt = sum(int(t.get("amount") or 0) for t in buy_sell)
+        rows_val = sum(float(t.get("value") or 0.0) for t in buy_sell)
 
+        # Delta dari before/after (kalau ada)
         hb = res.get("holding_before")
         ha = res.get("holding_after")
         delta_amt = None
@@ -491,9 +521,10 @@ class IDXParser(BaseParser):
         res["transaction_value"] = rows_val
 
         res["has_transfer"] = bool(transfers)
-        res["amount_transferred"] = sum(t.get("amount", 0) for t in transfers)
-        res["value_transferred"] = sum(t.get("value", 0.0) for t in transfers)
+        res["amount_transferred"] = sum(int(t.get("amount") or 0) for t in transfers)
+        res["value_transferred"] = sum(float(t.get("value") or 0.0) for t in transfers)
 
+        # Tentukan doc-level type jika belum ada
         if not res.get("transaction_type"):
             kinds = {t.get("type") for t in txs}
             if kinds == {"transfer"}:
@@ -501,16 +532,27 @@ class IDXParser(BaseParser):
             elif kinds <= {"buy", "sell"} and len({t["type"] for t in buy_sell}) == 1:
                 res["transaction_type"] = buy_sell[0]["type"]
 
-        total_amt = sum(t.get("amount", 0) for t in buy_sell if t.get("amount", 0) > 0)
+        # Weighted average price (buy/sell saja)
+        total_amt = sum(int(t.get("amount") or 0) for t in buy_sell if int(t.get("amount") or 0) > 0)
         if total_amt:
-            wavg = sum((t.get("price", 0.0) * t.get("amount", 0)) for t in buy_sell) / total_amt
+            wavg = sum(float(t.get("price") or 0.0) * int(t.get("amount") or 0) for t in buy_sell) / total_amt
             res["price"] = round(wavg, 2)
 
-        res["price_transaction"] = {
-            "prices": [t.get("price", 0.0) for t in buy_sell if t.get("amount", 0) > 0],
-            "amount_transacted": [t.get("amount", 0) for t in buy_sell if t.get("amount", 0) > 0],
-        }
+        # ==== PERUBAHAN PENTING ====
+        # Sebelumnya: dict {"prices": [...], "amount_transacted": [...]}
+        # Sekarang: list of objects dengan tanggal per baris dari dokumen.
+        res["price_transaction"] = [
+            {
+                "date": (t.get("date_iso") or _en_date_to_iso(t.get("date"))),  # ISO dari dokumen
+                "type": t.get("type"),
+                "price": float(t.get("price")) if t.get("price") is not None else None,
+                "amount_transacted": int(t.get("amount") or 0),
+            }
+            for t in buy_sell
+            if int(t.get("amount") or 0) > 0
+        ]
 
+        # Flag gabungan
         res["is_transfer"] = res.get("is_transfer", False) or res["has_transfer"]
 
     def _flag_type_mismatch_if_any(self, res: Dict[str, Any], filename: str) -> None:
