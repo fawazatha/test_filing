@@ -202,13 +202,17 @@ def _normalize_transaction_type(raw_type: Any, holding_before: Any, holding_afte
     return "other"
 
 def _build_tx_list_from_list(tx_list: List[Dict[str, Any]], raw_date: Any) -> List[PriceTransaction]:
-    """New input format: list of dicts → List[PriceTransaction]."""
+    """New input format: list of dicts → List[PriceTransaction]. Prefer per-row ISO date if present."""
     out: List[PriceTransaction] = []
     for tx in tx_list or []:
         if not isinstance(tx, dict):
             continue
+        # ← penting: pakai date_iso lebih dulu; kalau tidak ada, pakai 'date' (bisa ISO dari Non-IDX),
+        # kalau masih gagal, barulah fallback ke raw_date (timestamp publikasi).
+        date_src = tx.get("date_iso") or tx.get("date") or raw_date
+
         out.append(PriceTransaction(
-            transaction_date=_to_iso_date_short(tx.get("date") or raw_date),
+            transaction_date=_to_iso_date_short(date_src),
             transaction_type=_to_str(tx.get("type")),
             transaction_price=to_float(tx.get("price")),
             transaction_share_amount=to_int(tx.get("amount") or tx.get("amount_transacted")),
@@ -265,18 +269,23 @@ def _generate_title_and_body(
     action_title = tx_type.replace("-", " ").title()
     if tx_type == "buy":
         action_verb = "bought"
+        title = f"{holder_name} buys shares of {company_name}"
     elif tx_type == "sell":
         action_verb = "sold"
+        title = f"{holder_name} sells shares of {company_name}"
     elif tx_type == "share-transfer":
         action_verb = "transferred"
+        title = f"{holder_name} transfers shares of {company_name}"
     elif tx_type == "award":
         action_verb = "was awarded"
+        title = f"{holder_name} was awarded shares of {company_name}"
     elif tx_type == "inheritance":
         action_verb = "inherited"
+        title = f"{holder_name} inherits shares of {company_name}"
     else:
         action_verb = "executed a transaction for"
+        title = f"{holder_name} {action_title} transaction of {company_name}"
 
-    title = f"{holder_name} {action_title} Transaction of {company_name}"
     amount_str = f"{amount:,} shares" if amount is not None else "shares"
     body = f"{holder_name} {action_verb} {amount_str} of {company_name}."
 
@@ -292,6 +301,7 @@ def _generate_title_and_body(
     if purpose_en:
         body += f" The stated purpose of the transaction was {purpose_en.lower()}."
     return title, body
+
 
 def _apply_bull_bear_tags(
     tags: List[str],
