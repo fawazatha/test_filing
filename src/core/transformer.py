@@ -462,6 +462,10 @@ def transform_raw_to_record(
         price_tx_list = _build_tx_list_from_list(raw_dict["transactions"], main_date)
     elif isinstance(raw_dict.get("price_transaction"), dict):
         price_tx_list = _build_tx_list_from_dict(raw_dict["price_transaction"], main_date)
+    elif isinstance(raw_dict.get("price_transaction"), list):
+        # ← NEW: support non-IDX parser that emits list of dicts
+        price_tx_list = _build_tx_list_from_list(raw_dict["price_transaction"], main_date)
+
 
     # Aggregate price/amount/value (use WAP when needed)
     wap, total_amount_tx, total_value_tx = _calculate_wap_and_totals(price_tx_list)

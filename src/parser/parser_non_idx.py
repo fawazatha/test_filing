@@ -21,6 +21,7 @@ from .utils.company_resolver import (
 
 logger = logging.getLogger(__name__)
 
+# Tanggal / Bulan
 _BULAN = {
     'januari':1,'februari':2,'maret':3,'april':4,'mei':5,'juni':6,'juli':7,'agustus':8,'september':9,'oktober':10,'november':11,'desember':12,
     'january':1,'february':2,'march':3,'april':4,'may':5,'june':6,'july':7,'august':8,'september':9,'october':10,'november':11,'december':12,
@@ -37,6 +38,8 @@ def _parse_tx_date_from_text(text: str) -> Optional[str]:
     mm = _BULAN.get(mon.lower())
     return f"{int(y):04d}-{int(mm):02d}-{int(d):02d}" if mm else None
 
+
+# Company map helpers
 def _load_company_map(path: str) -> Dict[str, Any]:
     try:
         with open(path, "r") as f:
@@ -63,6 +66,8 @@ def _estimate_last_close_price(sym: Optional[str], company_map: Dict[str, Any]) 
                 pass
     return None
 
+
+# Name helpers
 def _title_case_holder(name: str) -> str:
     if not name:
         return name
@@ -79,6 +84,8 @@ def _title_case_holder(name: str) -> str:
         s = re.sub(r'\bLimited\b', 'Limited', s)
         return s
 
+
+# Direction sanity
 def _validate_tx_direction(
     before: Optional[float],
     after: Optional[float],
@@ -99,6 +106,69 @@ def _validate_tx_direction(
     if t == "sell" and a > b + eps:
         return False, f"inconsistent_sell: after({a}) > before({b})"
     return True, None
+
+
+# DOWNLOADS META (NEW)
+_DL_DEFAULT_PATH = os.getenv("DOWNLOADS_META_FILE", "data/downloaded_pdfs.json")
+
+def _load_downloads_meta(path: Optional[str] = None) -> List[Dict[str, Any]]:
+    path = path or _DL_DEFAULT_PATH
+    try:
+        with open(path, "r", encoding="utf-8") as f:
+            data = json.load(f)
+        return data if isinstance(data, list) else []
+    except Exception:
+        return []
+
+def _basename(s: Optional[str]) -> Optional[str]:
+    if not s:
+        return None
+    try:
+        return os.path.basename(str(s))
+    except Exception:
+        return None
+
+def _stem(s: Optional[str]) -> Optional[str]:
+    b = _basename(s)
+    if not b:
+        return None
+    root, _ = os.path.splitext(b)
+    return root
+
+def _resolve_dl_ctx(downloads_meta: List[Dict[str, Any]], filename: str) -> Dict[str, Any]:
+    """
+    Cari baris yang cocok dari downloaded_pdfs.json dengan strategi:
+    1) exact match on 'filename'
+    2) match by url basename
+    3) last resort: compare stem
+    Typical item: {"filename":"...pdf","url":"https://...","timestamp":"..."}
+    """
+    fn = (filename or "").strip()
+    base = _basename(fn)
+    st   = _stem(fn)
+
+    # exact filename
+    for row in downloads_meta:
+        if not isinstance(row, dict):
+            continue
+        if _basename(row.get("filename")) == base:
+            return row
+
+    # url basename
+    for row in downloads_meta:
+        if not isinstance(row, dict):
+            continue
+        if _basename(row.get("url")) == base:
+            return row
+
+    # stem
+    for row in downloads_meta:
+        if not isinstance(row, dict):
+            continue
+        if _stem(row.get("filename")) == st or _stem(row.get("url")) == st:
+            return row
+
+    return {}
 
 
 class NonIDXParser(BaseParser):
@@ -170,7 +240,13 @@ class NonIDXParser(BaseParser):
     def parse_single_pdf(
         self, filepath: str, filename: str, pdf_mapping: Dict[str, Any]
     ) -> Optional[List[Dict[str, Any]]]:
+        # NOTE: ann_ctx masih dipakai *hanya* untuk payload alert/debug.
         ann_ctx = (pdf_mapping or {}).get(filename, {})
+
+        # NEW: meta downloaded_pdfs.json
+        downloads_meta = _load_downloads_meta()
+        dl_ctx = _resolve_dl_ctx(downloads_meta, filename)
+
         try:
             with pdfplumber.open(filepath) as pdf:
                 all_text = "\n".join(page.extract_text() or "" for page in pdf.pages)
@@ -184,7 +260,7 @@ class NonIDXParser(BaseParser):
                 table = self._extract_last_page_table(last_page)
                 if not table or len(table) < 2:
                     self.alert_manager_not_inserted.log_alert(
-                        filename, "No Table Found", {"announcement": ann_ctx}
+                        filename, "No Table Found", {"announcement": ann_ctx, "downloads_meta": dl_ctx}
                     )
                     self._blocked_already_logged = True
                     return None
@@ -199,17 +275,30 @@ class NonIDXParser(BaseParser):
                     and "masyarakat lainnya" not in (entry.get("holder_name") or "").lower()
                 ]
 
+                # Dates & company meta
                 tx_date = _parse_tx_date_from_text(all_text)
                 company_map_path = os.getenv("COMPANY_MAP_FILE", "data/company/company_map.json")
                 company_map = _load_company_map(company_map_path)
 
+                # Pull URL & timestamp from downloads meta
+                dl_url = dl_ctx.get("url")
+                dl_ts  = dl_ctx.get("timestamp")  # biarkan apa adanya (ISO/string)
+
                 for e in filtered_rows:
-                    if ann_ctx.get("url"):
-                        e["source"] = ann_ctx["url"]
-                    if ann_ctx.get("timestamp"):
-                        e["timestamp"] = ann_ctx["timestamp"]
+                    # === SOURCE & TIMESTAMP (FROM DOWNLOADED_PDFS.JSON) ===
+                    if dl_url:
+                        e["source"] = dl_url
+                    # fallback timestamp: downloaded meta -> tanggal di teks
+                    if dl_ts:
+                        e["timestamp"] = dl_ts
+                    elif tx_date:
+                        e["timestamp"] = tx_date
+
+                    # Perapihan holder
                     if e.get("holder_name"):
                         e["holder_name"] = _title_case_holder(e["holder_name"])
+
+                    # amount_transaction jika kosong (berdasarkan holding_before/after)
                     if not e.get("amount_transaction"):
                         hb, ha = e.get("holding_before"), e.get("holding_after")
                         if isinstance(hb, (int, float)) and isinstance(ha, (int, float)):
@@ -218,18 +307,23 @@ class NonIDXParser(BaseParser):
                             except Exception:
                                 pass
 
+                    # Tentukan type bila kosong
                     hb, ha = e.get("holding_before"), e.get("holding_after")
                     tx_type = e.get("transaction_type")
                     if not tx_type and isinstance(hb, (int, float)) and isinstance(ha, (int, float)):
                         tx_type = "buy" if ha > hb else "sell"
                         e["transaction_type"] = tx_type
 
+                    # Estimasi harga dari company_map + bangun price_transaction
                     est_price = _estimate_last_close_price(e.get("symbol"), company_map)
 
+                    # Gunakan tx_date; kalau kosong, potong tanggal dari dl_ts (YYYY-MM-DD)
+                    tx_date_final = tx_date or (str(dl_ts)[:10] if dl_ts else None)
+
                     e["price_transaction"] = [{
-                        "date": tx_date,                      
-                        "type": tx_type,
-                        "price": est_price,                  
+                        "date": tx_date_final,
+                        "type": e.get("transaction_type"),
+                        "price": est_price,
                         "amount_transacted": e.get("amount_transaction"),
                     }]
 
@@ -245,7 +339,8 @@ class NonIDXParser(BaseParser):
         except Exception as e:
             logger.error(f"Error parsing {filename}: {e}")
             self.alert_manager_not_inserted.log_alert(
-                filename, "parsing_error", {"message": str(e), "announcement": ann_ctx}
+                filename, "parsing_error",
+                {"message": str(e), "announcement": ann_ctx, "downloads_meta": dl_ctx}
             )
             self._blocked_already_logged = True
             return None
@@ -489,9 +584,9 @@ class NonIDXParser(BaseParser):
         filing: Dict[str, Any] = {
             "title": title_line.strip(),
             "body": all_text.strip(),
-            "source": source_name,
-            "timestamp": None,  # set upstream from announcement
-            "tags": [],         # filled below (standardized)
+            "source": source_name,   # sementara: akan di-overwrite oleh dl_ctx di parse_single_pdf
+            "timestamp": None,       # akan diisi dari dl_ctx/tx_date
+            "tags": [],              # filled below (standardized)
             "symbol": None,
             "transaction_type": tx_type,
             "holder_type": holder_type,
