@@ -94,11 +94,12 @@ jobs:
       # -----------------------------
       # Company assets warm-up (single-source)
       # -----------------------------
-      - name: Company map (single-source) — ensure/refresh
+      - name: Company map (single-source) — refresh always
         if: ${{ (github.event_name == 'schedule') || (inputs.refresh_company_assets == true) }}
         env:
           SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
           SUPABASE_KEY: ${{ secrets.SUPABASE_KEY }}
+          COMPANY_MAP_FORCE_REFRESH: "1"
         run: |
           set -euo pipefail
 
@@ -113,32 +114,11 @@ jobs:
             pip install requests python-dotenv
           fi
 
-          if [[ "${{ github.event_name }}" == "schedule" ]]; then
-            echo "[Warm-up] Refresh company_map via ${COMPANY_MAP_SCRIPT}"
-            python "${COMPANY_MAP_SCRIPT}" refresh || true
-          else
-            echo "[Warm-up] Ensure company_map via ${COMPANY_MAP_SCRIPT}"
-            if ! python "${COMPANY_MAP_SCRIPT}" get; then
-              python "${COMPANY_MAP_SCRIPT}" refresh || true
-            fi
-          fi
+          echo "[Warm-up] Refresh company_map via ${COMPANY_MAP_SCRIPT}"
+          python "${COMPANY_MAP_SCRIPT}" refresh
 
           echo "[Warm-up] Status company_map:"
           python "${COMPANY_MAP_SCRIPT}" status || true
-
-          # (Optional) refresh latest prices if separate script is present
-          if [[ -n "${LATEST_PRICES_SCRIPT}" && -f "${LATEST_PRICES_SCRIPT}" ]]; then
-            LOOKBACK="${{ github.event_name == 'schedule' && '14' || inputs.prices_lookback_days }}"
-            [[ -z "${LOOKBACK}" ]] && LOOKBACK="14"
-            echo "[Warm-up] Refresh latest prices via ${LATEST_PRICES_SCRIPT} (lookback=${LOOKBACK})"
-            if [[ "${{ inputs.no_price_fallback }}" == "true" ]]; then
-              python "${LATEST_PRICES_SCRIPT}" --lookback-days "${LOOKBACK}" --no-fallback || true
-            else
-              python "${LATEST_PRICES_SCRIPT}" --lookback-days "${LOOKBACK}" || true
-            fi
-          else
-            echo "[Warm-up] Latest prices script not configured; skip."
-          fi
 
       # -----------------------------
       # Main pipeline

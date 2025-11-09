@@ -343,19 +343,35 @@ def _run_latest_prices_script(script_path: str, lookback_days: int, use_fallback
         LOG.info("[PRICES] refresh ok.")
 
 
-def step_check_company_map(company_map_script: str) -> None:
-    """
-    Lightweight cache validity check (no forced refresh).
-    """
+def step_check_company_map(company_map_script: str, max_age_hours: int = 12) -> None:
     step_company_map_status(company_map_script)
+
     try:
-        cp = _run_company_map_cli(company_map_script, "get")
-        if cp.returncode == 0:
-            LOG.info("[COMPANY_MAP] get ok (light invalidation).")
+        cp = _run_company_map_cli(company_map_script, "status")
+        raw = cp.stdout.strip() or cp.stderr.strip() or "{}"
+        payload = json.loads(raw)
+        meta = payload.get("local_meta") or {}
+        gen = meta.get("generated_at")
+
+        stale = True 
+        if gen:
+            try:
+                from datetime import datetime, timezone
+                age_hours = (datetime.now(timezone.utc)
+                             - datetime.fromisoformat(gen.replace("Z", "+00:00"))).total_seconds() / 3600.0
+                stale = age_hours >= max_age_hours
+                LOG.info("[COMPANY_MAP] age=%.2fh (threshold=%dh) -> %s",
+                         age_hours, max_age_hours, "REFRESH" if stale else "OK")
+            except Exception as e:
+                LOG.debug("[COMPANY_MAP] parse generated_at failed: %s -> will refresh", e)
+
+        if stale or not payload.get("local_rows"):
+            step_company_map_refresh(company_map_script)
         else:
-            LOG.info("[COMPANY_MAP] get returned code %s (continue).", cp.returncode)
+            LOG.info("[COMPANY_MAP] fresh enough; skip refresh.")
     except Exception as e:
-        LOG.info("[COMPANY_MAP] get failed (continue offline): %s", e)
+        LOG.info("[COMPANY_MAP] status check failed (%s) -> trying refresh", e)
+        step_company_map_refresh(company_map_script)
 
 
 def step_refresh_company_assets_single_source(
@@ -366,12 +382,11 @@ def step_refresh_company_assets_single_source(
     latest_prices_script: Optional[str] = None,
 ) -> None:
     """
-    Refresh company_map via single-source script. Optionally refresh latest_prices.
+    Refresh assets. **Run prices first**, then refresh company_map.
     """
-    step_company_map_refresh(company_map_script)
     if latest_prices_script:
         _run_latest_prices_script(latest_prices_script, lookback_days, use_fallback)
-
+    step_company_map_refresh(company_map_script)
 
 # Ingestion / Download / Parse
 def step_fetch_announcements(
