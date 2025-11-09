@@ -1,8 +1,7 @@
 # parser_non_idx.py
 from __future__ import annotations
 
-import os
-import re
+import os, re, json
 import logging
 import unicodedata
 from typing import Dict, Any, Optional, List, Tuple
@@ -22,6 +21,63 @@ from .utils.company_resolver import (
 
 logger = logging.getLogger(__name__)
 
+_BULAN = {
+    'januari':1,'februari':2,'maret':3,'april':4,'mei':5,'juni':6,'juli':7,'agustus':8,'september':9,'oktober':10,'november':11,'desember':12,
+    'january':1,'february':2,'march':3,'april':4,'may':5,'june':6,'july':7,'august':8,'september':9,'october':10,'november':11,'december':12,
+}
+_DATE_RE = re.compile(r'tanggal\s*:\s*(\d{1,2})\s+([A-Za-zÀ-ÿ]+)\s+(\d{4})', re.IGNORECASE)
+
+def _parse_tx_date_from_text(text: str) -> Optional[str]:
+    if not text:
+        return None
+    m = _DATE_RE.search(text)
+    if not m:
+        return None
+    d, mon, y = m.groups()
+    mm = _BULAN.get(mon.lower())
+    return f"{int(y):04d}-{int(mm):02d}-{int(d):02d}" if mm else None
+
+def _load_company_map(path: str) -> Dict[str, Any]:
+    try:
+        with open(path, "r") as f:
+            return json.load(f)
+    except Exception:
+        return {}
+
+def _symbol_keys(sym: Optional[str]) -> List[str]:
+    s = (sym or "").upper()
+    keys = {s}
+    if s and not s.endswith(".JK"):
+        keys.add(f"{s}.JK")
+    if s.endswith(".JK"):
+        keys.add(s[:-3])
+    return list(keys)
+
+def _estimate_last_close_price(sym: Optional[str], company_map: Dict[str, Any]) -> Optional[float]:
+    for k in _symbol_keys(sym):
+        meta = company_map.get(k)
+        if meta and "last_close_price" in meta:
+            try:
+                return float(meta["last_close_price"])
+            except Exception:
+                pass
+    return None
+
+def _title_case_holder(name: str) -> str:
+    if not name:
+        return name
+    try:
+        return NameCleaner.to_title_case_custom(name)
+    except Exception:
+        s = name.title()
+        # perapihan umum
+        s = re.sub(r'\bOf\b', 'of', s)
+        s = re.sub(r'\bAnd\b', 'and', s)
+        s = re.sub(r'\bPt\b', 'PT', s)
+        s = re.sub(r'\bTbk\b', 'Tbk', s)
+        s = re.sub(r'\bLtd\b', 'Ltd', s)
+        s = re.sub(r'\bLimited\b', 'Limited', s)
+        return s
 
 def _validate_tx_direction(
     before: Optional[float],
@@ -142,6 +198,48 @@ class NonIDXParser(BaseParser):
                     if entry.get("holder_name") not in self.excluded_names
                     and "masyarakat lainnya" not in (entry.get("holder_name") or "").lower()
                 ]
+
+                tx_date = _parse_tx_date_from_text(all_text)
+                company_map_path = os.getenv("COMPANY_MAP_FILE", "data/company/company_map.json")
+                company_map = _load_company_map(company_map_path)
+
+                for e in filtered_rows:
+                    if ann_ctx.get("url"):
+                        e["source"] = ann_ctx["url"]
+                    if ann_ctx.get("timestamp"):
+                        e["timestamp"] = ann_ctx["timestamp"]
+                    if e.get("holder_name"):
+                        e["holder_name"] = _title_case_holder(e["holder_name"])
+                    if not e.get("amount_transaction"):
+                        hb, ha = e.get("holding_before"), e.get("holding_after")
+                        if isinstance(hb, (int, float)) and isinstance(ha, (int, float)):
+                            try:
+                                e["amount_transaction"] = abs(int(float(ha)) - int(float(hb)))
+                            except Exception:
+                                pass
+
+                    hb, ha = e.get("holding_before"), e.get("holding_after")
+                    tx_type = e.get("transaction_type")
+                    if not tx_type and isinstance(hb, (int, float)) and isinstance(ha, (int, float)):
+                        tx_type = "buy" if ha > hb else "sell"
+                        e["transaction_type"] = tx_type
+
+                    est_price = _estimate_last_close_price(e.get("symbol"), company_map)
+
+                    e["price_transaction"] = [{
+                        "date": tx_date,                      
+                        "type": tx_type,
+                        "price": est_price,                  
+                        "amount_transacted": e.get("amount_transaction"),
+                    }]
+
+                    if est_price is not None and e.get("amount_transaction"):
+                        try:
+                            e["price"] = est_price
+                            e["transaction_value"] = float(est_price) * float(e["amount_transaction"])
+                        except Exception:
+                            pass
+
                 return filtered_rows or None
 
         except Exception as e:
