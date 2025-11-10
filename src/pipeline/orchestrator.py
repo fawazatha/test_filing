@@ -121,19 +121,36 @@ def _compute_window_from_minutes(window_minutes: int) -> Tuple[str, str, str, st
 def _save_json(obj: Any, path: Path) -> None:
     path.parent.mkdir(parents=True, exist_ok=True
                       )
-    # --- PERBAIKAN: Selalu gunakan default=str untuk keamanan ---
     path.write_text(json.dumps(obj, ensure_ascii=False, indent=2, default=str), encoding="utf-8")
-    # --- AKHIR PERBAIKAN ---
 
 
-# def _save_json_decimal(obj: Any, path: Path) -> None:
-#     """
-#     Write JSON preserving Decimal precision (as strings in JSON artifacts).
-#     Use this when writing normalized rows.
-#     """
-#     path.parent.mkdir(parents=True, exist_ok=True)
-#     with path.open("w", encoding="utf-8") as f:
-#         json.dump(obj, f, ensure_ascii=False, indent=2, cls=DecimalJSONEncoder)
+def _relocate_alerts_to_alerts_folder(inserted_path: Optional[Path], not_inserted_path: Optional[Path]) -> Tuple[Optional[Path], Optional[Path]]:
+    """
+    Jika write_alert_files menaruh ke artifacts/, pindahkan ke alerts/
+    agar step_bucketize_alerts (from_dir=alerts) menemukannya.
+    """
+    if not inserted_path and not not_inserted_path:
+        return inserted_path, not_inserted_path
+
+    alerts_dir = Path("alerts")
+    alerts_dir.mkdir(parents=True, exist_ok=True)
+
+    def _move(p: Optional[Path]) -> Optional[Path]:
+        if not p or not p.exists():
+            return p
+        if p.parent == alerts_dir:
+            return p  # sudah di alerts
+        target = alerts_dir / p.name
+        try:
+            target.write_text(p.read_text(encoding="utf-8"), encoding="utf-8")
+            p.unlink(missing_ok=True)
+            LOG.info("[ALERTS] relocated %s -> %s", p, target)
+            return target
+        except Exception as e:
+            LOG.warning("[ALERTS] relocate failed for %s: %s (will keep original path)", p, e)
+            return p
+
+    return _move(inserted_path), _move(not_inserted_path)
 
 
 def _write_jsonl(path: Path, rows: List[Dict[str, Any]]) -> None:
@@ -507,6 +524,7 @@ def step_generate_filings(
     )
     LOG.info("[GENERATE] filings count = %d", cnt)
     return cnt
+
 
 
 def step_alerts_v2_from_filings(
@@ -1007,7 +1025,8 @@ def main():
     )
     
     # 4.3) Alerts v2 (Langsung dari filings_out)
-    step_alerts_v2_from_filings(filings_json=filings_out)
+    ins_p, not_p = step_alerts_v2_from_filings(filings_json=filings_out)
+    ins_p, not_p = _relocate_alerts_to_alerts_folder(ins_p, not_p)
 
     # 4.5) (Optional) Generate articles
     if args.generate_articles:
