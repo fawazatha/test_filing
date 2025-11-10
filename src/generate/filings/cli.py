@@ -85,6 +85,14 @@ def _resolve_recipients_and_cfg(args):
     }
 
 
+def _has_actionable(rows: list[dict]) -> bool:
+    for r in rows:
+        if (r.get("needs_review") is True) or (r.get("reasons") and len(r["reasons"]) > 0):
+            return True
+    return False
+
+
+
 def _send_bucket(bucket: str,
                  subject: str,
                  *,
@@ -102,6 +110,35 @@ def _send_bucket(bucket: str,
     if not files:
         logging.info("No %s alerts to send.", bucket)
         return False
+
+    def _extract_rows_any(payload: Any) -> list[dict]:
+        if isinstance(payload, list):
+            return [x for x in payload if isinstance(x, dict)]
+        if isinstance(payload, dict):
+            for k in ("alerts", "rows", "data", "items", "results"):
+                v = payload.get(k)
+                if isinstance(v, list):
+                    return [x for x in v if isinstance(x, dict)]
+            # If dict looks like a single row
+            return [payload]
+        return []
+
+    all_rows: list[dict] = []
+    for p in sorted(files):
+        try:
+            payload = json.loads(p.read_text(encoding="utf-8"))
+            all_rows.extend(_extract_rows_any(payload))
+        except Exception as e:
+            logging.warning("Skip unreadable alert file %s: %s", p, e)
+
+    # Minimal guard for Inserted bucket
+    if bucket == "in_db":
+        if not all_rows:
+            logging.info("Skip Inserted email: no rows found after parsing.")
+            return False
+        if not _has_actionable(all_rows):
+            logging.info("Skip Inserted email: no actionable rows (no reasons and no needs_review).")
+            return False
 
     # SES expects file paths as strings
     file_paths = [str(p) for p in files]
