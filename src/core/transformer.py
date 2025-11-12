@@ -7,7 +7,7 @@ import logging
 from datetime import datetime
 from typing import Any, Dict, List, Optional, Tuple
 
-from src.core.types import FilingRecord, PriceTransaction
+from src.core.types import FilingRecord, PriceTransaction, round_pct_5, close_pct
 from src.common.strings import to_float, to_int, kebab, strip_diacritics  # noqa: F401
 
 # Tag dictionaries / mappings
@@ -331,10 +331,18 @@ def _apply_bull_bear_tags(
             elif ha < hb:
                 out.add("bearish")
         elif pp_before is not None and pp_after is not None:
-            if pp_after > pp_before:
-                out.add("bullish")
-            elif pp_after < pp_before:
-                out.add("bearish")
+            try:
+                if not close_pct(pp_after, pp_before):
+                    if pp_after > pp_before:
+                        tags = sorted(set(tags) | {"bullish"})
+                    elif pp_after < pp_before:
+                        tags = sorted(set(tags) | {"bearish"})
+            except NameError:
+                delta = (pp_after or 0) - (pp_before or 0)
+                if delta > 1e-5:
+                    tags = sorted(set(tags) | {"bullish"})
+                elif delta < -1e-5:
+                    tags = sorted(set(tags) | {"bearish"})
 
     return sorted(out)
 
@@ -413,9 +421,9 @@ def transform_raw_to_record(
     )
 
     # Percentages
-    pp_before = to_float(raw_dict.get("share_percentage_before"), ndigits=5)
-    pp_after  = to_float(raw_dict.get("share_percentage_after"),  ndigits=5)
-    pp_tx     = to_float(raw_dict.get("share_percentage_transaction"), ndigits=5)
+    pp_before = round_pct_5(raw_dict.get("share_percentage_before"))
+    pp_after  = round_pct_5(raw_dict.get("share_percentage_after"))
+    pp_tx     = round_pct_5(raw_dict.get("share_percentage_transaction"))
 
     # Timestamp & source (ingestion_map → parser → first tx)
         # Timestamp & source (robust resolver for IDX & NON-IDX)

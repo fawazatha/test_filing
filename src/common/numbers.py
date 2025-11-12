@@ -1,6 +1,17 @@
 import re
 from typing import Union
 
+from decimal import Decimal, ROUND_HALF_UP, InvalidOperation
+
+def _to_decimal(x):
+    if x in (None, ""): return None
+    try: return Decimal(str(x))
+    except (InvalidOperation, TypeError, ValueError): return None
+
+def _round_pct_5_decimal(d: Decimal) -> Decimal:
+    return d.quantize(Decimal("0.00001"), rounding=ROUND_HALF_UP).normalize()
+
+
 class NumberParser:
     """Centralized class for parsing locale-aware number strings."""
 
@@ -60,7 +71,13 @@ class NumberParser:
         else:
             normalized = txt
             
+        d = _to_decimal(normalized)
+        if d is None:
+            return 0.0
         try:
-            return float(normalized)
-        except Exception:
+            q = _round_pct_5_decimal(d)
+            return float(q)  
+        except InvalidOperation:
+            return 0.0
+        except (TypeError, ValueError):
             return 0.0

@@ -2,6 +2,7 @@
 from __future__ import annotations
 from dataclasses import dataclass, field
 from typing import Optional, List, Dict, Any
+from decimal import Decimal, ROUND_HALF_UP, InvalidOperation
 
 # Columns that are truly allowed for uploader 
 FILINGS_ALLOWED_COLUMNS = {
@@ -15,6 +16,34 @@ FILINGS_ALLOWED_COLUMNS = {
     "tags",                      
     "holder_type",
 }
+
+
+# Numeric helpers for safe rounding / comparison
+PCT_ROUND_PLACES = 5                 # export precision for percentages
+PCT_ABS_TOL_AUDIT = Decimal("0.00001")  # 1e-5 absolute tolerance in percentage *points*
+
+def _to_decimal(x) -> Optional[Decimal]:
+    if x is None or x == "":
+        return None
+    try:
+        return Decimal(str(x))
+    except (InvalidOperation, TypeError, ValueError):
+        return None
+    
+def round_pct_5(x) -> Optional[float]:
+    """Round percentage value to max 5 decimals with HALF_UP, return float."""
+    d = _to_decimal(x)
+    if d is None:
+        return None
+    q = Decimal("0." + "0"*PCT_ROUND_PLACES + "1")  # 0.00001
+    return float(d.quantize(q, rounding=ROUND_HALF_UP))
+
+def close_pct(a, b, tol: Decimal = PCT_ABS_TOL_AUDIT) -> bool:
+    """Absolute tolerance compare in percentage points (e.g., 0.29 vs 0.290001)."""
+    da, db = _to_decimal(a), _to_decimal(b)
+    if da is None or db is None:
+        return False
+    return abs(da - db) <= tol
 
 
 @dataclass
@@ -196,5 +225,10 @@ class FilingRecord:
             db_dict["sector"] = "unknown"
         if not db_dict.get("sub_sector"):
             db_dict["sub_sector"] = "unknown"
+
+        # 5) normalize percentage fields with Decimal rounding (max 5 decimals)
+        for key in ("share_percentage_before", "share_percentage_after", "share_percentage_transaction"):
+            if key in db_dict:
+                db_dict[key] = round_pct_5(db_dict.get(key))
 
         return db_dict

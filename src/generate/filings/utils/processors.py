@@ -5,7 +5,7 @@ import logging
 from pathlib import Path
 from typing import Any, Dict, List, Optional, Tuple, Union
 from statistics import median
-
+from decimal import Decimal, ROUND_HALF_UP, InvalidOperation
 from src.core.types import FilingRecord, PriceTransaction
 
 try:
@@ -43,6 +43,17 @@ except Exception:
 logger = logging.getLogger(__name__)
 
 # Generic helpers
+def _to_dec(x) -> Optional[Decimal]:
+    if x in (None, ""):
+        return None
+    try:
+        return Decimal(str(x))
+    except (InvalidOperation, TypeError, ValueError):
+        return None
+
+def _q5(d: Decimal) -> Decimal:
+    return d.quantize(Decimal("0.00001"), rounding=ROUND_HALF_UP).normalize()
+
 def _safe_float(x: Any) -> Optional[float]:
     """Coerce to float; return None if not parseable/empty."""
     try:
@@ -315,7 +326,7 @@ def _check_tx_price_outlier(
                 "scope": "tx",
                 "code": "possible_zero_missing",
                 "message": f"Price magnitude anomaly vs market-ref ({zlabel})",
-                "details": {"price": price, "market_ref": market_ref, "ratio": r},
+                "details": {"price": price, "market_ref": market_ref, "ratio": float(f"{r:.3f}")},
             })
 
     # If we don't have market data, still check magnitude vs doc median
@@ -327,7 +338,7 @@ def _check_tx_price_outlier(
                 "scope": "tx",
                 "code": "possible_zero_missing",
                 "message": f"Price magnitude anomaly vs doc-median ({zlabel})",
-                "details": {"price": price, "doc_median_price": doc_median, "ratio": _ratio(price, doc_median)},
+                "details": {"price": price, "doc_median_price": doc_median, "ratio": float(f"{r:.3f}")},
             })
 
     return (suspicious, reasons)
@@ -366,14 +377,26 @@ def _recompute_percentages_model(record: FilingRecord) -> Dict[str, Any]:
     discrepancy_pp = None
 
     if total_shares and total_shares > 0:
-        delta_pp_model = (signed_amount / total_shares) * 100.0
-        if share_pct_before_pdf is not None:
-            pp_after_model = share_pct_before_pdf + delta_pp_model
+        # Use Decimal pipeline for % values → max 5 dp
+        d_signed = _to_dec(signed_amount)
+        d_total  = _to_dec(total_shares)
+        if d_signed is not None and d_total is not None and d_total != 0:
+            d_delta = (d_signed / d_total) * Decimal("100")
+            delta_pp_model = float(_q5(d_delta))  # store as float for consistency
+
+            d_pp_before = _to_dec(share_pct_before_pdf)
+            if d_pp_before is not None:
+                pp_after_model = float(_q5(d_pp_before + d_delta))
 
     if pp_after_model is not None and share_pct_after_pdf is not None:
-        discrepancy_pp = abs(pp_after_model - share_pct_after_pdf)
-        if discrepancy_pp > PERCENT_TOL_PP:
-            percent_discrepancy = True
+        d_pp_after_model = _to_dec(pp_after_model)
+        d_pp_after_pdf   = _to_dec(share_pct_after_pdf)
+        if d_pp_after_model is not None and d_pp_after_pdf is not None:
+            d_disc = abs(d_pp_after_model - d_pp_after_pdf)
+            # Round discrepancy to 5 dp for stable display
+            discrepancy_pp = float(_q5(d_disc))
+            tol = Decimal(str(PERCENT_TOL_PP))  # compare as Decimal
+            percent_discrepancy = (d_disc > tol)
 
     audit = {
         "total_shares_model": total_shares,
@@ -417,7 +440,12 @@ def process_filing_record(
     tx_list = _normalize_price_tx_list(record.price_transaction)
 
     # 3) Document median price (for within-doc sanity checks)
-    tx_prices = [_tx_get_price(tx) for tx in tx_list if _tx_get_price(tx)]
+    tx_prices = []
+    for tx in tx_list:
+        p = _tx_get_price(tx)
+        if p:
+            tx_prices.append(p)
+
     doc_median_price = _compute_document_median_price(tx_prices)
     if doc_median_price is not None:
         record.audit_flags["document_median_price"] = doc_median_price
@@ -451,7 +479,7 @@ def process_filing_record(
         reasons.append({
             "scope": "row",
             "code": "percent_discrepancy",
-            "message": f"Model pp_after deviates from PDF by {audit.get('discrepancy_pp')} pp",
+            "message": f"Model pp_after deviates from PDF by {audit.get('discrepancy_pp'):.5f} pp",
             "details": audit,
         })
         row_flags["percent_discrepancy"] = True
