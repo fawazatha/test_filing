@@ -7,8 +7,8 @@ import logging
 from datetime import datetime
 from typing import Any, Dict, List, Optional, Tuple
 
-from src.core.types import FilingRecord, PriceTransaction, round_pct_5, close_pct
-from src.common.strings import to_float, to_int, kebab, strip_diacritics  # noqa: F401
+from src.core.types import FilingRecord, PriceTransaction, floor_pct_5, close_pct
+from src.common.strings import to_float, to_int, kebab
 
 # Tag dictionaries / mappings
 TAG_WHITELIST = {
@@ -26,7 +26,7 @@ PURPOSE_TAG_MAP = {
     "penghargaan": "award", "award": "award",
     "transfer": "share-transfer",
     "investasi": "investment", "investment": "investment",
-    "divestasi": "divestment", "divestment": "divestment",
+    "divestasi": "divestment", "difvestment": "divestment",
 }
 
 # Small helpers
@@ -421,9 +421,9 @@ def transform_raw_to_record(
     )
 
     # Percentages
-    pp_before = round_pct_5(raw_dict.get("share_percentage_before"))
-    pp_after  = round_pct_5(raw_dict.get("share_percentage_after"))
-    pp_tx     = round_pct_5(raw_dict.get("share_percentage_transaction"))
+    pp_before = floor_pct_5(raw_dict.get("share_percentage_before"))
+    pp_after  = floor_pct_5(raw_dict.get("share_percentage_after"))
+    pp_tx     = floor_pct_5(raw_dict.get("share_percentage_transaction"))
 
     # Timestamp & source (ingestion_map → parser → first tx)
         # Timestamp & source (robust resolver for IDX & NON-IDX)

@@ -5,8 +5,8 @@ import logging
 from pathlib import Path
 from typing import Any, Dict, List, Optional, Tuple, Union
 from statistics import median
-from decimal import Decimal, ROUND_HALF_UP, InvalidOperation
-from src.core.types import FilingRecord, PriceTransaction
+from decimal import Decimal, InvalidOperation, ROUND_FLOOR
+from src.core.types import FilingRecord, PriceTransaction, floor_pct_5
 
 try:
     # Config + external providers (preferred relative imports)
@@ -43,16 +43,16 @@ except Exception:
 logger = logging.getLogger(__name__)
 
 # Generic helpers
-def _to_dec(x) -> Optional[Decimal]:
-    if x in (None, ""):
-        return None
-    try:
-        return Decimal(str(x))
-    except (InvalidOperation, TypeError, ValueError):
-        return None
+# def _to_dec(x) -> Optional[Decimal]:
+#     if x in (None, ""):
+#         return None
+#     try:
+#         return Decimal(str(x))
+#     except (InvalidOperation, TypeError, ValueError):
+#         return None
 
-def _q5(d: Decimal) -> Decimal:
-    return d.quantize(Decimal("0.00001"), rounding=ROUND_HALF_UP).normalize()
+# def _q5(d: Decimal) -> Decimal:
+#     return d.quantize(Decimal("0.00001"), rounding=ROUND_FLOOR).normalize()
 
 def _safe_float(x: Any) -> Optional[float]:
     """Coerce to float; return None if not parseable/empty."""
@@ -377,26 +377,17 @@ def _recompute_percentages_model(record: FilingRecord) -> Dict[str, Any]:
     discrepancy_pp = None
 
     if total_shares and total_shares > 0:
-        # Use Decimal pipeline for % values → max 5 dp
-        d_signed = _to_dec(signed_amount)
-        d_total  = _to_dec(total_shares)
-        if d_signed is not None and d_total is not None and d_total != 0:
-            d_delta = (d_signed / d_total) * Decimal("100")
-            delta_pp_model = float(_q5(d_delta))  # store as float for consistency
+        delta_raw = ( (_safe_float(signed_amount) or 0.0) / float(total_shares) ) * 100.0
+        delta_pp_model = floor_pct_5(delta_raw)
 
-            d_pp_before = _to_dec(share_pct_before_pdf)
-            if d_pp_before is not None:
-                pp_after_model = float(_q5(d_pp_before + d_delta))
+        if record.share_percentage_before is not None:
+            pp_after_model = floor_pct_5((record.share_percentage_before or 0.0) + (delta_pp_model or 0.0))
 
-    if pp_after_model is not None and share_pct_after_pdf is not None:
-        d_pp_after_model = _to_dec(pp_after_model)
-        d_pp_after_pdf   = _to_dec(share_pct_after_pdf)
-        if d_pp_after_model is not None and d_pp_after_pdf is not None:
-            d_disc = abs(d_pp_after_model - d_pp_after_pdf)
-            # Round discrepancy to 5 dp for stable display
-            discrepancy_pp = float(_q5(d_disc))
-            tol = Decimal(str(PERCENT_TOL_PP))  # compare as Decimal
-            percent_discrepancy = (d_disc > tol)
+    if pp_after_model is not None and record.share_percentage_after is not None:
+        a = floor_pct_5(pp_after_model)
+        b = floor_pct_5(record.share_percentage_after)
+        discrepancy_pp = abs((a or 0.0) - (b or 0.0))
+        percent_discrepancy = discrepancy_pp > float(PERCENT_TOL_PP)
 
     audit = {
         "total_shares_model": total_shares,

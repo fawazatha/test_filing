@@ -1,15 +1,15 @@
 import re
 from typing import Union
 
-from decimal import Decimal, ROUND_HALF_UP, InvalidOperation
+from decimal import Decimal, ROUND_FLOOR, InvalidOperation
 
 def _to_decimal(x):
     if x in (None, ""): return None
     try: return Decimal(str(x))
     except (InvalidOperation, TypeError, ValueError): return None
 
-def _round_pct_5_decimal(d: Decimal) -> Decimal:
-    return d.quantize(Decimal("0.00001"), rounding=ROUND_HALF_UP).normalize()
+def _floor_pct5(d: Decimal) -> Decimal:
+    return ( (d * Decimal("1e5")).to_integral_value(rounding=ROUND_FLOOR) / Decimal("1e5") ).normalize()
 
 
 class NumberParser:
@@ -75,7 +75,7 @@ class NumberParser:
         if d is None:
             return 0.0
         try:
-            q = _round_pct_5_decimal(d)
+            q = _floor_pct5(d)
             return float(q)  
         except InvalidOperation:
             return 0.0

@@ -2,7 +2,7 @@
 from __future__ import annotations
 from dataclasses import dataclass, field
 from typing import Optional, List, Dict, Any
-from decimal import Decimal, ROUND_HALF_UP, InvalidOperation
+from decimal import Decimal, ROUND_FLOOR, InvalidOperation
 
 # Columns that are truly allowed for uploader 
 FILINGS_ALLOWED_COLUMNS = {
@@ -17,26 +17,28 @@ FILINGS_ALLOWED_COLUMNS = {
     "holder_type",
 }
 
+# Numeric helpers 
+PCT_ABS_TOL_AUDIT = Decimal("0.00001")  
 
-# Numeric helpers for safe rounding / comparison
-PCT_ROUND_PLACES = 5                 # export precision for percentages
-PCT_ABS_TOL_AUDIT = Decimal("0.00001")  # 1e-5 absolute tolerance in percentage *points*
-
-def _to_decimal(x) -> Optional[Decimal]:
-    if x is None or x == "":
+def _to_decimal(x):
+    if x in (None, ""):
         return None
     try:
         return Decimal(str(x))
     except (InvalidOperation, TypeError, ValueError):
         return None
     
-def round_pct_5(x) -> Optional[float]:
-    """Round percentage value to max 5 decimals with HALF_UP, return float."""
+def floor_pct_5(x):
+    """
+    Floor to 5 decimals (⌊x·10^5⌋/10^5), then normalize.
+    Returns float or None.
+    """
     d = _to_decimal(x)
     if d is None:
         return None
-    q = Decimal("0." + "0"*PCT_ROUND_PLACES + "1")  # 0.00001
-    return float(d.quantize(q, rounding=ROUND_HALF_UP))
+    # multiply → floor to integer → divide back
+    q = (d * Decimal("1e5")).to_integral_value(rounding=ROUND_FLOOR) / Decimal("1e5")
+    return float(q.normalize())
 
 def close_pct(a, b, tol: Decimal = PCT_ABS_TOL_AUDIT) -> bool:
     """Absolute tolerance compare in percentage points (e.g., 0.29 vs 0.290001)."""
@@ -229,6 +231,6 @@ class FilingRecord:
         # 5) normalize percentage fields with Decimal rounding (max 5 decimals)
         for key in ("share_percentage_before", "share_percentage_after", "share_percentage_transaction"):
             if key in db_dict:
-                db_dict[key] = round_pct_5(db_dict.get(key))
+                db_dict[key] = floor_pct_5(db_dict.get(key))
 
         return db_dict

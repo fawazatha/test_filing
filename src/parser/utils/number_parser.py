@@ -1,25 +1,14 @@
 import re
 from typing import Union, Optional
-from decimal import Decimal, ROUND_HALF_UP, InvalidOperation
+from decimal import Decimal, ROUND_FLOOR, InvalidOperation
 
 def _to_decimal(x):
-    """
-    Convert input to Decimal safely. Returns None on invalid input.
-    """
-    if x in (None, ""):
-        return None
-    try:
-        return Decimal(str(x))
-    except (InvalidOperation, TypeError, ValueError):
-        return None
+    if x in (None, ""): return None
+    try: return Decimal(str(x))
+    except (InvalidOperation, TypeError, ValueError): return None
 
-def _quantize_pct5(d: Decimal) -> Decimal:
-    """
-    Quantize a Decimal to at most 5 decimal places (ROUND_HALF_UP),
-    then normalize to remove trailing zeros.
-    """
-    return d.quantize(Decimal("0.00001"), rounding=ROUND_HALF_UP).normalize()
-
+def _floor_pct5(d: Decimal) -> Decimal:
+    return ( (d * Decimal("1e5")).to_integral_value(rounding=ROUND_FLOOR) / Decimal("1e5") ).normalize()
 
 class NumberParser:
     """Utility class for parsing numbers and percentages from text."""
@@ -123,7 +112,7 @@ class NumberParser:
         # Keep only digits, comma, dot, minus
         txt = re.sub(r'[^0-9,.\-]', '', txt)
 
-        # === Existing normalization logic retained as-is ===
+        # Existing normalization logic retained as-is
         if ',' in txt and '.' in txt:
             # Use position of the last separator to pick decimal symbol
             last_comma = txt.rfind(',')
@@ -148,12 +137,11 @@ class NumberParser:
         else:
             normalized = txt
 
-        # === Safe final conversion using Decimal (max 5 decimals, HALF_UP) ===
+        # Safe final conversion using Decimal (max 5 decimals, HALF_UP)
         d = _to_decimal(normalized)
         if d is None:
             return 0.0
         try:
-            q = _quantize_pct5(d)
-            return float(q)  # stays float; 0.29 remains 0.29, not '0.29000'
+            return float(_floor_pct5(d))
         except InvalidOperation:
             return 0.0
