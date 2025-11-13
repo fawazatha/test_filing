@@ -6,6 +6,7 @@ from pathlib import Path
 
 from src.common.log import get_logger
 from src.common.datetime import MONTHS_EN
+
 from .base_parser import BaseParser
 from .utils.text_extractor import TextExtractor
 from .utils.number_parser import NumberParser
@@ -48,27 +49,6 @@ def _en_date_to_iso(s: Optional[str]) -> Optional[str]:
     if not mnum:
         return None
     return f"{y:04d}-{mnum:02d}-{d:02d}"
-
-def _validate_tx_direction(
-    before: Optional[float],
-    after: Optional[float],
-    tx_type: str,
-    eps: float = 1e-3
-) -> Tuple[bool, Optional[str]]:
-    try:
-        b = float(before) if before is not None else None
-        a = float(after) if after is not None else None
-    except Exception:
-        return False, "non_numeric_before_after"
-    if b is None or a is None:
-        return False, "missing_before_or_after"
-
-    t = (tx_type or "").strip().lower()
-    if t == "buy" and a + eps < b:
-        return False, f"inconsistent_buy: after({a}) < before({b})"
-    if t == "sell" and a > b + eps:
-        return False, f"inconsistent_sell: after({a}) > before({b})"
-    return True, None
 
 
 class IDXParser(BaseParser):
@@ -136,17 +116,38 @@ class IDXParser(BaseParser):
             logger.error(f"load company_map error: {e}")
             return {}
 
-    # == Entry point ==
+    # Entry point
     def parse_single_pdf(
-        self, filepath: str, filename: str, pdf_mapping: Dict[str, Any]
+        self,
+        filepath: str,
+        filename: str,
+        pdf_mapping: Dict[str, Any],
     ) -> Optional[Dict[str, Any]]:
+        """
+        Parse a single IDX-format PDF into a normalized dict.
+
+        Alerts:
+          - no_text_extracted  (not_inserted)
+          - parse_exception    (not_inserted)
+          - symbol_missing     (not_inserted, when symbol cannot be resolved)
+          - mismatch_transaction_type (inserted, warning)
+          - symbol_name_mismatch      (inserted, warning)
+        """
         self._current_alert_context = (pdf_mapping or {}).get(filename) or {}
 
         text = self.extract_text_from_pdf(filepath)
         if not text:
-            self.alert_manager.log_alert(filename, "no_text_extracted", {
-                "announcement": self._current_alert_context
-            })
+            self._fail(
+                code="no_text_extracted",
+                reasons=[
+                    {
+                        "scope": "parser",
+                        "code": "no_text_extracted",
+                        "message": "No text could be extracted from PDF at parser stage.",
+                        "details": {"announcement": self._current_alert_context},
+                    }
+                ],
+            )
             return None
 
         text = self._slice_to_english(text)
@@ -156,7 +157,7 @@ class IDXParser(BaseParser):
             data = self.extract_fields_from_text(text, filename)
             data["source"] = filename
 
-            # === Compute standardized tags ===
+            # Compute standardized tags
             # Flags from text (MESOP, free-float, inheritance/transfer hints)
             flags = TransactionClassifier.detect_flags_from_text(text)
 
@@ -174,11 +175,21 @@ class IDXParser(BaseParser):
             )
 
             return data
+        
         except Exception as e:
-            logger.error(f"extract_fields error {filename}: {e}")
-            self.alert_manager.log_alert(filename, f"field_extract_error: {e}", {
-                "announcement": self._current_alert_context
-            })
+            logger.error(f"extract_fields error {filename}: {e}", exc_info=True)
+            # Fatal: structural parse error
+            self._fail(
+                code="parse_exception",
+                reasons=[
+                    {
+                        "scope": "parser",
+                        "code": "parse_exception",
+                        "message": f"Error while extracting fields from IDX PDF: {e}",
+                        "details": {"announcement": self._current_alert_context},
+                    }
+                ],
+            )
             return None
 
     def _slice_to_english(self, text: str) -> str:
@@ -263,16 +274,22 @@ class IDXParser(BaseParser):
                 top_k=int(os.getenv("COMPANY_SUGGEST_TOPK", "3")),
             )
 
-            self.alert_manager_not_inserted.log_alert(
-                filename,
-                "Symbol Not Resolved from Name",
-                {
-                    "company_name_raw": issuer_name_raw,
-                    "normalized_key": norm_key,
-                    "missing_in_company_map": norm_key not in (self._rev_company_map or {}),
-                    "suggestions": suggestions,
-                    "announcement": self._current_alert_context,
-                },
+            self._fail(
+                code="symbol_missing",
+                reasons=[
+                    {
+                        "scope": "parser",
+                        "code": "symbol_missing",
+                        "message": "Symbol could not be resolved from issuer name in IDX parser.",
+                        "details": {
+                            "company_name_raw": issuer_name_raw,
+                            "normalized_key": norm_key,
+                            "missing_in_company_map": norm_key not in (self._rev_company_map or {}),
+                            "suggestions": suggestions,
+                            "announcement": self._current_alert_context,
+                        },
+                    }
+                ],
             )
 
             res["skip_filing"] = True
@@ -398,23 +415,6 @@ class IDXParser(BaseParser):
         self._extract_transactions_en(ex, res)
         self._postprocess_transactions(res)
 
-        # Sanity: direction vs percentages
-        tx_type = res.get("transaction_type")
-        if tx_type in ("buy", "sell"):
-            ok, reason = _validate_tx_direction(
-                res.get("share_percentage_before"),
-                res.get("share_percentage_after"),
-                tx_type
-            )
-            if not ok:
-                logger.warning("Skipping inconsistent %s: %s", tx_type, reason)
-                res["skip_filing"] = True
-                res["skip_reason"] = reason
-                res.setdefault("parse_warnings", []).append(reason)
-                return res
-
-        # Observability flag
-        self._flag_type_mismatch_if_any(res, filename)
         return res
 
     def _extract_transactions_en(self, ex: TextExtractor, res: Dict[str, Any]) -> None:
@@ -534,9 +534,6 @@ class IDXParser(BaseParser):
             wavg = sum(float(t.get("price") or 0.0) * int(t.get("amount") or 0) for t in buy_sell) / total_amt
             res["price"] = round(wavg, 2)
 
-        # ==== PERUBAHAN PENTING ====
-        # Sebelumnya: dict {"prices": [...], "amount_transacted": [...]}
-        # Sekarang: list of objects dengan tanggal per baris dari dokumen.
         res["price_transaction"] = [
             {
                 "date": (t.get("date_iso") or _en_date_to_iso(t.get("date"))),  # ISO dari dokumen
@@ -551,82 +548,41 @@ class IDXParser(BaseParser):
         # Flag gabungan
         res["is_transfer"] = res.get("is_transfer", False) or res["has_transfer"]
 
-    def _flag_type_mismatch_if_any(self, res: Dict[str, Any], filename: str) -> None:
-        doc_type = (res.get("transaction_type") or "").lower()
-        inferred = TransactionClassifier.infer_direction(
-            holding_before=res.get("holding_before", 0),
-            holding_after=res.get("holding_after", 0),
-            pct_before=res.get("share_percentage_before", 0.0),
-            pct_after=res.get("share_percentage_after", 0.0),
-        )
-        flag = TransactionClassifier.mismatch_flag(
-            doc_type,
-            inferred,
-            res.get("holding_before"),
-            res.get("holding_after"),
-            res.get("share_percentage_before"),
-            res.get("share_percentage_after"),
-        )
-        if flag:
-            hb = res.get("holding_before")
-            ha = res.get("holding_after")
-            pb = res.get("share_percentage_before")
-            pa = res.get("share_percentage_after")
 
-            delta_h: Optional[float] = None
-            try:
-                if isinstance(hb, (int, float)) and isinstance(ha, (int, float)):
-                    delta_h = ha - hb
-            except Exception:
-                pass
-
-            delta_p: Optional[float] = None
-            try:
-                if isinstance(pb, (int, float)) and isinstance(pa, (int, float)):
-                    delta_p = round(pa - pb, 6)
-            except Exception:
-                pass
-
-            bits: List[str] = []
-            if delta_h is not None:
-                bits.append(f"holdings d={delta_h:+}")
-            if delta_p is not None:
-                bits.append(f"share% d={delta_p:+}")
-            why = f"{'; '.join(bits)} → implies '{inferred}'" if bits else f"data implies '{inferred}'"
-
-            transfer_hint = bool(
-                (isinstance(hb, (int, float)) and hb == 0)
-                or (isinstance(ha, (int, float)) and ha == 0)
-            )
-
-            self.alert_manager.log_alert(
-                filename,
-                "Transaction Type Mismatch",
+    def _alert_symbol_mismatch(
+        self,
+        filename: str,
+        raw: str,
+        canon: str,
+        sym_from_name: Optional[str],
+        sym_doc: Optional[str],
+    ) -> None:
+        """
+        Emit an inserted warning when company name and symbol combination
+        looks suspicious but still parseable.
+        """
+        self._warn(
+            code="symbol_name_mismatch",
+            reasons=[
                 {
-                    "symbol": res.get("symbol"),
-                    "company_name": res.get("company_name"),
-                    "document_type": doc_type,
-                    "inferred_type": inferred,
-                    "explanation": why,
-                    "holding_before": hb,
-                    "holding_after": ha,
-                    "share_percentage_before": pb,
-                    "share_percentage_after": pa,
-                    "is_transfer_hint": transfer_hint,
-                    "announcement": self._current_alert_context,
-                },
-            )
-
-    def _alert_symbol_mismatch(self, filename, raw, canon, sym_from_name, sym_doc):
-        self.alert_manager.log_alert(filename, "symbol_name_mismatch", {
-            "company_name_raw": raw,
-            "company_name_canonical": canon,
-            "symbol_from_name": sym_from_name,
-            "symbol_in_doc": sym_doc,
-            "announcement": self._current_alert_context,
-        })
+                    "scope": "parser",
+                    "code": "symbol_name_mismatch",
+                    "message": "Possible mismatch between company name and symbol in IDX document.",
+                    "details": {
+                        "company_name_raw": raw,
+                        "company_name_canonical": canon,
+                        "symbol_from_name": sym_from_name,
+                        "symbol_in_doc": sym_doc,
+                        "announcement": self._current_alert_context,
+                    },
+                }
+            ],
+        )
 
     def validate_parsed_data(self, d: Dict[str, Any]) -> bool:
+        if d.get("skip_filing"):
+            return False
+
         all_zero = (
             not d.get("holder_name")
             and (d.get("holding_before", 0) == 0)
@@ -634,4 +590,7 @@ class IDXParser(BaseParser):
             and (d.get("share_percentage_before", 0.0) == 0.0)
             and (d.get("share_percentage_after", 0.0) == 0.0)
         )
-        return not all_zero and bool(d.get("transactions"))
+        if all_zero:
+            return False
+
+        return bool(d.get("transactions"))

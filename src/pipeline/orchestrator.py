@@ -30,7 +30,7 @@ from parser import parser_non_idx as parser_non_idx_mod
 
 from generate.filings.runner import run as run_generate 
 from services.email.bucketize import bucketize as bucketize_alerts
-from services.io.artifacts import make_artifact_zip
+from services.upload.artifacts import make_artifact_zip
 
 from services.email.ses_email import send_attachments
 from services.email.alerts_mailer import _render_email_content

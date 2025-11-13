@@ -42,17 +42,27 @@ except Exception:
 
 logger = logging.getLogger(__name__)
 
-# Generic helpers
-# def _to_dec(x) -> Optional[Decimal]:
-#     if x in (None, ""):
-#         return None
-#     try:
-#         return Decimal(str(x))
-#     except (InvalidOperation, TypeError, ValueError):
-#         return None
+def _validate_tx_direction(
+    before: Optional[float],
+    after: Optional[float],
+    tx_type: str,
+    eps: float = 1e-3
+) -> Tuple[bool, Optional[str]]:
+    try:
+        b = float(before) if before is not None else None
+        a = float(after) if after is not None else None
+    except Exception:
+        return False, "non_numeric_before_after"
+    if b is None or a is None:
+        return False, "missing_before_or_after"
 
-# def _q5(d: Decimal) -> Decimal:
-#     return d.quantize(Decimal("0.00001"), rounding=ROUND_FLOOR).normalize()
+    t = (tx_type or "").strip().lower()
+    if t == "buy" and a + eps < b:
+        return False, f"inconsistent_buy: after({a}) < before({b})"
+    if t == "sell" and a > b + eps:
+        return False, f"inconsistent_sell: after({a}) > before({b})"
+    return True, None
+
 
 def _safe_float(x: Any) -> Optional[float]:
     """Coerce to float; return None if not parseable/empty."""
