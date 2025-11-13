@@ -8,7 +8,7 @@ from typing import Any, Dict, List, Optional, Tuple
 
 try:
     # Preferred relative imports (monorepo style)
-    from utils.config import (
+    from src.config.config import (
         GATE_REASONS,
         ALERTS_OUTPUT_DIR,
         ALERTS_INSERTED_FILENAME,
@@ -17,7 +17,7 @@ try:
     )
 except Exception:
     # Flat layout fallback for tests
-    from utils.config import (
+    from src.config.config import (
         GATE_REASONS,
         ALERTS_OUTPUT_DIR,
         ALERTS_INSERTED_FILENAME,

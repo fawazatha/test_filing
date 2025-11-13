@@ -21,8 +21,8 @@ from downloader.utils.classifier import classify_format
 from downloader.client import init_http, get_pdf_bytes_minimal, seed_and_retry_minimal
 from downloader.utils.announcement import Announcement
 
-from services.alerts.schema import build_alert
-from services.alerts.ingestion_context import build_ingestion_index, resolve_doc_context_from_announcement
+from services.alert.schema import build_alert
+from services.alert.ingestion_context import build_ingestion_index, resolve_doc_context_from_announcement
 
 
 """Download PDFs (IDX / non-IDX) and emit lightweight metadata & alerts."""

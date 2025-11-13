@@ -15,6 +15,12 @@ MONTHS_ID: Dict[str, int] = {
     "juli":7,"agustus":8,"september":9,"oktober":10,"november":11,"desember":12
 }
 
+# MONTHS_EN = {
+#     "january":1, "february":2, "march":3, "april":4, "may":5, "june":6,
+#     "july":7, "august":8, "september":9, "october":10, "november":11, "december":12
+# }
+
+
 PAT_EN_FULL = re.compile(r"\b(\d{1,2})\s+(January|February|March|April|May|June|July|August|September|October|November|December)\s+(\d{4})\b", re.I)
 PAT_ID_FULL = re.compile(r"\b(\d{1,2})\s+(Januari|Februari|Maret|April|Mei|Juni|Juli|Agustus|September|Oktober|November|Desember)\s+(\d{4})\b", re.I)
 

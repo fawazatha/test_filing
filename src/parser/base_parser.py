@@ -5,7 +5,7 @@ from abc import ABC, abstractmethod
 from typing import List, Dict, Any, Optional
 import pdfplumber
 
-from ..utils.alert_manager import AlertManager
+from services.alert.schema import build_alert
 from src.parser.utils.company_resolver import (
     load_symbol_to_name_from_file,
     build_reverse_map,
@@ -13,10 +13,7 @@ from src.parser.utils.company_resolver import (
 
 logger = logging.getLogger(__name__)
 
-# ============================================================
-# PDFMiner noise control (drop-in)
-# ============================================================
-
+# PDFMiner noise control
 # Logger pdfminer yang sering memunculkan noise (seek/xref/nextline/nexttoken)
 _PDFMINER_LOGGERS = [
     "pdfminer",
@@ -79,10 +76,8 @@ def init_logging(pdf_debug: Optional[bool] = None) -> None:
     logging.getLogger("urllib3").setLevel(logging.WARNING)
     logging.getLogger("PIL").setLevel(logging.WARNING)
 
-# ============================================================
-# Base Parser
-# ============================================================
 
+# Base Parser
 class BaseParser(ABC):
     """Base class for PDF parsers."""
 
@@ -101,21 +96,22 @@ class BaseParser(ABC):
         self.output_file = output_file
         self.announcement_json = announcement_json
 
-        alerts_file = alerts_file or "alerts/alerts_idx.json"
-        alerts_not_inserted_file = alerts_not_inserted_file or "alerts/alerts_not_inserted.json"
-
         os.makedirs(os.path.dirname(self.output_file), exist_ok=True)
-        os.makedirs(os.path.dirname(alerts_file), exist_ok=True)
-        os.makedirs(os.path.dirname(alerts_not_inserted_file), exist_ok=True)
+        self._alerts_inserted: List[Dict[str, Any]] = []
+        self._alerts_not_inserted: List[Dict[str, Any]] = []
 
-        self.alert_manager = AlertManager(
-            alert_file=alerts_file,
-            preload_existing=False
+        # output files for alerts (can be overridden via env)
+        self._alerts_inserted_file = os.getenv(
+            "ALERTS_INSERTED_PARSER",
+            "alerts/alerts_inserted_parser.json",
         )
-        self.alert_manager_not_inserted = AlertManager(
-            alert_file=alerts_not_inserted_file,
-            preload_existing=False
+        self._alerts_not_inserted_file = os.getenv(
+            "ALERTS_NOT_INSERTED_PARSER",
+            "alerts/alerts_not_inserted_parser.json",
         )
+
+        # current context for the file being parsed (announcement, urls, etc.)
+        self._current_alert_context: Dict[str, Any] = {}
 
         self.symbol_to_name: Dict[str, str] = load_symbol_to_name_from_file() or {}
         self.rev_company_map: Dict[str, List[str]] = build_reverse_map(self.symbol_to_name)
@@ -202,12 +198,119 @@ class BaseParser(ABC):
         except Exception as e:
             logger.error(f"Error saving debug output for {filename}: {e}")
 
+
+    # Parser alert helpers (v2)
+    def _build_parser_alert(
+        self,
+        *,
+        category: str,  # "inserted" | "not_inserted"
+        code: str,
+        filename: str,
+        reasons: Optional[List[Dict[str, Any]]] = None,
+        ctx: Optional[Dict[str, Any]] = None,
+        severity: str = "warning",
+        needs_review: bool = True,
+    ) -> Dict[str, Any]:
+        """
+        Construct a v2 alert for the parser stage, enriched with current announcement context.
+        """
+        ann = self._current_alert_context or {}
+
+        doc_url = (
+            ann.get("url")
+            or ann.get("download_url")
+            or ann.get("attachment_url")
+            or ann.get("main_link")
+        )
+        doc_title = ann.get("title") or ann.get("announcement_title")
+
+        return build_alert(
+            category=category,
+            stage="parser",
+            code=code,
+            doc_filename=filename,
+            context_doc_url=doc_url,
+            context_doc_title=doc_title,
+            announcement=ann,
+            reasons=reasons,
+            ctx=ctx,
+            severity=severity,
+            needs_review=needs_review,
+        )
+
+    def _parser_warn(
+        self,
+        *,
+        code: str,
+        filename: str,
+        reasons: Optional[List[Dict[str, Any]]] = None,
+        ctx: Optional[Dict[str, Any]] = None,
+        severity: str = "warning",
+        needs_review: bool = True,
+    ) -> None:
+        """
+        Non-fatal alert: the document/rows are still inserted, but need review.
+        """
+        alert = self._build_parser_alert(
+            category="inserted",
+            code=code,
+            filename=filename,
+            reasons=reasons,
+            ctx=ctx,
+            severity=severity,
+            needs_review=needs_review,
+        )
+        self._alerts_inserted.append(alert)
+
+    def _parser_fail(
+        self,
+        *,
+        code: str,
+        filename: str,
+        reasons: Optional[List[Dict[str, Any]]] = None,
+        ctx: Optional[Dict[str, Any]] = None,
+        severity: str = "warning",
+    ) -> None:
+        """
+        Fatal alert: the document cannot be processed/inserted at all.
+        """
+        alert = self._build_parser_alert(
+            category="not_inserted",
+            code=code,
+            filename=filename,
+            reasons=reasons,
+            ctx=ctx,
+            severity=severity,
+            needs_review=True,
+        )
+        self._alerts_not_inserted.append(alert)
+
+    def _flush_parser_alerts(self) -> None:
+        """
+        Write parser alerts to alerts_inserted_parser.json / alerts_not_inserted_parser.json.
+        """
+        try:
+            if self._alerts_inserted:
+                os.makedirs(os.path.dirname(self._alerts_inserted_file), exist_ok=True)
+                tmp = self._alerts_inserted_file + ".tmp"
+                with open(tmp, "w", encoding="utf-8") as f:
+                    json.dump(self._alerts_inserted, f, ensure_ascii=False, indent=2)
+                os.replace(tmp, self._alerts_inserted_file)
+
+            if self._alerts_not_inserted:
+                os.makedirs(os.path.dirname(self._alerts_not_inserted_file), exist_ok=True)
+                tmp = self._alerts_not_inserted_file + ".tmp"
+                with open(tmp, "w", encoding="utf-8") as f:
+                    json.dump(self._alerts_not_inserted, f, ensure_ascii=False, indent=2)
+                os.replace(tmp, self._alerts_not_inserted_file)
+        except Exception as e:
+            logger.error(f"Error saving parser alerts: {e}")
+
+
     def parse_folder(self) -> List[Dict[str, Any]]:
         if not os.path.exists(self.pdf_folder):
             logger.error(f"Folder not found: {self.pdf_folder}")
             return []
-        self.alert_manager.reset_file()
-        self.alert_manager_not_inserted.reset_file()
 
         try:
             with open(self.output_file, "w", encoding="utf-8") as f:
@@ -225,7 +328,8 @@ class BaseParser(ABC):
             filepath = os.path.join(self.pdf_folder, filename)
             logger.info(f"Processing {filename}...")
 
-            ann_ctx = pdf_mapping.get(filename, {})
+            ann_ctx = pdf_mapping.get(filename, {}) or {}
+            self._current_alert_context = ann_ctx
 
             try:
                 result = self.parse_single_pdf(filepath, filename, pdf_mapping)
@@ -233,25 +337,27 @@ class BaseParser(ABC):
                     parsed_results.append(result)
                     logger.info(f"Successfully parsed {filename}")
                 else:
-                    self.alert_manager_not_inserted.log_alert(
-                        filename,
-                        "Validation failed or no data extracted",
-                        {"announcement": ann_ctx}
+                    self._parser_fail(
+                        code="validation_failed",  
+                        filename=filename,
+                        ctx={"announcement": ann_ctx},
                     )
-                    logger.warning(f"Validation failed for {filename}")
+                    logger.warning(f"Validation failed or no data extracted for {filename}")
 
             except Exception as e:
                 logger.error(f"Error processing {filename}: {e}")
-                self.alert_manager.log_alert(
-                    filename,
-                    f"Processing error: {str(e)}",
-                    {"announcement": ann_ctx}
+                self._parser_warn(
+                    code="parse_exception",
+                    filename=filename,
+                    ctx={"announcement": ann_ctx, "message": str(e)},
+                    needs_review=True,
                 )
 
-        # Save results and alerts (overwrite)
+        # Save results (overwrite)
         self.save_results(parsed_results)
-        self.alert_manager.save_alerts()
-        self.alert_manager_not_inserted.save_alerts()
+
+        # Save v2 parser alerts
+        self._flush_parser_alerts()
 
         logger.info(f"Processing complete. {len(parsed_results)} files successfully parsed")
         return parsed_results

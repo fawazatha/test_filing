@@ -7,7 +7,7 @@ from typing import List, Dict, Any, Optional, Tuple
 
 from services.upload.dedup import upload_filings_with_dedup
 from services.upload.supabase import SupabaseUploader, UploadResult
-from services.alerts.ingestion_context import build_ingestion_index
+from services.alert.ingestion_context import build_ingestion_index
 from src.core.types import FILINGS_ALLOWED_COLUMNS
 
 # Timezone for WIB

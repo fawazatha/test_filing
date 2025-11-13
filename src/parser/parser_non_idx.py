@@ -8,18 +8,23 @@ from typing import Dict, Any, Optional, List, Tuple
 
 import pdfplumber
 
-from .core.base_parser import BaseParser
+from src.common.log import get_logger
+from src.common.datetime import MONTHS_EN 
+from .base_parser import BaseParser
 from .utils.number_parser import NumberParser
 from .utils.name_cleaner import NameCleaner
 from .utils.transaction_classifier import TransactionClassifier
 from .utils.company_resolver import (
-    load_symbol_to_name_from_file,
     build_reverse_map,
     resolve_symbol_from_emiten,
+    canonical_name_for_symbol,
     normalize_company_name,
+    suggest_symbols,
+    resolve_symbol_and_name,
+    pretty_company_name,
 )
 
-logger = logging.getLogger(__name__)
+logger = get_logger(__name__)   
 
 # Tanggal / Bulan
 _BULAN = {

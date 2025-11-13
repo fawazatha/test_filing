@@ -9,6 +9,27 @@ MESSAGE_TEMPLATES = {
     "unsupported_format": "Attachment is not a valid PDF or the format is unsupported.",
     "content_mismatch": "Attachment content does not match the expected announcement.",
     "low_title_similarity": "Announcement title and document name have low similarity.",
+
+    # Parser (not_inserted / fatal)
+    "symbol_missing": "Could not resolve the issuer symbol from the document or mapping.",
+    "table_not_found": "No compatible transaction table was found in the document.",
+    "parse_exception": "Unexpected error while parsing the document.",
+    "pdf_password_protected": "The PDF appears to be password-protected or encrypted and cannot be parsed.",
+    "number_parse_error": "One or more numeric fields in the document could not be parsed.",
+
+    # Parser (inserted / warnings)
+    "company_resolve_ambiguous": "Issuer mapping is ambiguous; symbol resolution is below the confidence threshold.",
+    "parser_warning": "Parser extracted only partial data from the document; see reasons for details.",
+
+    # Filings (inserted / numeric validation & audit)
+    "price_deviation_vs_market": "Transaction price deviates significantly from the market reference price.",
+    "price_deviation_within_doc": "Transaction price deviates significantly from the median transaction price in this document.",
+    "possible_zero_missing": "Transaction values may be off by a factor of 10 or 100 (possible missing zero).",
+    "stale_price": "Reference market price is stale relative to the transaction date.",
+    "missing_price": "Market reference price is missing for the relevant date.",
+    "percent_discrepancy": "Reported shareholding percentages are inconsistent with the reported holdings.",
+    "delta_pp_mismatch": "Change in shareholding percentage is inconsistent with before/after values.",
+    "mismatch_transaction_type": "Parsed transaction type is inconsistent with the reported before/after values or document indicators.",
 }
 
 def build_alert(

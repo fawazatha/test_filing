@@ -104,6 +104,7 @@ class FilingRecord:
     # Source / Meta
     source: Optional[str] = None
     holder_type: Optional[str] = None
+    filings_input_source: Optional[str] = 'automated'
 
     # Non-DB fields
     raw_data: Dict[str, Any] = field(default_factory=dict, repr=False)

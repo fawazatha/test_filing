@@ -591,6 +591,7 @@ def transform_raw_to_record(
 
         source=main_source_url,
         holder_type=_to_str(raw_dict.get("holder_type")),
+        filings_input_source='automated',
 
         raw_data=raw_dict,
     )
