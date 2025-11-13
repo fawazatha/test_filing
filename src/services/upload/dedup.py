@@ -130,15 +130,12 @@ def _fetch_existing_rows_same_days(
     if not days:
         return []
         
-    # --- PERBAIKAN: Tentukan 'select' secara eksplisit ---
-    # Ini untuk memastikan kita meminta kolom yang benar ('transaction_type' dan 'timestamp')
     select_cols = ",".join([
         "symbol", "timestamp", "transaction_type", "holder_name",
         "holding_before", "holding_after",
         "share_percentage_before", "share_percentage_after",
-        "amount_transaction", "transaction_value", "price",
+        "amount_transaction", "transaction_value", "price", "filings_input_source"
     ])
-    # --- AKHIR PERBAIKAN ---
 
     try:
         # Panggil fungsi yang diperbarui (dari fetch_filings.py)
