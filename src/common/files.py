@@ -137,3 +137,29 @@ def atomic_write_json(path: PathLike, obj: Any, encoding: str = "utf-8") -> Path
     """
     content = json.dumps(obj, ensure_ascii=False, indent=2, default=str)
     return write_text(path, content, encoding=encoding)
+
+def safe_mkdirs(*dirs: str) -> None:
+    for d in dirs:
+        Path(d).mkdir(parents=True, exist_ok=True)
+
+def read_json(path: str | Path) -> Optional[Any]:
+    p = Path(path)
+    if not p.exists():
+        return None
+    try:
+        return json.loads(p.read_text(encoding="utf-8"))
+    except Exception:
+        return None
+
+def write_json(path: str | Path, obj: Any) -> None:
+    p = Path(path)
+    p.parent.mkdir(parents=True, exist_ok=True)
+    p.write_text(json.dumps(obj, ensure_ascii=False, indent=2, default=str), encoding="utf-8")
+
+def write_jsonl(path: str | Path, rows: list[dict]) -> None:
+    p = Path(path)
+    p.parent.mkdir(parents=True, exist_ok=True)
+    with p.open("w", encoding="utf-8") as f:
+        for r in rows:
+            f.write(json.dumps(r, ensure_ascii=False, default=str))
+            f.write("\n")

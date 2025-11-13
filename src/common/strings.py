@@ -61,6 +61,10 @@ def normalize_company_key_lower(s: str) -> str:
     tokens = [t for t in tokens if t.upper() not in CORP_STOPWORDS]
     return " ".join(tokens).strip()
 
+def normalize_space(s: str | None) -> str | None:
+    if s is None:
+        return None
+    return re.sub(r"\s+", " ", s).strip() or None
 
 # Slug / case helpers
 def kebab(s: Optional[Any]) -> Optional[str]:

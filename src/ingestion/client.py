@@ -13,7 +13,6 @@ def _apply_env_proxies() -> None:
     proxies = proxies_from_env()
     if not proxies:
         return
-    # Expect keys "http://" and "https://"
     http_p = proxies.get("http://")
     https_p = proxies.get("https://")
     if http_p:
@@ -34,9 +33,8 @@ def make_client(timeout: float = 60.0, transport: Optional[httpx.BaseTransport] 
     return httpx.Client(
         timeout=timeout,
         headers=HEADERS,
-        verify=False,          # keep parity with legacy; flip to True when server certs are stable
-        transport=transport,   # optional: enables mocking in tests
-        # trust_env=True is default -> httpx reads HTTP(S)_PROXY automatically
+        verify=False,          
+        transport=transport,   
     )
 
 

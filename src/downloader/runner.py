@@ -13,11 +13,17 @@ from src.common.files import (
     safe_filename_from_url,
     atomic_write_json,
     safe_unlink,
+    write_json,
+    safe_mkdirs
 )
 
 from downloader.utils.classifier import classify_format
 from downloader.client import init_http, get_pdf_bytes_minimal, seed_and_retry_minimal
 from downloader.utils.announcement import Announcement
+
+from services.alerts.schema import build_alert
+from services.alerts.ingestion_context import build_ingestion_index, resolve_doc_context_from_announcement
+
 
 """Download PDFs (IDX / non-IDX) and emit lightweight metadata & alerts."""
 
@@ -127,7 +133,7 @@ def download_pdfs(
     - UNKNOWN : no download; record alert.
     - Write two JSONs: metadata list & low-similarity alerts.
     """
-    logger = get_logger("downloader", verbose)
+    logger = get_logger("downloader", 10 if verbose else 20)
 
     paths = {
         "out_idx": out_idx,
@@ -146,6 +152,8 @@ def download_pdfs(
     init_http(insecure=True, silence_warnings=True, load_env=True)
     _prepare_outputs(paths, logger)
 
+    idx_map = build_ingestion_index("data/ingestion.json")
+
     # Log proxy presence (masking value)
     if any(os.getenv(k) for k in ("PROXY", "HTTPS_PROXY", "HTTP_PROXY", "https_proxy", "http_proxy")):
         logger.info("Proxy detected in environment.")
@@ -163,17 +171,33 @@ def download_pdfs(
 
         if label == "UNKNOWN":
             ref_url = ann.main_link or (_attachment_to_url(ann.attachments[0]) if ann.attachments else None)
-            alerts.append({
-                "title": ann.title,
-                "url": ref_url,
-                "similarity_idx": sim_idx,
-                "similarity_non_idx": sim_non,
-                "threshold": min_similarity,
-                "reason": "low_title_similarity_both",
-                "severity": "warning",
-                "created_at": now,
-            })
-            logger.info("    Skipped download (UNKNOWN). Alert recorded.")
+            ref_filename = safe_filename_from_url(ref_url) if ref_url else None
+
+            ann_trim = idx_map.get(ref_filename.lower()) if ref_filename else None
+            doc_ctx = {"filename": ref_filename, "url": ref_url, "title": ann.title}
+            if ann_trim:
+                meta = resolve_doc_context_from_announcement(ann_trim, ref_filename)
+                if meta:
+                    doc_ctx.update(meta)
+
+            alerts.append(build_alert(
+                category="not_inserted",
+                stage="downloader",
+                code="low_title_similarity",
+                doc_filename=ref_filename,
+                context_doc_url=doc_ctx.get("url"),
+                context_doc_title=doc_ctx.get("title"),
+                announcement=ann_trim,
+                ctx={
+                    "similarity_idx": sim_idx,
+                    "similarity_non_idx": sim_non,
+                    "threshold": min_similarity,
+                    "policy": "skipped_download_due_to_unknown_classification",
+                },
+                severity="warning",
+                needs_review=True,
+            ))
+            logger.info("    Skipped download (UNKNOWN -> low_title_similarity). Alert recorded.")
             continue
 
         # Build URL list + output folder
@@ -220,12 +244,44 @@ def download_pdfs(
                     "filename": filename,
                     "timestamp": ann.date,
                 })
+            else:
+                # v2 alert: download_failed
+                ref_filename = out_path.name
+                ann_trim = idx_map.get(ref_filename.lower())
+                doc_ctx = {"filename": ref_filename, "url": url, "title": ann.title}
+                if ann_trim:
+                    meta = resolve_doc_context_from_announcement(ann_trim, ref_filename)
+                    if meta:
+                        doc_ctx.update(meta)
+
+                alerts.append(build_alert(
+                    category="not_inserted",
+                    stage="downloader",
+                    code="download_failed",
+                    doc_filename=ref_filename,
+                    context_doc_url=doc_ctx.get("url"),
+                    context_doc_title=doc_ctx.get("title"),
+                    announcement=ann_trim,
+                    ctx={"url": url, "retries": retries},
+                    severity="error",
+                    needs_review=True,
+                ))
 
     # Write outputs atomically
     atomic_write_json(paths["meta_out"], records)
-    atomic_write_json(paths["alerts_out"], alerts)
+    inserted = [a for a in alerts if a.get("category") == "inserted"]
+    not_inserted = [a for a in alerts if a.get("category") == "not_inserted"]
+
+    # Legacy file: ONLY not_inserted.low_title_similarity (compat with old pipeline)
+    legacy_low = [a for a in not_inserted if a.get("code") == "low_title_similarity"]
+    atomic_write_json(paths["alerts_out"], legacy_low)
+
+    # v2 standardized outputs
+    safe_mkdirs("alerts")
+    atomic_write_json(Path("alerts") / "alerts_inserted_downloader.json", inserted)   # likely empty
+    atomic_write_json(Path("alerts") / "alerts_not_inserted_downloader.json", not_inserted)
 
     logger.info(
-        "Finished. %d announcements processed. %d files recorded. %d alerts.",
-        len(announcements), len(records), len(alerts)
+        "Finished. %d announcements processed. %d files recorded. %d alerts (v2: %d not_inserted).",
+        len(announcements), len(records), len(legacy_low), len(not_inserted)
     )

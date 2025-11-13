@@ -38,3 +38,18 @@ def parse_id_en_date(s: str) -> Optional[str]:
 def timestamp_jakarta() -> str:
     """Return ISO timestamp in Asia/Jakarta timezone (YYYY-MM-DDTHH:MM:SS)."""
     return datetime.now(JAKARTA_TZ).replace(microsecond=0).isoformat()
+
+def now_wib() -> datetime:
+    return datetime.now(tz=JAKARTA_TZ)
+
+def iso_wib(dt: Optional[datetime] = None, seconds_only: bool = True) -> str:
+    dt = dt or now_wib()
+    if seconds_only:
+        return dt.replace(microsecond=0).isoformat()
+    return dt.isoformat()
+
+def iso_utc(dt: Optional[datetime] = None, seconds_only: bool = True) -> str:
+    dt = dt or datetime.now(timezone.utc)
+    if seconds_only:
+        return dt.replace(microsecond=0).isoformat().replace("+00:00", "Z")
+    return dt.isoformat().replace("+00:00", "Z")

@@ -1,22 +1,14 @@
 # src/pipeline/orchestrator.py
 from __future__ import annotations
-import argparse
-import json
-import logging
-import os
-import re
-import shutil
-import subprocess
-from dataclasses import dataclass
+import argparse, json, logging, os, shutil, subprocess
 from datetime import datetime, timedelta
 from pathlib import Path
 from typing import List, Dict, Any, Optional, Tuple
 
-# --- Layanan Inti yang Direfaktor ---
 from services.upload.dedup import upload_filings_with_dedup
 from services.upload.supabase import SupabaseUploader, UploadResult
-# Impor Tipe Inti untuk mendapatkan daftar kolom DB yang valid
-from src.core.types import FilingRecord, FILINGS_ALLOWED_COLUMNS
+from services.alerts.ingestion_context import build_ingestion_index
+from src.core.types import FILINGS_ALLOWED_COLUMNS
 
 # Timezone for WIB
 try:
@@ -36,18 +28,16 @@ from downloader.utils.announcement import Announcement
 from parser import parser_idx as parser_idx_mod
 from parser import parser_non_idx as parser_non_idx_mod
 
-# Ini adalah 'run' dari 'filings' yang sudah kita refaktor
 from generate.filings.runner import run as run_generate 
 from services.email.bucketize import bucketize as bucketize_alerts
 from services.io.artifacts import make_artifact_zip
 
-# Email alerts
 from services.email.ses_email import send_attachments
 from services.email.alerts_mailer import _render_email_content
 
-# Articles generate + upload news
 from generate.articles.runner import run_from_filings as run_articles_from_filings
 from generate.articles.utils.uploader import upload_news_file_cli
+
 
 LOG = logging.getLogger("orchestrator")
 
@@ -118,12 +108,6 @@ def _compute_window_from_minutes(window_minutes: int) -> Tuple[str, str, str, st
     return date, sh, eh, stub
 
 
-def _save_json(obj: Any, path: Path) -> None:
-    path.parent.mkdir(parents=True, exist_ok=True
-                      )
-    path.write_text(json.dumps(obj, ensure_ascii=False, indent=2, default=str), encoding="utf-8")
-
-
 def _relocate_alerts_to_alerts_folder(inserted_path: Optional[Path], not_inserted_path: Optional[Path]) -> Tuple[Optional[Path], Optional[Path]]:
     """
     Jika write_alert_files menaruh ke artifacts/, pindahkan ke alerts/
@@ -166,120 +150,6 @@ def _load_json_silent(path: Path) -> Any:
         return json.loads(path.read_text(encoding="utf-8"))
     except Exception:
         return None
-
-
-def _basename(s: Optional[str]) -> Optional[str]:
-    if not s:
-        return None
-    try:
-        return Path(str(s)).name
-    except Exception:
-        return None
-
-
-def _build_download_ts_index(downloads_meta: Path) -> Dict[str, str]:
-    """
-    Build index: filename (lower) -> ISO timestamp (string).
-    """
-    idx: Dict[str, str] = {}
-    data = _load_json_silent(downloads_meta)
-    if not isinstance(data, list):
-        return idx
-    for item in data:
-        if not isinstance(item, dict):
-            continue
-        fn = _basename(item.get("filename")) or _basename(item.get("url"))
-        ts = item.get("timestamp")
-        if fn and ts:
-            idx[fn.lower()] = str(ts)
-    return idx
-
-
-def _candidate_filenames_from_row(row: Dict[str, Any]) -> List[str]:
-    """
-    Candidate filenames to match from various fields that may appear in a row.
-    """
-    cands: List[str] = []
-    for k in ("source", "pdf", "pdf_url", "url", "attachment_url", "filename"):
-        fn = _basename(row.get(k))
-        if fn:
-            cands.append(fn)
-    # nested announcement block if present
-    ann = row.get("announcement") or row.get("announcement_meta") or {}
-    if isinstance(ann, dict):
-        for k in ("pdf_url", "url", "attachment_url", "filename"):
-            fn = _basename(ann.get(k))
-            if fn:
-                cands.append(fn)
-    # de-dup, keep order
-    seen = set()
-    out: List[str] = []
-    for n in cands:
-        nl = n.lower()
-        if nl not in seen:
-            seen.add(nl)
-            out.append(n)
-    return out
-
-
-# def step_enrich_filings_timestamps(*, filings_json: Path, downloads_meta: Path) -> int:
-#     """
-#     DEPRECATED. This logic is now handled by core.transformer using the ingestion_map.
-#     This step is kept to avoid breaking old workflows but will do nothing
-#     if the new pipeline ran correctly (as timestamps will already be present).
-#     """
-#     if (not filings_json.exists()) or (not downloads_meta.exists()):
-#         LOG.warning("[ENRICH-TS] skip: %s or %s not found", filings_json, downloads_meta)
-#         return 0
-    
-#     LOG.info("[ENRICH-TS] Running (deprecated) step_enrich_filings_timestamps...")
-
-#     rows_or_obj = _load_json_silent(filings_json)
-#     if isinstance(rows_or_obj, dict) and "rows" in rows_or_obj and isinstance(rows_or_obj["rows"], list):
-#         rows = rows_or_obj["rows"]
-#         wrapper_dict = True
-#     elif isinstance(rows_or_obj, list):
-#         rows = rows_or_obj
-#         wrapper_dict = False
-#     else:
-#         LOG.warning("[ENRICH-TS] %s has unexpected format; skip", filings_json)
-#         return 0
-
-#     idx = _build_download_ts_index(downloads_meta)
-#     if not idx:
-#         LOG.warning("[ENRICH-TS] empty downloads index from %s; nothing to enrich", downloads_meta)
-#         return 0
-
-#     patched = 0
-#     for r in rows:
-#         if not isinstance(r, dict):
-#             continue
-        
-#         # Only patch if timestamp is missing
-#         if r.get("timestamp") or r.get("announcement_published_at"):
-#             continue
-
-#         matched_ts: Optional[str] = None
-#         for nm in _candidate_filenames_from_row(r):
-#             key = nm.lower()
-#             if key in idx:
-#                 matched_ts = idx[key]
-#                 break
-#         if matched_ts:
-#             r["timestamp"] = matched_ts
-#             r["announcement_published_at"] = matched_ts
-#             patched += 1
-
-#     if patched > 0:
-#         if wrapper_dict:
-#             _save_json({"rows": rows}, filings_json)
-#         else:
-#             _save_json(rows, filings_json)
-#         LOG.info("[ENRICH-TS] enriched %d rows with timestamps from %s", patched, downloads_meta)
-#     else:
-#         LOG.info("[ENRICH-TS] no rows needed timestamp enrichment.")
-        
-#     return patched
 
 
 # Company assets via single-source script
@@ -418,9 +288,7 @@ def step_fetch_announcements(
 ) -> List[Dict[str, Any]]:
     data: List[Dict[str, Any]]
     if date_yyyymmdd:
-        # --- PERBAIKAN: Menghapus '%' ekstra untuk memperbaiki ValueError ---
         LOG.info("[FETCH] Single-day (WIB) %s %s -> %s", date_yyyymmdd, start_hhmm, end_hhmm)
-        # --- AKHIR PERBAIKAN ---
         data = get_ownership_announcements(
             date_yyyymmdd=date_yyyymmdd,
             start_hhmm=start_hhmm,
@@ -511,14 +379,14 @@ def step_generate_filings(
     idx_parsed: Path,
     non_idx_parsed: Path,
     downloads_meta: Path,
-    ingestion_file: Path, # --- Argumen baru ditambahkan ---
+    ingestion_file: Path, # Argumen baru ditambahkan
     filings_out: Path,
     alerts_out: Path,
 ) -> int:
     cnt = run_generate(
         parsed_files=[str(non_idx_parsed), str(idx_parsed)],
         downloads_file=str(downloads_meta),
-        ingestion_file=str(ingestion_file), # --- Diteruskan ke 'run_generate' ---
+        ingestion_file=str(ingestion_file), # Diteruskan ke 'run_generate'
         output_file=str(filings_out),
         alerts_file=str(alerts_out),
     )
@@ -709,7 +577,7 @@ def step_zip_artifacts(
     return zip_path
 
 
-# --- FUNGSI DIPERBARUI ---
+# FUNGSI DIPERBARUI
 def step_upload_supabase(
     *,
     input_json: Path,
@@ -805,7 +673,7 @@ def step_generate_articles(
     return len(articles)
 
 
-# --- DIHAPUS: step_unify_filings (sudah usang) ---
+# DIHAPUS: step_unify_filings (sudah usang)
 
 
 # ========== CLI ==========
@@ -832,10 +700,10 @@ def build_argparser() -> argparse.ArgumentParser:
     p.add_argument("--from-date", dest="from_date", default=None, help="YYYYMMDD (WIB)")
     p.add_argument("--to-date", default=None, help="YYYYMMDD (WIB)")
     
-    # --- ARGUMEN BARU DITAMBAHKAN ---
+    # ARGUMEN BARU DITAMBAHKAN
     p.add_argument("--ingestion-file", default="data/ingestion.json", 
                    help="Path to ingestion file with announcement dates and links.")
-    # --- AKHIR ARGUMEN BARU ---
+    # AKHIR ARGUMEN BARU
 
     # Downloader
     p.add_argument("--retries", type=int, default=3)
@@ -863,7 +731,7 @@ def build_argparser() -> argparse.ArgumentParser:
     p.add_argument("--email-alerts", action="store_true",
                    help="Send inserted/not_inserted alert emails if available")
     
-    # --- PERBAIKAN: Menghapus p.lstrip() ---
+    # PERBAIKAN: Menghapus p.lstrip()
     
     p.add_argument("--email-to-inserted",
                    default=os.getenv("ALERT_TO_EMAIL_INSERTED") or os.getenv("ALERT_TO_EMAIL"),
@@ -890,10 +758,10 @@ def build_argparser() -> argparse.ArgumentParser:
                    help="Generate articles.jsonl from filings_data.json")
     p.add_argument("--articles-out", default="data/articles.jsonl",
                    help="Path output articles JSONL")
-    # --- PERBAIKAN: Mengganti p.add.argument menjadi p.add_argument ---
+    # PERBAIKAN: Mengganti p.add.argument menjadi p.add_argument
     p.add_argument("--company-map", default="data/company/company_map.json",
                    help="Path to cached company_map used by articles generator")
-    # --- AKHIR PERBAIKAN ---
+    # AKHIR PERBAIKAN
     p.add_argument("--latest-prices", default="data/company/latest_prices.json",
                    help="Path to cached latest_prices used by articles generator")
     p.add_argument("--use-llm", action="store_true",
@@ -913,7 +781,7 @@ def build_argparser() -> argparse.ArgumentParser:
     p.add_argument("--news-dry-run", action="store_true")
     p.add_argument("--news-timeout", type=int, default=int(os.getenv("SUPABASE_TIMEOUT", "30")))
 
-    # --- Company assets (single-source script based) ---
+    # Company assets (single-source script based)
     p.add_argument("--refresh-company-assets", action="store_true",
                    help="Refresh company_map (via single-source script) and optional latest_prices before running")
     p.add_argument("--company-map-script", default=os.getenv("COMPANY_MAP_SCRIPT", "company_map_hybrid.py"),
@@ -949,7 +817,7 @@ def main():
         step_check_company_map(args.company_map_script)
 
     # 1) Decide fetch window
-    ann_out = Path(args.ingestion_file) # Selalu gunakan nama file dari argumen
+    ann_out = Path(args.ingestion_file)
     anns: List[Dict[str, Any]]
 
     if args.date:
@@ -986,6 +854,19 @@ def main():
             out_path=ann_out,
         )
 
+    try:
+        INGESTION_IDX = build_ingestion_index(str(ann_out))
+        LOG.info("[INGESTION-INDEX] indexed %d filenames (main + attachments)", len(INGESTION_IDX))
+        # Optional sanity ping: log 1 example mapping if available
+        if INGESTION_IDX:
+            any_fn = next(iter(INGESTION_IDX.keys()))
+            LOG.debug("[INGESTION-INDEX] example key: %s -> company=%s",
+                    any_fn, INGESTION_IDX[any_fn].get("company_name"))
+    except Exception as e:
+        LOG.warning("[INGESTION-INDEX] failed to build index from %s: %s", ann_out, e)
+        INGESTION_IDX = {}
+
+
     # 2) Download PDFs
     step_download_pdfs(
         anns,
@@ -1019,7 +900,7 @@ def main():
         idx_parsed=idx_out,
         non_idx_parsed=non_idx_out,
         downloads_meta=Path("data/downloaded_pdfs.json"),
-        ingestion_file=ann_out, # --- Meneruskan file ingestion ---
+        ingestion_file=ann_out, # Meneruskan file ingestion
         filings_out=filings_out,
         alerts_out=suspicious_out,
     )
@@ -1089,7 +970,7 @@ def main():
     # 8) Optional upload filings
     if args.upload:
         step_upload_supabase(
-            input_json=filings_out, # Gunakan filings_out yang sudah distandarisasi
+            input_json=filings_out, 
             table=args.table,
             supabase_url=args.supabase_url,
             supabase_key=args.supabase_key,

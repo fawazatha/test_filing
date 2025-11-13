@@ -1,5 +1,5 @@
 import re
-from typing import Union
+from typing import Optional, Union
 
 from decimal import Decimal, ROUND_FLOOR, InvalidOperation
 
@@ -11,6 +11,21 @@ def _to_decimal(x):
 def _floor_pct5(d: Decimal) -> Decimal:
     return ( (d * Decimal("1e5")).to_integral_value(rounding=ROUND_FLOOR) / Decimal("1e5") ).normalize()
 
+def pct_close(a, b, tol_pp=Decimal("0.00050")) -> bool:
+    """
+    Absolute tolerance compare in percentage points (e.g., 0.29000 vs 0.29049).
+    Default tol = 0.00050 (== 0.05pp).
+    """
+    da, db = _to_decimal(a), _to_decimal(b)
+    if da is None or db is None:
+        return False
+    return abs(da - db) <= _to_decimal(tol_pp)
+
+def safe_div(n, d) -> Optional[Decimal]:
+    n, d = _to_decimal(n), _to_decimal(d)
+    if n is None or d in (None, Decimal(0)):
+        return None
+    return (n / d).normalize()
 
 class NumberParser:
     """Centralized class for parsing locale-aware number strings."""
