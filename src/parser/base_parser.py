@@ -337,13 +337,11 @@ class BaseParser(ABC):
                     parsed_results.append(result)
                     logger.info(f"Successfully parsed {filename}")
                 else:
-                    self._parser_fail(
-                        code="validation_failed",  
-                        filename=filename,
-                        ctx={"announcement": ann_ctx},
-                    )
-                    logger.warning(f"Validation failed or no data extracted for {filename}")
-
+                    if not (isinstance(result, dict) and result.get("skip_filing")):
+                        self._fail(
+                            code="validation_failed",
+                            reasons=[...],
+                        )
             except Exception as e:
                 logger.error(f"Error processing {filename}: {e}")
                 self._parser_warn(

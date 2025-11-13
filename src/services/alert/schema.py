@@ -14,7 +14,6 @@ MESSAGE_TEMPLATES = {
     "symbol_missing": "Could not resolve the issuer symbol from the document or mapping.",
     "table_not_found": "No compatible transaction table was found in the document.",
     "parse_exception": "Unexpected error while parsing the document.",
-    "pdf_password_protected": "The PDF appears to be password-protected or encrypted and cannot be parsed.",
     "number_parse_error": "One or more numeric fields in the document could not be parsed.",
 
     # Parser (inserted / warnings)

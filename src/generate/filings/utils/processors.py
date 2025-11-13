@@ -42,6 +42,29 @@ except Exception:
 
 logger = logging.getLogger(__name__)
 
+# Direction sanity
+# def _validate_tx_direction(
+#     before: Optional[float],
+#     after: Optional[float],
+#     tx_type: str,
+#     eps: float = 1e-3
+# ) -> Tuple[bool, Optional[str]]:
+#     try:
+#         b = float(before) if before is not None else None
+#         a = float(after) if after is not None else None
+#     except Exception:
+#         return False, "non_numeric_before_after"
+#     if b is None or a is None:
+#         return False, "missing_before_or_after"
+
+#     t = (tx_type or "").strip().lower()
+#     if t == "buy" and a + eps < b:
+#         return False, f"inconsistent_buy: after({a}) < before({b})"
+#     if t == "sell" and a > b + eps:
+#         return False, f"inconsistent_sell: after({a}) > before({b})"
+#     return True, None
+
+
 def _validate_tx_direction(
     before: Optional[float],
     after: Optional[float],

@@ -1,6 +1,6 @@
 # parser_idx.py
 from __future__ import annotations
-from typing import List, Dict, Optional, Tuple, Any
+from typing import List, Dict, Optional, Any
 import os, re
 from pathlib import Path
 
@@ -130,7 +130,6 @@ class IDXParser(BaseParser):
           - no_text_extracted  (not_inserted)
           - parse_exception    (not_inserted)
           - symbol_missing     (not_inserted, when symbol cannot be resolved)
-          - mismatch_transaction_type (inserted, warning)
           - symbol_name_mismatch      (inserted, warning)
         """
         self._current_alert_context = (pdf_mapping or {}).get(filename) or {}

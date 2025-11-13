@@ -1,36 +1,30 @@
 # parser_non_idx.py
 from __future__ import annotations
-
 import os, re, json
-import logging
 import unicodedata
+import pdfplumber
 from typing import Dict, Any, Optional, List, Tuple
 
-import pdfplumber
-
 from src.common.log import get_logger
-from src.common.datetime import MONTHS_EN 
+from src.common.datetime import MONTHS_EN, MONTHS_ID
+
 from .base_parser import BaseParser
 from .utils.number_parser import NumberParser
 from .utils.name_cleaner import NameCleaner
 from .utils.transaction_classifier import TransactionClassifier
 from .utils.company_resolver import (
+    load_symbol_to_name_from_file,
     build_reverse_map,
     resolve_symbol_from_emiten,
-    canonical_name_for_symbol,
     normalize_company_name,
-    suggest_symbols,
-    resolve_symbol_and_name,
-    pretty_company_name,
 )
 
 logger = get_logger(__name__)   
 
-# Tanggal / Bulan
-_BULAN = {
-    'januari':1,'februari':2,'maret':3,'april':4,'mei':5,'juni':6,'juli':7,'agustus':8,'september':9,'oktober':10,'november':11,'desember':12,
-    'january':1,'february':2,'march':3,'april':4,'may':5,'june':6,'july':7,'august':8,'september':9,'october':10,'november':11,'december':12,
-}
+_MONTH: Dict[str, int] = {}
+_MONTH.update(MONTHS_ID)
+_MONTH.update(MONTHS_EN)
+
 _DATE_RE = re.compile(r'tanggal\s*:\s*(\d{1,2})\s+([A-Za-zÀ-ÿ]+)\s+(\d{4})', re.IGNORECASE)
 
 def _parse_tx_date_from_text(text: str) -> Optional[str]:
@@ -40,7 +34,7 @@ def _parse_tx_date_from_text(text: str) -> Optional[str]:
     if not m:
         return None
     d, mon, y = m.groups()
-    mm = _BULAN.get(mon.lower())
+    mm = _MONTH.get(mon.lower())
     return f"{int(y):04d}-{int(mm):02d}-{int(d):02d}" if mm else None
 
 
@@ -90,30 +84,7 @@ def _title_case_holder(name: str) -> str:
         return s
 
 
-# Direction sanity
-def _validate_tx_direction(
-    before: Optional[float],
-    after: Optional[float],
-    tx_type: str,
-    eps: float = 1e-3
-) -> Tuple[bool, Optional[str]]:
-    try:
-        b = float(before) if before is not None else None
-        a = float(after) if after is not None else None
-    except Exception:
-        return False, "non_numeric_before_after"
-    if b is None or a is None:
-        return False, "missing_before_or_after"
-
-    t = (tx_type or "").strip().lower()
-    if t == "buy" and a + eps < b:
-        return False, f"inconsistent_buy: after({a}) < before({b})"
-    if t == "sell" and a > b + eps:
-        return False, f"inconsistent_sell: after({a}) > before({b})"
-    return True, None
-
-
-# DOWNLOADS META (NEW)
+# Downloads Meta
 _DL_DEFAULT_PATH = os.getenv("DOWNLOADS_META_FILE", "data/downloaded_pdfs.json")
 
 def _load_downloads_meta(path: Optional[str] = None) -> List[Dict[str, Any]]:
@@ -141,13 +112,6 @@ def _stem(s: Optional[str]) -> Optional[str]:
     return root
 
 def _resolve_dl_ctx(downloads_meta: List[Dict[str, Any]], filename: str) -> Dict[str, Any]:
-    """
-    Cari baris yang cocok dari downloaded_pdfs.json dengan strategi:
-    1) exact match on 'filename'
-    2) match by url basename
-    3) last resort: compare stem
-    Typical item: {"filename":"...pdf","url":"https://...","timestamp":"..."}
-    """
     fn = (filename or "").strip()
     base = _basename(fn)
     st   = _stem(fn)
@@ -177,9 +141,7 @@ def _resolve_dl_ctx(downloads_meta: List[Dict[str, Any]], filename: str) -> Dict
 
 
 class NonIDXParser(BaseParser):
-    _CORP_STOPWORDS = {
-        "pt", "p.t", "perseroan", "terbatas", "tbk", "tbk.", "tbk,", "(tbk"
-    }
+    _CORP_STOPWORDS = {"pt", "p.t", "perseroan", "terbatas", "tbk", "tbk.", "tbk,", "(tbk"}
     _TOKEN_SPLIT = re.compile(r"[^a-z0-9]+", re.UNICODE)
 
     def __init__(
@@ -193,14 +155,14 @@ class NonIDXParser(BaseParser):
             output_file,
             announcement_json,
             alerts_file=os.getenv("ALERTS_NON_IDX", "alerts/alerts_non_idx.json"),
-            alerts_not_inserted_file=os.getenv("ALERTS_NOT_INSERTED_NON_IDX", "alerts/alerts_not_inserted_non_idx.json"),
+            alerts_not_inserted_file=os.getenv(
+                "ALERTS_NOT_INSERTED_NON_IDX", "alerts/alerts_not_inserted_non_idx.json"
+            ),
         )
 
         self.excluded_names = {"Masyarakat lainnya yang dibawah 5%"}
-
         self._symbol_to_name: Optional[Dict[str, str]] = None
         self._rev_company_map: Optional[Dict[str, List[str]]] = None
-
         self._debug_trace = os.getenv("COMPANY_RESOLVE_DEBUG", "0") == "1"
         self._synonym_enable = os.getenv("NONIDX_RESOLVE_SYNONYM_ENABLE", "1") != "0"
 
@@ -241,14 +203,20 @@ class NonIDXParser(BaseParser):
             exists = probe in (self._rev_company_map or {})
             logger.info("[company_map] probe_key='%s' present=%s", probe, exists)
 
-    # == Entry point ==
-    def parse_single_pdf(
-        self, filepath: str, filename: str, pdf_mapping: Dict[str, Any]
-    ) -> Optional[List[Dict[str, Any]]]:
-        # NOTE: ann_ctx masih dipakai *hanya* untuk payload alert/debug.
+    # Entry point
+    def parse_single_pdf(self, filepath: str, filename: str, pdf_mapping: Dict[str, Any],) -> Optional[List[Dict[str, Any]]]:
+        """
+        Parse a single Non-IDX-format insider report into a list of
+        normalized row-level filings.
+
+        Parser alert codes used at this stage:
+          - table_not_found   (fatal, not_inserted)
+          - parse_exception   (fatal, not_inserted)
+          - company_resolve_ambiguous (warning, inserted; per row)
+        """
         ann_ctx = (pdf_mapping or {}).get(filename, {})
 
-        # NEW: meta downloaded_pdfs.json
+        # Download meta: used to fill 'source' and 'timestamp' from downloader.
         downloads_meta = _load_downloads_meta()
         dl_ctx = _resolve_dl_ctx(downloads_meta, filename)
 
@@ -264,15 +232,24 @@ class NonIDXParser(BaseParser):
                 last_page = pdf.pages[-1]
                 table = self._extract_last_page_table(last_page)
                 if not table or len(table) < 2:
-                    self.alert_manager_not_inserted.log_alert(
-                        filename, "No Table Found", {"announcement": ann_ctx, "downloads_meta": dl_ctx}
+                    self._fail(
+                        code="table_not_found",
+                        reasons=[
+                            {
+                                "scope": "parser",
+                                "code": "table_not_found",
+                                "message": "No compatible transaction table was found in the document.",
+                                "details": {
+                                    "announcement": ann_ctx,
+                                    "downloads_meta": dl_ctx,
+                                },
+                            }
+                        ],
                     )
                     self._blocked_already_logged = True
                     return None
 
-                data_rows = self._process_table_rows(
-                    table, all_text, title_line, emiten_name, filename
-                )
+                data_rows = self._process_table_rows( table=table, all_text=all_text, title_line=title_line, emiten_name=emiten_name, source_name=filename,)
 
                 filtered_rows = [
                     entry for entry in data_rows
@@ -287,10 +264,10 @@ class NonIDXParser(BaseParser):
 
                 # Pull URL & timestamp from downloads meta
                 dl_url = dl_ctx.get("url")
-                dl_ts  = dl_ctx.get("timestamp")  # biarkan apa adanya (ISO/string)
+                dl_ts  = dl_ctx.get("timestamp") 
 
                 for e in filtered_rows:
-                    # === SOURCE & TIMESTAMP (FROM DOWNLOADED_PDFS.JSON) ===
+                    # SOURCE & TIMESTAMP (FROM DOWNLOADED_PDFS.JSON)
                     if dl_url:
                         e["source"] = dl_url
                     # fallback timestamp: downloaded meta -> tanggal di teks
@@ -343,14 +320,24 @@ class NonIDXParser(BaseParser):
 
         except Exception as e:
             logger.error(f"Error parsing {filename}: {e}")
-            self.alert_manager_not_inserted.log_alert(
-                filename, "parsing_error",
-                {"message": str(e), "announcement": ann_ctx, "downloads_meta": dl_ctx}
+            self._fail(
+                code="parse_exception",
+                reasons=[
+                    {
+                        "scope": "parser",
+                        "code": "parse_exception",
+                        "message": f"Unexpected error while parsing the document: {e}",
+                        "details": {
+                            "announcement": ann_ctx,
+                            "downloads_meta": dl_ctx,
+                        },
+                    }
+                ],
             )
             self._blocked_already_logged = True
             return None
 
-    # == PDF helpers ==
+    # PDF helpers
     def _extract_last_page_table(self, last_page) -> Optional[List[List[str]]]:
         table_settings = {
             "vertical_strategy": "lines",
@@ -363,20 +350,24 @@ class NonIDXParser(BaseParser):
             "min_words_horizontal": 1,
         }
 
+        # Strategy 1: tuned settings + extract_table
         tbl = last_page.extract_table(table_settings=table_settings)
         if tbl and len(tbl) >= 2:
             return tbl
 
+        # Strategy 2: tuned settings + extract_tables
         tables = last_page.extract_tables(table_settings=table_settings) or []
         tables = [t for t in tables if t and len(t) >= 2]
         if tables:
             tables.sort(key=lambda t: len(t), reverse=True)
             return tables[0]
 
+        # Strategy 3: default extract_table
         tbl = last_page.extract_table()
         if tbl and len(tbl) >= 2:
             return tbl
 
+        # Strategy 4: default extract_tables
         tables = last_page.extract_tables() or []
         tables = [t for t in tables if t and len(t) >= 2]
         if tables:
@@ -384,6 +375,7 @@ class NonIDXParser(BaseParser):
             return tables[0]
 
         return None
+
 
     def _extract_metadata(self, text: str) -> Tuple[str, str]:
         lines = [line.strip() for line in text.split('\n') if line.strip()]
@@ -394,6 +386,7 @@ class NonIDXParser(BaseParser):
         bae_line = next((line for line in lines if "BAE" in line.upper()), "")
         reporter_name = bae_line.split(":")[-1].strip() if ":" in bae_line else "UNKNOWN"
         return title_line, reporter_name
+
 
     def _extract_emiten_name(self, text: str) -> Optional[str]:
         lines = [l.strip() for l in text.splitlines() if l.strip()]
@@ -417,7 +410,8 @@ class NonIDXParser(BaseParser):
             return m.group(1).strip()
         return None
 
-    # == Company resolution ==
+
+    # Company resolution
     def _resolve_symbol_from_emiten_local(self, emiten_name: Optional[str], full_text: str) -> Optional[str]:
         if not self._symbol_to_name or not self._rev_company_map:
             return None
@@ -437,7 +431,7 @@ class NonIDXParser(BaseParser):
         if self._debug_trace:
             logger.info(
                 "[nonidx-resolve] query='%s' norm='%s' sym=%s key_used='%s' tried=%s",
-                query, norm_query, sym, key_used, tried
+                query, norm_query, sym, key_used, tried,
             )
 
         if sym:
@@ -472,16 +466,26 @@ class NonIDXParser(BaseParser):
 
         try:
             if self._debug_trace:
-                self.alert_manager.log_alert(
-                    "symbol_resolve_trace",
-                    f"Symbol Not Resolved (min_score={min_score})",
-                    {"query": query, "normalized": norm_query}
+                self._warn(
+                    code="parser_warning",
+                    reasons=[
+                        {
+                            "scope": "parser",
+                            "code": "parser_warning",
+                            "message": "Debug trace: symbol resolution failed for NonIDX document.",
+                            "details": {
+                                "query": query,
+                                "normalized": norm_query,
+                                "min_score": min_score,
+                            },
+                        }
+                    ],
                 )
         except Exception:
             pass
         return None
 
-    # == Row processing ==
+    # Row processing
     def _coerce_dash_zero(self, s: Any, as_percentage: bool = False):
         txt = (str(s or "")).strip()
         if txt in {"-", "–", "—", ""}:
@@ -533,13 +537,8 @@ class NonIDXParser(BaseParser):
 
         return data_rows
 
-    def _process_single_row(self,
-                            row: List[str],
-                            all_text: str,
-                            title_line: str,
-                            source_name: str,
-                            emiten_name: Optional[str]) -> Optional[Dict[str, Any]]:
 
+    def _process_single_row(self, row: List[str], all_text: str, title_line: str, source_name: str, emiten_name: Optional[str]) -> Optional[Dict[str, Any]]:
         safe_row = [(c or "").strip() for c in row]
         if len(safe_row) < 5:
             return None
@@ -579,11 +578,6 @@ class NonIDXParser(BaseParser):
             all_text, float(pct_before), float(pct_after)
         )
 
-        # Direction sanity
-        if tx_type in ("buy", "sell"):
-            ok, reason = _validate_tx_direction(pct_before, pct_after, tx_type)
-            if not ok:
-                return None
 
         # Build base filing
         filing: Dict[str, Any] = {
@@ -627,11 +621,24 @@ class NonIDXParser(BaseParser):
                     "min_score": int(os.getenv("NONIDX_RESOLVE_MIN_SCORE", "88")),
                     "debug": self._debug_trace,
                 }
-                self.alert_manager.log_alert(source_name, "Symbol Not Resolved", payload)
+                self._warn(
+                    code="company_resolve_ambiguous",
+                    reasons=[
+                        {
+                            "scope": "parser",
+                            "code": "company_resolve_ambiguous",
+                            "message": (
+                                "Issuer mapping is ambiguous or below confidence "
+                                "threshold in NonIDX parser."
+                            ),
+                            "details": payload,
+                        }
+                    ],
+                )
             except Exception:
-                logger.warning(f"[alert] Symbol Not Resolved for {source_name} (emiten='{emiten_name}')")
+                logger.warning("[alert] Symbol Not Resolved for %s (emiten='%s')", source_name, emiten_name,)
 
-        # === Standardized tags ===
+        # Standardized tags
         flags = TransactionClassifier.detect_flags_from_text(all_text)
         txns = [{"type": tx_type, "amount": filing["amount_transaction"] or 0}] if tx_type else []
 
@@ -644,7 +651,7 @@ class NonIDXParser(BaseParser):
 
         return filing
 
-    # == Output ==
+    # Output
     def validate_parsed_data(self, data: List[Dict[str, Any]]) -> bool:
         return bool(data)
 
