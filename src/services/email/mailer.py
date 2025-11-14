@@ -1,3 +1,4 @@
+# src/services/email/mailer.py
 from __future__ import annotations
 
 import os
@@ -41,10 +42,32 @@ def _render_email_content(alerts: List[Dict[str, Any]],
         ttype = a.get("type") or a.get("transaction_type") or a.get("alert_type") or "-"
         price = a.get("price") or a.get("parsed_price")
         amount = a.get("amount") or a.get("amount_transacted") or a.get("shares")
-        src = a.get("source") or a.get("doc_url") or a.get("url") or "-"
-        ts = a.get("timestamp") or a.get("date") or a.get("time") or "-"
+
+        ann = a.get("announcement") or {}
+
+        ts = (
+            a.get("timestamp")
+            or a.get("transaction_date")
+            or ann.get("published_at")
+            or ann.get("publish_date")
+            or a.get("date")
+            or a.get("time")
+            or "-"
+        )
+
+        src = (
+            a.get("source")
+            or a.get("doc_url")
+            or a.get("url")
+            or ann.get("url")
+            or ann.get("idx_url")
+            or ann.get("link")
+            or "-"
+        )
+
         lines.append(f"{i}. {sym} | {ttype} | holder={holder} | amount={amount} | price={price} | ts={ts}")
         lines.append(f"   src: {src}")
+
     body_text = "\n".join(lines)
 
     # html
@@ -58,9 +81,34 @@ def _render_email_content(alerts: List[Dict[str, Any]],
         price = a.get("price") or a.get("parsed_price") or "-"
         amount = a.get("amount") or a.get("amount_transacted") or a.get("shares") or "-"
         value = a.get("value") or a.get("transaction_value") or "-"
-        ts = a.get("timestamp") or a.get("date") or "-"
-        src = a.get("source") or a.get("doc_url") or a.get("url") or "-"
-        link = f'<a href="{_esc(src)}" target="_blank" rel="noopener">{_esc(src) or "-"}</a>' if src and src != "-" else "-"
+
+        ann = a.get("announcement") or {}
+
+        ts = (
+            a.get("timestamp")
+            or a.get("transaction_date")
+            or ann.get("published_at")
+            or ann.get("publish_date")
+            or a.get("date")
+            or "-"
+        )
+
+        src = (
+            a.get("source")
+            or a.get("doc_url")
+            or a.get("url")
+            or ann.get("url")
+            or ann.get("idx_url")
+            or ann.get("link")
+            or "-"
+        )
+
+        link = (
+            f'<a href="{_esc(src)}" target="_blank" rel="noopener">{_esc(src) or "-"}</a>'
+            if src and src != "-"
+            else "-"
+        )
+
 
         rows.append(
             f"<tr>"

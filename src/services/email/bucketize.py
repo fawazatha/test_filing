@@ -1,4 +1,4 @@
-# services/email/bucketize.py
+# src/services/email/bucketize.py
 from __future__ import annotations
 import argparse
 import json

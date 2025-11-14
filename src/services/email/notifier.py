@@ -1,4 +1,4 @@
-# src/services/send_alerts.py
+# src/services/email/notifier.py
 from __future__ import annotations
 
 import json
@@ -7,7 +7,6 @@ from pathlib import Path
 from typing import Any, Dict, List, Optional, Tuple
 
 try:
-    # Preferred relative imports (monorepo style)
     from src.config.config import (
         GATE_REASONS,
         ALERTS_OUTPUT_DIR,
@@ -16,14 +15,14 @@ try:
         SUGGEST_PRICE_RATIO,
     )
 except Exception:
-    # Flat layout fallback for tests
-    from src.config.config import (
+    from config import (
         GATE_REASONS,
         ALERTS_OUTPUT_DIR,
         ALERTS_INSERTED_FILENAME,
         ALERTS_NOT_INSERTED_FILENAME,
         SUGGEST_PRICE_RATIO,
     )
+
 
 logger = logging.getLogger(__name__)
 

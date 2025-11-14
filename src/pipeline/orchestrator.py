@@ -33,7 +33,7 @@ from services.email.bucketize import bucketize as bucketize_alerts
 from services.upload.artifacts import make_artifact_zip
 
 from services.email.ses_email import send_attachments
-from services.email.alerts_mailer import _render_email_content
+from src.services.email.mailer import _render_email_content
 
 from generate.articles.runner import run_from_filings as run_articles_from_filings
 from generate.articles.utils.uploader import upload_news_file_cli
