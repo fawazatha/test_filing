@@ -1,7 +1,7 @@
 # src/services/email/bucketize.py
 from __future__ import annotations
 import argparse
-import json
+import json, os
 import logging
 import shutil
 from pathlib import Path
@@ -9,7 +9,7 @@ from typing import Dict, List, Tuple, Any, Optional
 
 log = logging.getLogger("alerts.bucketize")
 
-DEFAULT_FROM_DIR = "alerts"
+DEFAULT_FROM_DIR = os.getenv("FILINGS_ALERTS_DIR", "artifacts")
 
 # Policy toggles (adjust if needed)
 # Only include rows in *Inserted* payloads that have reasons OR needs_review.
@@ -138,6 +138,19 @@ def _is_inserted_row_worthy(row: dict) -> bool:
     return True
 
 
+def _load_raw_passthrough(p: Path) -> Optional[Any]:
+    """If JSON parsing fails but the file is non-empty, return the raw text string.
+
+    This is used as a conservative fallback so we don't accidentally drop a file
+    just because the JSON is slightly malformed.
+    """
+    try:
+        raw = p.read_text(encoding="utf-8")
+    except Exception:
+        return None
+    return raw if raw.strip() else None
+
+
 def _filter_inserted_payload(src: Path) -> Optional[Any]:
     """Load JSON and filter rows for *Inserted* policy.
 
@@ -188,7 +201,6 @@ def _load_raw_passthrough(p: Path) -> Optional[Any]:
 
 #-
 # File copy helpers
-#-
 def _ensure_dir(d: Path) -> None:
     d.mkdir(parents=True, exist_ok=True)
 
@@ -246,9 +258,7 @@ def _copy_inserted_with_filter(src: Path, dst: Path, *, dry_run: bool = False) -
     return True
 
 
-#-
 # Main bucketize routine
-#-
 def bucketize(
     *,
     from_dir: Path,
@@ -264,7 +274,7 @@ def bucketize(
     Supports:
       1) Legacy/static filenames (INSERTED_CANDIDATES & NOT_INSERTED_CANDIDATES)
       2) V2 dynamic (glob):
-           alerts_inserted_*.json       -> inserted_dir (with *row filtering*)
+           alerts_inserted_*.json       -> inserted_dir (with row filtering)
            alerts_not_inserted_*.json   -> not_inserted_dir (verbatim)
     """
     from_dir = from_dir.resolve()
@@ -273,7 +283,7 @@ def bucketize(
 
     stats = {"inserted": 0, "not_inserted": 0}
 
-    # 1) Legacy/static
+    # 1) Legacy/static filenames
     for src_name, final_name in INSERTED_CANDIDATES:
         src = from_dir / src_name
         dst = inserted_dir / final_name
@@ -303,21 +313,33 @@ def bucketize(
 
 def _build_argparser() -> argparse.ArgumentParser:
     p = argparse.ArgumentParser(
-        description="Bucketize alerts into alerts_inserted/ and alerts_not_inserted/ "
-                    "(supports legacy & V2 filenames; filters Inserted rows by policy)"
+        description=(
+            "Bucketize alerts into alerts_inserted/ and alerts_not_inserted/ "
+            "(supports legacy & V2 filenames; filters Inserted rows by policy)"
+        )
     )
-    p.add_argument("--from", dest="from_dir", default=DEFAULT_FROM_DIR,
-                   help="Source alerts dir (default: alerts)")
-    p.add_argument("--inserted-dir", default="alerts_inserted",
-                   help="Destination dir for inserted alerts (default: alerts_inserted)")
-    p.add_argument("--not-inserted-dir", default="alerts_not_inserted",
-                   help="Destination dir for not-inserted alerts (default: alerts_not_inserted)")
+    p.add_argument(
+        "--from",
+        dest="from_dir",
+        default=DEFAULT_FROM_DIR,
+        help=f"Source alerts dir (default: {DEFAULT_FROM_DIR})",
+    )
+    p.add_argument(
+        "--inserted-dir",
+        default="alerts_inserted",
+        help="Destination dir for inserted alerts (default: alerts_inserted)",
+    )
+    p.add_argument(
+        "--not-inserted-dir",
+        default="alerts_not_inserted",
+        help="Destination dir for not-inserted alerts (default: alerts_not_inserted)",
+    )
     p.add_argument("-v", "--verbose", action="store_true")
     p.add_argument("--dry-run", action="store_true")
     return p
 
 
-def main():
+def main() -> None:
     ap = _build_argparser()
     args = ap.parse_args()
 
