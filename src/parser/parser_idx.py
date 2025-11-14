@@ -59,12 +59,13 @@ class IDXParser(BaseParser):
         announcement_json: str = "data/idx_announcements.json",
     ):
         super().__init__(
-            pdf_folder,
-            output_file,
-            announcement_json,
-            alerts_file=os.getenv("ALERTS_IDX", "alerts/alerts_idx.json"),
-            alerts_not_inserted_file=os.getenv("ALERTS_NOT_INSERTED_IDX", "alerts/alerts_not_inserted_idx.json"),
+            pdf_folder=pdf_folder,
+            output_file=output_file,
+            announcement_json=announcement_json,
         )
+        # Label parser ini
+        self.parser_type = "idx"
+
         self._current_alert_context: Optional[Dict[str, Any]] = None
 
         self.company_map = self._load_company_mapping() or self.symbol_to_name or {}
@@ -136,8 +137,9 @@ class IDXParser(BaseParser):
 
         text = self.extract_text_from_pdf(filepath)
         if not text:
-            self._fail(
+            self._parser_fail(
                 code="no_text_extracted",
+                filename=filename,
                 reasons=[
                     {
                         "scope": "parser",
@@ -178,8 +180,9 @@ class IDXParser(BaseParser):
         except Exception as e:
             logger.error(f"extract_fields error {filename}: {e}", exc_info=True)
             # Fatal: structural parse error
-            self._fail(
+            self._parser_fail(
                 code="parse_exception",
+                filename=filename,
                 reasons=[
                     {
                         "scope": "parser",
@@ -263,6 +266,26 @@ class IDXParser(BaseParser):
                     company_name_out = (
                         canonical_name_for_symbol(self.company_map, sym) or issuer_name_raw
                     )
+            
+            if sym:
+                sym_from_name = sym
+                sym_doc: Optional[str] = None
+
+                issuer_code_token = (res.get("issuer_code") or "").strip().upper()
+                if issuer_code_token and SYMBOL_TOKEN_RE.fullmatch(issuer_code_token):
+                    # Normalisasi ke format dengan .JK biar konsisten
+                    if not issuer_code_token.endswith(".JK"):
+                        issuer_code_token = f"{issuer_code_token}.JK"
+                    sym_doc = issuer_code_token
+
+                if sym_from_name and sym_doc and sym_from_name != sym_doc:
+                    self._alert_symbol_mismatch(
+                        filename=filename,
+                        raw=issuer_name_raw,
+                        canon=company_name_out,
+                        sym_from_name=sym_from_name,
+                        sym_doc=sym_doc,
+                    )
 
         if issuer_name_raw and not sym:
             norm_key = normalize_company_name(issuer_name_raw)
@@ -273,8 +296,9 @@ class IDXParser(BaseParser):
                 top_k=int(os.getenv("COMPANY_SUGGEST_TOPK", "3")),
             )
 
-            self._fail(
+            self._parser_fail(
                 code="symbol_missing",
+                filename=filename,
                 reasons=[
                     {
                         "scope": "parser",
@@ -283,7 +307,8 @@ class IDXParser(BaseParser):
                         "details": {
                             "company_name_raw": issuer_name_raw,
                             "normalized_key": norm_key,
-                            "missing_in_company_map": norm_key not in (self._rev_company_map or {}),
+                            "missing_in_company_map": norm_key
+                            not in (self._rev_company_map or {}),
                             "suggestions": suggestions,
                             "announcement": self._current_alert_context,
                         },
@@ -560,8 +585,9 @@ class IDXParser(BaseParser):
         Emit an inserted warning when company name and symbol combination
         looks suspicious but still parseable.
         """
-        self._warn(
+        self._parser_warn(
             code="symbol_name_mismatch",
+            filename=filename,
             reasons=[
                 {
                     "scope": "parser",

@@ -151,14 +151,12 @@ class NonIDXParser(BaseParser):
         announcement_json: str = "data/idx_announcements.json",
     ):
         super().__init__(
-            pdf_folder,
-            output_file,
-            announcement_json,
-            alerts_file=os.getenv("ALERTS_NON_IDX", "alerts/alerts_non_idx.json"),
-            alerts_not_inserted_file=os.getenv(
-                "ALERTS_NOT_INSERTED_NON_IDX", "alerts/alerts_not_inserted_non_idx.json"
-            ),
+            pdf_folder=pdf_folder,
+            output_file=output_file,
+            announcement_json=announcement_json,
         )
+        # Label parser ini
+        self.parser_type = "non_idx"
 
         self.excluded_names = {"Masyarakat lainnya yang dibawah 5%"}
         self._symbol_to_name: Optional[Dict[str, str]] = None
@@ -219,6 +217,7 @@ class NonIDXParser(BaseParser):
         # Download meta: used to fill 'source' and 'timestamp' from downloader.
         downloads_meta = _load_downloads_meta()
         dl_ctx = _resolve_dl_ctx(downloads_meta, filename)
+        self._current_alert_context = ann_ctx or {}
 
         try:
             with pdfplumber.open(filepath) as pdf:
@@ -232,8 +231,9 @@ class NonIDXParser(BaseParser):
                 last_page = pdf.pages[-1]
                 table = self._extract_last_page_table(last_page)
                 if not table or len(table) < 2:
-                    self._fail(
+                    self._parser_fail(
                         code="table_not_found",
+                        filename=filename,
                         reasons=[
                             {
                                 "scope": "parser",
@@ -320,8 +320,9 @@ class NonIDXParser(BaseParser):
 
         except Exception as e:
             logger.error(f"Error parsing {filename}: {e}")
-            self._fail(
+            self._parser_fail(
                 code="parse_exception",
+                filename=filename,
                 reasons=[
                     {
                         "scope": "parser",
@@ -464,25 +465,13 @@ class NonIDXParser(BaseParser):
                     logger.info("[nonidx-resolve] token-scan hit cand=%s", cand)
                 return cand
 
-        try:
-            if self._debug_trace:
-                self._warn(
-                    code="parser_warning",
-                    reasons=[
-                        {
-                            "scope": "parser",
-                            "code": "parser_warning",
-                            "message": "Debug trace: symbol resolution failed for NonIDX document.",
-                            "details": {
-                                "query": query,
-                                "normalized": norm_query,
-                                "min_score": min_score,
-                            },
-                        }
-                    ],
-                )
-        except Exception:
-            pass
+        if self._debug_trace:
+            logger.info(
+                "[nonidx-resolve-debug] symbol resolution failed: query='%s' norm='%s' min_score=%s",
+                query,
+                norm_query,
+                min_score,
+            )
         return None
 
     # Row processing
@@ -583,9 +572,9 @@ class NonIDXParser(BaseParser):
         filing: Dict[str, Any] = {
             "title": title_line.strip(),
             "body": all_text.strip(),
-            "source": source_name,   # sementara: akan di-overwrite oleh dl_ctx di parse_single_pdf
-            "timestamp": None,       # akan diisi dari dl_ctx/tx_date
-            "tags": [],              # filled below (standardized)
+            "source": source_name,   
+            "timestamp": None,      
+            "tags": [],              
             "symbol": None,
             "transaction_type": tx_type,
             "holder_type": holder_type,
@@ -621,8 +610,9 @@ class NonIDXParser(BaseParser):
                     "min_score": int(os.getenv("NONIDX_RESOLVE_MIN_SCORE", "88")),
                     "debug": self._debug_trace,
                 }
-                self._warn(
+                self._parser_warn(
                     code="company_resolve_ambiguous",
+                    filename=source_name,
                     reasons=[
                         {
                             "scope": "parser",

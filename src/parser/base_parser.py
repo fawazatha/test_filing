@@ -11,6 +11,12 @@ from src.parser.utils.company_resolver import (
     build_reverse_map,
 )
 
+from config import (
+    ALERTS_OUTPUT_DIR,
+    ALERTS_INSERTED_FILENAME,
+    ALERTS_NOT_INSERTED_FILENAME,
+)
+
 logger = logging.getLogger(__name__)
 
 # PDFMiner noise control
@@ -86,8 +92,6 @@ class BaseParser(ABC):
         pdf_folder: str,
         output_file: str,
         announcement_json: Optional[str] = None,
-        alerts_file: Optional[str] = None,
-        alerts_not_inserted_file: Optional[str] = None,
     ):
         # Pastikan kontrol logging aktif sedini mungkin (honor PDF_DEBUG env)
         init_logging(pdf_debug=None)
@@ -100,15 +104,21 @@ class BaseParser(ABC):
         self._alerts_inserted: List[Dict[str, Any]] = []
         self._alerts_not_inserted: List[Dict[str, Any]] = []
 
-        # output files for alerts (can be overridden via env)
-        self._alerts_inserted_file = os.getenv(
-            "ALERTS_INSERTED_PARSER",
-            "alerts/alerts_inserted_parser.json",
+        # Tentukan file alerts per hari (v2 unified)
+        today = datetime.now().date().isoformat()  # "YYYY-MM-DD"
+
+        # Path final (misal: artifacts/alerts_inserted_2025-11-14.json)
+        self._alerts_inserted_file = os.path.join(
+            ALERTS_OUTPUT_DIR,
+            ALERTS_INSERTED_FILENAME.format(date=today),
         )
-        self._alerts_not_inserted_file = os.getenv(
-            "ALERTS_NOT_INSERTED_PARSER",
-            "alerts/alerts_not_inserted_parser.json",
+        self._alerts_not_inserted_file = os.path.join(
+            ALERTS_OUTPUT_DIR,
+            ALERTS_NOT_INSERTED_FILENAME.format(date=today),
         )
+
+        # Optional: parser_type, bisa di-set di subclass (idx / non_idx)
+        self.parser_type: Optional[str] = getattr(self, "parser_type", None)
 
         # current context for the file being parsed (announcement, urls, etc.)
         self._current_alert_context: Dict[str, Any] = {}
@@ -224,6 +234,10 @@ class BaseParser(ABC):
         )
         doc_title = ann.get("title") or ann.get("announcement_title")
 
+        ctx = ctx or {}
+        if "parser_type" not in ctx:
+            ctx["parser_type"] = getattr(self, "parser_type", None)
+
         return build_alert(
             category=category,
             stage="parser",
@@ -338,9 +352,21 @@ class BaseParser(ABC):
                     logger.info(f"Successfully parsed {filename}")
                 else:
                     if not (isinstance(result, dict) and result.get("skip_filing")):
-                        self._fail(
+                        self._parser_warn(
                             code="validation_failed",
-                            reasons=[...],
+                            filename=filename,
+                            reasons=[
+                                {
+                                    "scope": "parser",
+                                    "code": "validation_failed",
+                                    "message": "Parsed result failed validate_parsed_data check.",
+                                    "details": {
+                                        "filename": filename,
+                                        "result_type": type(result).__name__,
+                                    },
+                                }
+                            ],
+                            needs_review=True,
                         )
             except Exception as e:
                 logger.error(f"Error processing {filename}: {e}")

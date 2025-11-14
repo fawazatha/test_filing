@@ -15,6 +15,8 @@ MESSAGE_TEMPLATES = {
     "table_not_found": "No compatible transaction table was found in the document.",
     "parse_exception": "Unexpected error while parsing the document.",
     "number_parse_error": "One or more numeric fields in the document could not be parsed.",
+    "no_text_extracted": "No text could be extracted from the PDF at parser stage.",
+    "symbol_name_mismatch": "Resolved symbol does not match the company name found in the document.",
 
     # Parser (inserted / warnings)
     "company_resolve_ambiguous": "Issuer mapping is ambiguous; symbol resolution is below the confidence threshold.",
