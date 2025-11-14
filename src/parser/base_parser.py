@@ -1,4 +1,5 @@
-import os, json, logging, datetime
+import os, json, logging
+from datetime import datetime
 from abc import ABC, abstractmethod
 from typing import List, Dict, Any, Optional
 import pdfplumber
@@ -103,7 +104,7 @@ class BaseParser(ABC):
         self._alerts_not_inserted: List[Dict[str, Any]] = []
 
         # Tentukan file alerts per hari (v2 unified)
-        today = datetime.now().date().isoformat()  # "YYYY-MM-DD"
+        today = datetime.date.today().isoformat()  # "YYYY-MM-DD"
 
         # Path final (misal: artifacts/alerts_inserted_2025-11-14.json)
         self._alerts_inserted_file = os.path.join(
