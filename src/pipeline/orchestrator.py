@@ -394,45 +394,6 @@ def step_generate_filings(
     return cnt
 
 
-
-def step_alerts_v2_from_filings(
-    *,
-    filings_json: Path,
-    date_str: Optional[str] = None,
-) -> Tuple[Optional[Path], Optional[Path]]:
-    """
-    Build Alerts v2 from filings JSON:
-      - alerts/alerts_inserted_{date}.json
-      - alerts/alerts_not_inserted_{date}.json
-    """
-    from services.email.send_alerts import write_alert_files
-
-    if not filings_json.exists():
-        LOG.warning("[ALERTS-V2] %s not found; skip alerts_v2", filings_json)
-        return None, None
-
-    if not date_str:
-        date_str = _now_wib().strftime("%Y%m%d")
-
-    try:
-        payload = json.loads(filings_json.read_text(encoding="utf-8"))
-    except Exception as e:
-        LOG.error("[ALERTS-V2] failed reading %s: %s", filings_json, e)
-        return None, None
-
-    rows = payload["rows"] if isinstance(payload, dict) and "rows" in payload else payload
-    if not isinstance(rows, list):
-        LOG.error("[ALERTS-V2] %s must contain a JSON array (or {'rows': [...]})", filings_json)
-        return None, None
-
-    inserted_path, not_inserted_path = write_alert_files(
-        alerts_rows=rows,
-        date_str=date_str,
-    )
-    LOG.info("[ALERTS-V2] wrote inserted=%s not_inserted=%s", inserted_path, not_inserted_path)
-    return inserted_path, not_inserted_path
-
-
 def step_bucketize_alerts(
     *,
     from_dir: Path = Path("alerts"),
@@ -905,11 +866,8 @@ def main():
         alerts_out=suspicious_out,
     )
     
-    # 4.3) Alerts v2 (Langsung dari filings_out)
-    ins_p, not_p = step_alerts_v2_from_filings(filings_json=filings_out)
-    ins_p, not_p = _relocate_alerts_to_alerts_folder(ins_p, not_p)
 
-    # 4.5) (Optional) Generate articles
+    # 4.5) Generate articles
     if args.generate_articles:
         step_generate_articles(
             filings_json=filings_out, # Gunakan filings_out yang sudah distandarisasi
@@ -922,7 +880,7 @@ def main():
             prefer_symbol=args.prefer_symbol,
         )
 
-    # 4.6) (Optional) Upload news (articles)
+    # 4.6) Upload articles to news 
     if args.upload_news:
         if not (args.news_table and args.news_table.strip()):
             LOG.error("[UPLOAD-NEWS] news table is empty; aborting upload_news step.")

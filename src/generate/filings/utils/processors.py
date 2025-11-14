@@ -22,10 +22,11 @@ try:
         ZERO_MISSING_X100_MAX,
         PERCENT_TOL_PP,
         GATE_REASONS,
+        PRICE_LOOKBACK_DAYS,
     )
     from .provider import (
         get_market_reference,
-        suggest_price_range,   # kept for future use
+        suggest_price_range,   
         build_announcement_block,
     )
 except Exception:
@@ -328,27 +329,27 @@ def _check_tx_price_outlier(
 
     # 1) Deviation vs document median
     if doc_median:
-        r = _ratio(price, doc_median)
-        if r is not None and (r < WITHIN_DOC_RATIO_LOW or r > WITHIN_DOC_RATIO_HIGH):
+        r_doc = _ratio(price, doc_median)
+        if r_doc is not None and (r_doc < WITHIN_DOC_RATIO_LOW or r_doc > WITHIN_DOC_RATIO_HIGH):
             suspicious = True
             reasons.append({
                 "scope": "tx",
                 "code": "price_deviation_within_doc",
-                "message": f"Price deviates from doc-median by ratio {r:.3f}",
-                "details": {"price": price, "doc_median_price": doc_median, "ratio": r},
+                "message": f"Price deviates from doc-median by ratio {r_doc:.3f}",
+                "details": {"price": price, "doc_median_price": doc_median, "ratio": r_doc},
             })
 
     # 2) Deviation vs market reference
     market_ref_price = _safe_float((market_ref or {}).get("ref_price"))
     if market_ref_price:
-        r = _ratio(price, market_ref_price)
-        if r is not None and (r < MARKET_RATIO_LOW or r > MARKET_RATIO_HIGH):
+        r_market = _ratio(price, market_ref_price)
+        if r_market is not None and (r_market < MARKET_RATIO_LOW or r_market > MARKET_RATIO_HIGH):
             suspicious = True
             reasons.append({
                 "scope": "tx",
-                "code": "price_deviation_market",
-                "message": f"Price deviates from market-ref by ratio {r:.3f}",
-                "details": {"price": price, "market_ref": market_ref, "ratio": r},
+                "code": "price_deviation_vs_market",
+                "message": f"Price deviates from market-ref by ratio {r_market:.3f}",
+                "details": {"price": price, "market_ref": market_ref, "ratio": r_market},
             })
 
         # 3) Magnitude anomaly vs market
@@ -359,11 +360,12 @@ def _check_tx_price_outlier(
                 "scope": "tx",
                 "code": "possible_zero_missing",
                 "message": f"Price magnitude anomaly vs market-ref ({zlabel})",
-                "details": {"price": price, "market_ref": market_ref, "ratio": float(f"{r:.3f}")},
+                "details": {"price": price, "market_ref": market_ref, "ratio": float(f"{r_market:.3f}")},
             })
 
     # If we don't have market data, still check magnitude vs doc median
     elif doc_median:
+        r_doc = _ratio(price, doc_median)
         zflag, zlabel = _is_x10_or_x100(price, doc_median)
         if zflag:
             suspicious = True
@@ -371,12 +373,12 @@ def _check_tx_price_outlier(
                 "scope": "tx",
                 "code": "possible_zero_missing",
                 "message": f"Price magnitude anomaly vs doc-median ({zlabel})",
-                "details": {"price": price, "doc_median_price": doc_median, "ratio": float(f"{r:.3f}")},
+                "details": {"price": price, "doc_median_price": doc_median, "ratio": float(f"{r_doc:.3f}")},
             })
 
     return (suspicious, reasons)
 
-# P0-5: Recompute ownership percentages
+# Recompute ownership percentages
 def _recompute_percentages_model(record: FilingRecord) -> Dict[str, Any]:
     """
     Recompute delta percentage from transactions and compare to PDF-reported
@@ -475,13 +477,52 @@ def process_filing_record(
         record.audit_flags["document_median_price"] = doc_median_price
 
     # 4) Market reference window
+        # 4) Market reference window
     market_ref: Optional[Dict[str, Any]] = None
     try:
         market_ref = get_market_reference(symbol, n_days=MARKET_REF_N_DAYS)
     except Exception as e:
         logger.warning("get_market_reference failed for %s: %s", symbol, e)
+
+    # Attach market reference (if any) and derive row-level reasons.
     if market_ref:
         record.audit_flags["market_reference"] = market_ref
+
+        # Freshness / staleness check
+        freshness_days = _safe_float((market_ref or {}).get("freshness_days"))
+        if freshness_days is not None and freshness_days > float(PRICE_LOOKBACK_DAYS):
+            reasons.append({
+                "scope": "row",
+                "code": "stale_price",
+                "message": f"Market reference price is stale: {freshness_days} days old (>{PRICE_LOOKBACK_DAYS}d).",
+                "details": {
+                    "freshness_days": freshness_days,
+                    "price_lookback_days": PRICE_LOOKBACK_DAYS,
+                    "market_ref": market_ref,
+                },
+            })
+            row_flags["stale_price"] = True
+
+        # Missing ref_price even though we have a market_ref block
+        ref_price = _safe_float((market_ref or {}).get("ref_price"))
+        if ref_price is None:
+            reasons.append({
+                "scope": "row",
+                "code": "missing_price",
+                "message": "Market reference price is missing for the relevant date.",
+                "details": {"symbol": symbol, "market_ref": market_ref},
+            })
+            row_flags["missing_price"] = True
+    else:
+        # Entire market reference block missing – treat as missing_price.
+        reasons.append({
+            "scope": "row",
+            "code": "missing_price",
+            "message": "Market reference price is missing for the relevant date.",
+            "details": {"symbol": symbol},
+        })
+        row_flags["missing_price"] = True
+
 
     # 5) Per-transaction suspicious price checks
     any_suspicious = False
