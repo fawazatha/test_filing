@@ -100,7 +100,7 @@ class ParserConfig:
     non_idx_pdf_folder: str = "downloads/non-idx-format"
     output_dir: str = "data"
     debug_output_dir: str = "debug_output"
-    alerts_dir: str = ALERTS_OUTPUT_DIR
+    alerts_dir: str = "artifacts"
     
     # Files
     announcement_json: str = "data/idx_announcements.json"
