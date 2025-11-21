@@ -1,0 +1,102 @@
+from __future__ import annotations
+
+from typing import Any, Dict, List
+
+from src.common.datetime import now_wib
+from src.common.log import get_logger
+from src.common import sb as sbapi
+
+
+from .models import Workflow, WorkflowEvent
+from .rules import build_events_for_row
+
+logger = get_logger("workflow.engine")
+
+
+async def fetch_active_workflows() -> List[Workflow]:
+    rows = await sbapi.fetch_all(
+        table="user_workflow",
+        select="id,user_id,name,tickers,tags,channels,is_active",
+        filters=[("is_active", "eq.true")],
+    )
+
+    workflows: List[Workflow] = []
+    for r in rows:
+        raw_channels = r.get("channels") or {}
+
+        channels: Dict[str, Any]
+
+        if isinstance(raw_channels, dict):
+            channels = raw_channels
+
+        elif isinstance(raw_channels, list):
+            tmp: Dict[str, Any] = {}
+            for item in raw_channels:
+                if not isinstance(item, dict):
+                    continue
+                # each item should be a single-key dict
+                for key, value in item.items():
+                    if isinstance(value, dict):
+                        tmp[key] = value
+                    else:
+                        tmp[key] = {"value": value}
+            channels = tmp
+
+        else:
+            # Unknown structure; fall back to empty
+            channels = {}
+
+        workflows.append(
+            Workflow(
+                id=str(r["id"]),
+                user_id=int(r["user_id"]),
+                name=r.get("name") or "",
+                tickers=r.get("tickers") or [],
+                tags=r.get("tags") or [],
+                channels=channels,
+                is_active=bool(r.get("is_active")),
+            )
+        )
+
+    logger.info("Found %d active workflows", len(workflows))
+    return workflows
+
+
+async def fetch_mv_for_tickers(tickers: List[str]) -> List[Dict[str, Any]]:
+    if not tickers:
+        return []
+    return await sbapi.fetch_all(
+        table="idx_workflow_data",
+        select="*",
+        in_filters={"symbol": tickers},
+    )
+
+
+async def generate_events() -> List[WorkflowEvent]:
+    """
+    Main engine: baca user_workflow + idx_workflow_data → list WorkflowEvent.
+    (Belum mengirim ke channel; itu dihandle di runner.py + channels/*)
+    """
+    now = now_wib()
+    logger.info("Running sectors workflow at %s", now.isoformat())
+
+    workflows = await fetch_active_workflows()
+    logger.info("Found %d active workflows", len(workflows))
+
+    all_events: List[WorkflowEvent] = []
+
+    for wf in workflows:
+        if not wf.tags:
+            continue
+        if not wf.is_active:
+            continue
+
+        rows = await fetch_mv_for_tickers(wf.tickers)
+        logger.info("Workflow %s (%s): %d MV rows", wf.id, wf.name, len(rows))
+
+        for row in rows:
+            events = build_events_for_row(wf, row, now=now)
+            all_events.extend(events)
+
+    logger.info("Generated %d workflow events", len(all_events))
+    return all_events
