@@ -103,6 +103,7 @@ def _flatten_alert_fields(a: Dict[str, Any]) -> Dict[str, Any]:
 
     sym = (
         a.get("symbol")
+        or ctx.get("symbol")
         or details.get("symbol")
         or a.get("ticker")
         or a.get("tickers")
@@ -113,6 +114,7 @@ def _flatten_alert_fields(a: Dict[str, Any]) -> Dict[str, Any]:
 
     holder = (
         a.get("holder_name")
+        or ctx.get("holder_name")
         or details.get("holder_name")
         or a.get("holder")
         or a.get("name")
