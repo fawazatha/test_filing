@@ -59,3 +59,26 @@ def iso_utc(dt: Optional[datetime] = None, seconds_only: bool = True) -> str:
     if seconds_only:
         return dt.replace(microsecond=0).isoformat().replace("+00:00", "Z")
     return dt.isoformat().replace("+00:00", "Z")
+
+def _ensure_wib(dt: datetime) -> datetime:
+    if dt.tzinfo is None:
+        return dt.replace(tzinfo=JAKARTA_TZ)
+    return dt.astimezone(JAKARTA_TZ)
+
+
+def fmt_wib_date(dt: datetime, fmt: str = "%d %b %Y") -> str:
+    wib = _ensure_wib(dt)
+    return wib.strftime(fmt)
+
+
+def fmt_wib_range(start: datetime, end: datetime) -> str:
+    """
+    Format a WIB date-time range as a compact string.
+    """
+    s = _ensure_wib(start)
+    e = _ensure_wib(end)
+
+    if s.date() == e.date():
+        return f"{s.strftime('%d %b %Y %H:%M')} – {e.strftime('%H:%M')} WIB"
+
+    return f"{s.strftime('%d %b %Y %H:%M')} – {e.strftime('%d %b %Y %H:%M')} WIB"
