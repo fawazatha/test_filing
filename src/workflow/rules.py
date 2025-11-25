@@ -22,17 +22,17 @@ logger = get_logger("workflow.rules")
 
 # High/low hierarchy:
 HIGH_KEYS: List[Tuple[str, str]] = [
-    ("all_time_high_price", "all_time"),
-    ("high_52w_price", "52w"),
-    ("high_ytd_price", "ytd"),
-    ("high_90d_price", "90d"),
+    ("alltime_high", "alltime_high"),
+    ("yearly_high", "yearly_high"),
+    ("ytd_high", "ytd_high"),
+    ("quarterly_high", "quarterly_high"),
 ]
 
 LOW_KEYS: List[Tuple[str, str]] = [
-    ("all_time_low_price", "all_time"),
-    ("low_52w_price", "52w"),
-    ("low_ytd_price", "ytd"),
-    ("low_90d_price", "90d"),
+    ("alltime_low", "alltime_low"),
+    ("yearly_low", "yearly_low"),
+    ("ytd_low", "ytd_low"),
+    ("quarterly_low", "quarterly_low"),
 ]
 
 
@@ -143,10 +143,8 @@ def build_events_for_row(
         if tag in (TAG_NEW_HIGH, TAG_NEW_LOW):
             if tag == TAG_NEW_HIGH:
                 price, timeframe = _pick_high_low_value(row, HIGH_KEYS)
-                direction = "high"
             else:
                 price, timeframe = _pick_high_low_value(row, LOW_KEYS)
-                direction = "low"
 
             if price is None or timeframe is None:
                 continue
@@ -158,7 +156,6 @@ def build_events_for_row(
                     symbol=symbol,
                     tag=tag,  # "new-high" or "new-low"
                     payload={
-                        "direction": direction,      # "high" / "low"
                         "timeframe": timeframe,      # "all_time" / "52w" / "ytd" / "90d"
                         "price": price,             # IDR per share (or raw value)
                         "company_name": company_name,

@@ -17,6 +17,7 @@ from src.workflow.models import Workflow, WorkflowEvent
 # Channel senders: each channel owns its own formatting/context
 from src.workflow.channels.slack.sender import send_slack_for_workflow
 from src.workflow.channels.email.sender import send_email_for_workflow
+from src.workflow.channels.sheet.sender import send_sheet_for_workflow
 
 try:
     # Optional: WhatsApp channel
@@ -24,11 +25,6 @@ try:
 except ImportError:  # pragma: no cover
     send_whatsapp_for_workflow = None  # type: ignore[assignment]
 
-try:
-    # Optional: Google Sheets channel or similar
-    from src.workflow.channels.sheets.sender import send_sheet_for_workflow
-except ImportError:  # pragma: no cover
-    send_sheet_for_workflow = None  # type: ignore[assignment]
 
 
 logger = get_logger("workflow.runner")
@@ -45,6 +41,19 @@ def fmt_wib_date(dt: datetime) -> str:
 def _normalize_channels(raw: Any) -> Dict[str, Any]:
     """
     Normalize the `channels` field from Supabase into a dict.
+
+    Example:
+      [
+        {"slack": "https://hook..."},
+        {"email": "foo@bar.com"},
+        {"sheet": "SPREADSHEET_ID"}
+      ]
+    becomes:
+      {
+        "slack": {"webhook_url": "..."},
+        "email": {"to": "foo@bar.com"},
+        "sheet": {"id": "SPREADSHEET_ID"},
+      }
     """
     if not raw:
         return {}
@@ -91,31 +100,52 @@ def _normalize_channels(raw: Any) -> Dict[str, Any]:
     return {}
 
 
-async def run_workflows(limit_workflows: Optional[int] = None) -> None:
+async def run_workflows(
+    limit_workflows: Optional[int] = None,
+    only_workflow_id: Optional[str] = None,
+) -> None:
     """
     Main dispatcher:
 
       1. Fetch active workflows (for metadata + channels).
-      2. Generate all WorkflowEvent via engine.generate_events().
-      3. Group events by workflow_id.
-      4. For each workflow, dispatch events to enabled channels:
+      2. Optionally filter by `only_workflow_id` (for testing).
+      3. Optionally limit count via `limit_workflows`.
+      4. Generate all WorkflowEvent via engine.generate_events().
+      5. Group events by workflow_id.
+      6. For each workflow, dispatch events to enabled channels:
          - Slack
-         - Email (if implemented)
-         - WhatsApp (if implemented)
-         - Sheet (if implemented)
+         - Email
+         - WhatsApp
+         - Sheet
     """
     # Fetch active workflows so we know names, tickers, and channels
     all_workflows = await fetch_active_workflows()
-    if limit_workflows is not None:
-        workflows = all_workflows[:limit_workflows]
+
+    # Filter by specific workflow id if provided (testing helper)
+    if only_workflow_id:
+        workflows = [wf for wf in all_workflows if wf.id == only_workflow_id]
     else:
         workflows = all_workflows
 
+    # Apply limit after id-filter, if any
+    if limit_workflows is not None:
+        workflows = workflows[:limit_workflows]
+
     if not workflows:
-        logger.info("No active workflows found, nothing to send.")
+        if only_workflow_id:
+            logger.info(
+                "No matching workflows found for id=%s (maybe not active?)",
+                only_workflow_id,
+            )
+        else:
+            logger.info("No active workflows found, nothing to send.")
         return
 
-    logger.info("Running workflow dispatcher for %d workflows", len(workflows))
+    logger.info(
+        "Running workflow dispatcher for %d workflows%s",
+        len(workflows),
+        f" (filtered by id={only_workflow_id})" if only_workflow_id else "",
+    )
 
     # Normalize channels for each workflow
     wf_by_id: Dict[str, Workflow] = {}
@@ -126,7 +156,7 @@ async def run_workflows(limit_workflows: Optional[int] = None) -> None:
     # Generate events (engine handles reading MV etc.)
     all_events: List[WorkflowEvent] = await generate_events()
 
-    # Filter events to only the selected workflows (in case limit_workflows is used)
+    # Filter events to only the selected workflows
     events_by_wfid: Dict[str, List[WorkflowEvent]] = defaultdict(list)
     for ev in all_events:
         if ev.workflow_id in wf_by_id:
@@ -150,23 +180,22 @@ async def run_workflows(limit_workflows: Optional[int] = None) -> None:
             wf.channels,
         )
 
-
         channels = wf.channels or {}
 
-        # Slack channel
+        # --- Slack channel ---
         if channels.get("slack") is not None:
             tasks.append(
                 asyncio.create_task(
                     send_slack_for_workflow(
                         workflow=wf,
                         events=wf_events,
-                        window_start=window_label,
-                        window_end=window_label,
+                        window_start_label=window_label,
+                        window_end_label=window_label,
                     )
                 )
             )
 
-        # Email channel
+        # --- Email channel ---
         if send_email_for_workflow is not None and channels.get("email") is not None:
             tasks.append(
                 asyncio.create_task(
@@ -179,7 +208,7 @@ async def run_workflows(limit_workflows: Optional[int] = None) -> None:
                 )
             )
 
-        # WhatsApp channel 
+        # --- WhatsApp channel ---
         if send_whatsapp_for_workflow is not None and channels.get("whatsapp") is not None:
             tasks.append(
                 asyncio.create_task(
@@ -192,7 +221,7 @@ async def run_workflows(limit_workflows: Optional[int] = None) -> None:
                 )
             )
 
-        # Sheet channel (if implemented)
+        # --- Sheet channel ---
         if send_sheet_for_workflow is not None and channels.get("sheet") is not None:
             tasks.append(
                 asyncio.create_task(
@@ -222,6 +251,17 @@ if __name__ == "__main__":
         default=None,
         help="Limit number of workflows processed (for testing).",
     )
+    parser.add_argument(
+        "--workflow-id",
+        type=str,
+        default=None,
+        help="Run only this workflow id (for testing).",
+    )
     args = parser.parse_args()
 
-    asyncio.run(run_workflows(limit_workflows=args.limit))
+    asyncio.run(
+        run_workflows(
+            limit_workflows=args.limit,
+            only_workflow_id=args.workflow_id,
+        )
+    )

@@ -85,6 +85,12 @@ async def generate_events() -> List[WorkflowEvent]:
 
     all_events: List[WorkflowEvent] = []
 
+    # DEBUG: print semua event yang dihasilkan engine
+    from src.common.log import get_logger
+    dbg = get_logger("workflow.debug")
+    for ev in all_events:
+        dbg.info("Event generated: workflow_id=%s tag=%s symbol=%s", ev.workflow_id, ev.tag, ev.symbol)
+
     for wf in workflows:
         if not wf.tags:
             continue
