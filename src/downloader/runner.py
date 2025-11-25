@@ -270,16 +270,15 @@ def download_pdfs(
     inserted = [a for a in alerts if a.get("category") == "inserted"]
     not_inserted = [a for a in alerts if a.get("category") == "not_inserted"]
 
-    # Legacy file: ONLY not_inserted.low_title_similarity (compat with old pipeline)
-    legacy_low = [a for a in not_inserted if a.get("code") == "low_title_similarity"]
-    atomic_write_json(paths["alerts_out"], legacy_low)
+    # Legacy file: mirror all not_inserted alerts for readability/compat
+    atomic_write_json(paths["alerts_out"], not_inserted)
 
     # v2 standardized outputs
     safe_mkdirs("alerts")
-    atomic_write_json(Path("alerts") / "alerts_inserted_downloader.json", inserted)   # likely empty
+    atomic_write_json(Path("alerts") / "alerts_inserted_downloader.json", inserted)   
     atomic_write_json(Path("alerts") / "alerts_not_inserted_downloader.json", not_inserted)
 
     logger.info(
         "Finished. %d announcements processed. %d files recorded. %d alerts (v2: %d not_inserted).",
-        len(announcements), len(records), len(legacy_low), len(not_inserted)
+        len(announcements), len(records), len(not_inserted), len(not_inserted)
     )

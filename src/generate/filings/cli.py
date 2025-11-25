@@ -9,6 +9,7 @@ from pathlib import Path
 from typing import List, Dict, Any, Tuple
 from datetime import datetime
 from collections import Counter
+from urllib.parse import urlparse
 
 # Core Imports
 from src.core.types import FilingRecord
@@ -143,11 +144,105 @@ def _compose_body_combined(rows_in_db: list[dict], rows_not_inserted: list[dict]
             return "n/a"
         return ", ".join(f"{code} ({cnt})" for code, cnt in c.most_common(5))
 
+    def _short_url(u: str | None) -> str:
+        if not u:
+            return "-"
+        try:
+            parsed = urlparse(u)
+            tail = parsed.path.split("/")[-1] or parsed.netloc
+            return f"{parsed.netloc}/…/{tail}"
+        except Exception:
+            return u
+
+    def _row_summary(r: dict, limit_details: bool = True) -> str:
+        ts = r.get("timestamp") or "-"
+        stage = r.get("stage") or "-"
+        code = r.get("code") or "-"
+        msg = (r.get("message") or "").strip() or code
+        symbol = r.get("symbol") or r.get("issuer_code") or "-"
+        tx_type = r.get("type") or r.get("transaction_type") or "-"
+        holder = r.get("holder_name") or "-"
+        amount = r.get("amount") or r.get("amount_transaction") or "-"
+        price = r.get("price") or "-"
+        value = r.get("value") or r.get("transaction_value") or "-"
+
+        ctx_doc = (r.get("context") or {}).get("doc") or {}
+        doc_url = ctx_doc.get("url") or ctx_doc.get("link")
+        doc_display = _short_url(doc_url)
+
+        ann = (r.get("context") or {}).get("announcement") or {}
+        ann_url = ann.get("main_link") or ann.get("url") or ann.get("link")
+        ann_display = _short_url(ann_url)
+
+        attachments = ann.get("attachments") or []
+        attach_hint = ""
+        if attachments:
+            first = attachments[0]
+            attach_hint = f" | attach: {_short_url(first.get('url') or first.get('link'))}"
+
+        reason = "-"
+        details = ""
+        if r.get("reasons"):
+            rr = r["reasons"][0]
+            reason = f"{rr.get('code') or ''}: {rr.get('message') or ''}".strip()
+            det = rr.get("details") or {}
+            if det:
+                # Pick key numeric/context fields
+                nums = []
+                for k in ("price", "value", "document_median_price", "ref_price", "percent_discrepancy", "delta_pp_model"):
+                    v = det.get(k)
+                    if v is not None and v != "":
+                        nums.append(f"{k}={v}")
+                if nums:
+                    details = " | " + ", ".join(nums[:5])
+
+        # Suggested action based on stage/code
+        action = "Review and re-run."
+        if r.get("category") == "not_inserted":
+            if stage in ("downloader", "parser"):
+                action = "Insert manually then re-run (download/parse failed)."
+        if code in ("price_deviation_vs_market", "price_deviation_within_doc", "possible_zero_missing"):
+            action = "Check price vs reference; adjust and re-upload."
+        elif code in ("percent_discrepancy", "delta_pp_mismatch", "mismatch_transaction_type"):
+            action = "Review holdings/percentages and correct, then re-upload."
+        elif code in ("symbol_missing", "company_resolve_ambiguous"):
+            action = "Confirm correct symbol mapping, then re-run."
+        elif code == "transfer_uid_required":
+            action = "Pair both sides manually."
+        elif code in ("missing_price", "stale_price"):
+            action = "Fetch latest price data and re-run."
+
+        line = (
+            f"- {ts} | {stage} | {code}: {msg} | action: {action} | "
+            f"{symbol} {tx_type} {holder} amt={amount} price={price} val={value} | "
+            f"doc: {doc_display} | ann: {ann_display}{attach_hint}"
+        )
+        if reason != "-":
+            line += f" | reason: {reason}"
+        if details:
+            line += details
+        if limit_details and len(line) > 500:
+            line = line[:500] + "…"
+        return line
+
+    def _section(title: str, rows: list[dict], limit: int = 50) -> List[str]:
+        if not rows:
+            return [f"{title}: none"]
+        lines = [f"{title}: showing up to {min(limit, len(rows))} (total {len(rows)})."]
+        for r in rows[:limit]:
+            lines.append(_row_summary(r))
+        if len(rows) > limit:
+            lines.append(f"... {len(rows) - limit} more (see attachments).")
+        return lines
+
     lines = [
         "Auto alert summary (combined Inserted + Not Inserted), aligned to the IDX filings action (~every 2 hours).",
         f"Generated: {now_str}",
         f"Inserted (in_db): {len(rows_in_db)} | By severity: {_sev_line(rows_in_db)} | Top codes: {_top_codes(rows_in_db)}",
         f"Not Inserted: {len(rows_not_inserted)} | By severity: {_sev_line(rows_not_inserted)} | Top codes: {_top_codes(rows_not_inserted)}",
+        "Details:",
+        *(_section("Inserted (needs review)", rows_in_db)),
+        *(_section("Not Inserted", rows_not_inserted)),
         "Attachments include full JSON payloads for detailed review.",
     ]
     return "\n".join(lines)
