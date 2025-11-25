@@ -158,20 +158,26 @@ def run(
                     "skip_reason": getattr(rec, "skip_reason", None),
                 }
 
-                alerts.append(
-                    build_alert(
-                        category="inserted",
-                        stage="filings",
-                        code=code,
-                        doc_filename=doc_filename,
-                        context_doc_url=context_doc_url,
-                        context_doc_title=context_doc_title,
-                        announcement=ann_block,
-                        reasons=code_reasons,
-                        ctx=ctx,
-                        needs_review=bool(audit.get("needs_review")),
-                    )
+                alert = build_alert(
+                    category="inserted",
+                    stage="filings",
+                    code=code,
+                    doc_filename=doc_filename,
+                    context_doc_url=context_doc_url,
+                    context_doc_title=context_doc_title,
+                    announcement=ann_block,
+                    reasons=code_reasons,
+                    ctx=ctx,
+                    needs_review=bool(audit.get("needs_review")),
                 )
+                # Make symbol/holder/type/amount/price/value easily available at top-level for downstream renderers.
+                alert.setdefault("symbol", rec.symbol)
+                alert.setdefault("holder_name", rec.holder_name)
+                alert.setdefault("type", row.get("type"))
+                alert.setdefault("amount", row.get("amount"))
+                alert.setdefault("price", row.get("price"))
+                alert.setdefault("value", row.get("value"))
+                alerts.append(alert)
 
         alerts_path.write_text(
             json.dumps(alerts, ensure_ascii=False, indent=2, default=str),
