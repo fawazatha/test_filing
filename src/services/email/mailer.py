@@ -124,7 +124,7 @@ def _flatten_alert_fields(a: Dict[str, Any]) -> Dict[str, Any]:
         or details.get("type")
         or a.get("transaction_type")
         or a.get("alert_type")
-        or "-"
+        or ""
     )
 
     price = (
@@ -138,7 +138,7 @@ def _flatten_alert_fields(a: Dict[str, Any]) -> Dict[str, Any]:
         or details.get("amount")
         or a.get("amount_transacted")
         or a.get("shares")
-    )
+    ) or ""
 
     value = (
         a.get("value")
@@ -155,7 +155,7 @@ def _flatten_alert_fields(a: Dict[str, Any]) -> Dict[str, Any]:
         or ann.get("publish_date")
         or a.get("date")
         or a.get("time")
-        or "-"
+        or ""
     )
 
     src = (
@@ -214,11 +214,8 @@ def _render_email_content(alerts: List[Dict[str, Any]],
     rows_html: List[str] = []
     for a in alerts:
         flds = _flatten_alert_fields(a)
-        sym = flds["symbol"]
-        holder = flds["holder"]
-        ttype = flds["type"]
-        price = flds["price"] or "-"
-        amount = flds["amount"] or "-"
+        sym = flds["symbol"] or "-"
+        holder = flds["holder"] or "-"
         value = flds["value"] or "-"
         ts = flds["timestamp"]
         src = flds["source"]
@@ -234,26 +231,12 @@ def _render_email_content(alerts: List[Dict[str, Any]],
         ann_url = ann_ctx.get("main_link") or ann_ctx.get("url")
 
         det = _extract_primary_details(a) or reason_det or {}
-        now_price = "-"
-        if det:
-            if det.get("document_median_price") is not None:
-                now_price = str(det.get("document_median_price"))
-            ref_price = None
-            mr = det.get("market_reference") if isinstance(det.get("market_reference"), dict) else None
-            if mr:
-                ref_price = mr.get("ref_price")
-            elif isinstance(a.get("market_reference"), dict):
-                ref_price = a["market_reference"].get("ref_price")
-            if ref_price is not None:
-                now_price = f"{now_price} | ref:{ref_price}" if now_price != "-" else f"{ref_price}"
-
         action = _suggest_action(a, stage.lower(), code)
 
         # text row
         lines.append(
             f"{ts} | {stage} | {code}: {msg} | action: {action} | "
-            f"{sym} {ttype} holder={holder} amt={amount} price={price} val={value} | "
-            f"doc={_short_url(doc_url)} ann={_short_url(ann_url)}"
+            f"{sym} holder={holder} val={value} | doc={_short_url(doc_url)} ann={_short_url(ann_url)}"
         )
         if reason_code or reason_msg:
             lines.append(f"  reason: {reason_code or '-'}: {reason_msg or '-'}")
@@ -276,12 +259,8 @@ def _render_email_content(alerts: List[Dict[str, Any]],
             f"<td>{_esc(code)}</td>"
             f"<td>{_esc(msg)}</td>"
             f"<td>{_esc(action)}</td>"
-            f"<td>{_esc(now_price)}</td>"
             f"<td><strong>{_esc(sym)}</strong></td>"
             f"<td>{_esc(holder)}</td>"
-            f"<td>{_esc(ttype)}</td>"
-            f"<td style='text-align:right'>{_esc(amount)}</td>"
-            f"<td style='text-align:right'>{_esc(price)}</td>"
             f"<td style='text-align:right'>{_esc(value)}</td>"
             f"<td>{src_link}</td>"
             f"<td>{ann_link}</td>"
@@ -300,12 +279,8 @@ def _render_email_content(alerts: List[Dict[str, Any]],
         "<th style='text-align:left;padding:6px;border:1px solid #e5e7eb'>Code</th>"
         "<th style='text-align:left;padding:6px;border:1px solid #e5e7eb'>Problem</th>"
         "<th style='text-align:left;padding:6px;border:1px solid #e5e7eb'>Action</th>"
-        "<th style='text-align:left;padding:6px;border:1px solid #e5e7eb'>Now Price</th>"
         "<th style='text-align:left;padding:6px;border:1px solid #e5e7eb'>Symbol</th>"
         "<th style='text-align:left;padding:6px;border:1px solid #e5e7eb'>Holder</th>"
-        "<th style='text-align:left;padding:6px;border:1px solid #e5e7eb'>Type</th>"
-        "<th style='text-align:right;padding:6px;border:1px solid #e5e7eb'>Amount</th>"
-        "<th style='text-align:right;padding:6px;border:1px solid #e5e7eb'>Price</th>"
         "<th style='text-align:right;padding:6px;border:1px solid #e5e7eb'>Value</th>"
         "<th style='text-align:left;padding:6px;border:1px solid #e5e7eb'>Doc</th>"
         "<th style='text-align:left;padding:6px;border:1px solid #e5e7eb'>Announcement</th>"
