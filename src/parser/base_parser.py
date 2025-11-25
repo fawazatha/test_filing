@@ -217,7 +217,7 @@ class BaseParser(ABC):
         filename: str,
         reasons: Optional[List[Dict[str, Any]]] = None,
         ctx: Optional[Dict[str, Any]] = None,
-        severity: str = "warning",
+        severity: Optional[str] = None,
         needs_review: bool = True,
     ) -> Dict[str, Any]:
         """
@@ -258,7 +258,7 @@ class BaseParser(ABC):
         filename: str,
         reasons: Optional[List[Dict[str, Any]]] = None,
         ctx: Optional[Dict[str, Any]] = None,
-        severity: str = "warning",
+        severity: Optional[str] = None,
         needs_review: bool = True,
     ) -> None:
         """
@@ -282,7 +282,7 @@ class BaseParser(ABC):
         filename: str,
         reasons: Optional[List[Dict[str, Any]]] = None,
         ctx: Optional[Dict[str, Any]] = None,
-        severity: str = "warning",
+        severity: Optional[str] = None,
     ) -> None:
         """
         Fatal alert: the document cannot be processed/inserted at all.

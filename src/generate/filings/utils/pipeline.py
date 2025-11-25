@@ -170,7 +170,6 @@ def run(
                         reasons=code_reasons,
                         ctx=ctx,
                         needs_review=bool(audit.get("needs_review")),
-                        severity="warning",
                     )
                 )
 

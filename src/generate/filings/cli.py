@@ -6,7 +6,9 @@ import json
 import sys
 import os
 from pathlib import Path
-from typing import List, Dict, Any
+from typing import List, Dict, Any, Tuple
+from datetime import datetime
+from collections import Counter
 
 # Core Imports
 from src.core.types import FilingRecord
@@ -92,24 +94,71 @@ def _has_actionable(rows: list[dict]) -> bool:
     return False
 
 
-
-def _send_bucket(bucket: str,
-                 subject: str,
-                 *,
-                 body_text: str,
-                 to: List[str],
-                 cc: List[str],
-                 bcc: List[str],
-                 from_email: str | None,
-                 aws_region: str | None) -> bool:
+def _compose_body(bucket: str, rows: list[dict]) -> str:
     """
-    Send an SES email for a single alert bucket.
+    Build a concise human-friendly body for alert emails so operators
+    can triage without opening attachments.
+    """
+    now_str = datetime.utcnow().strftime("%Y-%m-%d %H:%M UTC")
+    total = len(rows)
+
+    # Count severities and top codes to give a quick pulse of what's inside.
+    sev_counts = Counter((r.get("severity") or "unknown").lower() for r in rows)
+    code_counts = Counter((r.get("code") or "unknown") for r in rows)
+
+    sev_order = ["fatal", "hard", "warning", "soft", "info", "unknown"]
+    sev_line_parts = [f"{s}:{sev_counts[s]}" for s in sev_order if sev_counts.get(s)]
+    sev_line = ", ".join(sev_line_parts) if sev_line_parts else "none"
+
+    top_codes = ", ".join(f"{code} ({cnt})" for code, cnt in code_counts.most_common(5))
+    if not top_codes:
+        top_codes = "n/a"
+
+    lines = [
+        f"Auto alert summary ({bucket.replace('_', ' ')}), aligned to the IDX filings action (~every 2 hours).",
+        f"Generated: {now_str}",
+        f"Total alerts: {total}",
+        f"By severity: {sev_line}",
+        f"Top codes: {top_codes}",
+        "Attachments include full JSON payloads for detailed review.",
+    ]
+    return "\n".join(lines)
+
+
+def _compose_body_combined(rows_in_db: list[dict], rows_not_inserted: list[dict]) -> str:
+    """
+    Build a structured body that covers both buckets in one email.
+    """
+    now_str = datetime.utcnow().strftime("%Y-%m-%d %H:%M UTC")
+
+    def _sev_line(rows: list[dict]) -> str:
+        sev_counts = Counter((r.get("severity") or "unknown").lower() for r in rows)
+        sev_order = ["fatal", "hard", "warning", "soft", "info", "unknown"]
+        parts = [f"{s}:{sev_counts[s]}" for s in sev_order if sev_counts.get(s)]
+        return ", ".join(parts) if parts else "none"
+
+    def _top_codes(rows: list[dict]) -> str:
+        c = Counter((r.get("code") or "unknown") for r in rows)
+        if not c:
+            return "n/a"
+        return ", ".join(f"{code} ({cnt})" for code, cnt in c.most_common(5))
+
+    lines = [
+        "Auto alert summary (combined Inserted + Not Inserted), aligned to the IDX filings action (~every 2 hours).",
+        f"Generated: {now_str}",
+        f"Inserted (in_db): {len(rows_in_db)} | By severity: {_sev_line(rows_in_db)} | Top codes: {_top_codes(rows_in_db)}",
+        f"Not Inserted: {len(rows_not_inserted)} | By severity: {_sev_line(rows_not_inserted)} | Top codes: {_top_codes(rows_not_inserted)}",
+        "Attachments include full JSON payloads for detailed review.",
+    ]
+    return "\n".join(lines)
+
+
+def _load_bucket_rows(bucket: str) -> Tuple[list[dict], list[Path]]:
+    """
+    Load alert rows and the source files for a bucket.
     """
     files = list_alert_files("filings", bucket)
     files = [p for p in files if p.exists()]
-    if not files:
-        logging.info("No %s alerts to send.", bucket)
-        return False
 
     def _extract_rows_any(payload: Any) -> list[dict]:
         if isinstance(payload, list):
@@ -119,7 +168,6 @@ def _send_bucket(bucket: str,
                 v = payload.get(k)
                 if isinstance(v, list):
                     return [x for x in v if isinstance(x, dict)]
-            # If dict looks like a single row
             return [payload]
         return []
 
@@ -131,6 +179,27 @@ def _send_bucket(bucket: str,
         except Exception as e:
             logging.warning("Skip unreadable alert file %s: %s", p, e)
 
+    return all_rows, files
+
+
+
+def _send_bucket(bucket: str,
+                 subject: str,
+                 *,
+                 body_text: str | None,
+                 to: List[str],
+                 cc: List[str],
+                 bcc: List[str],
+                 from_email: str | None,
+                 aws_region: str | None) -> bool:
+    """
+    Send an SES email for a single alert bucket.
+    """
+    all_rows, files = _load_bucket_rows(bucket)
+    if not files:
+        logging.info("No %s alerts to send.", bucket)
+        return False
+
     # Minimal guard for Inserted bucket
     if bucket == "in_db":
         if not all_rows:
@@ -140,12 +209,15 @@ def _send_bucket(bucket: str,
             logging.info("Skip Inserted email: no actionable rows (no reasons and no needs_review).")
             return False
 
+    # Compose richer body text if none provided by caller.
+    computed_body = body_text or _compose_body(bucket, all_rows)
+
     # SES expects file paths as strings
     file_paths = [str(p) for p in files]
     resp = send_attachments(
         to=to,
         subject=subject,
-        body_text=body_text,
+        body_text=computed_body,
         files=file_paths,
         cc=cc,
         bcc=bcc,
@@ -323,25 +395,49 @@ def _cmd_upload(args) -> None:
         cfg = _resolve_recipients_and_cfg(args)
         sent_any = False
 
-        if args.email_bucket in ("in_db", "both"):
-            ok = _send_bucket(
-                "in_db",
-                args.subject_inserted,
-                body_text=args.body_text_inserted or "Attached are 'Inserted' alerts.",
-                to=cfg["to"], cc=cfg["cc"], bcc=cfg["bcc"],
-                from_email=cfg["from_email"], aws_region=cfg["aws_region"],
-            )
-            sent_any = sent_any or ok
+        if args.email_bucket == "both":
+            rows_in_db, files_in_db = _load_bucket_rows("in_db")
+            rows_not, files_not = _load_bucket_rows("not_inserted")
+            if not rows_in_db and not rows_not:
+                logging.info("Skip combined email: no alerts in either bucket.")
+            else:
+                body = args.body_text_inserted or _compose_body_combined(rows_in_db, rows_not)
+                file_paths = [str(p) for p in (files_in_db + files_not)]
+                resp = send_attachments(
+                    to=cfg["to"],
+                    subject=args.subject_inserted,
+                    body_text=body,
+                    files=file_paths,
+                    cc=cfg["cc"],
+                    bcc=cfg["bcc"],
+                    from_email=cfg["from_email"],
+                    aws_region=cfg["aws_region"],
+                )
+                if resp.get("ok"):
+                    logging.info("Combined alert email sent. MessageId=%s", resp.get("message_id"))
+                    sent_any = True
+                else:
+                    logging.error("Failed to send combined alert email: %s", resp.get("error"))
+        else:
+            if args.email_bucket == "in_db":
+                ok = _send_bucket(
+                    "in_db",
+                    args.subject_inserted,
+                    body_text=args.body_text_inserted,
+                    to=cfg["to"], cc=cfg["cc"], bcc=cfg["bcc"],
+                    from_email=cfg["from_email"], aws_region=cfg["aws_region"],
+                )
+                sent_any = sent_any or ok
 
-        if args.email_bucket in ("not_inserted", "both"):
-            ok = _send_bucket(
-                "not_inserted",
-                args.subject_not_inserted,
-                body_text=args.body_text_not_inserted or "Attached are 'Not Inserted' alerts.",
-                to=cfg["to"], cc=cfg["cc"], bcc=cfg["bcc"],
-                from_email=cfg["from_email"], aws_region=cfg["aws_region"],
-            )
-            sent_any = sent_any or ok
+            if args.email_bucket == "not_inserted":
+                ok = _send_bucket(
+                    "not_inserted",
+                    args.subject_not_inserted,
+                    body_text=args.body_text_not_inserted,
+                    to=cfg["to"], cc=cfg["cc"], bcc=cfg["bcc"],
+                    from_email=cfg["from_email"], aws_region=cfg["aws_region"],
+                )
+                sent_any = sent_any or ok
 
         print("[ALERT EMAIL SENT]" if sent_any else "[NO ALERT EMAIL SENT]")
 
@@ -355,25 +451,48 @@ def _cmd_send_alerts(args) -> None:
     cfg = _resolve_recipients_and_cfg(args)
     sent_any = False
 
-    if args.bucket in ("in_db", "both"):
-        ok = _send_bucket(
-            "in_db",
-            args.subject_inserted,
-            body_text=args.body_text_inserted or "Attached are 'Inserted' alerts.",
-            to=cfg["to"], cc=cfg["cc"], bcc=cfg["bcc"],
-            from_email=cfg["from_email"], aws_region=cfg["aws_region"],
-        )
-        sent_any = sent_any or ok
-
-    if args.bucket in ("not_inserted", "both"):
-        ok = _send_bucket(
-            "not_inserted",
-            args.subject_not_inserted,
-            body_text=args.body_text_not_inserted or "Attached are 'Not Inserted' alerts.",
-            to=cfg["to"], cc=cfg["cc"], bcc=cfg["bcc"],
-            from_email=cfg["from_email"], aws_region=cfg["aws_region"],
-        )
-        sent_any = sent_any or ok
+    if args.bucket == "both":
+        rows_in_db, files_in_db = _load_bucket_rows("in_db")
+        rows_not, files_not = _load_bucket_rows("not_inserted")
+        if not rows_in_db and not rows_not:
+            logging.info("Skip combined email: no alerts in either bucket.")
+        else:
+            body = args.body_text_inserted or _compose_body_combined(rows_in_db, rows_not)
+            file_paths = [str(p) for p in (files_in_db + files_not)]
+            resp = send_attachments(
+                to=cfg["to"],
+                subject=args.subject_inserted,
+                body_text=body,
+                files=file_paths,
+                cc=cfg["cc"],
+                bcc=cfg["bcc"],
+                from_email=cfg["from_email"],
+                aws_region=cfg["aws_region"],
+            )
+            if resp.get("ok"):
+                logging.info("Combined alert email sent. MessageId=%s", resp.get("message_id"))
+                sent_any = True
+            else:
+                logging.error("Failed to send combined alert email: %s", resp.get("error"))
+    else:
+        if args.bucket == "in_db":
+            ok = _send_bucket(
+                "in_db",
+                args.subject_inserted,
+                body_text=args.body_text_inserted,
+                to=cfg["to"], cc=cfg["cc"], bcc=cfg["bcc"],
+                from_email=cfg["from_email"], aws_region=cfg["aws_region"],
+            )
+            sent_any = sent_any or ok
+        if args.bucket == "not_inserted":
+            ok = _send_bucket(
+                "not_inserted",
+                args.subject_not_inserted,
+                body_text=args.body_text_not_inserted,
+                to=cfg["to"], cc=cfg["cc"], bcc=cfg["bcc"],
+                from_email=cfg["from_email"], aws_region=cfg["aws_region"],
+            )
+            sent_any = sent_any or ok
 
     print("[ALERTS SENT]" if sent_any else "[NO ALERTS TO SEND]")
 

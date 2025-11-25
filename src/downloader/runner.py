@@ -194,7 +194,6 @@ def download_pdfs(
                     "threshold": min_similarity,
                     "policy": "skipped_download_due_to_unknown_classification",
                 },
-                severity="warning",
                 needs_review=True,
             ))
             logger.info("    Skipped download (UNKNOWN -> low_title_similarity). Alert recorded.")
@@ -263,7 +262,6 @@ def download_pdfs(
                     context_doc_title=doc_ctx.get("title"),
                     announcement=ann_trim,
                     ctx={"url": url, "retries": retries},
-                    severity="error",
                     needs_review=True,
                 ))
 
