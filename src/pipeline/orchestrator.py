@@ -470,6 +470,10 @@ def step_email_alerts(
     def _send_one(group_title: str, folder: Path, to_csv: Optional[str],
                   cc_csv: Optional[str], bcc_csv: Optional[str]) -> None:
         files = _gather_json_files(folder)
+        # Dedup legacy low_title file if the consolidated downloader file exists
+        names = {p.name for p in files}
+        if "alerts_not_inserted_downloader.json" in names and "low_title_similarity_alerts.json" in names:
+            files = [p for p in files if p.name != "low_title_similarity_alerts.json"]
         if not files:
             LOG.info("[EMAIL] '%s' skipped: folder %s missing or empty", group_title, folder)
             return

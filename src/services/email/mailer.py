@@ -4,7 +4,8 @@ from __future__ import annotations
 import os
 import json
 from datetime import datetime
-from typing import Any, Dict, List, Optional, Sequence
+from typing import Any, Dict, List, Optional, Sequence, Tuple
+from urllib.parse import urlparse
 
 from .ses_email import send_attachments  # pakai fungsi yang sudah kamu buat
 
@@ -21,6 +22,17 @@ def _tolist(x: Optional[Sequence[str] | str]) -> List[str]:
 def _esc(s: Any) -> str:
     return ("" if s is None else str(s)
             .replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;"))
+
+
+def _short_url(u: Optional[str]) -> str:
+    if not u:
+        return "-"
+    try:
+        parsed = urlparse(u)
+        tail = parsed.path.split("/")[-1] or parsed.netloc
+        return f"{parsed.netloc}/…/{tail}"
+    except Exception:
+        return u
 
 
 def _extract_primary_details(alert: Dict[str, Any]) -> Dict[str, Any]:
@@ -47,6 +59,34 @@ def _extract_primary_details(alert: Dict[str, Any]) -> Dict[str, Any]:
             fallback_details = d
 
     return fallback_details or {}
+
+
+def _primary_reason(alert: Dict[str, Any]) -> Tuple[str, str, Dict[str, Any]]:
+    reasons = alert.get("reasons") or []
+    if reasons and isinstance(reasons, list):
+        r = reasons[0] if reasons else {}
+        code = (r.get("code") or "").strip()
+        msg = (r.get("message") or "").strip()
+        det = r.get("details") if isinstance(r, dict) else None
+        return code, msg, det if isinstance(det, dict) else {}
+    return "", "", {}
+
+
+def _suggest_action(alert: Dict[str, Any], stage: str, code: str) -> str:
+    cat = alert.get("category") or ""
+    if cat == "not_inserted" and stage in ("downloader", "parser"):
+        return "Insert manually using the attached link, then re-run."
+    if code in ("price_deviation_vs_market", "price_deviation_within_doc", "possible_zero_missing"):
+        return "Recalculate price vs reference range, adjust, and re-upload."
+    if code in ("percent_discrepancy", "delta_pp_mismatch", "mismatch_transaction_type"):
+        return "Review holdings/percentages; correct and re-upload."
+    if code in ("symbol_missing", "company_resolve_ambiguous"):
+        return "Confirm correct symbol mapping, then re-run."
+    if code == "transfer_uid_required":
+        return "Pair both sides manually."
+    if code in ("missing_price", "stale_price"):
+        return "Fetch latest price data and re-run validation."
+    return "Review and re-run."
 
 
 def _flatten_alert_fields(a: Dict[str, Any]) -> Dict[str, Any]:
@@ -151,31 +191,29 @@ def _render_email_content(alerts: List[Dict[str, Any]],
     today = datetime.now().strftime("%Y-%m-%d")
     subject = f"[{title}] {n} alert(s) — {today}"
 
-    # plain text
-    lines = [f"{title} — {n} alert(s) on {today}", "-" * 40]
-    for i, a in enumerate(alerts, 1):
-        flds = _flatten_alert_fields(a)
+    # stage / severity counts
+    stage_counts: Dict[str, int] = {}
+    severity_counts: Dict[str, int] = {}
+    for a in alerts:
+        stage = (a.get("stage") or "-").lower()
+        stage_counts[stage] = stage_counts.get(stage, 0) + 1
+        sev = (a.get("severity") or "unknown").lower()
+        severity_counts[sev] = severity_counts.get(sev, 0) + 1
 
-        sym = flds["symbol"]
-        holder = flds["holder"]
-        ttype = flds["type"]
-        price = flds["price"]
-        amount = flds["amount"]
-        ts = flds["timestamp"]
-        src = flds["source"]
+    def _fmt_counts(d: Dict[str, int]) -> str:
+        return ", ".join(f"{k}:{v}" for k, v in sorted(d.items()))
 
-        lines.append(
-            f"{i}. {sym} | {ttype} | holder={holder} | amount={amount} | price={price} | ts={ts}"
-        )
-        lines.append(f"   src: {src}")
+    # plain text summary
+    lines = [
+        f"{title} — {n} alert(s) on {today}",
+        f"Stages: {_fmt_counts(stage_counts)}",
+        f"Severity: {_fmt_counts(severity_counts)}",
+        "-" * 60,
+    ]
 
-    body_text = "\n".join(lines)
-
-    # html
-    rows: List[str] = []
+    rows_html: List[str] = []
     for a in alerts:
         flds = _flatten_alert_fields(a)
-
         sym = flds["symbol"]
         holder = flds["holder"]
         ttype = flds["type"]
@@ -185,46 +223,102 @@ def _render_email_content(alerts: List[Dict[str, Any]],
         ts = flds["timestamp"]
         src = flds["source"]
 
-        link = (
-            f'<a href="{_esc(src)}" target="_blank" rel="noopener">{_esc(src) or "-"}</a>'
-            if src and src != "-"
-            else "-"
-        )
+        stage = a.get("stage") or "-"
+        code = a.get("code") or "-"
+        msg = (a.get("message") or code)
+        reason_code, reason_msg, reason_det = _primary_reason(a)
 
-        rows.append(
-            f"<tr>"
+        ctx = a.get("context") or {}
+        doc_url = (ctx.get("doc") or {}).get("url") or src
+        ann_ctx = ctx.get("announcement") or {}
+        ann_url = ann_ctx.get("main_link") or ann_ctx.get("url")
+
+        det = _extract_primary_details(a) or reason_det or {}
+        now_price = "-"
+        if det:
+            if det.get("document_median_price") is not None:
+                now_price = str(det.get("document_median_price"))
+            ref_price = None
+            mr = det.get("market_reference") if isinstance(det.get("market_reference"), dict) else None
+            if mr:
+                ref_price = mr.get("ref_price")
+            elif isinstance(a.get("market_reference"), dict):
+                ref_price = a["market_reference"].get("ref_price")
+            if ref_price is not None:
+                now_price = f"{now_price} | ref:{ref_price}" if now_price != "-" else f"{ref_price}"
+
+        action = _suggest_action(a, stage.lower(), code)
+
+        # text row
+        lines.append(
+            f"{ts} | {stage} | {code}: {msg} | action: {action} | "
+            f"{sym} {ttype} holder={holder} amt={amount} price={price} val={value} | "
+            f"doc={_short_url(doc_url)} ann={_short_url(ann_url)}"
+        )
+        if reason_code or reason_msg:
+            lines.append(f"  reason: {reason_code or '-'}: {reason_msg or '-'}")
+
+        # html row
+        src_link = (
+            f'<a href="{_esc(doc_url)}" target="_blank" rel="noopener">{_esc(_short_url(doc_url))}</a>'
+            if doc_url else "-"
+        )
+        ann_link = (
+            f'<a href="{_esc(ann_url)}" target="_blank" rel="noopener">{_esc(_short_url(ann_url))}</a>'
+            if ann_url else "-"
+        )
+        reason_display = (reason_code or reason_msg) and f"{_esc(reason_code)}: {_esc(reason_msg)}" or "-"
+
+        rows_html.append(
+            "<tr>"
             f"<td>{_esc(ts)}</td>"
+            f"<td>{_esc(stage)}</td>"
+            f"<td>{_esc(code)}</td>"
+            f"<td>{_esc(msg)}</td>"
+            f"<td>{_esc(action)}</td>"
+            f"<td>{_esc(now_price)}</td>"
             f"<td><strong>{_esc(sym)}</strong></td>"
             f"<td>{_esc(holder)}</td>"
             f"<td>{_esc(ttype)}</td>"
             f"<td style='text-align:right'>{_esc(amount)}</td>"
             f"<td style='text-align:right'>{_esc(price)}</td>"
             f"<td style='text-align:right'>{_esc(value)}</td>"
-            f"<td style='max-width:320px;overflow-wrap:anywhere'>{link}</td>"
-            f"</tr>"
+            f"<td>{src_link}</td>"
+            f"<td>{ann_link}</td>"
+            f"<td>{reason_display}</td>"
+            "</tr>"
         )
 
+    body_text = "\n".join(lines)
+
     table = (
-        "<table style='border-collapse:collapse;width:100%'>"
+        "<table style='border-collapse:collapse;width:100%;font-family:Arial,sans-serif;font-size:13px;'>"
         "<thead>"
         "<tr style='background:#f3f4f6'>"
-        "<th style='text-align:left;padding:8px;border:1px solid #e5e7eb'>Time</th>"
-        "<th style='text-align:left;padding:8px;border:1px solid #e5e7eb'>Symbol</th>"
-        "<th style='text-align:left;padding:8px;border:1px solid #e5e7eb'>Holder</th>"
-        "<th style='text-align:left;padding:8px;border:1px solid #e5e7eb'>Type</th>"
-        "<th style='text-align:right;padding:8px;border:1px solid #e5e7eb'>Amount</th>"
-        "<th style='text-align:right;padding:8px;border:1px solid #e5e7eb'>Price</th>"
-        "<th style='text-align:right;padding:8px;border:1px solid #e5e7eb'>Value</th>"
-        "<th style='text-align:left;padding:8px;border:1px solid #e5e7eb'>Source</th>"
+        "<th style='text-align:left;padding:6px;border:1px solid #e5e7eb'>Time</th>"
+        "<th style='text-align:left;padding:6px;border:1px solid #e5e7eb'>Stage</th>"
+        "<th style='text-align:left;padding:6px;border:1px solid #e5e7eb'>Code</th>"
+        "<th style='text-align:left;padding:6px;border:1px solid #e5e7eb'>Problem</th>"
+        "<th style='text-align:left;padding:6px;border:1px solid #e5e7eb'>Action</th>"
+        "<th style='text-align:left;padding:6px;border:1px solid #e5e7eb'>Now Price</th>"
+        "<th style='text-align:left;padding:6px;border:1px solid #e5e7eb'>Symbol</th>"
+        "<th style='text-align:left;padding:6px;border:1px solid #e5e7eb'>Holder</th>"
+        "<th style='text-align:left;padding:6px;border:1px solid #e5e7eb'>Type</th>"
+        "<th style='text-align:right;padding:6px;border:1px solid #e5e7eb'>Amount</th>"
+        "<th style='text-align:right;padding:6px;border:1px solid #e5e7eb'>Price</th>"
+        "<th style='text-align:right;padding:6px;border:1px solid #e5e7eb'>Value</th>"
+        "<th style='text-align:left;padding:6px;border:1px solid #e5e7eb'>Doc</th>"
+        "<th style='text-align:left;padding:6px;border:1px solid #e5e7eb'>Announcement</th>"
+        "<th style='text-align:left;padding:6px;border:1px solid #e5e7eb'>Reason</th>"
         "</tr>"
         "</thead>"
-        "<tbody>" + "".join(rows) + "</tbody></table>"
+        "<tbody>" + "".join(rows_html) + "</tbody></table>"
     )
 
     body_html = (
         f"<div>"
-        f"<h2 style='font-family:system-ui,Arial;margin:0 0 8px'>{_esc(title)}</h2>"
-        f"<p style='margin:0 0 12px;color:#6b7280'>{n} alert(s) — {today}</p>"
+        f"<h2 style='font-family:system-ui,Arial;margin:0 0 8px'>{_esc(title)} — {n} alert(s)</h2>"
+        f"<p style='margin:0 0 12px;color:#6b7280'>Date: {today} | Stages: {_esc(_fmt_counts(stage_counts))} | Severity: {_esc(_fmt_counts(severity_counts))}</p>"
         f"{table}"
         f"</div>"
     )
