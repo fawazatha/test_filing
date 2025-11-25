@@ -604,7 +604,7 @@ def main():
     parser.add_argument("--non-idx", default="data/parsed_non_idx_output.json")
     parser.add_argument("--downloads", default="data/downloaded_pdfs.json")
     parser.add_argument("--out", default="data/filings_data.json")
-    parser.add_argument("--alerts", default="alerts/suspicious_alerts.json")
+    parser.add_argument("--alerts", default="alerts/alerts_inserted_filings.json")
     parser.add_argument("--ingestion-file", default="data/ingestion.json", help="Path to ingestion file with announcement dates.")
     parser.add_argument("-v", "--verbose", action="store_true")
 
@@ -614,7 +614,7 @@ def main():
     p_run.add_argument("--non-idx", default="data/parsed_non_idx_output.json")
     p_run.add_argument("--downloads", default="data/downloaded_pdfs.json")
     p_run.add_argument("--out", default="data/filings_data.json")
-    p_run.add_argument("--alerts", default="alerts/suspicious_alerts.json")
+    p_run.add_argument("--alerts", default="alerts/alerts_inserted_filings.json")
     p_run.add_argument("--ingestion-file", default="data/ingestion.json", help="Path to ingestion file with announcement dates.")
     p_run.add_argument("-v", "--verbose", action="store_true")
     p_run.set_defaults(func=_cmd_run)

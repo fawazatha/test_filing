@@ -37,9 +37,9 @@ INSERTED_CANDIDATES: List[Tuple[str, str]] = [
     ("alerts_idx.json", "alerts_idx.json"),
     ("alerts_non_idx.json", "alerts_non_idx.json"),
     ("correction_filings.json", "correction_filings.json"),
-    # old alias: "inconsistent_alerts.json" → stored as suspicious_alerts.json
-    ("suspicious_alerts.json", "suspicious_alerts.json"),
-    ("inconsistent_alerts.json", "suspicious_alerts.json"),
+    # Legacy suspicious/inconsistent disabled in favor of v2 alerts_inserted_*.json
+    # ("suspicious_alerts.json", "suspicious_alerts.json"),
+    # ("inconsistent_alerts.json", "suspicious_alerts.json"),
 ]
 
 NOT_INSERTED_CANDIDATES: List[Tuple[str, str]] = [
