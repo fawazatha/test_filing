@@ -28,7 +28,7 @@ logger = get_logger("workflow.whatsapp.formatter")
 MAX_ROWS_PER_SECTION = 5
 
 
-# --------- small helpers ---------
+# small helpers
 
 def _abbr_num(x: Any) -> str:
     """Very small abbreviation helper for WhatsApp text (1.2K / 3.4M / 5.6B / 7.8T)."""
@@ -67,8 +67,7 @@ def _first(items: Iterable[Any], limit: int = MAX_ROWS_PER_SECTION) -> List[Any]
     return out
 
 
-# --------- per-tag section builders ---------
-
+# per-tag section builders
 def _section_upcoming_dividends(events: List[WorkflowEvent]) -> str:
     if not events:
         return ""
@@ -246,7 +245,7 @@ def _section_high_low(events: List[WorkflowEvent]) -> str:
     return "\n".join(lines)
 
 
-# --------- main entrypoint ---------
+# main entrypoint
 
 def build_whatsapp_digest(
     workflow: Workflow,
