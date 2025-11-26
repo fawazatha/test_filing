@@ -13,7 +13,8 @@ DEFAULT_FROM_DIR = os.getenv("FILINGS_ALERTS_DIR", "artifacts")
 
 # Policy toggles (adjust if needed)
 # Only include rows in *Inserted* payloads that have reasons OR needs_review.
-REQUIRE_REASONS_FOR_INSERTED = True
+# Set to False so we do not silently drop rows that were inserted but lack reasons.
+REQUIRE_REASONS_FOR_INSERTED = False
 
 # If your pipeline already gates on these elsewhere, keep this False here.
 # Set to True if you also want to exclude rows that contain any of these reasons
@@ -36,9 +37,9 @@ INSERTED_CANDIDATES: List[Tuple[str, str]] = [
     ("alerts_idx.json", "alerts_idx.json"),
     ("alerts_non_idx.json", "alerts_non_idx.json"),
     ("correction_filings.json", "correction_filings.json"),
-    # old alias: "inconsistent_alerts.json" → stored as suspicious_alerts.json
-    ("suspicious_alerts.json", "suspicious_alerts.json"),
-    ("inconsistent_alerts.json", "suspicious_alerts.json"),
+    # Legacy suspicious/inconsistent disabled in favor of v2 alerts_inserted_*.json
+    # ("suspicious_alerts.json", "suspicious_alerts.json"),
+    # ("inconsistent_alerts.json", "suspicious_alerts.json"),
 ]
 
 NOT_INSERTED_CANDIDATES: List[Tuple[str, str]] = [
@@ -190,13 +191,14 @@ def _filter_inserted_payload(src: Path) -> Optional[Any]:
     return None
 
 
-def _load_raw_passthrough(p: Path) -> Optional[Any]:
-    """If parsing fails, but file exists and is non-empty, pass the raw text through."""
-    try:
-        raw = p.read_text(encoding="utf-8")
-    except Exception:
-        return None
-    return raw if raw.strip() else None
+# NOTE: duplicate helper below is kept but commented to avoid accidental use.
+# def _load_raw_passthrough(p: Path) -> Optional[Any]:
+#     \"\"\"If parsing fails, but file exists and is non-empty, pass the raw text through.\"\"\"
+#     try:
+#         raw = p.read_text(encoding=\"utf-8\")
+#     except Exception:
+#         return None
+#     return raw if raw.strip() else None
 
 
 #-

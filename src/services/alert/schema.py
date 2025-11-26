@@ -33,6 +33,35 @@ MESSAGE_TEMPLATES = {
     "mismatch_transaction_type": "Parsed transaction type is inconsistent with the reported before/after values or document indicators.",
 }
 
+# Default severity per alert code (aligned with README policy)
+DEFAULT_SEVERITY = {
+    # Downloader (fatal)
+    "low_title_similarity": "fatal",
+    "download_failed": "fatal",
+    "unsupported_format": "fatal",
+    "content_mismatch": "fatal",
+    # Parser fatal
+    "symbol_missing": "fatal",
+    "table_not_found": "fatal",
+    "parse_exception": "fatal",
+    "number_parse_error": "fatal",
+    "no_text_extracted": "fatal",
+    # Parser inserted warnings
+    "symbol_name_mismatch": "warning",
+    "company_resolve_ambiguous": "warning",
+    "parser_warning": "warning",
+    # Filings numeric validation
+    "price_deviation_vs_market": "warning",
+    "price_deviation_within_doc": "soft",
+    "possible_zero_missing": "warning",
+    "stale_price": "soft",
+    "missing_price": "soft",
+    "percent_discrepancy": "hard",
+    "delta_pp_mismatch": "hard",
+    "mismatch_transaction_type": "hard",
+    "transfer_uid_required": "warning",
+}
+
 def build_alert(
     *,
     category: str,                   # "inserted" | "not_inserted"
@@ -46,10 +75,11 @@ def build_alert(
     reasons: Optional[List[Dict[str, Any]]] = None,
     ctx: Optional[Dict[str, Any]] = None,
     needs_review: bool = True,
-    severity: str = "warning",
+    severity: Optional[str] = None,
     ts: Optional[str] = None,        # iso utc
 ) -> Dict[str, Any]:
     msg = message or MESSAGE_TEMPLATES.get(code) or code
+    sev = severity or DEFAULT_SEVERITY.get(code) or "warning"
     alert = {
         "timestamp": ts or iso_utc(),
         "category": category,
@@ -65,7 +95,7 @@ def build_alert(
             },
             "announcement": announcement,
         },
-        "severity": severity,
+        "severity": sev,
         "needs_review": bool(needs_review),
     }
     # If reasons empty, synthesize from code

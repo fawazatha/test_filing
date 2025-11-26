@@ -6,7 +6,10 @@ import json
 import sys
 import os
 from pathlib import Path
-from typing import List, Dict, Any
+from typing import List, Dict, Any, Tuple
+from datetime import datetime
+from collections import Counter
+from urllib.parse import urlparse
 
 # Core Imports
 from src.core.types import FilingRecord
@@ -92,24 +95,165 @@ def _has_actionable(rows: list[dict]) -> bool:
     return False
 
 
-
-def _send_bucket(bucket: str,
-                 subject: str,
-                 *,
-                 body_text: str,
-                 to: List[str],
-                 cc: List[str],
-                 bcc: List[str],
-                 from_email: str | None,
-                 aws_region: str | None) -> bool:
+def _compose_body(bucket: str, rows: list[dict]) -> str:
     """
-    Send an SES email for a single alert bucket.
+    Build a concise human-friendly body for alert emails so operators
+    can triage without opening attachments.
+    """
+    now_str = datetime.utcnow().strftime("%Y-%m-%d %H:%M UTC")
+    total = len(rows)
+
+    # Count severities and top codes to give a quick pulse of what's inside.
+    sev_counts = Counter((r.get("severity") or "unknown").lower() for r in rows)
+    code_counts = Counter((r.get("code") or "unknown") for r in rows)
+
+    sev_order = ["fatal", "hard", "warning", "soft", "info", "unknown"]
+    sev_line_parts = [f"{s}:{sev_counts[s]}" for s in sev_order if sev_counts.get(s)]
+    sev_line = ", ".join(sev_line_parts) if sev_line_parts else "none"
+
+    top_codes = ", ".join(f"{code} ({cnt})" for code, cnt in code_counts.most_common(5))
+    if not top_codes:
+        top_codes = "n/a"
+
+    lines = [
+        f"Auto alert summary ({bucket.replace('_', ' ')}), aligned to the IDX filings action (~every 2 hours).",
+        f"Generated: {now_str}",
+        f"Total alerts: {total}",
+        f"By severity: {sev_line}",
+        f"Top codes: {top_codes}",
+        "Attachments include full JSON payloads for detailed review.",
+    ]
+    return "\n".join(lines)
+
+
+def _compose_body_combined(rows_in_db: list[dict], rows_not_inserted: list[dict]) -> str:
+    """
+    Build a structured body that covers both buckets in one email.
+    """
+    now_str = datetime.utcnow().strftime("%Y-%m-%d %H:%M UTC")
+
+    def _sev_line(rows: list[dict]) -> str:
+        sev_counts = Counter((r.get("severity") or "unknown").lower() for r in rows)
+        sev_order = ["fatal", "hard", "warning", "soft", "info", "unknown"]
+        parts = [f"{s}:{sev_counts[s]}" for s in sev_order if sev_counts.get(s)]
+        return ", ".join(parts) if parts else "none"
+
+    def _top_codes(rows: list[dict]) -> str:
+        c = Counter((r.get("code") or "unknown") for r in rows)
+        if not c:
+            return "n/a"
+        return ", ".join(f"{code} ({cnt})" for code, cnt in c.most_common(5))
+
+    def _short_url(u: str | None) -> str:
+        if not u:
+            return "-"
+        try:
+            parsed = urlparse(u)
+            tail = parsed.path.split("/")[-1] or parsed.netloc
+            return f"{parsed.netloc}/…/{tail}"
+        except Exception:
+            return u
+
+    def _row_summary(r: dict, limit_details: bool = True) -> str:
+        ts = r.get("timestamp") or "-"
+        stage = r.get("stage") or "-"
+        code = r.get("code") or "-"
+        msg = (r.get("message") or "").strip() or code
+        symbol = r.get("symbol") or r.get("issuer_code") or "-"
+        tx_type = r.get("type") or r.get("transaction_type") or "-"
+        holder = r.get("holder_name") or "-"
+        amount = r.get("amount") or r.get("amount_transaction") or "-"
+        price = r.get("price") or "-"
+        value = r.get("value") or r.get("transaction_value") or "-"
+
+        ctx_doc = (r.get("context") or {}).get("doc") or {}
+        doc_url = ctx_doc.get("url") or ctx_doc.get("link")
+        doc_display = _short_url(doc_url)
+
+        ann = (r.get("context") or {}).get("announcement") or {}
+        ann_url = ann.get("main_link") or ann.get("url") or ann.get("link")
+        ann_display = _short_url(ann_url)
+
+        attachments = ann.get("attachments") or []
+        attach_hint = ""
+        if attachments:
+            first = attachments[0]
+            attach_hint = f" | attach: {_short_url(first.get('url') or first.get('link'))}"
+
+        reason = "-"
+        details = ""
+        if r.get("reasons"):
+            rr = r["reasons"][0]
+            reason = f"{rr.get('code') or ''}: {rr.get('message') or ''}".strip()
+            det = rr.get("details") or {}
+            if det:
+                # Pick key numeric/context fields
+                nums = []
+                for k in ("price", "value", "document_median_price", "ref_price", "percent_discrepancy", "delta_pp_model"):
+                    v = det.get(k)
+                    if v is not None and v != "":
+                        nums.append(f"{k}={v}")
+                if nums:
+                    details = " | " + ", ".join(nums[:5])
+
+        # Suggested action based on stage/code
+        action = "Review and re-run."
+        if r.get("category") == "not_inserted":
+            if stage in ("downloader", "parser"):
+                action = "Insert manually then re-run (download/parse failed)."
+        if code in ("price_deviation_vs_market", "price_deviation_within_doc", "possible_zero_missing"):
+            action = "Check price vs reference; adjust and re-upload."
+        elif code in ("percent_discrepancy", "delta_pp_mismatch", "mismatch_transaction_type"):
+            action = "Review holdings/percentages and correct, then re-upload."
+        elif code in ("symbol_missing", "company_resolve_ambiguous"):
+            action = "Confirm correct symbol mapping, then re-run."
+        elif code == "transfer_uid_required":
+            action = "Pair both sides manually."
+        elif code in ("missing_price", "stale_price"):
+            action = "Fetch latest price data and re-run."
+
+        line = (
+            f"- {ts} | {stage} | {code}: {msg} | action: {action} | "
+            f"{symbol} {tx_type} {holder} amt={amount} price={price} val={value} | "
+            f"doc: {doc_display} | ann: {ann_display}{attach_hint}"
+        )
+        if reason != "-":
+            line += f" | reason: {reason}"
+        if details:
+            line += details
+        if limit_details and len(line) > 500:
+            line = line[:500] + "…"
+        return line
+
+    def _section(title: str, rows: list[dict], limit: int = 50) -> List[str]:
+        if not rows:
+            return [f"{title}: none"]
+        lines = [f"{title}: showing up to {min(limit, len(rows))} (total {len(rows)})."]
+        for r in rows[:limit]:
+            lines.append(_row_summary(r))
+        if len(rows) > limit:
+            lines.append(f"... {len(rows) - limit} more (see attachments).")
+        return lines
+
+    lines = [
+        "Auto alert summary (combined Inserted + Not Inserted), aligned to the IDX filings action (~every 2 hours).",
+        f"Generated: {now_str}",
+        f"Inserted (in_db): {len(rows_in_db)} | By severity: {_sev_line(rows_in_db)} | Top codes: {_top_codes(rows_in_db)}",
+        f"Not Inserted: {len(rows_not_inserted)} | By severity: {_sev_line(rows_not_inserted)} | Top codes: {_top_codes(rows_not_inserted)}",
+        "Details:",
+        *(_section("Inserted (needs review)", rows_in_db)),
+        *(_section("Not Inserted", rows_not_inserted)),
+        "Attachments include full JSON payloads for detailed review.",
+    ]
+    return "\n".join(lines)
+
+
+def _load_bucket_rows(bucket: str) -> Tuple[list[dict], list[Path]]:
+    """
+    Load alert rows and the source files for a bucket.
     """
     files = list_alert_files("filings", bucket)
     files = [p for p in files if p.exists()]
-    if not files:
-        logging.info("No %s alerts to send.", bucket)
-        return False
 
     def _extract_rows_any(payload: Any) -> list[dict]:
         if isinstance(payload, list):
@@ -119,7 +263,6 @@ def _send_bucket(bucket: str,
                 v = payload.get(k)
                 if isinstance(v, list):
                     return [x for x in v if isinstance(x, dict)]
-            # If dict looks like a single row
             return [payload]
         return []
 
@@ -131,6 +274,27 @@ def _send_bucket(bucket: str,
         except Exception as e:
             logging.warning("Skip unreadable alert file %s: %s", p, e)
 
+    return all_rows, files
+
+
+
+def _send_bucket(bucket: str,
+                 subject: str,
+                 *,
+                 body_text: str | None,
+                 to: List[str],
+                 cc: List[str],
+                 bcc: List[str],
+                 from_email: str | None,
+                 aws_region: str | None) -> bool:
+    """
+    Send an SES email for a single alert bucket.
+    """
+    all_rows, files = _load_bucket_rows(bucket)
+    if not files:
+        logging.info("No %s alerts to send.", bucket)
+        return False
+
     # Minimal guard for Inserted bucket
     if bucket == "in_db":
         if not all_rows:
@@ -140,12 +304,15 @@ def _send_bucket(bucket: str,
             logging.info("Skip Inserted email: no actionable rows (no reasons and no needs_review).")
             return False
 
+    # Compose richer body text if none provided by caller.
+    computed_body = body_text or _compose_body(bucket, all_rows)
+
     # SES expects file paths as strings
     file_paths = [str(p) for p in files]
     resp = send_attachments(
         to=to,
         subject=subject,
-        body_text=body_text,
+        body_text=computed_body,
         files=file_paths,
         cc=cc,
         bcc=bcc,
@@ -323,25 +490,49 @@ def _cmd_upload(args) -> None:
         cfg = _resolve_recipients_and_cfg(args)
         sent_any = False
 
-        if args.email_bucket in ("in_db", "both"):
-            ok = _send_bucket(
-                "in_db",
-                args.subject_inserted,
-                body_text=args.body_text_inserted or "Attached are 'Inserted' alerts.",
-                to=cfg["to"], cc=cfg["cc"], bcc=cfg["bcc"],
-                from_email=cfg["from_email"], aws_region=cfg["aws_region"],
-            )
-            sent_any = sent_any or ok
+        if args.email_bucket == "both":
+            rows_in_db, files_in_db = _load_bucket_rows("in_db")
+            rows_not, files_not = _load_bucket_rows("not_inserted")
+            if not rows_in_db and not rows_not:
+                logging.info("Skip combined email: no alerts in either bucket.")
+            else:
+                body = args.body_text_inserted or _compose_body_combined(rows_in_db, rows_not)
+                file_paths = [str(p) for p in (files_in_db + files_not)]
+                resp = send_attachments(
+                    to=cfg["to"],
+                    subject=args.subject_inserted,
+                    body_text=body,
+                    files=file_paths,
+                    cc=cfg["cc"],
+                    bcc=cfg["bcc"],
+                    from_email=cfg["from_email"],
+                    aws_region=cfg["aws_region"],
+                )
+                if resp.get("ok"):
+                    logging.info("Combined alert email sent. MessageId=%s", resp.get("message_id"))
+                    sent_any = True
+                else:
+                    logging.error("Failed to send combined alert email: %s", resp.get("error"))
+        else:
+            if args.email_bucket == "in_db":
+                ok = _send_bucket(
+                    "in_db",
+                    args.subject_inserted,
+                    body_text=args.body_text_inserted,
+                    to=cfg["to"], cc=cfg["cc"], bcc=cfg["bcc"],
+                    from_email=cfg["from_email"], aws_region=cfg["aws_region"],
+                )
+                sent_any = sent_any or ok
 
-        if args.email_bucket in ("not_inserted", "both"):
-            ok = _send_bucket(
-                "not_inserted",
-                args.subject_not_inserted,
-                body_text=args.body_text_not_inserted or "Attached are 'Not Inserted' alerts.",
-                to=cfg["to"], cc=cfg["cc"], bcc=cfg["bcc"],
-                from_email=cfg["from_email"], aws_region=cfg["aws_region"],
-            )
-            sent_any = sent_any or ok
+            if args.email_bucket == "not_inserted":
+                ok = _send_bucket(
+                    "not_inserted",
+                    args.subject_not_inserted,
+                    body_text=args.body_text_not_inserted,
+                    to=cfg["to"], cc=cfg["cc"], bcc=cfg["bcc"],
+                    from_email=cfg["from_email"], aws_region=cfg["aws_region"],
+                )
+                sent_any = sent_any or ok
 
         print("[ALERT EMAIL SENT]" if sent_any else "[NO ALERT EMAIL SENT]")
 
@@ -355,25 +546,48 @@ def _cmd_send_alerts(args) -> None:
     cfg = _resolve_recipients_and_cfg(args)
     sent_any = False
 
-    if args.bucket in ("in_db", "both"):
-        ok = _send_bucket(
-            "in_db",
-            args.subject_inserted,
-            body_text=args.body_text_inserted or "Attached are 'Inserted' alerts.",
-            to=cfg["to"], cc=cfg["cc"], bcc=cfg["bcc"],
-            from_email=cfg["from_email"], aws_region=cfg["aws_region"],
-        )
-        sent_any = sent_any or ok
-
-    if args.bucket in ("not_inserted", "both"):
-        ok = _send_bucket(
-            "not_inserted",
-            args.subject_not_inserted,
-            body_text=args.body_text_not_inserted or "Attached are 'Not Inserted' alerts.",
-            to=cfg["to"], cc=cfg["cc"], bcc=cfg["bcc"],
-            from_email=cfg["from_email"], aws_region=cfg["aws_region"],
-        )
-        sent_any = sent_any or ok
+    if args.bucket == "both":
+        rows_in_db, files_in_db = _load_bucket_rows("in_db")
+        rows_not, files_not = _load_bucket_rows("not_inserted")
+        if not rows_in_db and not rows_not:
+            logging.info("Skip combined email: no alerts in either bucket.")
+        else:
+            body = args.body_text_inserted or _compose_body_combined(rows_in_db, rows_not)
+            file_paths = [str(p) for p in (files_in_db + files_not)]
+            resp = send_attachments(
+                to=cfg["to"],
+                subject=args.subject_inserted,
+                body_text=body,
+                files=file_paths,
+                cc=cfg["cc"],
+                bcc=cfg["bcc"],
+                from_email=cfg["from_email"],
+                aws_region=cfg["aws_region"],
+            )
+            if resp.get("ok"):
+                logging.info("Combined alert email sent. MessageId=%s", resp.get("message_id"))
+                sent_any = True
+            else:
+                logging.error("Failed to send combined alert email: %s", resp.get("error"))
+    else:
+        if args.bucket == "in_db":
+            ok = _send_bucket(
+                "in_db",
+                args.subject_inserted,
+                body_text=args.body_text_inserted,
+                to=cfg["to"], cc=cfg["cc"], bcc=cfg["bcc"],
+                from_email=cfg["from_email"], aws_region=cfg["aws_region"],
+            )
+            sent_any = sent_any or ok
+        if args.bucket == "not_inserted":
+            ok = _send_bucket(
+                "not_inserted",
+                args.subject_not_inserted,
+                body_text=args.body_text_not_inserted,
+                to=cfg["to"], cc=cfg["cc"], bcc=cfg["bcc"],
+                from_email=cfg["from_email"], aws_region=cfg["aws_region"],
+            )
+            sent_any = sent_any or ok
 
     print("[ALERTS SENT]" if sent_any else "[NO ALERTS TO SEND]")
 
@@ -390,7 +604,7 @@ def main():
     parser.add_argument("--non-idx", default="data/parsed_non_idx_output.json")
     parser.add_argument("--downloads", default="data/downloaded_pdfs.json")
     parser.add_argument("--out", default="data/filings_data.json")
-    parser.add_argument("--alerts", default="alerts/suspicious_alerts.json")
+    parser.add_argument("--alerts", default="alerts/alerts_inserted_filings.json")
     parser.add_argument("--ingestion-file", default="data/ingestion.json", help="Path to ingestion file with announcement dates.")
     parser.add_argument("-v", "--verbose", action="store_true")
 
@@ -400,7 +614,7 @@ def main():
     p_run.add_argument("--non-idx", default="data/parsed_non_idx_output.json")
     p_run.add_argument("--downloads", default="data/downloaded_pdfs.json")
     p_run.add_argument("--out", default="data/filings_data.json")
-    p_run.add_argument("--alerts", default="alerts/suspicious_alerts.json")
+    p_run.add_argument("--alerts", default="alerts/alerts_inserted_filings.json")
     p_run.add_argument("--ingestion-file", default="data/ingestion.json", help="Path to ingestion file with announcement dates.")
     p_run.add_argument("-v", "--verbose", action="store_true")
     p_run.set_defaults(func=_cmd_run)

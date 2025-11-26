@@ -470,6 +470,12 @@ def step_email_alerts(
     def _send_one(group_title: str, folder: Path, to_csv: Optional[str],
                   cc_csv: Optional[str], bcc_csv: Optional[str]) -> None:
         files = _gather_json_files(folder)
+        # Dedup legacy low_title file if the consolidated downloader file exists
+        names = {p.name for p in files}
+        if "alerts_not_inserted_downloader.json" in names and "low_title_similarity_alerts.json" in names:
+            files = [p for p in files if p.name != "low_title_similarity_alerts.json"]
+        # Skip legacy suspicious if present; prefer v2 alerts_inserted_*.json
+        files = [p for p in files if p.name != "suspicious_alerts.json"]
         if not files:
             LOG.info("[EMAIL] '%s' skipped: folder %s missing or empty", group_title, folder)
             return
@@ -856,7 +862,8 @@ def main():
 
     # 4) Generate filings
     filings_out = Path("data/filings_data.json")
-    suspicious_out = Path("alerts/suspicious_alerts.json")
+    # Use v2 naming for inserted alerts from filings stage
+    suspicious_out = Path("alerts/alerts_inserted_filings.json")
     step_generate_filings(
         idx_parsed=idx_out,
         non_idx_parsed=non_idx_out,
