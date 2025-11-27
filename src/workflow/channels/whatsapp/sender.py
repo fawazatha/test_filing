@@ -10,12 +10,17 @@ from src.services.whatsapp.utils.config import (
     AUTH_TOKEN,
     TWILIO_FROM_NUMBER,
     LOGGER,
+    TEMPLATE_SID
 )
 from src.workflow.models import Workflow, WorkflowEvent
 from .formatter import build_whatsapp_digest
 
+import json 
+import time 
+import random 
 
-def send_whatsapp_for_workflow(
+
+async def send_whatsapp_for_workflow(
     workflow: Workflow,
     events: List[WorkflowEvent],
     ctx: Dict[str, Any],
@@ -31,50 +36,69 @@ def send_whatsapp_for_workflow(
       # or "to_number": "+62812xxxxxxx"
     }
     """
+    # Check if WhatsApp is enabled for this workflow
     cfg = (workflow.channels or {}).get("whatsapp") or {}
     if not cfg.get("enabled", True):
         LOGGER.info("WhatsApp disabled for workflow %s", workflow.id)
         return
 
+    # Get recipients (handle both string and list formats)
     to_numbers = cfg.get("to_numbers") or cfg.get("to_number")
     if isinstance(to_numbers, str):
         to_numbers = [to_numbers]
+
     if not to_numbers:
         LOGGER.warning("No WhatsApp recipients for workflow %s", workflow.id)
         return
 
-    body = build_whatsapp_digest(workflow, events, ctx)
-    if not body:
+    payloads = build_whatsapp_digest(workflow, events, ctx)
+    if not payloads:
         LOGGER.info(
             "No WhatsApp content for workflow %s (no events for subscribed tags)",
             workflow.id,
         )
         return
 
-    if not ACCOUNT_SID or not AUTH_TOKEN or not TWILIO_FROM_NUMBER:
+    if not ACCOUNT_SID or not AUTH_TOKEN or not TWILIO_FROM_NUMBER or not TEMPLATE_SID:
         LOGGER.error("Twilio config missing, cannot send WhatsApp for workflow %s", workflow.id)
         return
 
-    client = Client(ACCOUNT_SID, AUTH_TOKEN)
+    # Initialize Twilio Client
+    try:
+        client = Client(ACCOUNT_SID, AUTH_TOKEN)
+    except Exception as error:
+        LOGGER.error(f"Twilio Init Error: {error}")
+        return None 
 
-    for to in to_numbers:
-        try:
-            msg = client.messages.create(
-                from_=f"whatsapp:{TWILIO_FROM_NUMBER}",
-                to=f"whatsapp:{to}",
-                body=body,
-            )
-            LOGGER.info(
-                "Sent WhatsApp workflow digest to %s (sid=%s) for workflow %s",
-                to,
-                msg.sid,
-                workflow.id,
-            )
-        except TwilioRestException as exc:
-            LOGGER.error(
-                "Failed to send WhatsApp to %s for workflow %s: %s",
-                to,
-                workflow.id,
-                exc,
-                exc_info=True,
-            )
+    for number_recepient in to_numbers:
+        for payload in payloads: 
+            try:
+                msg = client.messages.create(
+                    from_=f"whatsapp:{TWILIO_FROM_NUMBER}",
+                    to=f"whatsapp:{number_recepient}",
+                    content_sid=TEMPLATE_SID,
+                    content_variables=json.dumps(payload)
+                )
+
+                time.sleep(random.uniform(1, 2.5))
+
+                LOGGER.info(
+                    "Sent WhatsApp workflow digest to %s (sid=%s) for workflow %s",
+                    number_recepient,
+                    msg.sid,
+                    workflow.id,
+                )
+
+            except TwilioRestException as exc:
+                LOGGER.error(
+                    "Failed to send WhatsApp to %s for workflow %s: %s",
+                    number_recepient,
+                    workflow.id,
+                    exc,
+                    exc_info=True,
+                )
+            except Exception as error:
+                LOGGER.error(
+                    f"Failed to send WhatsApp to %s for workflow %s: %s: {error}"
+                )
+                
