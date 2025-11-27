@@ -1,7 +1,6 @@
 from __future__ import annotations
 
 from collections import defaultdict
-from datetime import datetime
 from typing import Any, Dict, List, Iterable
 
 from src.common.datetime import now_wib
@@ -16,22 +15,25 @@ from src.workflow.config import (
     TAG_LAGGARDS_1Y,
     TAG_TOP_90D_VOLUME,
     TAG_TOP_90D_VALUE,
-    TAG_INST_BUY,
-    TAG_INST_SELL,
-    TAG_HIGH_LOW,
+    TAG_TOP_INST_BUY,   
+    TAG_TOP_INST_SELL,
+    TAG_NEW_HIGH,
+    TAG_NEW_LOW
 )
 from src.workflow.models import Workflow, WorkflowEvent
 
-logger = get_logger("workflow.whatsapp.formatter")
 
-# Limit per section supaya pesan WA nggak jadi tembok text
+LOGGER = get_logger("workflow.whatsapp.formatter")
+
+# Limit per section tags
 MAX_ROWS_PER_SECTION = 5
 
 
 # small helpers
-
 def _abbr_num(x: Any) -> str:
-    """Very small abbreviation helper for WhatsApp text (1.2K / 3.4M / 5.6B / 7.8T)."""
+    """
+    Very small abbreviation helper for WhatsApp text (1.2K / 3.4M / 5.6B / 7.8T).
+    """
     if x is None:
         return "-"
     try:
@@ -68,192 +70,269 @@ def _first(items: Iterable[Any], limit: int = MAX_ROWS_PER_SECTION) -> List[Any]
 
 
 # per-tag section builders
-def _section_upcoming_dividends(events: List[WorkflowEvent]) -> str:
+def _section_upcoming_dividends(
+    wf_name, 
+    window_start, 
+    window_end, 
+    generated_at,
+    events: List[WorkflowEvent], 
+    sections: list
+) -> list[dict[str, any]]:
+    
     if not events:
-        return ""
+        return sections
 
-    lines = ["📈 *Upcoming Dividends*"]
-    # Each event payload: {"ex_date": "...", "raw": {...}}
     for ev in _first(events):
-        raw = ev.payload.get("raw") or {}
-        company = raw.get("company_name") or raw.get("company") or "-"
-        div_per_share = raw.get("div_per_share") or raw.get("dividend_per_share") or raw.get("dividend") or "-"
-        yield_pct = raw.get("yield") or raw.get("dividend_yield") or "-"
-        pay_date = raw.get("payment_date") or raw.get("pay_date") or "-"
-        ex_date = ev.payload.get("ex_date") or raw.get("ex_date") or raw.get("exDate") or "-"
+        try:
+            raw = ev.payload or {}
 
-        lines.append(
-            f"- {ev.symbol} {company}: "
-            f"DPS {_abbr_num(div_per_share)} "
-            f"({_pct(yield_pct)}), Ex {ex_date}, Pay {pay_date}"
-        )
+            div_per_share = raw.get("div_per_share") or raw.get("dividend_per_share") or raw.get("dividend")
+            yield_pct = raw.get("yield") or raw.get("dividend_yield")
+            pay_date = raw.get("payment_date") or raw.get("pay_date") or "-"
+            ex_date = ev.payload.get("ex_date") or raw.get("ex_date") or raw.get("exDate") or "-"
 
-    if len(events) > MAX_ROWS_PER_SECTION:
-        lines.append(f"… and {len(events) - MAX_ROWS_PER_SECTION} more")
+            # Map to Template:
+            # timeframe -> The Dates (Ex and Pay)
+            # price -> The Money (DPS and Yield)
+            time_str = f"Ex {ex_date}, Pay {pay_date}"
+            price_str = f"DPS {_abbr_num(div_per_share)} ({_pct(yield_pct)})"
 
-    return "\n".join(lines)
+            sections.append(
+                _make_template_item(
+                    wf_name, 
+                    window_start, 
+                    window_end, 
+                    generated_at, 
+                    ev,
+                    timeframe_text=time_str,
+                    price_text=price_str
+                )
+            )
+        
+        except Exception as error: 
+            LOGGER.error(f"Formatting failed for event dividend {ev.symbol}: {error}")
+            continue
 
-
-def _section_insider(events_buy: List[WorkflowEvent], events_sell: List[WorkflowEvent]) -> str:
-    if not events_buy and not events_sell:
-        return ""
-
-    lines: List[str] = ["🔍 *Insider Trading Activity*"]
-
-    def _format(ev: WorkflowEvent, label: str) -> str:
-        # For now we rely on payload["value"] summarizing the move (e.g. '12.5B (rank 1)')
-        value = ev.payload.get("value")
-        company = ev.payload.get("company_name") or "-"
-        return f"- [{label}] {ev.symbol} {company}: {value}"
-
-    if events_buy:
-        lines.append("  • BUY:")
-        for ev in _first(events_buy):
-            lines.append("    " + _format(ev, "BUY"))
-        if len(events_buy) > MAX_ROWS_PER_SECTION:
-            lines.append(f"    … and {len(events_buy) - MAX_ROWS_PER_SECTION} more")
-
-    if events_sell:
-        lines.append("  • SELL:")
-        for ev in _first(events_sell):
-            lines.append("    " + _format(ev, "SELL"))
-        if len(events_sell) > MAX_ROWS_PER_SECTION:
-            lines.append(f"    … and {len(events_sell) - MAX_ROWS_PER_SECTION} more")
-
-    return "\n".join(lines)
+    return sections
 
 
-def _section_institution(events_buy: List[WorkflowEvent], events_sell: List[WorkflowEvent]) -> str:
-    if not events_buy and not events_sell:
-        return ""
+def _section_insider(
+    wf_name: str, 
+    window_start: str, 
+    window_end: str, 
+    generated_at: str,
+    insider_events: List[WorkflowEvent], 
+    sections: list
+) -> list[dict[str, any]]:
+    
+    if not insider_events:
+        return sections
 
-    lines: List[str] = ["🏢 *Institution Activity (Last Month)*"]
+    for event in _first(insider_events):
+        try:
+            timeframe = 'BUY' if event.tag == TAG_INSIDER_BUY else 'SELL'
 
-    if events_buy:
-        lines.append("  • Top Buys:")
-        for ev in _first(events_buy):
-            value = ev.payload.get("value")
-            company = ev.payload.get("company_name") or "-"
-            lines.append(f"    - {ev.symbol} {company}: {_abbr_num(value)}")
-        if len(events_buy) > MAX_ROWS_PER_SECTION:
-            lines.append(f"    … and {len(events_buy) - MAX_ROWS_PER_SECTION} more")
+            sections.append(
+                _make_template_item(
+                    wf_name, 
+                    window_start, 
+                    window_end, 
+                    generated_at, 
+                    event,
+                    timeframe_text=f"[{timeframe}]",
+                    price_text=str(event.payload.get("value")) 
+                )
+            )
+        
+        except Exception as error: 
+            LOGGER.error(f"Formatting failed for event insider {event.symbol}: {error}")
+            continue
+    
+    return sections
 
-    if events_sell:
-        lines.append("  • Top Sells:")
-        for ev in _first(events_sell):
-            value = ev.payload.get("value")
-            company = ev.payload.get("company_name") or "-"
-            lines.append(f"    - {ev.symbol} {company}: {_abbr_num(value)}")
-        if len(events_sell) > MAX_ROWS_PER_SECTION:
-            lines.append(f"    … and {len(events_sell) - MAX_ROWS_PER_SECTION} more")
 
-    return "\n".join(lines)
+def _section_institution(
+    wf_name: str, 
+    window_start: str, 
+    window_end: str, 
+    generated_at: str,
+    institution_events: List[WorkflowEvent], 
+    sections: list
+) -> list[dict[str, any]]:
+    if not institution_events:
+        return sections
+
+    for event in _first(institution_events): 
+        try:
+            raw = event.payload or {}
+            timeframe = 'Top Buys' if event.tag == TAG_TOP_INST_BUY else 'Top Sells'
+
+            sections.append(
+                _make_template_item(
+                    wf_name, 
+                    window_start, 
+                    window_end, 
+                    generated_at, 
+                    event,
+                    timeframe_text=timeframe,
+                    price_text=_abbr_num(raw.get("value"))
+                )
+            )
+        
+        except Exception as error:
+            LOGGER.error(f"Formatting failed for event institution {event.symbol}: {error}")
+            continue
+
+    return sections
 
 
 def _section_performance(
-    leaders_1m: List[WorkflowEvent],
-    laggards_1m: List[WorkflowEvent],
-    leaders_1y: List[WorkflowEvent],
-    laggards_1y: List[WorkflowEvent],
-) -> str:
-    if not (leaders_1m or laggards_1m or leaders_1y or laggards_1y):
-        return ""
+    wf_name: str, 
+    window_start: str, 
+    window_end: str, 
+    generated_at: str,
+    tag: str,
+    event_list: List[WorkflowEvent], 
+    sections: list
+) -> list[dict[str, any]]:
+    if not event_list:
+        return sections
 
-    lines: List[str] = ["📊 *Performance Leaders & Laggards*"]
+    for event in _first(event_list):
+        try:
+            raw = event.payload or {}
+            timeframe = tag.replace("top-ten-", "").replace("-", " ").title()
+            
+            sections.append(
+                _make_template_item(
+                    wf_name, 
+                    window_start, 
+                    window_end, 
+                    generated_at, 
+                    event, 
+                    timeframe_text=timeframe, 
+                    price_text=str(raw.get("value"))
+                )
+            )
+        
+        except Exception as error:
+            LOGGER.error(f"Formatting failed for event performance {event.symbol}: {error}")
+            continue
 
-    def _fmt(ev: WorkflowEvent) -> str:
-        # payload["value"] is typically "4.2 (1)" or similar (return + rank)
-        value = ev.payload.get("value")
-        company = ev.payload.get("company_name") or "-"
-        return f"- {ev.symbol} {company}: {value}"
-
-    if leaders_1m:
-        lines.append("  • 1M Leaders:")
-        for ev in _first(leaders_1m):
-            lines.append("    " + _fmt(ev))
-        if len(leaders_1m) > MAX_ROWS_PER_SECTION:
-            lines.append(f"    … and {len(leaders_1m) - MAX_ROWS_PER_SECTION} more")
-
-    if laggards_1m:
-        lines.append("  • 1M Laggards:")
-        for ev in _first(laggards_1m):
-            lines.append("    " + _fmt(ev))
-        if len(laggards_1m) > MAX_ROWS_PER_SECTION:
-            lines.append(f"    … and {len(laggards_1m) - MAX_ROWS_PER_SECTION} more")
-
-    if leaders_1y:
-        lines.append("  • 1Y Leaders:")
-        for ev in _first(leaders_1y):
-            lines.append("    " + _fmt(ev))
-        if len(leaders_1y) > MAX_ROWS_PER_SECTION:
-            lines.append(f"    … and {len(leaders_1y) - MAX_ROWS_PER_SECTION} more")
-
-    if laggards_1y:
-        lines.append("  • 1Y Laggards:")
-        for ev in _first(laggards_1y):
-            lines.append("    " + _fmt(ev))
-        if len(laggards_1y) > MAX_ROWS_PER_SECTION:
-            lines.append(f"    … and {len(laggards_1y) - MAX_ROWS_PER_SECTION} more")
-
-    return "\n".join(lines)
+    return sections
 
 
-def _section_trading(volume_events: List[WorkflowEvent], value_events: List[WorkflowEvent]) -> str:
-    if not (volume_events or value_events):
-        return ""
-
-    lines: List[str] = ["💹 *Trading Activity (90D)*"]
-
-    if volume_events:
-        lines.append("  • Top Volume:")
-        for ev in _first(volume_events):
-            company = ev.payload.get("company_name") or "-"
-            vol = ev.payload.get("value")
-            lines.append(f"    - {ev.symbol} {company}: {_abbr_num(vol)} shares")
-        if len(volume_events) > MAX_ROWS_PER_SECTION:
-            lines.append(f"    … and {len(volume_events) - MAX_ROWS_PER_SECTION} more")
-
-    if value_events:
-        lines.append("  • Top Value:")
-        for ev in _first(value_events):
-            company = ev.payload.get("company_name") or "-"
-            val = ev.payload.get("value")
-            lines.append(f"    - {ev.symbol} {company}: {_abbr_num(val)}")
-        if len(value_events) > MAX_ROWS_PER_SECTION:
-            lines.append(f"    … and {len(value_events) - MAX_ROWS_PER_SECTION} more")
-
-    return "\n".join(lines)
-
-
-def _section_high_low(events: List[WorkflowEvent]) -> str:
+def _section_trading(
+    wf_name: str,
+    window_start: str,
+    window_end: str,
+    generated_at: str,
+    sections: list,
+    events: list,
+    label: str,
+    is_volume: bool = False
+) -> list[dict[str, any]]:
     if not events:
-        return ""
+        return sections 
+    
+    for event in _first(events):
+        try:
+            raw = event.payload or {}
+            value = raw.get("value")
 
-    lines = ["📌 *High / Low Highlights*"]
-    for ev in _first(events):
-        company = ev.payload.get("company_name") or "-"
-        timeframe = ev.payload.get("timeframe")  # e.g. "ytd_high", "alltime_low"
-        price = ev.payload.get("price")
-        tf = (timeframe or "").replace("_", " ").upper()
-        lines.append(
-            f"- {ev.symbol} {company}: ({tf}) at {_abbr_num(price)}"
-        )
+            if is_volume:
+                price_text = f"{_abbr_num(value)} shares"
+            else:
+                price_text = _abbr_num(value)
 
-    if len(events) > MAX_ROWS_PER_SECTION:
-        lines.append(f"… and {len(events) - MAX_ROWS_PER_SECTION} more")
+            sections.append(
+                _make_template_item(
+                    wf_name,
+                    window_start,
+                    window_end,
+                    generated_at,
+                    event,
+                    timeframe_text=label,
+                    price_text=price_text,
+                )
+            )
+        
+        except Exception as error:
+            LOGGER.error(f"Formatting failed for event trading {event.symbol}: {error}")
+            continue
 
-    return "\n".join(lines)
+    return sections
+
+
+def _section_high_low(
+    wf_name: str,
+    window_start: str,
+    window_end: str,
+    generated_at: str,
+    high_low_events: List[WorkflowEvent], 
+    sections: list
+) -> list[dict[str, any]]:
+    if not high_low_events:
+        return sections
+
+    for event in _first(high_low_events):
+        try:
+            raw = event.payload or {}
+            raw_tf = raw.get("timeframe", "-")
+            clean_tf = raw_tf.replace("_", " ").upper()
+
+            sections.append(
+                _make_template_item(
+                    wf_name, 
+                    window_start, 
+                    window_end, 
+                    generated_at, 
+                    event,
+                    timeframe_text=clean_tf,
+                    price_text=_abbr_num(raw.get("price"))
+                )
+            )
+        
+        except Exception as error:
+            LOGGER.error(f"Formatting failed for event high low {event.symbol}: {error}")
+            continue
+
+    return sections
+
+
+def _make_template_item(
+    workflow_name: str,
+    period_start: str,
+    period_end: str,
+    generate_date: str,
+    event: WorkflowEvent,
+    timeframe_text: str,
+    price_text: str
+) -> dict[str, any]:
+    """
+    Standardizes the dictionary creation for the Twilio Template.
+    """
+    raw = event.payload or {}
+    return {
+        "workflow_name": workflow_name,
+        "period_start": period_start,
+        "period_end": period_end,
+        "generate_date": generate_date,
+        "symbol": event.symbol,
+        "company_name": raw.get("company_name", "-"),
+        "timeframe": timeframe_text,
+        "price": price_text,
+    }
 
 
 # main entrypoint
-
 def build_whatsapp_digest(
     workflow: Workflow,
     events: List[WorkflowEvent],
     ctx: Dict[str, Any],
-) -> str | None:
+) -> List[Dict[str, Any]] | None:
     """
-    Build a single WhatsApp message body for one workflow.
+    Build a list of WhatsApp template items for one workflow.
 
     ctx is expected to at least contain:
       - window_start (str)
@@ -265,14 +344,8 @@ def build_whatsapp_digest(
     window_start = ctx.get("window_start")
     window_end = ctx.get("window_end")
     now = ctx.get("generated_at") or now_wib()
-
-    header_lines = [
-        f"*Sectors Market Digest* – {workflow.name or workflow.id}",
-        f"Period: {window_start} → {window_end} (WIB)",
-        f"Generated at: {now.strftime('%Y-%m-%d %H:%M')} WIB",
-        "",
-        "Summary for your subscribed tags:",
-    ]
+    generated_at = now.strftime('%Y-%m-%d %H:%M')
+    wf_name = workflow.name or workflow.id
 
     # group events by tag for easier section-building
     by_tag: Dict[str, List[WorkflowEvent]] = defaultdict(list)
@@ -283,57 +356,69 @@ def build_whatsapp_digest(
 
     # upcoming dividends
     if TAG_UPCOMING_DIVIDENDS in workflow.tags:
-        sec = _section_upcoming_dividends(by_tag.get(TAG_UPCOMING_DIVIDENDS, []))
-        if sec:
-            sections.append(sec)
+        dividend_events = by_tag.get(TAG_UPCOMING_DIVIDENDS, [])
+        sections = _section_upcoming_dividends(
+            wf_name, window_start, window_end, generated_at, 
+            dividend_events, sections
+        )
 
     # insider trading (buy + sell)
     if TAG_INSIDER_BUY in workflow.tags or TAG_INSIDER_SELL in workflow.tags:
-        sec = _section_insider(
-            by_tag.get(TAG_INSIDER_BUY, []),
-            by_tag.get(TAG_INSIDER_SELL, []),
+        insider_events = by_tag.get(TAG_INSIDER_BUY, []) + by_tag.get(TAG_INSIDER_SELL, [])
+        sections = _section_insider(
+            wf_name, window_start, window_end, generated_at, 
+            insider_events, sections
         )
-        if sec:
-            sections.append(sec)
 
     # institution (only fires on day 11 per rules.py)
-    if TAG_INST_BUY in workflow.tags or TAG_INST_SELL in workflow.tags:
-        sec = _section_institution(
-            by_tag.get(TAG_INST_BUY, []),
-            by_tag.get(TAG_INST_SELL, []),
+    if TAG_TOP_INST_BUY in workflow.tags or TAG_TOP_INST_SELL in workflow.tags:
+        institution_events = by_tag.get(TAG_TOP_INST_BUY, []) + by_tag.get(TAG_TOP_INST_SELL, [])
+        sections = _section_institution(
+            wf_name, window_start, window_end, generated_at, 
+            institution_events, sections
         )
-        if sec:
-            sections.append(sec)
 
     # performance (leaders/laggards 1m & 1y)
-    if any(t in workflow.tags for t in (TAG_LEADERS_1M, TAG_LAGGARDS_1M, TAG_LEADERS_1Y, TAG_LAGGARDS_1Y)):
-        sec = _section_performance(
-            by_tag.get(TAG_LEADERS_1M, []),
-            by_tag.get(TAG_LAGGARDS_1M, []),
-            by_tag.get(TAG_LEADERS_1Y, []),
-            by_tag.get(TAG_LAGGARDS_1Y, []),
-        )
-        if sec:
-            sections.append(sec)
+    performance_tags = [TAG_LEADERS_1M, TAG_LAGGARDS_1M, TAG_LEADERS_1Y, TAG_LAGGARDS_1Y]
+    if any(t in workflow.tags for t in performance_tags):
+        for tag in performance_tags:
+            event_list = by_tag.get(tag, [])
+            sections = _section_performance(
+                wf_name, window_start, window_end, generated_at, tag,
+                event_list, sections
+            )
 
     # trading (90d volume & value)
     if TAG_TOP_90D_VOLUME in workflow.tags or TAG_TOP_90D_VALUE in workflow.tags:
-        sec = _section_trading(
-            by_tag.get(TAG_TOP_90D_VOLUME, []),
-            by_tag.get(TAG_TOP_90D_VALUE, []),
-        )
-        if sec:
-            sections.append(sec)
+        vol_events = by_tag.get(TAG_TOP_90D_VOLUME, [])
+        val_events = by_tag.get(TAG_TOP_90D_VALUE, [])
 
+        sections = _section_trading(
+            wf_name, window_start, window_end, generated_at,
+            sections,
+            vol_events,
+            label="Top Volume",
+            is_volume=True
+        )
+
+        sections = _section_trading(
+            wf_name, window_start, window_end, generated_at,
+            sections,
+            val_events,
+            label="Top Value",
+            is_volume=False
+        )
+        
     # high/low
-    if TAG_HIGH_LOW in workflow.tags:
-        sec = _section_high_low(by_tag.get(TAG_HIGH_LOW, []))
-        if sec:
-            sections.append(sec)
+    high_low_events = by_tag.get(TAG_NEW_HIGH, []) + by_tag.get(TAG_NEW_LOW, [])
+    if high_low_events:
+        sections = _section_high_low(
+            wf_name, window_start, window_end, generated_at, 
+            high_low_events, sections
+        )
 
     if not sections:
         # all subscribed tags had no events in this window
         return None
-
-    body = "\n\n".join(header_lines + sections)
-    return body
+    
+    return sections

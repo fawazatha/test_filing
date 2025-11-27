@@ -210,13 +210,18 @@ async def run_workflows(
 
         # --- WhatsApp channel ---
         if send_whatsapp_for_workflow is not None and channels.get("whatsapp") is not None:
+            ctx = {
+                "window_start": window_label,
+                "window_end": window_label,
+                "generated_at": now
+            }
+
             tasks.append(
                 asyncio.create_task(
                     send_whatsapp_for_workflow(
                         workflow=wf,
                         events=wf_events,
-                        window_start_label=window_label,
-                        window_end_label=window_label,
+                        ctx=ctx
                     )
                 )
             )
