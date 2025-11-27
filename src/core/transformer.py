@@ -29,6 +29,54 @@ PURPOSE_TAG_MAP = {
     "divestasi": "divestment", "difvestment": "divestment",
 }
 
+# Optional Gemini translator (lazy init)
+_GEMINI_CLIENT = None
+try:
+    import google.generativeai as _genai  # type: ignore
+except Exception:
+    _genai = None  # type: ignore
+
+
+def _get_gemini_translator():
+    """Best-effort Gemini client for purpose translation."""
+    global _GEMINI_CLIENT
+    if _GEMINI_CLIENT is not None:
+        return _GEMINI_CLIENT
+    if _genai is None:
+        return None
+
+    api_key = os.getenv("GEMINI_API_KEY")
+    model = os.getenv("GEMINI_MODEL") or "gemini-1.5-flash"
+    if not api_key:
+        return None
+    try:
+        _genai.configure(api_key=api_key)
+        _GEMINI_CLIENT = _genai.GenerativeModel(model)
+    except Exception as exc: 
+        logging.warning("Failed to init Gemini translator: %s", exc)
+        _GEMINI_CLIENT = None
+    return _GEMINI_CLIENT
+
+
+def _translate_purpose_gemini(text: str) -> Optional[str]:
+    """Use Gemini to translate a short purpose string to English."""
+    client = _get_gemini_translator()
+    if not client or not text:
+        return None
+
+    prompt = (
+        "Translate this filing transaction purpose into concise English (<= 12 words). "
+        "Return only the translation without quotes or explanations.\n"
+        f"Purpose: {text.strip()}"
+    )
+    try:
+        resp = client.generate_content(prompt)
+        translated = (resp.text or "").strip()
+        return translated or None
+    except Exception as exc:  # pragma: no cover - network call best effort
+        logging.warning("Gemini purpose translation failed: %s", exc)
+        return None
+
 # Small helpers
 def _is_url(s: Optional[str]) -> bool:
     if not s:
@@ -106,9 +154,14 @@ def _resolve_from_ingestion_map(
     return date, url
 
 def _translate_to_english(text: str) -> str:
-    """Tiny phrase-level translator for titles/bodies and tag inference."""
+    """Translate purpose to English; prefer Gemini when available."""
     if not text:
         return ""
+
+    gem = _translate_purpose_gemini(text)
+    if gem:
+        return gem
+
     known = {
         "bagian dari proses akuisisi": "Part of the acquisition process",
         "strategi internal": "Internal strategy",
