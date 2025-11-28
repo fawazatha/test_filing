@@ -9,8 +9,7 @@ from decimal import Decimal, InvalidOperation, ROUND_FLOOR
 from src.core.types import FilingRecord, PriceTransaction, floor_pct_5
 
 try:
-    # Config + external providers (preferred relative imports)
-    from .config import (
+    from src.config.config import (
         WITHIN_DOC_RATIO_LOW,
         WITHIN_DOC_RATIO_HIGH,
         MARKET_REF_N_DAYS,
@@ -24,20 +23,36 @@ try:
         GATE_REASONS,
         PRICE_LOOKBACK_DAYS,
     )
+except Exception:
+    try:
+        from config import (  # type: ignore
+            WITHIN_DOC_RATIO_LOW, WITHIN_DOC_RATIO_HIGH, MARKET_REF_N_DAYS,
+            MARKET_RATIO_LOW, MARKET_RATIO_HIGH, ZERO_MISSING_X10_MIN,
+            ZERO_MISSING_X10_MAX, ZERO_MISSING_X100_MIN, ZERO_MISSING_X100_MAX,
+            PERCENT_TOL_PP, GATE_REASONS, PRICE_LOOKBACK_DAYS,
+        )
+    except Exception:
+        WITHIN_DOC_RATIO_LOW = 0.5
+        WITHIN_DOC_RATIO_HIGH = 1.5
+        MARKET_REF_N_DAYS = 20
+        MARKET_RATIO_LOW = 0.6
+        MARKET_RATIO_HIGH = 1.4
+        ZERO_MISSING_X10_MIN = 8.0
+        ZERO_MISSING_X10_MAX = 15.0
+        ZERO_MISSING_X100_MIN = 80.0
+        ZERO_MISSING_X100_MAX = 150.0
+        PERCENT_TOL_PP = 0.25
+        GATE_REASONS = set()
+        PRICE_LOOKBACK_DAYS = 14
+
+try:
     from .provider import (
         get_market_reference,
         suggest_price_range,   
         build_announcement_block,
     )
 except Exception:
-    # Flat layout fallback (kept for compatibility with older runners)
-    from config import (
-        WITHIN_DOC_RATIO_LOW, WITHIN_DOC_RATIO_HIGH, MARKET_REF_N_DAYS,
-        MARKET_RATIO_LOW, MARKET_RATIO_HIGH, ZERO_MISSING_X10_MIN,
-        ZERO_MISSING_X10_MAX, ZERO_MISSING_X100_MIN, ZERO_MISSING_X100_MAX,
-        PERCENT_TOL_PP, GATE_REASONS,
-    )
-    from provider import (
+    from provider import (  # type: ignore
         get_market_reference, suggest_price_range, build_announcement_block,
     )
 

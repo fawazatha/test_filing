@@ -13,21 +13,31 @@ from typing import Any, Dict, List, Optional, Tuple, Union
 # Local imports (same package)
 try:
     from .types import CompanyInfo, DownloadMeta
-    from .config import (
+except Exception:  # pragma: no cover
+    # Fallback for flat layout during testing
+    from types import CompanyInfo, DownloadMeta  # type: ignore
+
+# Config (centralized)
+try:
+    from src.config.config import (
         COMPANY_MAP_PATH,
         LATEST_PRICES_PATH,
         MARKET_REF_N_DAYS,
         SUGGEST_PRICE_RATIO,
     )
 except Exception:  # pragma: no cover
-    # Fallback for flat layout during testing
-    from types import CompanyInfo, DownloadMeta  # type: ignore
-    from config import (  # type: ignore
-        COMPANY_MAP_PATH,
-        LATEST_PRICES_PATH,
-        MARKET_REF_N_DAYS,
-        SUGGEST_PRICE_RATIO,
-    )
+    try:
+        from config import (  # type: ignore
+            COMPANY_MAP_PATH,
+            LATEST_PRICES_PATH,
+            MARKET_REF_N_DAYS,
+            SUGGEST_PRICE_RATIO,
+        )
+    except Exception:
+        COMPANY_MAP_PATH = "data/company/company_map.json"
+        LATEST_PRICES_PATH = "data/company/company_map.json"
+        MARKET_REF_N_DAYS = 20
+        SUGGEST_PRICE_RATIO = 0.15
 
 logger = logging.getLogger(__name__)
 
