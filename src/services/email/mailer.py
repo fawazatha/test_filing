@@ -7,10 +7,10 @@ from datetime import datetime
 from typing import Any, Dict, List, Optional, Sequence, Tuple
 from urllib.parse import urlparse
 
-from .ses_email import send_attachments  # pakai fungsi yang sudah kamu buat
+from .ses_email import send_attachments  # use the function you already wrote
 
 
-# -------- helpers --------
+# helpers
 def _tolist(x: Optional[Sequence[str] | str]) -> List[str]:
     if x is None:
         return []
@@ -317,7 +317,7 @@ def send_alerts_email(
     # determine recipients
     to_list = _tolist(to) or _tolist(os.getenv("ALERT_TO_EMAIL")) or _tolist(os.getenv("TEST_TO_EMAIL"))
     if not to_list:
-        to_list = ["success@simulator.amazonses.com"]  # aman untuk sandbox
+        to_list = ["success@simulator.amazonses.com"]  # safe for sandbox
 
     subject, body_text, body_html = _render_email_content(alerts, title=title)
 

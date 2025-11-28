@@ -47,21 +47,21 @@ def _reason_codes_from_row(row: Dict[str, Any]) -> List[str]:
 
 def is_gated(row: Dict[str, Any]) -> Tuple[bool, Optional[str]]:
     """
-    Tentukan apakah baris ini harus DICORET dari email 'Inserted'.
-    Urutan prioritas:
-      1) Jika row.needs_review True -> gated, skip_reason = row.skip_reason atau reason pertama yang ada di GATE_REASONS
-      2) Jika ada reason.code ⊂ GATE_REASONS -> gated
-      3) Jika ada flag umum (fallback): suspicious_price_level/percent_discrepancy/stale_price/missing_price/delta_pp_mismatch -> gated
+    Determine whether this row should be excluded from the 'Inserted' email.
+    Priority order:
+      1) If row.needs_review is True -> gated, skip_reason = row.skip_reason or the first reason present in GATE_REASONS
+      2) If any reason.code ⊂ GATE_REASONS -> gated
+      3) If any general flag (fallback): suspicious_price_level/percent_discrepancy/stale_price/missing_price/delta_pp_mismatch -> gated
     """
     if row.get("needs_review") is True:
         sr = (row.get("skip_reason") or "").strip() or None
         if not sr:
-            # cari reason yang masuk gate
+            # find a reason that is gated
             for c in _reason_codes_from_row(row):
                 if c in GATE_REASONS:
                     sr = c
                     break
-        # fallback ke suspicious_price_level kalau belum ada
+        # fallback to suspicious_price_level if none found
         if not sr and row.get("suspicious_price_level"):
             sr = "suspicious_price_level"
         return True, sr
@@ -81,10 +81,10 @@ def is_gated(row: Dict[str, Any]) -> Tuple[bool, Optional[str]]:
 
 def build_alert_entry(row: Dict[str, Any]) -> Dict[str, Any]:
     """
-    Normalisasi payload alert yang ramah untuk email renderer:
-    - field inti (symbol, holder, type, amount, price)
-    - announcement block (jika ada)
-    - reasons[] disalurkan apa adanya (tapi dipastikan list of dict)
+    Normalize an alert payload to be email-renderer friendly:
+    - core fields (symbol, holder, type, amount, price)
+    - announcement block (if present)
+    - reasons[] forwarded as-is (ensured to be a list of dicts)
     - price suggestions:
         - prefer from document_median_price
         - else from market_reference.ref_price
@@ -152,9 +152,8 @@ def build_alert_entry(row: Dict[str, Any]) -> Dict[str, Any]:
 
 def split_alerts(alerts: List[Dict[str, Any]]) -> Tuple[List[Dict[str, Any]], List[Dict[str, Any]]]:
     """
-    Bagi alerts (list row filing) menjadi (inserted, not_inserted) berdasarkan is_gated().
-    Return:
-      (alerts_inserted, alerts_not_inserted)
+    Split alerts (filing rows) into (inserted, not_inserted) based on is_gated().
+    Returns a tuple of (alerts_inserted, alerts_not_inserted).
     """
     inserted: List[Dict[str, Any]] = []
     not_inserted: List[Dict[str, Any]] = []
@@ -162,7 +161,7 @@ def split_alerts(alerts: List[Dict[str, Any]]) -> Tuple[List[Dict[str, Any]], Li
     for row in alerts or []:
         gated, reason = is_gated(row)
         entry = build_alert_entry(row)
-        # sinkronkan flag
+        # keep the flag synchronized
         entry["needs_review"] = gated or bool(row.get("needs_review"))
         if gated and reason and not entry.get("skip_reason"):
             entry["skip_reason"] = reason
@@ -175,8 +174,8 @@ def split_alerts(alerts: List[Dict[str, Any]]) -> Tuple[List[Dict[str, Any]], Li
     return inserted, not_inserted
 
 
-# Optional helpers untuk menulis file alerts_* sesuai pola config
-# (boleh diabaikan jika kamu sudah pakai services.email.bucketize)
+# Optional helpers to write alerts_* files based on the config pattern
+# (can be ignored if you already use services.email.bucketize)
 def _resolve_filename(pattern: str, date_str: str) -> str:
     try:
         return pattern.format(date=date_str)
@@ -194,12 +193,12 @@ def write_alert_files(
     not_inserted_pattern: Optional[str] = None,
 ) -> Tuple[Path, Path]:
     """
-    Tulis dua file JSON:
+    Write two JSON files:
       - alerts_inserted_{date}.json
       - alerts_not_inserted_{date}.json
-    berdasarkan hasil split_alerts(alerts_rows).
+    based on the result of split_alerts(alerts_rows).
 
-    Mengembalikan tuple (inserted_path, not_inserted_path).
+    Returns a tuple (inserted_path, not_inserted_path).
     """
     out_root = Path(out_dir or ALERTS_OUTPUT_DIR)
     out_root.mkdir(parents=True, exist_ok=True)

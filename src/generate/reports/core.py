@@ -101,7 +101,7 @@ def rows_to_filings(rows: Iterable[Dict[str, Any]]) -> List[Filing]:
     skipped = 0
 
     for r in rows:
-        # ---- Critical IDs
+        # Critical IDs
         fid = str(_first_nonempty(r, "id", "filing_id", "uuid", default="")).strip()
         symbol = _first_nonempty(r, "symbol", "ticker", default=None)
         if isinstance(symbol, str):
@@ -112,7 +112,7 @@ def rows_to_filings(rows: Iterable[Dict[str, Any]]) -> List[Filing]:
             logger.warning("Skipping row with missing critical fields (id/symbol): %s", r)
             continue
 
-        # ---- Names / types / timestamps
+        # Names / types / timestamps
         holder_name    = _first_nonempty(r, "holder_name", "holder", "beneficial_owner", "owner_name")
         holder_ticker  = _first_nonempty(r, "holder_ticker", "holder_symbol")
         tx_type        = _first_nonempty(r, "transaction_type", "type", "tx_type")
@@ -120,7 +120,7 @@ def rows_to_filings(rows: Iterable[Dict[str, Any]]) -> List[Filing]:
         ts             = _first_nonempty(r, "timestamp", "created_at", "updated_at")
         source         = _first_nonempty(r, "source", "origin")
 
-        # ---- Numerics (tolerate legacy aliases)
+        # Numerics (tolerate legacy aliases)
         price             = _to_float(_first_nonempty(r, "price", "avg_price", "average_price", "transaction_price"))
         transaction_value = _to_float(_first_nonempty(r, "transaction_value", "value", "tx_value"))
         amount            = _to_float(_first_nonempty(r, "amount", "tx_amount", "transaction_amount", "shares", "volume"))
@@ -130,7 +130,7 @@ def rows_to_filings(rows: Iterable[Dict[str, Any]]) -> List[Filing]:
         sp_after          = _to_float(_first_nonempty(r, "share_percentage_after", "share_pct_after", "pct_after", "percentage_after"))
         sp_tx             = _to_float(_first_nonempty(r, "share_percentage_transaction", "share_pct_tx", "pct_tx", "percentage_tx"))
 
-        # ---- Derive from first transaction item if present
+        # Derive from first transaction item if present
         txs = r.get("transactions")
         if isinstance(txs, list) and txs:
             first = txs[0] or {}
@@ -203,7 +203,7 @@ def load_companies_from_json(path: str | Path) -> List[Dict[str, Any]]:
     return load_json_array(path)
 
 
-# --- sync impl + async wrapper for cli.py compatibility ---
+# sync impl + async wrapper for cli.py compatibility
 def _fetch_company_report_symbols_sync(
     window: Optional[Window] = None,
     ts_kind: Optional[str] = None,

@@ -24,7 +24,7 @@ logger = logging.getLogger(__name__)
 SES_RAW_EMAIL_SIZE_LIMIT_BYTES = 10 * 1024 * 1024  # 10MB raw message limit
 
 
-# ---------- helpers ----------
+# helpers
 def _ensure_list(value: Union[str, Iterable[str], None]) -> List[str]:
     """Normalize str/comma-separated/iterable into a clean list of strings."""
     if value is None:
@@ -62,7 +62,7 @@ def _default_from_email() -> Optional[str]:
     return os.getenv("SES_FROM_EMAIL")
 
 
-# ---------- MIME builder ----------
+# MIME builder
 def _build_message(
     subject: str,
     from_email_display: str,   # can be 'Name <email@..>' for headers
@@ -126,7 +126,7 @@ def _msg_size_estimate(msg: MIMEMultipart) -> int:
     return len(msg.as_bytes())
 
 
-# ---------- main API ----------
+# main API
 def send_attachments(
     to: Union[str, Iterable[str]],
     subject: str,

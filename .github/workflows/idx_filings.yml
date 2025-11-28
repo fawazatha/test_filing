@@ -91,9 +91,7 @@ jobs:
         id: ts
         run: echo "stamp=$(date +'%Y%m%d-%H%M%S')" >> "$GITHUB_OUTPUT"
 
-      # -----------------------------
       # Company assets warm-up (single-source)
-      # -----------------------------
       - name: Company map (single-source) — refresh always
         if: ${{ (github.event_name == 'schedule') || (inputs.refresh_company_assets == true) }}
         env:
@@ -120,12 +118,10 @@ jobs:
           echo "[Warm-up] Status company_map:"
           python "${COMPANY_MAP_SCRIPT}" status || true
 
-      # -----------------------------
       # Main pipeline
-      # -----------------------------
       - name: Run orchestrator
         env:
-          # ===== App secrets =====
+          # App secrets
           SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
           SUPABASE_KEY: ${{ secrets.SUPABASE_KEY }}
 
@@ -134,7 +130,7 @@ jobs:
           HTTPS_PROXY: ${{ secrets.PROXY }}
           NO_PROXY: "localhost,127.0.0.1,supabase.co,.supabase.co,amazonaws.com,.amazonaws.com"
 
-          # ===== AWS / SES =====
+          # AWS / SES
           AWS_ACCESS_KEY_ID:     ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           AWS_REGION:            ${{ secrets.AWS_REGION }}
@@ -142,7 +138,7 @@ jobs:
           ALERT_TO_EMAIL_INSERTED:     ${{ secrets.ALERT_TO_EMAIL }}
           ALERT_TO_EMAIL_NOT_INSERTED: ${{ secrets.ALERT_TO_EMAIL }}
 
-          # ===== (Optional) LLM keys =====
+          # (Optional) LLM keys
           GROQ_API_KEY:   ${{ secrets.GROQ_API_KEY }}
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
@@ -185,7 +181,7 @@ jobs:
             [[ -z "${PRICES_LOOKBACK_DAYS:-}" ]] && PRICES_LOOKBACK_DAYS="${DEFAULT_PRICES_LOOKBACK_DAYS}"
           fi
 
-          # ===== Mode window / date =====
+          # Mode window / date
           if [[ "${{ github.event_name }}" == "schedule" ]]; then
             # Cron: keep default window; upload to default table
             ARGS+=( "--window-minutes" "${DEFAULT_WINDOW_MINUTES}" "--upload" "--table" "idx_filings" )
@@ -240,22 +236,22 @@ jobs:
             [[ "${{ inputs.no_price_fallback }}" == "true" ]] && ARGS+=( "--no-price-fallback" )
           fi
 
-          # ==== Articles generation ====
+          # Articles generation
           ARGS+=( "--generate-articles" "--articles-out" "data/articles.jsonl" )
 
-          # ==== Optional upload news ====
+          # Optional upload news
           if [[ "${{ inputs.upload_news }}" == "true" || "${{ github.event_name }}" == "schedule" ]]; then
             ARGS+=( "--upload-news" "--prefer-symbol" "--news-table" "idx_news" )
           fi
 
-          # ==== LLM toggling ====
+          # LLM toggling
           if [[ -n "${GROQ_API_KEY:-}" || -n "${OPENAI_API_KEY:-}" || -n "${GEMINI_API_KEY:-}" ]]; then
             ARGS+=( "--use-llm" )
           else
             echo "::notice::No LLM API key found; continuing without LLM."
           fi
 
-          # ==== Email alerts toggling ====
+          # Email alerts toggling
           if [[ "${{ github.event_name }}" == "schedule" || "${{ inputs.send_alerts }}" == "true" ]]; then
             ARGS+=( "--email-alerts" )
           else

@@ -8,15 +8,15 @@ import os
 import gspread
 from google.oauth2.service_account import Credentials
 
-# Scope minimal untuk baca/tulis Google Sheets
+# Minimal scope for reading/writing Google Sheets
 _SCOPES = ["https://www.googleapis.com/auth/spreadsheets"]
 
 
 def _get_client() -> gspread.Client:
     """
-    Ambil client Google Sheets dari:
-    - GOOGLE_SERVICE_ACCOUNT_FILE  (path ke file json), atau
-    - GOOGLE_SERVICE_ACCOUNT_JSON  (isi json langsung)
+    Obtain a Google Sheets client from:
+    - GOOGLE_SERVICE_ACCOUNT_FILE (path to the JSON file), or
+    - GOOGLE_SERVICE_ACCOUNT_JSON (raw JSON content)
     """
     keyfile_path = os.getenv("GOOGLE_SERVICE_ACCOUNT_FILE")
     keyfile_json = os.getenv("GOOGLE_SERVICE_ACCOUNT_JSON")
@@ -43,11 +43,11 @@ def append_rows(
     rows: List[List[Any]],
 ) -> None:
     """
-    Append rows ke sebuah sheet (tab) di spreadsheet.
+    Append rows to a sheet (tab) in a spreadsheet.
 
-    - Kalau sheet belum ada → dibuat.
-    - Kalau header row kosong dan headers diberikan → header ditulis di baris 1.
-    - `rows` ditambahkan di bawah data existing.
+    - If the sheet does not exist → create it.
+    - If the header row is empty and headers are provided → write headers to row 1.
+    - `rows` are appended below existing data.
     """
     if not rows:
         return
@@ -55,22 +55,22 @@ def append_rows(
     client = _get_client()
     sh = client.open_by_key(spreadsheet_id)
 
-    # Pastikan worksheetnya ada
+    # Ensure the worksheet exists
     try:
         ws = sh.worksheet(sheet_name)
     except gspread.WorksheetNotFound:
-        # Buat worksheet baru
+        # Create a new worksheet
         max_cols = max(len(headers), max((len(r) for r in rows), default=0))
         ws = sh.add_worksheet(title=sheet_name, rows="1000", cols=str(max_cols))
 
         if headers:
             ws.insert_row(headers, index=1)
     else:
-        # Kalau sudah ada, tapi baris 1 kosong dan ada headers → isi headers
+        # If it exists but row 1 is empty and headers are provided → insert headers
         if headers:
             existing_header = ws.row_values(1)
             if not existing_header:
                 ws.insert_row(headers, index=1)
 
-    # Append rows ke bawah
+    # Append rows at the bottom
     ws.append_rows(rows, value_input_option="USER_ENTERED")

@@ -73,7 +73,7 @@ class SupabaseUploader:
                        rows: List[Dict[str, Any]],
                        allowed_columns: Optional[Iterable[str]] = None,
                        stop_on_first_error: bool = False,
-                       **kwargs) -> UploadResult: # --- PERBAIKAN: Menambahkan **kwargs ---
+                       **kwargs) -> UploadResult:
         """
         Uploads a list of pre-cleaned DICTIONARIES to Supabase.
         
@@ -84,10 +84,8 @@ class SupabaseUploader:
         like 'normalize_keys' for backward compatibility.
         """
         
-        # --- PERBAIKAN: Memberi log jika ada argumen yang tidak terpakai ---
         if 'normalize_keys' in kwargs:
             logger.debug("Ignoring legacy argument 'normalize_keys' in upload_records.")
-        # --- AKHIR PERBAIKAN ---
 
         tbl = table or self.default_table
         res = UploadResult()
@@ -161,4 +159,3 @@ class SupabaseUploader:
         except Exception:
             body = resp.text
         return f'status={resp.status_code} body={body!r}'
-

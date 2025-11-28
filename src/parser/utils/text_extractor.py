@@ -136,7 +136,7 @@ class TextExtractor:
                 "price": price,
                 "amount": amount,
                 "value": price * amount,
-                # simpan tanggal apa adanya; downstream bisa normalisasi
+                # keep the date as-is; downstream can normalize it
                 "date": (date_s or "").strip()
             })
 
@@ -161,7 +161,7 @@ class TextExtractor:
                     kind, price_s, date_s, amt_s = m.group(1), m.group(2), m.group(3), m.group(4)
                     push_row(kind, price_s, date_s, amt_s)
                 else:
-                    # fallback: split kolom kaku
+                    # fallback: split rigid columns
                     cols = re.split(r"\s{2,}|\t+|\s{1,}", row)
                     if len(cols) >= 4:
                         push_row(cols[0], cols[1], cols[-2] if len(cols) >= 5 else None, cols[-1])
@@ -169,12 +169,12 @@ class TextExtractor:
 
             return transactions
 
-        # 2) Fallback: baris terpisah tanpa header (ID/EN)
+        # 2) Fallback: separate lines without header (ID/EN)
         for line in self.lines:
             row = (line or "").strip()
             jenis = row.split(" ", 1)[0].lower()
             if any(k in jenis for k in ("pembelian", "penjualan", "buy", "sell")):
-                # Ambil angka pertama = price, angka terakhir = amount
+                # Take the first number as price and the last as amount
                 nums = re.findall(r"[0-9][0-9\.,]*", row)
                 if len(nums) >= 2:
                     price_s, amount_s = nums[0], nums[-1]

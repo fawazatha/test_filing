@@ -22,10 +22,7 @@ from src.workflow.config import (
 from src.workflow.models import WorkflowEvent
 from src.common.datetime import now_wib
 
-# ---------------------------------------------------------------------------
 # Sheet configuration
-# ---------------------------------------------------------------------------
-
 SHEET_CONFIG: Dict[str, Dict[str, Any]] = {
     TAG_UPCOMING_DIVIDENDS: {
         "sheet_name": "Upcoming Dividends",
@@ -256,7 +253,7 @@ def build_sheet_blocks(
         payload = ev.payload or {}
         company = payload.get("company_name") or payload.get("company") or ""
 
-        # === Upcoming Dividends ===
+        # Upcoming Dividends
         if tag == TAG_UPCOMING_DIVIDENDS:
             raw = payload.get("raw") or {}
             ex_date = payload.get("ex_date") or raw.get("ex_date")
@@ -284,7 +281,7 @@ def build_sheet_blocks(
             )
             continue
 
-        # === Insider trading (buy/sell) ===
+        # Insider trading (buy/sell)
         if tag in (TAG_INSIDER_BUY, TAG_INSIDER_SELL):
             filings = _safe_json_array(payload.get("value"))
             for f in filings:
@@ -345,7 +342,7 @@ def build_sheet_blocks(
             )
             continue
 
-        # === Generic metric + rank tags ===
+        # Generic metric + rank tags
         metric = payload.get("value")
         rank = payload.get("rank")
         metric_str = "" if metric is None else str(metric)

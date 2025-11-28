@@ -16,9 +16,7 @@ from typing import Any, Dict, List, Optional, Tuple
 from dotenv import load_dotenv, find_dotenv
 from supabase import create_client, Client
 
-# ----------------------
 # Defaults
-# ----------------------
 TABLE_DEFAULT          = "idx_filings"
 PK_DEFAULT             = "id"
 HOLDER_COL_DEFAULT     = "holder_type"
@@ -26,9 +24,7 @@ SECTOR_COL_DEFAULT     = "sector"
 SUB_SECTOR_COL_DEFAULT = "sub_sector"
 PAGE_SIZE_DEFAULT      = 1000
 
-# ----------------------
 # Text helpers
-# ----------------------
 _WS = re.compile(r"\s+", flags=re.UNICODE)
 _PUNCT = re.compile(r"[^\w\s\-&/]+", flags=re.UNICODE)
 
@@ -49,9 +45,7 @@ def _keyize(x: Any) -> str:
     t = _WS.sub(" ", t).strip()
     return t
 
-# ----------------------
 # holder_type normalization
-# ----------------------
 INSIDER      = "insider"
 INSTITUTION  = "institution"
 
@@ -95,9 +89,7 @@ def normalize_holder_type(raw: Any, strict: bool=False) -> Tuple[Any, bool]:
         return (None, original is not None)
     return (original, False)
 
-# ----------------------
 # kebab-case converter for sector/sub_sector
-# ----------------------
 def to_kebab_case(raw: Any) -> Optional[str]:
     """
     Convert to lowercase kebab-case.
@@ -115,9 +107,7 @@ def to_kebab_case(raw: Any) -> Optional[str]:
     s = s.strip("-")
     return s or None
 
-# ----------------------
 # Main
-# ----------------------
 def main():
     ap = argparse.ArgumentParser(description="Normalize holder_type + kebab-case sector/sub_sector (update-only).")
     ap.add_argument("--table", default=TABLE_DEFAULT)

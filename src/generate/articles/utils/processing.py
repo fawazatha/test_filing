@@ -5,7 +5,7 @@ from typing import Any, Dict, List, Optional
 
 logger = logging.getLogger(__name__)
 
-# --- Date/number helpers ---
+# Date/number helpers
 BULAN_MAP = {
     "Januari": "01", "Februari": "02", "Maret": "03", "April": "04", "Mei": "05",
     "Juni": "06", "Juli": "07", "Agustus": "08", "September": "09",
@@ -47,7 +47,7 @@ def _last_numeric_token(s: str) -> str:
     tokens = re.findall(r"\d+[\d,.]*", s)
     return tokens[-1] if tokens else ""
 
-# --- Info extraction from text (layout-heuristics friendly) ---
+# Info extraction from text (layout-heuristics friendly)
 def extract_info(text: str) -> Dict[str, Any]:
     lines = (text or "").split("\n")
     info: Dict[str, Any] = {

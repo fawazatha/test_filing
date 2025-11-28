@@ -15,15 +15,11 @@ except Exception:
 
 import requests
 
-# --------------------------
-# Konfigurasi I/O
-# --------------------------
+# I/O configuration
 OUT_JSON   = pathlib.Path("data/company/company_map.json")
 META_JSON  = pathlib.Path("data/company/company_map.meta.json")
 
-# --------------------------
 # Supabase env
-# --------------------------
 SUPABASE_URL = os.getenv("SUPABASE_URL")
 SUPABASE_KEY = (
     os.getenv("SUPABASE_KEY")
@@ -32,18 +28,16 @@ SUPABASE_KEY = (
 )
 SCHEMA_NAME  = os.getenv("COMPANY_SCHEMA", "public")
 
-# Satu-satunya tabel sumber
+# Single source table
 REPORT_TABLE = os.getenv("COMPANY_REPORT_TABLE", "idx_company_report")
-# Kolom yang diambil dari report
+# Columns pulled from the report
 REPORT_SELECT = "symbol,company_name,sector,sub_sector,last_close_price,latest_close_date"
 
-# Flags/opsi
+# Flags / options
 ALLOW_OFFLINE = (os.getenv("COMPANY_MAP_ALLOW_OFFLINE", "1").lower() in ("1", "true", "yes", "y"))
 FORCE_REFRESH = (os.getenv("COMPANY_MAP_FORCE_REFRESH", "0").lower() in ("1", "true", "yes", "y"))
 
-# --------------------------
 # Logging & helpers
-# --------------------------
 def log(msg: str):
     ts = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     print(f"{ts} | {msg}", file=sys.stderr)
@@ -82,11 +76,9 @@ def _checksum(d: Dict[str, Dict[str, Any]]) -> str:
     import hashlib as _hl  # local import
     return "sha256:" + _hl.sha256("\n".join(parts).encode("utf-8")).hexdigest()
 
-# --------------------------
-# Normalizer sektor/subsektor
-# --------------------------
+# Sector/subsector normalizer
 def _extract_str(v: Any) -> Optional[str]:
-    """Ambil string bermakna dari dict/slug/JSON-ish/primitive."""
+    """Extract a meaningful string from a dict/slug/JSON-ish/primitive value."""
     if v is None:
         return None
     if isinstance(v, dict):
@@ -134,9 +126,7 @@ def _normalize_sector(ss: Any) -> str:
     s = _extract_str(ss)
     return _titlecase_preserve(s) or ""
 
-# --------------------------
 # Local cache IO
-# --------------------------
 def load_local() -> Tuple[Dict[str, Dict[str, Any]], Dict[str, Any]]:
     mapping: Dict[str, Dict[str, Any]] = {}
     meta: Dict[str, Any] = {}
@@ -184,7 +174,7 @@ def load_local() -> Tuple[Dict[str, Dict[str, Any]], Dict[str, Any]]:
     return mapping, meta
 
 def save_local(mapping: Dict[str, Dict[str, Any]], rows_meta: Dict[str, Any]):
-    # pastikan semua entry normalized sebelum simpan
+    # ensure all entries are normalized before saving
     normed: Dict[str, Dict[str, Any]] = {}
     for sym, row in mapping.items():
         out = {
@@ -199,11 +189,9 @@ def save_local(mapping: Dict[str, Dict[str, Any]], rows_meta: Dict[str, Any]):
     OUT_JSON.write_text(json.dumps(normed, ensure_ascii=False, indent=2), encoding="utf-8")
     META_JSON.write_text(json.dumps(rows_meta, ensure_ascii=False, indent=2), encoding="utf-8")
 
-# --------------------------
 # Remote helpers
-# --------------------------
 def remote_row_count(table: str) -> Optional[int]:
-    """Ambil total row via Content-Range + Prefer: count=exact dengan payload minimum."""
+    """Fetch total row count via Content-Range + Prefer: count=exact with minimal payload."""
     if not SUPABASE_URL or not SUPABASE_KEY:
         return None
     try:
@@ -226,7 +214,7 @@ def remote_row_count(table: str) -> Optional[int]:
         return None
 
 def fetch_report_all() -> Optional[List[Dict[str, Any]]]:
-    """Ambil SEMUA kolom yang dibutuhkan dari idx_company_report."""
+    """Fetch ALL required columns from idx_company_report."""
     if not SUPABASE_URL or not SUPABASE_KEY:
         log("error: SUPABASE_URL/KEY missing; cannot fetch report.")
         return None
@@ -237,9 +225,7 @@ def fetch_report_all() -> Optional[List[Dict[str, Any]]]:
         return None
     return r.json() or []
 
-# --------------------------
 # Build map (single source)
-# --------------------------
 def build_map_from_report() -> Optional[Tuple[Dict[str, Dict[str, Any]], Dict[str, Any]]]:
     rows = fetch_report_all()
     if rows is None:
@@ -264,7 +250,7 @@ def build_map_from_report() -> Optional[Tuple[Dict[str, Dict[str, Any]], Dict[st
         "generated_at": datetime.now(timezone.utc).isoformat().replace("+00:00", "Z"),
         "report_table": REPORT_TABLE,
         "row_count": len(mapping),
-        "row_count_report": None,  # akan diisi di get_company_map()
+        "row_count_report": None,  # will be filled in get_company_map()
         "checksum": _checksum(mapping),
         "source": "idx_company_report",
         "columns": REPORT_SELECT,
@@ -280,17 +266,15 @@ def _safe_float(v: Any) -> Optional[float]:
         s = str(v).strip()
         if not s:
             return None
-        return float(s.replace(",", ""))  # antisipasi format "1,234.56"
+        return float(s.replace(",", ""))  # handle format "1,234.56"
     except Exception:
         return None
 
-# --------------------------
 # Main logic (single-source invalidation)
-# --------------------------
 def get_company_map(force: bool = False) -> Dict[str, Dict[str, Any]]:
     local_map, meta = load_local()
 
-    # Jika tidak ada Supabase env: pakai cache lokal bila ada
+    # If there is no Supabase env: use the local cache if available
     if not (SUPABASE_URL and SUPABASE_KEY):
         if local_map:
             log("No Supabase env; using local company_map cache.")
@@ -314,7 +298,7 @@ def get_company_map(force: bool = False) -> Dict[str, Dict[str, Any]]:
         log("No company_map available.")
         return {}
 
-    # Invalidasi ringan: bandingkan jumlah baris
+    # Light invalidation: compare row counts
     rc_report  = remote_row_count(REPORT_TABLE)
     prev_rc_report  = meta.get("row_count_report")
 
@@ -335,9 +319,7 @@ def get_company_map(force: bool = False) -> Dict[str, Dict[str, Any]]:
     log("No company_map available.")
     return {}
 
-# --------------------------
 # Utilities & CLI
-# --------------------------
 def _safe_unlink(path: pathlib.Path):
     try:
         if path.exists():
@@ -347,7 +329,7 @@ def _safe_unlink(path: pathlib.Path):
         log(f"warn: failed delete {path}: {e}")
 
 def reset_all():
-    """Bersihkan cache lokal."""
+    """Clear the local cache."""
     _safe_unlink(OUT_JSON)
     _safe_unlink(META_JSON)
     log("reset done.")

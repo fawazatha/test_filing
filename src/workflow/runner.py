@@ -182,7 +182,7 @@ async def run_workflows(
 
         channels = wf.channels or {}
 
-        # --- Slack channel ---
+        # Slack channel
         if channels.get("slack") is not None:
             tasks.append(
                 asyncio.create_task(
@@ -195,7 +195,7 @@ async def run_workflows(
                 )
             )
 
-        # --- Email channel ---
+        # Email channel
         if send_email_for_workflow is not None and channels.get("email") is not None:
             tasks.append(
                 asyncio.create_task(
@@ -208,7 +208,7 @@ async def run_workflows(
                 )
             )
 
-        # --- WhatsApp channel ---
+        # WhatsApp channel
         if send_whatsapp_for_workflow is not None and channels.get("whatsapp") is not None:
             ctx = {
                 "window_start": window_label,
@@ -226,7 +226,7 @@ async def run_workflows(
                 )
             )
 
-        # --- Sheet channel ---
+        # Sheet channel
         if send_sheet_for_workflow is not None and channels.get("sheet") is not None:
             tasks.append(
                 asyncio.create_task(

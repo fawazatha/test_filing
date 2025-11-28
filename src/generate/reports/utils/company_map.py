@@ -7,12 +7,12 @@ from pathlib import Path
 from typing import Dict, Any, Tuple
 
 def _normalize_company_name(s: str) -> str:
-    # Normalisasi longgar agar 'PT ABC Tbk' ≈ 'ABC'.
-    # - huruf kecil
-    # - hapus titik/koma/apostrof/hyphen
-    # - ganti '&' -> 'and'
-    # - buang kata umum: pt, tbk, indonesia, limited, tbk., corp, corporate, co, ltd
-    # - kompres spasi
+    # Loose normalization so 'PT ABC Tbk' ≈ 'ABC'.
+    # - lowercase
+    # - remove punctuation (dot/comma/apostrophe/hyphen)
+    # - replace '&' -> 'and'
+    # - drop common words: pt, tbk, indonesia, limited, tbk., corp, corporate, co, ltd
+    # - compress spaces
     
     if not s:
         return ""
@@ -27,7 +27,7 @@ def load_company_map(path: str) -> Tuple[Dict[str, Any], Dict[str, str]]:
     """
     Return:
       - raw_map: dict file (ticker -> {...})
-      - by_name_norm: map nama_norm -> ticker
+      - by_name_norm: map normalized_name -> ticker
     """
     p = Path(path)
     data = json.loads(p.read_text(encoding="utf-8"))

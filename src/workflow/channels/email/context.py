@@ -59,7 +59,7 @@ def build_email_context_from_events(
     top_value: List[Dict[str, Any]] = []
 
     for ev in events:
-        # Safety: jaga-jaga kalau ada events dari workflow lain
+        # Safety: guard against events from a different workflow
         if ev.workflow_id != workflow.id:
             continue
 
@@ -80,9 +80,9 @@ def build_email_context_from_events(
                 {
                     "ticker": ev.symbol,
                     "company": company_name,
-                    # ex_date dari rules sudah dalam ISO date (YYYY-MM-DD)
+                    # ex_date from rules is already in ISO date (YYYY-MM-DD)
                     "ex_date": p.get("ex_date"),
-                    # div_share & yield dipetakan ke filter format_idr & % di template
+                    # div_share & yield are mapped to format_idr & % filters in the template
                     "div_share": raw.get("div_share") or raw.get("dividend_per_share"),
                     "yield": raw.get("yield_pct"),
                     "pay_date": raw.get("payment_date"),
@@ -97,18 +97,18 @@ def build_email_context_from_events(
                     "holder": p.get("holder_name") or p.get("holder"),
                     "type": "buy" if tag == TAG_INSIDER_BUY else "sell",
                     "price": p.get("price"),
-                    # transaction_value / value akan di-format di template
+                    # transaction_value / value will be formatted in the template
                     "value": p.get("transaction_value") or p.get("value"),
                     "amount": p.get("amount"),
                     "pct_tx": p.get("share_percentage_transaction"),
-                    # display_time sudah disiapkan di sisi rules / MV
+                    # display_time is prepared on the rules / MV side
                     "time": p.get("display_time"),
                 }
             )
 
         # INSTITUTION ACTIVITY (TOP INST BUY/SELL)
         elif tag == TAG_TOP_INST_BUY:
-            # Nilai 'value' di sini adalah total transaction value (IDR)
+            # The 'value' here is the total transaction value (IDR)
             inst_buys.append(
                 {
                     "ticker": ev.symbol,
@@ -150,7 +150,7 @@ def build_email_context_from_events(
             top_volume.append(
                 {
                     "ticker": ev.symbol,
-                    # rules.py menyimpan angka di payload["value"], kita map ke "volume"
+                    # rules.py stores the number in payload["value"], map it to "volume"
                     "volume": p.get("value"),
                     "rank": p.get("rank"),
                 }

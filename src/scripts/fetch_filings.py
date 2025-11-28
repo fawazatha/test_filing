@@ -17,7 +17,7 @@ from typing import Any, Dict, Iterable, List, Optional, Sequence, Set, Tuple
 import httpx
 from dotenv import load_dotenv
 
-# --------- Setup ---------
+# Setup
 load_dotenv()
 logging.basicConfig(
     level=os.environ.get("LOGLEVEL", "INFO"),
@@ -205,7 +205,7 @@ async def get_idx_filings_by_days(
     *,
     table: str = "idx_filings",
     select: str = ",".join([
-        "symbol","timestamp","transaction_type","holder_name", # <--- Menggunakan timestamp
+        "symbol","timestamp","transaction_type","holder_name",
         "holding_before","holding_after",
         "share_percentage_before","share_percentage_after",
         "amount_transaction","transaction_value","price",
@@ -220,38 +220,34 @@ async def get_idx_filings_by_days(
     if not days:
         return []
 
-    # --- PERBAIKAN: Mengubah query dari 'filing_date' ke 'timestamp' ---
-    # Temukan tanggal paling awal dan paling akhir
+    # Find the earliest and latest dates
     min_date_str = min(days)
     max_date_str = max(days)
     
-    # Buat rentang waktu (misal: '2025-10-30 00:00:00' hingga '2025-10-31 23:59:59')
+    # Build a time range (e.g., '2025-10-30 00:00:00' to '2025-10-31 23:59:59')
     try:
         start_dt = datetime.fromisoformat(min_date_str).replace(hour=0, minute=0, second=0, microsecond=0)
-        # +1 hari untuk membuat rentang 'less than'
+        # +1 day to create a less-than upper bound
         end_dt = datetime.fromisoformat(max_date_str).replace(hour=0, minute=0, second=0, microsecond=0) + timedelta(days=1)
     except Exception:
-        logger.error(f"Format tanggal tidak valid di 'days': {days}")
+        logger.error(f"Invalid date format in 'days': {days}")
         return []
 
-    # Format untuk kolom timestamptz (diasumsikan)
+    # Format for the timestamptz column (assumed)
     start_val = _fmt_for_ts_kind(start_dt, "timestamptz")
     end_val = _fmt_for_ts_kind(end_dt, "timestamptz")
 
     in_filter = None
     if symbols:
         in_filter = {"symbol": [s.upper() for s in symbols]}
-    # --- AKHIR PERBAIKAN ---
         
     return await _rest_get_all(
         table,
         select=select,
-        # --- PERBAIKAN: Menggunakan gte/lt untuk 'timestamp' ---
         gte={"timestamp": start_val},
         lt={"timestamp": end_val},
-        # --- AKHIR PERBAIKAN ---
         in_=in_filter,
-        order="timestamp.asc,id.asc", # Order berdasarkan timestamp
+        order="timestamp.asc,id.asc", # Order by timestamp
         page_size=page_size,
         timeout=timeout,
     )
@@ -388,7 +384,7 @@ async def main():
     args = build_argparser().parse_args()
 
     if args.working_days_only:
-        dow = _now_jkt().weekday()  # 0=Mon..6=Sun
+        dow = _now_jkt().weekday()
         if dow >= 5:
             logger.info("Weekend detected; skipping run.")
             return
@@ -423,4 +419,3 @@ async def main():
 
 if __name__ == "__main__":
     asyncio.run(main())
-

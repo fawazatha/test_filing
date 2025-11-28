@@ -4,18 +4,14 @@ from typing import Any, Dict, List, Optional
 from dotenv import load_dotenv, find_dotenv
 from supabase import create_client, Client
 
-# ----------------------
 # Config
-# ----------------------
 TABLE = "idx_filings"
 PK = "id"
 PAGE_SIZE = 1000
 COL_BEFORE = "share_percentage_before"
 COL_AFTER  = "share_percentage_after"
 
-# ----------------------
 # Canonical tag policy
-# ----------------------
 SENTIMENTS = {"bullish", "bearish"}
 REASON_TAGS = {
     "divestment", "investment", "free-float-requirement",
@@ -24,9 +20,7 @@ REASON_TAGS = {
 CONTROL_TAGS = {"takeover"}
 WHITELIST = SENTIMENTS | REASON_TAGS | CONTROL_TAGS
 
-# ----------------------
 # Helpers
-# ----------------------
 def hyphenize(s: str) -> str:
     """Normalize to kebab-like: spaces/underscores/symbols -> '-', collapse repeats."""
     s = re.sub(r"[_\s]+", "-", s.strip())
@@ -65,7 +59,7 @@ VARIANTS = {
 }
 
 _DROP_SET = {
-    # explicit drops / noise (akan dibuang di canonicalize_one)
+    # explicit drops / noise (removed in canonicalize_one)
     "insider-trading", "insider", "insider-tradings", "insider trading",
     "ownership-change", "ownership-changes", "ownership change", "ownership changes",
     "executive-shareholding-changes", "executive shareholding changes",
@@ -73,7 +67,7 @@ _DROP_SET = {
 }
 
 def canonicalize_one(tag: str) -> Optional[str]:
-    """Map raw tag ke kanonikal; return None jika harus dibuang."""
+    """Map a raw tag to a canonical form; return None if it should be dropped."""
     k = hyphenize(str(tag)).lower()
     if k in _DROP_SET:
         return None
@@ -85,7 +79,7 @@ def canonicalize_one(tag: str) -> Optional[str]:
     return "MESOP" if mapped.lower() == "mesop" else mapped
 
 def keep_only_reason_tags(raw_tags: Any) -> List[str]:
-    """Ambil hanya reason tags dari raw_tags (setelah canonicalization)."""
+    """Keep only reason tags from raw_tags (after canonicalization)."""
     if raw_tags is None:
         arr: List[str] = []
     elif isinstance(raw_tags, list):
@@ -96,7 +90,7 @@ def keep_only_reason_tags(raw_tags: Any) -> List[str]:
     return [t for t in mapped if t in REASON_TAGS]
 
 def parse_pct(x: Any) -> Optional[float]:
-    """Parse '12.5', '12.5%', '1,234.56' -> float; None jika gagal."""
+    """Parse '12.5', '12.5%', '1,234.56' -> float; None if parsing fails."""
     if x is None:
         return None
     try:
@@ -145,9 +139,7 @@ def _sorted_canonical(arr: List[str]) -> List[str]:
     """Sort helper untuk perbandingan deterministik (MESOP dulu)."""
     return sorted([str(x) for x in arr], key=lambda x: (x != "MESOP", x.lower()))
 
-# ----------------------
 # Main
-# ----------------------
 def main():
     parser = argparse.ArgumentParser(description="Normalize idx_filings.tags from .env credentials (UPDATE-only).")
     parser.add_argument("--page-size", type=int, default=PAGE_SIZE)
@@ -164,7 +156,7 @@ def main():
 
     supabase: Client = create_client(url, key)
 
-    # hitung total rows
+    # count total rows
     res = supabase.table(TABLE).select("*", count="exact", head=True).execute()
     total = res.count or 0
     print(f"[info] {TABLE}: total rows = {total}")
@@ -173,12 +165,12 @@ def main():
     scanned = 0
     updated = 0
 
-    # statistik tambahan
+    # additional stats
     legacy_null_cnt = 0
     sentiment_cnt = 0
     takeover_cnt = 0
 
-    # CSV writer (opsional)
+    # CSV writer (optional)
     csv_writer = None
     csv_file = None
     if args.report_csv:
@@ -205,7 +197,7 @@ def main():
             if not rows:
                 break
 
-            # kumpulkan perubahan dalam satu halaman
+            # collect changes within one page
             batch_updates: List[Dict[str, Any]] = []
             page_updated = 0
 
@@ -225,10 +217,10 @@ def main():
                 if takeover(before, after):
                     takeover_cnt += 1
 
-                # compute tags baru
+                # compute new tags
                 new_tags = assemble_new_tags(old_tags, before, after)
 
-                # === PENTING: bandingkan RAW vs NEW (bukan old_norm) ===
+                # IMPORTANT: compare RAW vs NEW (not old_norm)
                 if old_tags is None:
                     old_raw = []
                 elif isinstance(old_tags, list):
@@ -240,7 +232,7 @@ def main():
                 new_sorted = _sorted_canonical(new_tags)
                 changed = (old_raw_sorted != new_sorted)
 
-                # tulis CSV (opsional)
+                # write CSV (optional)
                 if csv_writer and (args.all_rows or changed):
                     csv_writer.writerow({
                         PK: row[PK],
@@ -250,11 +242,11 @@ def main():
                         "legacy_null": is_legacy,
                     })
 
-                # queue update kalau berubah
+                # queue update if changed
                 if changed:
                     batch_updates.append({PK: row[PK], "tags": new_tags})
 
-            # === UPDATE-ONLY (no insert) ===
+            # UPDATE-ONLY (no insert)
             if batch_updates and not args.dry_run:
                 for item in batch_updates:
                     row_id = item[PK]

@@ -16,7 +16,7 @@ from .utils.io_utils import get_logger
 
 log = get_logger(__name__)
 
-# -------- helpers (tanpa kebab/slug) --------
+# helpers (without kebab/slug)
 def _with_jk(sym: Optional[str]) -> Optional[str]:
     if not sym:
         return sym
@@ -138,7 +138,7 @@ def _opening_sentence(facts: Dict[str, Any]) -> str:
 
 def _strip_redundant_on_date(text: str, pub_ts: Optional[str]) -> str:
     """
-    Hapus leading 'On <Month DD, YYYY>, ' di awal text jika sama dengan tanggal announcement.
+    Remove leading 'On <Month DD, YYYY>, ' at the start of text if it matches the announcement date.
     """
     if not text or not pub_ts:
         return text
@@ -196,7 +196,7 @@ def _to_narrative_if_keyfacts(title: str, body: str, facts: Dict[str, Any]) -> T
     new_body = f"{p1}\n\n{p2}\n\n{p3}"
     return title, new_body
 
-# ---------------- Download meta mapping (filename -> URL) ----------------
+# Download meta mapping (filename -> URL)
 def _basename(s: Optional[str]) -> Optional[str]:
     if not s:
         return None
@@ -252,7 +252,6 @@ def _candidate_filenames(row: Dict[str, Any]) -> List[str]:
             out.append(n)
     return out
 
-# ------------------------------------------------------------------------
 
 class ArticleGenerator:
     def __init__(
@@ -263,7 +262,7 @@ class ArticleGenerator:
         groq_model: str = "llama-3.3-70b-versatile",
         prefer_symbol: bool = True,
         provider: Optional[str] = None,
-        downloads_meta_path: str = "data/downloaded_pdfs.json",   # NEW
+        downloads_meta_path: str = "data/downloaded_pdfs.json",
     ):
         self.company = CompanyCache(company_map_path, latest_prices_path)
         self.summarizer = Summarizer(use_llm=use_llm, groq_model=groq_model, provider=provider)
@@ -272,7 +271,7 @@ class ArticleGenerator:
         # filename -> url index
         self._dl_index = _build_download_index(downloads_meta_path)
 
-    # -- map filename/partial to full URL using downloads index --
+    # map filename/partial to full URL using downloads index
     def _map_source_url(self, row: Dict[str, Any]) -> str:
         # 1) prefer explicit PDF URL if present
         for k in ("pdf_url", "url", "attachment_url", "source"):
@@ -332,13 +331,13 @@ class ArticleGenerator:
         core["symbol"] = symbol
         core["tickers"] = tickers_norm
 
-        # Articles prefer list-style sub_sector; (filings fix handled in uploader)
+        # Articles prefer list-style sub_sector
         core["sub_sector"] = _ensure_list(core.get("sub_sector", []))
         core.setdefault("dimension", {})
         core.setdefault("score", 0.0)
         return core
 
-    # ---------- FROM FILINGS ----------
+    # From filings
     def from_filing(self, filing: Dict[str, Any]) -> Optional[Dict[str, Any]]:
         pdf_url = self._map_source_url(filing)
         symbol_raw = (filing.get("symbol") or (filing.get("tickers") or [None])[0])
@@ -384,7 +383,7 @@ class ArticleGenerator:
         title, body = _to_narrative_if_keyfacts(title, body, facts)
 
         if not body.lstrip().lower().startswith("according to the published announcement"):
-            # Hapus 'On <date>, ' jika sama dengan announcement date
+            # Remove 'On <date>, ' if it matches the announcement date
             body = _strip_redundant_on_date(body, facts.get("announcement_published_at"))
             opening = _opening_sentence(facts)
             body = f"{opening}{body}"
@@ -409,7 +408,7 @@ class ArticleGenerator:
 
         return self._finalize(article)
 
-    # ---------- FROM TEXT ----------
+    # FROM TEXT
     def from_text_item(self, item: Dict[str, Any]) -> Optional[Dict[str, Any]]:
         text = item.get("text") or ""
         if not text.strip():

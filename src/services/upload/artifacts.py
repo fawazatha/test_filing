@@ -88,7 +88,7 @@ def make_artifact_zip(
     manifest_name: str = "MANIFEST.json",
 ) -> Tuple[Path, Manifest]:
     """
-    Kumpulkan file via glob patterns -> zip -> tambahkan MANIFEST.json.
+    Collect files via glob patterns -> zip them -> add MANIFEST.json.
     Return: (zip_path, manifest_obj)
     """
     base = Path(base_dir).resolve()

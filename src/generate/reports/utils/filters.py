@@ -21,13 +21,13 @@ def parse_symbols_arg(arg: Optional[str]) -> List[str]:
 
 
 def _normalize_tags(v: Any) -> List[str]:
-    """tags bisa list atau string; jadikan list[str] lowercase"""
+    """Tags can be a list or string; convert to a lowercase list[str]."""
     if v is None:
         return []
     if isinstance(v, list):
         return [str(x).strip().lower() for x in v]
     if isinstance(v, str):
-        # coba parse json list, kalau gagal treat as single string
+        # try to parse a JSON list; if it fails, treat as a single string
         try:
             arr = json.loads(v)
             if isinstance(arr, list):
@@ -58,9 +58,9 @@ async def fetch_watchlist_symbols(
     symbol_col: str = "symbol",
 ) -> List[str]:
     """
-    Ambil simbol watchlist.
-    - Jika companies_json_in ada: filter client-side (listing_board == 'watchlist').
-    - Jika tidak ada: server-side via fetch_company_report_symbols(listing_board='watchlist').
+    Fetch watchlist symbols.
+    - If companies_json_in is provided: filter client-side (listing_board == 'watchlist').
+    - If not provided: server-side via fetch_company_report_symbols(listing_board='watchlist').
     """
     if companies_json_in:
         rows = load_companies_from_json(companies_json_in)
@@ -81,7 +81,7 @@ async def fetch_insider_tagged_symbols(
     symbol_col: str = "symbol",
 ) -> List[str]:
     """
-    Fallback: simbol yang bertag 'insider'.
+    Fallback: symbols tagged with 'insider'.
     """
     if companies_json_in:
         rows = load_companies_from_json(companies_json_in)
@@ -106,10 +106,10 @@ async def resolve_symbols_priority(
     symbol_col: str = "symbol",
 ) -> List[str]:
     """
-    Prioritas:
-    1) --symbols jika ada.
-    2) Watchlist (companies_json_in kalau ada; jika tidak, server-side).
-    3) (Terakhir) fallback insider-tagged.
+    Priority:
+    1) --symbols if provided.
+    2) Watchlist (companies_json_in if available; otherwise server-side).
+    3) (Finally) fallback to insider-tagged.
     """
     # 1) explicit --symbols
     syms = parse_symbols_arg(symbols_arg)
@@ -129,15 +129,15 @@ async def resolve_symbols_priority(
 # Client-side sweeps / filters
 def _extract_symbol_from_obj(obj: Any) -> str:
     """
-    Ambil symbol dari:
+    Extract symbol from:
     - dict: obj["symbol"]
-    - Filing dataclass: obj.symbol atau obj.raw["symbol"]
+    - Filing dataclass: obj.symbol or obj.raw["symbol"]
     """
     # dict case
     if isinstance(obj, dict):
         return (str(obj.get("symbol") or "").strip().upper())
 
-    # dataclass Filing (atau objek lain yang punya attribute)
+    # Filing dataclass (or another object with the attribute)
     sym = getattr(obj, "symbol", None)
     if sym:
         return (str(sym).strip().upper())

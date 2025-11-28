@@ -63,7 +63,7 @@ class IDXParser(BaseParser):
             output_file=output_file,
             announcement_json=announcement_json,
         )
-        # Label parser ini
+        # Parser label
         self.parser_type = "idx"
 
         self._current_alert_context: Optional[Dict[str, Any]] = None
@@ -273,7 +273,7 @@ class IDXParser(BaseParser):
 
                 issuer_code_token = (res.get("issuer_code") or "").strip().upper()
                 if issuer_code_token and SYMBOL_TOKEN_RE.fullmatch(issuer_code_token):
-                    # Normalisasi ke format dengan .JK biar konsisten
+                    # Normalize to .JK format for consistency
                     if not issuer_code_token.endswith(".JK"):
                         issuer_code_token = f"{issuer_code_token}.JK"
                     sym_doc = issuer_code_token
@@ -483,7 +483,7 @@ class IDXParser(BaseParser):
                 "price": price,
                 "amount": amt,
                 "date": datestr,
-                "date_iso": _en_date_to_iso(datestr),  # <-- ISO per baris
+                "date_iso": _en_date_to_iso(datestr),  # <-- ISO per row
                 "value": price * amt,
             })
         return out
@@ -511,7 +511,7 @@ class IDXParser(BaseParser):
                 "price": price,
                 "amount": amt,
                 "date": datestr,
-                "date_iso": _en_date_to_iso(datestr),  # <-- ISO per baris
+                "date_iso": _en_date_to_iso(datestr),  # <-- ISO per row
                 "value": price * amt,
             })
         return out
@@ -522,11 +522,11 @@ class IDXParser(BaseParser):
         buy_sell = [t for t in txs if t.get("type") in {"buy", "sell"}]
         transfers = [t for t in txs if t.get("type") == "transfer"]
 
-        # Totals dari baris
+        # Totals derived from table rows
         rows_amt = sum(int(t.get("amount") or 0) for t in buy_sell)
         rows_val = sum(float(t.get("value") or 0.0) for t in buy_sell)
 
-        # Delta dari before/after (kalau ada)
+        # Delta from before/after holdings (when available)
         hb = res.get("holding_before")
         ha = res.get("holding_after")
         delta_amt = None
@@ -544,7 +544,7 @@ class IDXParser(BaseParser):
         res["amount_transferred"] = sum(int(t.get("amount") or 0) for t in transfers)
         res["value_transferred"] = sum(float(t.get("value") or 0.0) for t in transfers)
 
-        # Tentukan doc-level type jika belum ada
+        # Determine document-level type if not yet set
         if not res.get("transaction_type"):
             kinds = {t.get("type") for t in txs}
             if kinds == {"transfer"}:
@@ -560,7 +560,7 @@ class IDXParser(BaseParser):
 
         res["price_transaction"] = [
             {
-                "date": (t.get("date_iso") or _en_date_to_iso(t.get("date"))),  # ISO dari dokumen
+                "date": (t.get("date_iso") or _en_date_to_iso(t.get("date"))),  # ISO date from the document
                 "type": t.get("type"),
                 "price": float(t.get("price")) if t.get("price") is not None else None,
                 "amount_transacted": int(t.get("amount") or 0),
@@ -569,7 +569,7 @@ class IDXParser(BaseParser):
             if int(t.get("amount") or 0) > 0
         ]
 
-        # Flag gabungan
+        # Combined flags
         res["is_transfer"] = res.get("is_transfer", False) or res["has_transfer"]
 
 

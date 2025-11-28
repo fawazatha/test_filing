@@ -14,7 +14,7 @@ from .io_utils import get_logger
 
 log = get_logger(__name__)
 
-# ---------- helpers ----------
+# helpers
 def _ensure_list(v: Any) -> Optional[List[Any]]:
     """Coerce value to list (or None). Accept list, JSON-encoded list string, or scalar."""
     if v is None:
@@ -78,7 +78,7 @@ def _coerce_iso_with_z(ts: Optional[str]) -> Optional[str]:
 
     return s
 
-# ---------- columns allowed in idx_news ----------
+# columns allowed in idx_news
 _ALLOWED_COLS = {
     "title", "body", "source", "timestamp",
     "sector", "sub_sector", "tags", "tickers",

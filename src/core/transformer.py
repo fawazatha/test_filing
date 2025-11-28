@@ -260,8 +260,8 @@ def _build_tx_list_from_list(tx_list: List[Dict[str, Any]], raw_date: Any) -> Li
     for tx in tx_list or []:
         if not isinstance(tx, dict):
             continue
-        # ← penting: pakai date_iso lebih dulu; kalau tidak ada, pakai 'date' (bisa ISO dari Non-IDX),
-        # kalau masih gagal, barulah fallback ke raw_date (timestamp publikasi).
+        # Important: prefer date_iso first; if missing, use 'date' (may already be ISO from Non-IDX);
+        # if still missing, fall back to raw_date (publication timestamp).
         date_src = tx.get("date_iso") or tx.get("date") or raw_date
 
         out.append(PriceTransaction(

@@ -110,8 +110,8 @@ def _compute_window_from_minutes(window_minutes: int) -> Tuple[str, str, str, st
 
 def _relocate_alerts_to_alerts_folder(inserted_path: Optional[Path], not_inserted_path: Optional[Path]) -> Tuple[Optional[Path], Optional[Path]]:
     """
-    Jika write_alert_files menaruh ke artifacts/, pindahkan ke alerts/
-    agar step_bucketize_alerts (from_dir=alerts) menemukannya.
+    If write_alert_files drops files into artifacts/, move them to alerts/
+    so step_bucketize_alerts (from_dir=alerts) can find them.
     """
     if not inserted_path and not not_inserted_path:
         return inserted_path, not_inserted_path
@@ -123,7 +123,7 @@ def _relocate_alerts_to_alerts_folder(inserted_path: Optional[Path], not_inserte
         if not p or not p.exists():
             return p
         if p.parent == alerts_dir:
-            return p  # sudah di alerts
+            return p  # already in alerts
         target = alerts_dir / p.name
         try:
             target.write_text(p.read_text(encoding="utf-8"), encoding="utf-8")
@@ -379,14 +379,14 @@ def step_generate_filings(
     idx_parsed: Path,
     non_idx_parsed: Path,
     downloads_meta: Path,
-    ingestion_file: Path, # Argumen baru ditambahkan
+    ingestion_file: Path, # Newly added argument
     filings_out: Path,
     alerts_out: Path,
 ) -> int:
     cnt = run_generate(
         parsed_files=[str(non_idx_parsed), str(idx_parsed)],
         downloads_file=str(downloads_meta),
-        ingestion_file=str(ingestion_file), # Diteruskan ke 'run_generate'
+        ingestion_file=str(ingestion_file), # Passed through to 'run_generate'
         output_file=str(filings_out),
         alerts_file=str(alerts_out),
     )
@@ -404,7 +404,7 @@ def step_bucketize_alerts(
     LOG.info("[BUCKETIZE] inserted=%d not_inserted=%d", stats["inserted"], stats["not_inserted"])
 
 
-# Email helpers & step =====
+# Email helpers & step
 def _gather_json_files(dir_path: Path) -> List[Path]:
     if not dir_path.exists() or not dir_path.is_dir():
         return []
@@ -544,20 +544,20 @@ def step_zip_artifacts(
     return zip_path
 
 
-# FUNGSI DIPERBARUI
+# UPDATED FUNCTION
 def step_upload_supabase(
     *,
     input_json: Path,
     table: str,
     supabase_url: Optional[str],
     supabase_key: Optional[str],
-    stop_on_missing: bool = False, # Argumen ini tidak digunakan lagi, tapi disimpan untuk kompatibilitas
+    stop_on_missing: bool = False, # This argument is no longer used but kept for compatibility
     strict_exit: bool = False,
     send_email: bool = False,  # reserved
 ) -> None:
     """
-    Mengunggah file JSON yang sudah bersih ke Supabase menggunakan
-    layanan 'upload_filings_with_dedup' yang telah direfaktor.
+    Upload a cleaned JSON file to Supabase using the refactored
+    'upload_filings_with_dedup' service.
     """
     if not supabase_url or not supabase_key:
         LOG.warning("SUPABASE_URL/KEY missing; skip upload.")
@@ -569,7 +569,7 @@ def step_upload_supabase(
 
     uploader = SupabaseUploader(url=supabase_url, key=supabase_key)
     
-    # 1. Muat data yang sudah dinormalisasi
+    # 1. Load normalized data
     raw = _load_json_silent(input_json)
     rows = raw["rows"] if isinstance(raw, dict) and "rows" in raw else (raw if isinstance(raw, list) else [])
     
@@ -577,17 +577,17 @@ def step_upload_supabase(
         LOG.warning("[UPLOAD] No rows found in %s to upload.", input_json)
         return
 
-    # 2. Dapatkan daftar kolom yang valid dari Tipe Inti kita
+    # 2. Get the list of valid columns from our core type
     try:
         valid_columns = FILINGS_ALLOWED_COLUMNS
         valid_columns.update(["id", "created_at"]) 
     except Exception:
         LOG.error("[UPLOAD] Could not get valid columns from FilingRecord. Upload may fail.")
-        valid_columns = None # Lanjutkan tanpa memfilter
+        valid_columns = None # Continue without filtering
 
     LOG.info("[UPLOAD] Loaded %d rows from %s. Starting deduplication and upload...", len(rows), input_json)
 
-    # 3. Panggil layanan dedup
+    # 3. Call the deduplication service
     res, stats = upload_filings_with_dedup(
         uploader=uploader,
         table=table,
@@ -640,10 +640,10 @@ def step_generate_articles(
     return len(articles)
 
 
-# DIHAPUS: step_unify_filings (sudah usang)
+# REMOVED: step_unify_filings (deprecated)
 
 
-# ========== CLI ==========
+# CLI
 def build_argparser() -> argparse.ArgumentParser:
     p = argparse.ArgumentParser(description="IDX filings pipeline orchestrator")
 
@@ -667,10 +667,10 @@ def build_argparser() -> argparse.ArgumentParser:
     p.add_argument("--from-date", dest="from_date", default=None, help="YYYYMMDD (WIB)")
     p.add_argument("--to-date", default=None, help="YYYYMMDD (WIB)")
     
-    # ARGUMEN BARU DITAMBAHKAN
+    # NEW ARGUMENT ADDED
     p.add_argument("--ingestion-file", default="data/ingestion.json", 
                    help="Path to ingestion file with announcement dates and links.")
-    # AKHIR ARGUMEN BARU
+    # END NEW ARGUMENT
 
     # Downloader
     p.add_argument("--retries", type=int, default=3)
@@ -697,9 +697,6 @@ def build_argparser() -> argparse.ArgumentParser:
     # Email alerts
     p.add_argument("--email-alerts", action="store_true",
                    help="Send inserted/not_inserted alert emails if available")
-    
-    # PERBAIKAN: Menghapus p.lstrip()
-    
     p.add_argument("--email-to-inserted",
                    default=os.getenv("ALERT_TO_EMAIL_INSERTED") or os.getenv("ALERT_TO_EMAIL"),
                    help="Comma-separated recipients for INSERTED alerts")
@@ -720,15 +717,15 @@ def build_argparser() -> argparse.ArgumentParser:
                    help="Total attachment size budget in bytes (default ~7.5MB)")
 
 
-    # === Articles generate & upload news ===
+    # Articles generate & upload news
     p.add_argument("--generate-articles", action="store_true",
                    help="Generate articles.jsonl from filings_data.json")
     p.add_argument("--articles-out", default="data/articles.jsonl",
                    help="Path output articles JSONL")
-    # PERBAIKAN: Mengganti p.add.argument menjadi p.add_argument
+    # FIX: Replace p.add.argument with p.add_argument
     p.add_argument("--company-map", default="data/company/company_map.json",
                    help="Path to cached company_map used by articles generator")
-    # AKHIR PERBAIKAN
+    # END FIX
     p.add_argument("--latest-prices", default="data/company/latest_prices.json",
                    help="Path to cached latest_prices used by articles generator")
     p.add_argument("--use-llm", action="store_true",
@@ -868,7 +865,7 @@ def main():
         idx_parsed=idx_out,
         non_idx_parsed=non_idx_out,
         downloads_meta=Path("data/downloaded_pdfs.json"),
-        ingestion_file=ann_out, # Meneruskan file ingestion
+        ingestion_file=ann_out, # Pass along the ingestion file
         filings_out=filings_out,
         alerts_out=suspicious_out,
     )
@@ -877,7 +874,7 @@ def main():
     # 4.5) Generate articles
     if args.generate_articles:
         step_generate_articles(
-            filings_json=filings_out, # Gunakan filings_out yang sudah distandarisasi
+            filings_json=filings_out, # Use the standardized filings_out
             articles_out=Path(args.articles_out),
             company_map_path=args.company_map,
             latest_prices_path=args.latest_prices,

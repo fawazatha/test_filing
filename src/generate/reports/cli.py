@@ -89,9 +89,7 @@ def fmt_pct(v) -> str:
     try: return f"{float(v):.2f}%"
     except Exception: return str(v)
 
-# -----------------------------
 # Subprocess + utils
-# -----------------------------
 def _run(cmd: List[str]):
     logger.info("Running: %s", " ".join(cmd))
     res = subprocess.run(cmd)
@@ -233,9 +231,7 @@ def build_argparser():
     p.add_argument("--attach-json", action="store_true"); p.add_argument("--attach-html", action="store_true")
     return p
 
-# -----------------------------
 # Main flow
-# -----------------------------
 async def run(args):
     _ensure_dirs()
 
@@ -321,9 +317,9 @@ async def run(args):
     grouped = _inject_amount(grouped, id_to_amount)
     grouped = _inject_source(grouped, id_to_source)
 
-    # (opsional) filter company_rows untuk tampilan kalau kamu ikut load sendiri
-    # NOTE: group_report() kamu tidak butuh company_rows eksplisit. Jika kamu ingin
-    # menampilkan tabel perusahaan terfilter board, tambah logic load+filter di sini:
+    # (optional) filter company_rows for display if you load them yourself
+    # NOTE: group_report() does not need company_rows explicitly. If you want
+    # to show a board-filtered company table, add load+filter logic here:
     # company_rows = load_companies_from_json(companies_json_path) if companies_json_path else []
     # if company_rows and args.listing_board:
     #     company_rows = filter_company_rows_by_board(company_rows, args.listing_board)

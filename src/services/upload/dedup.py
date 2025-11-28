@@ -44,7 +44,7 @@ def _to_day(s: Optional[str]) -> str:
     if not s:
         return ""
     try:
-        # Mengambil 10 karakter pertama (YYYY-MM-DD) dari timestamp
+        # Take the first 10 characters (YYYY-MM-DD) from the timestamp
         return str(s)[:10]
     except Exception:
         return ""
@@ -64,16 +64,12 @@ def make_filing_hash(row: Dict[str, Any]) -> str:
     Create a SHA-256 hash from key fields of a filing row.
     Keys here must align with DB fetch mapping in _db_row_to_hashable().
     """
-    # --- PERBAIKAN: Menggunakan 'timestamp' (bukan 'filing_date') ---
     filing_date_key = _to_day(row.get("timestamp"))
-    # --- AKHIR PERBAIKAN ---
 
     key_data = {
         "symbol": (row.get("symbol") or "").strip().upper(),
-        "filing_date": filing_date_key, # Ini adalah 'YYYY-MM-DD' dari timestamp
-        # --- PERBAIKAN: Hanya gunakan 'transaction_type' ---
+        "filing_date": filing_date_key,
         "transaction_type": (row.get("transaction_type") or "").strip().lower(),
-        # --- AKHIR PERBAIKAN ---
         "holder_name": (row.get("holder_name") or "").strip().lower(),
         "holding_before": row.get("holding_before"),
         "holding_after": row.get("holding_after"),
@@ -95,12 +91,9 @@ def _prepare_batch_rows(rows: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
     out: List[Dict[str, Any]] = []
     for r in rows:
         rr = dict(r)
-        # --- PERBAIKAN: Menggunakan 'timestamp' ---
         day = _to_day(rr.get("timestamp"))
         if day:
-            # Kita buat kunci ini agar bisa diambil oleh 'days' set di bawah
             rr["date_for_query"] = day 
-        # --- AKHIR PERBAIKAN ---
         out.append(rr)
     return out
 
@@ -118,7 +111,7 @@ def _intrarun_unique(rows: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
 
 # Fetch existing rows from Supabase (by days & symbols)
 def _fetch_existing_rows_same_days(
-    uploader: SupabaseUploader,  # kept for signature parity / future use
+    uploader: SupabaseUploader, 
     table: str,
     days: List[str],
     symbols: Optional[List[str]] = None,
@@ -138,14 +131,12 @@ def _fetch_existing_rows_same_days(
     ])
 
     try:
-        # Panggil fungsi yang diperbarui (dari fetch_filings.py)
-        # yang sekarang akan me-query 'timestamp'
         return asyncio.run(
             get_idx_filings_by_days(
                 days=days, 
                 symbols=symbols, 
                 table=table,
-                select=select_cols # Teruskan 'select' yang sudah benar
+                select=select_cols 
             )
         )
     except Exception as e:
@@ -161,7 +152,6 @@ def _db_row_to_hashable(db_row: Dict[str, Any]) -> Dict[str, Any]:
         out["amount"] = db_row.get("amount_transaction")
     if "value" not in out:
         out["value"] = db_row.get("transaction_value")
-    # 'transaction_type' dan 'timestamp' sudah memiliki nama yang benar dari select
     return out
 
 # Public entry
@@ -189,9 +179,7 @@ def upload_filings_with_dedup(
     intra = _intrarun_unique(prepared)
 
     # 3) Identify days & symbols for DB look-up
-    # --- PERBAIKAN: Menggunakan 'date_for_query' ---
     days = sorted({r.get("date_for_query") for r in intra if r.get("date_for_query")})
-    # --- AKHIR PERBAIKAN ---
     symbols = [r.get("symbol") for r in intra if r.get("symbol")] or None
 
     # 4) Fetch existing rows (same days/symbols)
@@ -226,4 +214,3 @@ def upload_filings_with_dedup(
         "failed": len(getattr(res, "failed_rows", [])),
     }
     return res, stats
-

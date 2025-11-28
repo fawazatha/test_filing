@@ -4,7 +4,7 @@ from typing import List, Dict, Optional, Tuple
 import logging
 logger = logging.getLogger(__name__)
 
-# === Canonical whitelist (exactly 9) ===
+# Canonical whitelist (exactly 9)
 TAGS_WHITELIST = {
     "bullish", "bearish", "takeover", "investment", "divestment",
     "free-float-requirement", "MESOP", "inheritance", "share-transfer",

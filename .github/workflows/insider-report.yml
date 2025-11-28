@@ -150,7 +150,7 @@ jobs:
           test -s data/company/company_map.json || { echo "company_map.json missing"; exit 1; }
 
 
-      # ===== Phase A: Build (export + fetch + render) WITHOUT sending =====
+      # Phase A: Build (export + fetch + render) WITHOUT sending
       - name: Build command (dry-run)
         id: build
         shell: bash
@@ -193,7 +193,7 @@ jobs:
           echo "[BUILD]" "${CMD[@]}"
           "${CMD[@]}"
 
-      # ===== Phase B: Wait until 18:00 WIB (only if sending AND do_wait) =====
+      # Phase B: Wait until 18:00 WIB (only if sending AND do_wait)
       - name: Wait until 18:00 WIB (11:00 UTC)
         if: steps.sendcfg.outputs.send == 'true' && steps.sendcfg.outputs.do_wait == 'true'
         shell: bash
@@ -210,7 +210,7 @@ jobs:
             echo "It's past 11:00 UTC already; skipping wait."
           fi
 
-      # ===== Phase C: Send-only (reuse JSON from Phase A) =====
+      # Phase C: Send-only (reuse JSON from Phase A)
       - name: Resolve generated JSON paths for send
         if: steps.sendcfg.outputs.send == 'true'
         id: resolvejson

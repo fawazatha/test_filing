@@ -74,7 +74,7 @@ def _title_case_holder(name: str) -> str:
         return NameCleaner.to_title_case_custom(name)
     except Exception:
         s = name.title()
-        # perapihan umum
+        # general cleanup
         s = re.sub(r'\bOf\b', 'of', s)
         s = re.sub(r'\bAnd\b', 'and', s)
         s = re.sub(r'\bPt\b', 'PT', s)
@@ -155,7 +155,7 @@ class NonIDXParser(BaseParser):
             output_file=output_file,
             announcement_json=announcement_json,
         )
-        # Label parser ini
+        # Parser label
         self.parser_type = "non_idx"
 
         self.excluded_names = {"Masyarakat lainnya yang dibawah 5%"}
@@ -268,17 +268,17 @@ class NonIDXParser(BaseParser):
                     # SOURCE & TIMESTAMP (FROM DOWNLOADED_PDFS.JSON)
                     if dl_url:
                         e["source"] = dl_url
-                    # fallback timestamp: downloaded meta -> tanggal di teks
+                    # fallback timestamp: downloads metadata -> date parsed from text
                     if dl_ts:
                         e["timestamp"] = dl_ts
                     elif tx_date:
                         e["timestamp"] = tx_date
 
-                    # Perapihan holder
+                    # Holder cleanup
                     if e.get("holder_name"):
                         e["holder_name"] = _title_case_holder(e["holder_name"])
 
-                    # amount_transaction jika kosong (berdasarkan holding_before/after)
+                    # Fill amount_transaction if empty (derived from holding_before/after)
                     if not e.get("amount_transaction"):
                         hb, ha = e.get("holding_before"), e.get("holding_after")
                         if isinstance(hb, (int, float)) and isinstance(ha, (int, float)):
@@ -287,14 +287,14 @@ class NonIDXParser(BaseParser):
                             except Exception:
                                 pass
 
-                    # Tentukan type bila kosong
+                    # Determine transaction type when missing
                     hb, ha = e.get("holding_before"), e.get("holding_after")
                     tx_type = e.get("transaction_type")
                     if not tx_type and isinstance(hb, (int, float)) and isinstance(ha, (int, float)):
                         tx_type = "buy" if ha > hb else "sell"
                         e["transaction_type"] = tx_type
 
-                    # Harga: gunakan yang ada di dokumen; fallback ke 0 (jangan pakai company_map)
+                    # Price: use the document value; fallback to 0 (avoid company_map)
                     price_final = None
                     try:
                         raw_price = e.get("price")
@@ -305,7 +305,7 @@ class NonIDXParser(BaseParser):
                     if price_final is None:
                         price_final = 0.0
 
-                    # Gunakan tx_date; kalau kosong, potong tanggal dari dl_ts (YYYY-MM-DD)
+                    # Use tx_date; if empty, slice the date from dl_ts (YYYY-MM-DD)
                     tx_date_final = tx_date or (str(dl_ts)[:10] if dl_ts else None)
 
                     e["price_transaction"] = [{

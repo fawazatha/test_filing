@@ -1,21 +1,19 @@
-# Command-line entrypoint untuk generator & uploader.
+# Command-line entrypoint for the generator & uploader.
 from __future__ import annotations
 import argparse
 import os
 
 from dotenv import load_dotenv, find_dotenv
-# penting: usecwd=True dan override=False (biar env shell tidak ditimpa .env)
+# important: usecwd=True and override=False (so the shell env isn't overridden by .env)
 load_dotenv(find_dotenv(usecwd=True), override=False)
 
 from .runner import run_from_filings, run_from_text_items
 from .utils.io_utils import write_jsonl, read_json, read_jsonl, get_logger
-from .utils.uploader import upload_news_file_cli  # asumsi signature: (input_path, table, dry_run, timeout)
+from .utils.uploader import upload_news_file_cli  # assumes signature: (input_path, table, dry_run, timeout)
 
 log = get_logger(__name__)
 
-# =========================
 # Helpers
-# =========================
 def _add_common_args(ap: argparse.ArgumentParser):
     ap.add_argument("--company-map", default="data/company/company_map.json")
     ap.add_argument("--latest-prices", default="data/company/company_map.json")
@@ -35,7 +33,7 @@ def _add_common_args(ap: argparse.ArgumentParser):
     )
     ap.add_argument("--prefer-symbol", action="store_true", help="Jika ada tickers & symbol, utamakan field symbol.")
 
-    # Opsi auto-upload setelah generate
+    # Auto-upload options after generation
     ap.add_argument("--upload", action="store_true", help="Langsung upload ke Supabase setelah generate.")
     ap.add_argument("--upload-table", default=os.getenv("SUPABASE_TABLE", "idx_news"))
     ap.add_argument("--upload-dry-run", action="store_true")
@@ -46,7 +44,7 @@ def _maybe_upload_after_generate(args, output_path: str):
         return
     log.info("Auto-upload diaktifkan: mengunggah %s ke Supabase table=%s (dry_run=%s, timeout=%s)",
              output_path, args.upload_table, args.upload_dry_run, args.upload_timeout)
-    # `upload_news_file_cli` diharapkan menangani normalisasi kolom & NULL (dimension/votes/score)
+    # `upload_news_file_cli` is expected to handle column normalization and NULLs (dimension/votes/score)
     upload_news_file_cli(
         input_path=output_path,
         table=args.upload_table,
@@ -54,9 +52,7 @@ def _maybe_upload_after_generate(args, output_path: str):
         timeout=args.upload_timeout,
     )
 
-# =========================
 # Commands
-# =========================
 def _cmd_generate_from_filings(args):
     filings = read_json(args.input)
     if not isinstance(filings, list):
@@ -90,7 +86,7 @@ def _cmd_generate_from_text(args):
     _maybe_upload_after_generate(args, args.output)
 
 def _cmd_upload_news(args):
-    # Subcommand upload manual (tanpa generate)
+    # Manual upload subcommand (without generation)
     upload_news_file_cli(
         input_path=args.input,
         table=args.table,
@@ -98,26 +94,24 @@ def _cmd_upload_news(args):
         timeout=args.timeout,
     )
 
-# =========================
 # Main
-# =========================
 def main():
     ap = argparse.ArgumentParser(description="Modular Article Generator CLI")
     sub = ap.add_subparsers(dest="cmd", required=True)
 
-    # Generate dari filings JSON (array dokumen)
+    # Generate from filings JSON (document array)
     p1 = sub.add_parser("generate-from-filings", help="Generate dari filings JSON (array).")
     p1.add_argument("--input", required=True, help="Path ke JSON array filings.")
     p1.add_argument("--output", required=True, help="Path output JSONL artikel.")
     _add_common_args(p1)
 
-    # Generate dari text JSONL (satu item per baris)
+    # Generate from text JSONL (one item per line)
     p2 = sub.add_parser("generate-from-text", help="Generate dari text JSONL.")
     p2.add_argument("--input", required=True, help="Path ke JSONL berisi item teks.")
     p2.add_argument("--output", required=True, help="Path output JSONL artikel.")
     _add_common_args(p2)
 
-    # Upload saja (tanpa generate)
+    # Upload only (without generation)
     p3 = sub.add_parser("upload-news", help="Upload artikel ke Supabase table (default idx_news).")
     p3.add_argument("--input", required=True, help="Path JSONL artikel.")
     p3.add_argument("--table", default="idx_news")

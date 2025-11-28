@@ -103,7 +103,7 @@ def _resolve_email_cfg(workflow: Workflow) -> Dict[str, Optional[str]]:
     if not isinstance(raw, dict):
         return {"to": None, "cc": None, "bcc": None}
 
-    # Prefer "to", but fall back to "value" (sesuai log kamu: {'value': '...'})
+    # Prefer "to", but fall back to "value" (per logged payloads: {'value': '...'})
     to = raw.get("to") or raw.get("value")
     cc = raw.get("cc")
     bcc = raw.get("bcc")

@@ -11,7 +11,7 @@ from src.services.alert.schema import build_alert
 from src.core.transformer import transform_many
 
 # Pipeline steps
-# Impor build_ingestion_map yang sudah diperbarui
+# Import the updated build_ingestion_map
 from .loaders import load_parsed_files, build_downloads_meta_map, build_ingestion_map
 from .processors import process_all_records
 from .consolidators import dedupe_rows
@@ -27,7 +27,7 @@ def run(
     parsed_files: List[str],
     downloads_file: str,
     output_file: str,
-    ingestion_file: str, # Ini adalah argumen dari cli.py
+    ingestion_file: str, # This is the argument from cli.py
     alerts_file: Optional[str] = None,
     **kwargs,
 ) -> int:
@@ -39,10 +39,10 @@ def run(
     
     # 2) LOAD MAPS
     downloads_meta_map = build_downloads_meta_map(downloads_file)
-    # Memuat peta ingestion (sekarang berisi dict penuh)
+    # Load ingestion map (now contains full dict)
     ingestion_map = build_ingestion_map(ingestion_file)
 
-    # 3) TRANSFORM (Meneruskan ingestion_map yang baru)
+    # 3) TRANSFORM (Pass along the new ingestion_map)
     records = transform_many(raw_rows, ingestion_map=ingestion_map)
     _stage_log("Transformed", len(records), "(Standardized to FilingRecord)")
 

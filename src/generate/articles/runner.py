@@ -10,7 +10,7 @@ def run_from_filings(
     company_map_path: str = "data/company/company_map.json",
     latest_prices_path: str = "data/company/company_map.json",
     use_llm: bool = False,
-    model_name: str = "llama-3.3-70b-versatile",  # override via CLI/env kalau mau 8B
+    model_name: str = "llama-3.3-70b-versatile",  # override via CLI/env if you prefer 8B
     prefer_symbol: bool = True,
     provider: Optional[str] = None,
 ) -> List[Dict[str, Any]]:
