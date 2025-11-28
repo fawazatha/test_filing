@@ -16,7 +16,7 @@ from src.core.types import FilingRecord
 from src.core.transformer import transform_many
 
 # Local & Service Imports
-from src.generate.filings.utils.config import LOG_LEVEL
+from src.config.config import LOG_LEVEL
 from src.generate.filings.runner import run as run_generate # This is the pipeline.py runner
 from src.services.upload.paths import data_file, list_alert_files
 from src.services.upload.supabase import SupabaseUploader, UploadResult
