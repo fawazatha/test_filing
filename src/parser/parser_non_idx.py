@@ -257,10 +257,8 @@ class NonIDXParser(BaseParser):
                     and "masyarakat lainnya" not in (entry.get("holder_name") or "").lower()
                 ]
 
-                # Dates & company meta
+                # Dates
                 tx_date = _parse_tx_date_from_text(all_text)
-                company_map_path = os.getenv("COMPANY_MAP_FILE", "data/company/company_map.json")
-                company_map = _load_company_map(company_map_path)
 
                 # Pull URL & timestamp from downloads meta
                 dl_url = dl_ctx.get("url")
@@ -296,8 +294,16 @@ class NonIDXParser(BaseParser):
                         tx_type = "buy" if ha > hb else "sell"
                         e["transaction_type"] = tx_type
 
-                    # Estimasi harga dari company_map + bangun price_transaction
-                    est_price = _estimate_last_close_price(e.get("symbol"), company_map)
+                    # Harga: gunakan yang ada di dokumen; fallback ke 0 (jangan pakai company_map)
+                    price_final = None
+                    try:
+                        raw_price = e.get("price")
+                        if raw_price not in (None, ""):
+                            price_final = float(str(raw_price).replace(",", "").strip())
+                    except Exception:
+                        price_final = None
+                    if price_final is None:
+                        price_final = 0.0
 
                     # Gunakan tx_date; kalau kosong, potong tanggal dari dl_ts (YYYY-MM-DD)
                     tx_date_final = tx_date or (str(dl_ts)[:10] if dl_ts else None)
@@ -305,14 +311,14 @@ class NonIDXParser(BaseParser):
                     e["price_transaction"] = [{
                         "date": tx_date_final,
                         "type": e.get("transaction_type"),
-                        "price": est_price,
+                        "price": price_final,
                         "amount_transacted": e.get("amount_transaction"),
                     }]
 
-                    if est_price is not None and e.get("amount_transaction"):
+                    if e.get("amount_transaction"):
                         try:
-                            e["price"] = est_price
-                            e["transaction_value"] = float(est_price) * float(e["amount_transaction"])
+                            e["price"] = price_final
+                            e["transaction_value"] = float(price_final) * float(e["amount_transaction"])
                         except Exception:
                             pass
 
