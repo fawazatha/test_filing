@@ -17,6 +17,7 @@ from .config import (
     TAG_NEW_LOW,
 )
 from .models import TAG_TO_COLUMN, Workflow, WorkflowEvent
+from .config import ALL_TAGS
 
 logger = get_logger("workflow.rules")
 
@@ -138,7 +139,9 @@ def build_events_for_row(
     symbol = row.get("symbol")
     company_name = row.get("company_name")
 
-    for tag in workflow.tags:
+    tags = workflow.tags or list(ALL_TAGS)
+
+    for tag in tags:
         # 1) New High / New Low: single direction per tag with timeframe hierarchy
         if tag in (TAG_NEW_HIGH, TAG_NEW_LOW):
             if tag == TAG_NEW_HIGH:

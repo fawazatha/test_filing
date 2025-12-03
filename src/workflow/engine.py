@@ -5,6 +5,7 @@ from typing import Any, Dict, List
 from src.common.datetime import now_wib
 from src.common.log import get_logger
 from src.common import sb as sbapi
+from src.workflow.config import ALL_TAGS
 
 
 from .models import Workflow, WorkflowEvent
@@ -63,8 +64,15 @@ async def fetch_active_workflows() -> List[Workflow]:
 
 
 async def fetch_mv_for_tickers(tickers: List[str]) -> List[Dict[str, Any]]:
+    """
+    Fetch MV rows for the given tickers.
+    If tickers is empty, treat it as wildcard (fetch all rows).
+    """
     if not tickers:
-        return []
+        return await sbapi.fetch_all(
+            table="idx_workflow_data",
+            select="*",
+        )
     return await sbapi.fetch_all(
         table="idx_workflow_data",
         select="*",
@@ -92,16 +100,27 @@ async def generate_events() -> List[WorkflowEvent]:
         dbg.info("Event generated: workflow_id=%s tag=%s symbol=%s", ev.workflow_id, ev.tag, ev.symbol)
 
     for wf in workflows:
-        if not wf.tags:
-            continue
         if not wf.is_active:
             continue
 
+        # Wildcard semantics:
+        # - tickers=[] -> all symbols
+        # - tags=[]    -> all tags (ALL_TAGS)
         rows = await fetch_mv_for_tickers(wf.tickers)
         logger.info("Workflow %s (%s): %d MV rows", wf.id, wf.name, len(rows))
 
         for row in rows:
-            events = build_events_for_row(wf, row, now=now)
+            # Clone tags per call to avoid mutating the dataclass
+            wf_for_row = Workflow(
+                id=wf.id,
+                user_id=wf.user_id,
+                name=wf.name,
+                tickers=wf.tickers,
+                tags=wf.tags or list(ALL_TAGS),
+                channels=wf.channels,
+                is_active=wf.is_active,
+            )
+            events = build_events_for_row(wf_for_row, row, now=now)
             all_events.extend(events)
 
     logger.info("Generated %d workflow events", len(all_events))
