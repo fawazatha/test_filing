@@ -19,6 +19,7 @@ def _extract_spreadsheet_id(raw: str) -> str:
     Terima:
       - '1Use3BVA.....'  (ID langsung)
       - 'https://docs.google.com/spreadsheets/d/1Use3BVA.../edit#gid=0'
+      - 'https:1Use3BVA...' (malformed paste missing slashes)
 
     Return:
       - '1Use3BVA.....'
@@ -28,6 +29,16 @@ def _extract_spreadsheet_id(raw: str) -> str:
         m = re.search(r"/d/([a-zA-Z0-9-_]+)", raw)
         if m:
             return m.group(1)
+        # Fallback: strip protocol, take first token as id (handles malformed 'https:ID')
+        cleaned = re.sub(r"^https?:/*", "", raw)
+        candidate = cleaned.split("/")[0]
+        if re.fullmatch(r"[A-Za-z0-9-_]{10,}", candidate or ""):
+            return candidate
+    else:
+        # If someone pastes "https:ID" without slashes, strip leading scheme
+        cleaned = re.sub(r"^https?:/*", "", raw)
+        if re.fullmatch(r"[A-Za-z0-9-_]{10,}", cleaned or ""):
+            return cleaned
     return raw
 
 def _resolve_sheet_cfg(workflow: Workflow) -> Dict[str, Optional[str]]:
