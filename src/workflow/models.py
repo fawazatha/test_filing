@@ -39,6 +39,10 @@ class Workflow:
     name: str
     tickers: List[str]
     tags: List[str]
+    sectors: List[str]
+    sub_sectors: List[str]
+    industries: List[str]
+    sub_industries: List[str]
     channels: Dict[str, Any]
     is_active: bool
 

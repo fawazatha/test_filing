@@ -91,18 +91,45 @@ def build_email_context_from_events(
 
         # INSIDER TRADING (BUY / SELL)
         elif tag in (TAG_INSIDER_BUY, TAG_INSIDER_SELL):
+            # Skip if payload doesn't have the core fields
+            value_raw = p.get("transaction_value") or p.get("value")
+            amount_raw = p.get("amount")
+            price_raw = p.get("price")
+
+            def _fmt_idr(x):
+                try:
+                    return float(x)
+                except Exception:
+                    return None
+
+            def _fmt_num(x):
+                try:
+                    return float(x)
+                except Exception:
+                    return None
+
+            price = _fmt_idr(price_raw)
+            value = _fmt_idr(value_raw)
+            amount = _fmt_num(amount_raw)
+            pct_tx = _fmt_num(p.get("share_percentage_transaction"))
+            time = p.get("display_time") or p.get("time")
+            holder = p.get("holder_name") or p.get("holder")
+
+            # If everything is empty, skip the row entirely
+            if not any([price, value, amount, pct_tx, holder, time]):
+                continue
+
             insider_rows.append(
                 {
                     "symbol": ev.symbol,
-                    "holder": p.get("holder_name") or p.get("holder"),
+                    "holder": holder,
                     "type": "buy" if tag == TAG_INSIDER_BUY else "sell",
-                    "price": p.get("price"),
-                    # transaction_value / value will be formatted in the template
-                    "value": p.get("transaction_value") or p.get("value"),
-                    "amount": p.get("amount"),
-                    "pct_tx": p.get("share_percentage_transaction"),
-                    # display_time is prepared on the rules / MV side
-                    "time": p.get("display_time"),
+                    "price": price,
+                    "value": value,
+                    "amount": amount,
+                    "pct_tx": pct_tx,
+                    "time": time,
+                    "source": p.get("source") or p.get("url"),
                 }
             )
 

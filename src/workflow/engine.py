@@ -14,16 +14,41 @@ from .rules import build_events_for_row
 logger = get_logger("workflow.engine")
 
 
+def _normalize_list(val: Any) -> List[str]:
+    if val is None:
+        return []
+    if isinstance(val, list):
+        return [str(v).strip() for v in val if str(v).strip()]
+    if isinstance(val, str):
+        s = val.strip()
+        if not s:
+            return []
+        try:
+            import json
+            if s.startswith("[") or s.startswith("{"):
+                parsed = json.loads(s.replace("{", "[").replace("}", "]"))
+                if isinstance(parsed, list):
+                    return [str(v).strip() for v in parsed if str(v).strip()]
+        except Exception:
+            pass
+        return [p.strip() for p in s.split(",") if p.strip()]
+    return [str(val).strip()]
+
+
 async def fetch_active_workflows() -> List[Workflow]:
     rows = await sbapi.fetch_all(
         table="user_workflow",
-        select="id,user_id,name,tickers,tags,channels,is_active",
+        select="id,user_id,name,tickers,tags,channels,is_active,sectors,sub_sectors,industries,sub_industries",
         filters=[("is_active", "eq.true")],
     )
 
     workflows: List[Workflow] = []
     for r in rows:
         raw_channels = r.get("channels") or {}
+        sectors = _normalize_list(r.get("sectors"))
+        sub_sectors = _normalize_list(r.get("sub_sectors"))
+        industries = _normalize_list(r.get("industries"))
+        sub_industries = _normalize_list(r.get("sub_industries"))
 
         channels: Dict[str, Any]
 
@@ -52,8 +77,12 @@ async def fetch_active_workflows() -> List[Workflow]:
                 id=str(r["id"]),
                 user_id=int(r["user_id"]),
                 name=r.get("name") or "",
-                tickers=r.get("tickers") or [],
-                tags=r.get("tags") or [],
+                tickers=_normalize_list(r.get("tickers")),
+                tags=_normalize_list(r.get("tags")),
+                sectors=sectors,
+                sub_sectors=sub_sectors,
+                industries=industries,
+                sub_industries=sub_industries,
                 channels=channels,
                 is_active=bool(r.get("is_active")),
             )
@@ -110,6 +139,21 @@ async def generate_events() -> List[WorkflowEvent]:
         logger.info("Workflow %s (%s): %d MV rows", wf.id, wf.name, len(rows))
 
         for row in rows:
+            if not wf.tickers:
+                def _match(field: str, allowed: List[str]) -> bool:
+                    if not allowed:
+                        return True
+                    val = str(row.get(field) or "").strip().lower()
+                    return val in allowed
+
+                if not all([
+                    _match("sector", wf.sectors),
+                    _match("sub_sector", wf.sub_sectors),
+                    _match("industry", wf.industries),
+                    _match("sub_industry", wf.sub_industries),
+                ]):
+                    continue
+
             # Clone tags per call to avoid mutating the dataclass
             wf_for_row = Workflow(
                 id=wf.id,
@@ -117,6 +161,10 @@ async def generate_events() -> List[WorkflowEvent]:
                 name=wf.name,
                 tickers=wf.tickers,
                 tags=wf.tags or list(ALL_TAGS),
+                sectors=wf.sectors,
+                sub_sectors=wf.sub_sectors,
+                industries=wf.industries,
+                sub_industries=wf.sub_industries,
                 channels=wf.channels,
                 is_active=wf.is_active,
             )

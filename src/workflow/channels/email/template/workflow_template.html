@@ -110,15 +110,16 @@
                         <th align="right"  style="padding:12px 16px;font-size:11px;font-weight:600;color:#374151;text-transform:uppercase;letter-spacing:0.5px;border-bottom:1px solid #e5e7eb;">Amount</th>
                         <th align="right"  style="padding:12px 16px;font-size:11px;font-weight:600;color:#374151;text-transform:uppercase;letter-spacing:0.5px;border-bottom:1px solid #e5e7eb;">% Tx</th>
                         <th align="center" style="padding:12px 16px;font-size:11px;font-weight:600;color:#374151;text-transform:uppercase;letter-spacing:0.5px;border-bottom:1px solid #e5e7eb;">Time</th>
+                        <th align="left"   style="padding:12px 16px;font-size:11px;font-weight:600;color:#374151;text-transform:uppercase;letter-spacing:0.5px;border-bottom:1px solid #e5e7eb;">Source</th>
                       </tr>
                     </thead>
                     <tbody>
                       {% for f in insider_rows %}
                       <tr style="border-bottom:1px solid #f3f4f6;">
-                        <td style="padding:12px 16px;font-size:13px;color:#1f2937;font-weight:500;">
+                        <td style="padding:12px 16px;font-size:13px;color:#1f2937;font-weight:700;">
                           {{ f.symbol }}
                         </td>
-                        <td style="padding:12px 16px;font-size:13px;color:#1f2937;font-weight:500;">
+                        <td style="padding:12px 16px;font-size:13px;color:#1f2937;font-weight:600;line-height:18px;">
                           {{ f.holder }}
                         </td>
                         <td align="center" style="padding:12px 16px;">
@@ -138,10 +139,13 @@
                           {{ f.amount | format_abbrev }}
                         </td>
                         <td align="right" class="nowrap" style="padding:12px 16px;font-size:13px;font-weight:600;{% if f.type == 'buy' %}color:#166534;{% else %}color:#dc2626;{% endif %}">
-                          {{ f.pct_tx }}%
+                          {% if f.pct_tx is not none %}{{ f.pct_tx }}%{% endif %}
                         </td>
                         <td align="center" class="nowrap" style="padding:12px 16px;font-size:12px;color:#6b7280;">
                           {{ f.time }}
+                        </td>
+                        <td align="left" class="nowrap" style="padding:12px 16px;font-size:12px;color:#1d4ed8;font-weight:600;">
+                          {% if f.source %}<a href="{{ f.source }}" style="color:#1d4ed8;text-decoration:underline;">source</a>{% endif %}
                         </td>
                       </tr>
                       {% endfor %}
