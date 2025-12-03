@@ -818,6 +818,11 @@ def main():
             out_path=ann_out,
         )
 
+    if not anns:
+        LOG.info("[FETCH] No announcements found for the window; skipping downstream steps.")
+        LOG.info("[DONE]")
+        return
+
     try:
         INGESTION_IDX = build_ingestion_index(str(ann_out))
         LOG.info("[INGESTION-INDEX] indexed %d filenames (main + attachments)", len(INGESTION_IDX))

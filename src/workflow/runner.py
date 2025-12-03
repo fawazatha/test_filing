@@ -189,8 +189,8 @@ async def run_workflows(
                     send_slack_for_workflow(
                         workflow=wf,
                         events=wf_events,
-                        window_start_label=window_label,
-                        window_end_label=window_label,
+                        window_start=window_label,
+                        window_end=window_label,
                     )
                 )
             )
