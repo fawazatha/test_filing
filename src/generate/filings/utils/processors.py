@@ -538,6 +538,85 @@ def process_filing_record(
         })
         row_flags["missing_price"] = True
 
+    # 4.5) Missing/empty critical fields → alert (even if we still insert)
+    missing_fields = []
+    for field_name in ("amount_transaction", "holding_before", "holding_after"):
+        if getattr(record, field_name, None) is None:
+            missing_fields.append(field_name)
+    if record.price is None:
+        missing_fields.append("price")
+    if record.transaction_value is None:
+        missing_fields.append("transaction_value")
+
+    if missing_fields:
+        reasons.append({
+            "scope": "row",
+            "code": "missing_required_field",
+            "message": f"Missing required field(s): {', '.join(missing_fields)}",
+            "details": {
+                "missing_fields": missing_fields,
+                "symbol": symbol,
+                "holder_name": record.holder_name,
+            },
+        })
+        row_flags["missing_required_field"] = True
+
+    # 4.6) Transaction direction sanity (buy/sell vs holdings delta)
+    ok_dir, dir_reason = _validate_tx_direction(
+        record.holding_before,
+        record.holding_after,
+        record.transaction_type,
+    )
+    if not ok_dir and dir_reason:
+        reasons.append({
+            "scope": "row",
+            "code": "mismatch_transaction_type",
+            "message": f"Transaction type inconsistent with holdings delta ({dir_reason})",
+            "details": {
+                "holding_before": record.holding_before,
+                "holding_after": record.holding_after,
+                "transaction_type": record.transaction_type,
+            },
+        })
+        row_flags["mismatch_transaction_type"] = True
+
+    # 4.7) price_transaction structure sanity
+    pt_invalid = False
+    if tx_list:
+        for tx in tx_list:
+            date_val = None
+            tx_type_val = None
+            price_val = None
+            amt_val = None
+            if isinstance(tx, PriceTransaction):
+                date_val = tx.transaction_date
+                tx_type_val = tx.transaction_type
+                price_val = tx.transaction_price
+                amt_val = tx.transaction_share_amount
+            elif isinstance(tx, dict):
+                date_val = tx.get("transaction_date") or tx.get("date")
+                tx_type_val = tx.get("transaction_type") or tx.get("type")
+                price_val = tx.get("transaction_price") or tx.get("price")
+                amt_val = tx.get("transaction_share_amount") or tx.get("amount") or tx.get("amount_transacted")
+            if not (date_val and tx_type_val and amt_val):
+                pt_invalid = True
+                break
+    elif record.transaction_type in {"buy", "sell"}:
+        # For buy/sell filings we expect at least one transaction detail
+        pt_invalid = True
+
+    if pt_invalid:
+        reasons.append({
+            "scope": "row",
+            "code": "invalid_price_transaction",
+            "message": "price_transaction entries are missing date/type/amount or empty for buy/sell filings.",
+            "details": {
+                "transaction_type": record.transaction_type,
+                "price_transaction": record.price_transaction,
+            },
+        })
+        row_flags["invalid_price_transaction"] = True
+
 
     # 5) Per-transaction suspicious price checks
     any_suspicious = False

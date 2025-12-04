@@ -31,6 +31,8 @@ MESSAGE_TEMPLATES = {
     "percent_discrepancy": "Reported shareholding percentages are inconsistent with the reported holdings.",
     "delta_pp_mismatch": "Change in shareholding percentage is inconsistent with before/after values.",
     "mismatch_transaction_type": "Parsed transaction type is inconsistent with the reported before/after values or document indicators.",
+    "missing_required_field": "One or more required fields are missing or null in the filing record.",
+    "invalid_price_transaction": "price_transaction block is empty or missing date/type/amount for buy/sell filings.",
 }
 
 # Default severity per alert code (aligned with README policy)
@@ -60,6 +62,8 @@ DEFAULT_SEVERITY = {
     "delta_pp_mismatch": "hard",
     "mismatch_transaction_type": "hard",
     "transfer_uid_required": "warning",
+    "missing_required_field": "hard",
+    "invalid_price_transaction": "hard",
 }
 
 def build_alert(
