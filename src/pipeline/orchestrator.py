@@ -577,6 +577,16 @@ def step_upload_supabase(
         LOG.warning("[UPLOAD] No rows found in %s to upload.", input_json)
         return
 
+    # Filter out rows explicitly marked to skip upload (e.g., mixed transaction types)
+    before_filter = len(rows)
+    rows = [
+        r for r in rows
+        if r.get("skip_reason") not in {"mixed_transaction_type", "transfer_only_transaction"}
+    ]
+    skipped = before_filter - len(rows)
+    if skipped:
+        LOG.info("[UPLOAD] Skipping %d row(s) due to skip_reason (e.g., mixed_transaction_type/transfer_only_transaction).", skipped)
+
     # 2. Get the list of valid columns from our core type
     try:
         valid_columns = FILINGS_ALLOWED_COLUMNS
@@ -638,9 +648,6 @@ def step_generate_articles(
     _write_jsonl(articles_out, articles)
     LOG.info("[ARTICLES] wrote %d articles -> %s", len(articles), articles_out)
     return len(articles)
-
-
-# REMOVED: step_unify_filings (deprecated)
 
 
 # CLI

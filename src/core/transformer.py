@@ -29,13 +29,7 @@ PURPOSE_TAG_MAP = {
     "divestasi": "divestment", "difvestment": "divestment",
 }
 
-# Optional Gemini translator (lazy init)
-_GEMINI_CLIENT = None
-try:
-    import google.generativeai as _genai  # type: ignore
-except Exception:
-    _genai = None  # type: ignore
-
+import google.generativeai as _genai 
 
 def _get_gemini_translator():
     """Best-effort Gemini client for purpose translation."""
@@ -168,6 +162,8 @@ def _translate_to_english(text: str) -> str:
         "pengembangan usaha": "Business expansion",
         "investasi": "investment",
         "divestasi": "divestment",
+        "sesuai surat pemberitahuan dari": "In accordance with the notification letter",
+        "surat pemberitahuan": "In accordance with the notification letter",
     }
     s = text.strip().lower()
     if s in known:
@@ -633,9 +629,7 @@ def transform_raw_to_record(
 
         title=title,
         body=body,
-        purpose_of_transaction=purpose_en,  # kept internally; to_db_dict() will NOT upload this column
-
-        # Keep INTERNAL representation; to_db_dict() serializes for DB.
+        purpose_of_transaction=purpose_en,
         price_transaction=price_tx_list,
 
         tags=tags,

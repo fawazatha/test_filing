@@ -33,6 +33,8 @@ MESSAGE_TEMPLATES = {
     "mismatch_transaction_type": "Parsed transaction type is inconsistent with the reported before/after values or document indicators.",
     "missing_required_field": "One or more required fields are missing or null in the filing record.",
     "invalid_price_transaction": "price_transaction block is empty or missing date/type/amount for buy/sell filings.",
+    "mixed_transaction_type": "Buy/Sell appears together with transfer/other; requires manual review.",
+    "transfer_only_transaction": "Transfer/other-only transaction; requires manual handling.",
 }
 
 # Default severity per alert code (aligned with README policy)
@@ -64,6 +66,8 @@ DEFAULT_SEVERITY = {
     "transfer_uid_required": "warning",
     "missing_required_field": "hard",
     "invalid_price_transaction": "hard",
+    "mixed_transaction_type": "hard",
+    "transfer_only_transaction": "hard",
 }
 
 def build_alert(

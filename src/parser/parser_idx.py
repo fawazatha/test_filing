@@ -521,10 +521,13 @@ class IDXParser(BaseParser):
         txs = res.get("transactions") or []
         buy_sell = [t for t in txs if t.get("type") in {"buy", "sell"}]
         transfers = [t for t in txs if t.get("type") == "transfer"]
+        any_tx = buy_sell or transfers
 
         # Totals derived from table rows
-        rows_amt = sum(int(t.get("amount") or 0) for t in buy_sell)
-        rows_val = sum(float(t.get("value") or 0.0) for t in buy_sell)
+        rows_amt_buy_sell = sum(int(t.get("amount") or 0) for t in buy_sell)
+        rows_val_buy_sell = sum(float(t.get("value") or 0.0) for t in buy_sell)
+        rows_amt_transfer = sum(int(t.get("amount") or 0) for t in transfers)
+        rows_val_transfer = sum(float(t.get("value") or 0.0) for t in transfers)
 
         # Delta from before/after holdings (when available)
         hb = res.get("holding_before")
@@ -536,9 +539,14 @@ class IDXParser(BaseParser):
         except Exception:
             delta_amt = None
 
-        res["amount_transacted_rows"] = rows_amt
-        res["amount_transacted"] = (delta_amt if (delta_amt is not None) else rows_amt)
-        res["transaction_value"] = rows_val
+        res["amount_transacted_rows"] = rows_amt_buy_sell or rows_amt_transfer
+        # Prefer holdings delta; fall back to buy/sell rows, then transfer rows
+        res["amount_transacted"] = (
+            delta_amt
+            if (delta_amt is not None)
+            else (rows_amt_buy_sell or rows_amt_transfer)
+        )
+        res["transaction_value"] = rows_val_buy_sell or rows_val_transfer
 
         res["has_transfer"] = bool(transfers)
         res["amount_transferred"] = sum(int(t.get("amount") or 0) for t in transfers)
@@ -552,10 +560,11 @@ class IDXParser(BaseParser):
             elif kinds <= {"buy", "sell"} and len({t["type"] for t in buy_sell}) == 1:
                 res["transaction_type"] = buy_sell[0]["type"]
 
-        # Weighted average price (buy/sell saja)
-        total_amt = sum(int(t.get("amount") or 0) for t in buy_sell if int(t.get("amount") or 0) > 0)
+        # Weighted average price (prefer buy/sell; fall back to transfers if needed)
+        priced_rows = buy_sell if buy_sell else transfers
+        total_amt = sum(int(t.get("amount") or 0) for t in priced_rows if int(t.get("amount") or 0) > 0)
         if total_amt:
-            wavg = sum(float(t.get("price") or 0.0) * int(t.get("amount") or 0) for t in buy_sell) / total_amt
+            wavg = sum(float(t.get("price") or 0.0) * int(t.get("amount") or 0) for t in priced_rows) / total_amt
             res["price"] = round(wavg, 2)
 
         res["price_transaction"] = [
@@ -565,7 +574,7 @@ class IDXParser(BaseParser):
                 "price": float(t.get("price")) if t.get("price") is not None else None,
                 "amount_transacted": int(t.get("amount") or 0),
             }
-            for t in buy_sell
+            for t in (buy_sell or transfers or [])
             if int(t.get("amount") or 0) > 0
         ]
 
