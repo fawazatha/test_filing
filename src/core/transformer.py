@@ -30,6 +30,20 @@ PURPOSE_TAG_MAP = {
 }
 
 import google.generativeai as _genai 
+try:
+    from googletrans import Translator as _GTTranslator  # lightweight, non-LLM
+except Exception:  # pragma: no cover - optional dep
+    _GTTranslator = None
+
+# Config: allow fast opt-out or short timeouts for translation
+_GEMINI_CLIENT: Optional[Any] = None
+_GEMINI_PURPOSE_ENABLED = os.getenv("GEMINI_PURPOSE_ENABLED", "0").lower() in {"1", "true", "yes"}  # default off (prefer non-LLM)
+_GEMINI_PURPOSE_TIMEOUT = float(os.getenv("GEMINI_PURPOSE_TIMEOUT", "8"))
+_GEMINI_ALLOW_PROXY = os.getenv("GEMINI_ALLOW_PROXY", "0").lower() in {"1", "true", "yes"}
+
+_GOOGLETRANS_CLIENT: Optional[Any] = None
+_GOOGLETRANS_ENABLED = os.getenv("GOOGLETRANS_ENABLED", "1").lower() in {"1", "true", "yes"}
+_GOOGLETRANS_ALLOW_PROXY = os.getenv("GOOGLETRANS_ALLOW_PROXY", "1").lower() in {"1", "true", "yes"}
 
 # Lazily initialized Gemini client (None when unavailable)
 _GEMINI_CLIENT: Optional[Any] = None
@@ -37,6 +51,13 @@ _GEMINI_CLIENT: Optional[Any] = None
 def _get_gemini_translator():
     """Best-effort Gemini client for purpose translation."""
     global _GEMINI_CLIENT
+
+    # Opt-out or skip when behind a proxy that breaks gRPC unless explicitly allowed
+    if not _GEMINI_PURPOSE_ENABLED:
+        return None
+    if not _GEMINI_ALLOW_PROXY and (os.getenv("HTTP_PROXY") or os.getenv("HTTPS_PROXY")):
+        return None
+
     if _GEMINI_CLIENT is not None:
         return _GEMINI_CLIENT
     if _genai is None:
@@ -55,23 +76,58 @@ def _get_gemini_translator():
     return _GEMINI_CLIENT
 
 
-def _translate_purpose_gemini(text: str) -> Optional[str]:
-    """Use Gemini to translate a short purpose string to English."""
-    client = _get_gemini_translator()
-    if not client or not text:
-        return None
+# def _translate_purpose_gemini(text: str) -> Optional[str]:
+#     """Use Gemini to translate a short purpose string to English (kept for compat; disabled by default)."""
+#     client = _get_gemini_translator()
+#     if not client or not text:
+#         return None
 
-    prompt = (
-        "Translate this filing transaction purpose into concise English (<= 12 words). "
-        "Return only the translation without quotes or explanations.\n"
-        f"Purpose: {text.strip()}"
-    )
+#     prompt = (
+#         "Translate this filing transaction purpose into concise English (<= 12 words). "
+#         "Return only the translation without quotes or explanations.\n"
+#         f"Purpose: {text.strip()}"
+#     )
+#     try:
+#         resp = client.generate_content(prompt, request_options={"timeout": _GEMINI_PURPOSE_TIMEOUT})
+#         translated = (resp.text or "").strip()
+#         return translated or None
+#     except Exception as exc:  # pragma: no cover - network call best effort
+#         logging.warning("Gemini purpose translation failed: %s", exc)
+#         return None
+
+
+def _get_google_translator():
+    """Best-effort Google Translate (non-LLM) client."""
+    global _GOOGLETRANS_CLIENT
+    if not _GOOGLETRANS_ENABLED:
+        return None
+    if not _GOOGLETRANS_ALLOW_PROXY and (os.getenv("HTTP_PROXY") or os.getenv("HTTPS_PROXY")):
+        return None
+    if _GOOGLETRANS_CLIENT is not None:
+        return _GOOGLETRANS_CLIENT
+    if _GTTranslator is None:
+        return None
     try:
-        resp = client.generate_content(prompt)
-        translated = (resp.text or "").strip()
-        return translated or None
-    except Exception as exc:  # pragma: no cover - network call best effort
-        logging.warning("Gemini purpose translation failed: %s", exc)
+        _GOOGLETRANS_CLIENT = _GTTranslator(service_urls=["translate.googleapis.com"])
+    except Exception as exc:  # pragma: no cover - best effort
+        logging.warning("Failed to init Google Translate client: %s", exc)
+        _GOOGLETRANS_CLIENT = None
+    return _GOOGLETRANS_CLIENT
+
+
+def _translate_purpose_google(text: str) -> Optional[str]:
+    """Use googletrans (non-LLM) to translate to English."""
+    if not text:
+        return None
+    client = _get_google_translator()
+    if not client:
+        return None
+    try:
+        res = client.translate(text, dest="en")
+        out = (res.text or "").strip()
+        return out or None
+    except Exception as exc:  # pragma: no cover - network best effort
+        logging.warning("googletrans purpose translation failed: %s", exc)
         return None
 
 # Small helpers
@@ -151,13 +207,14 @@ def _resolve_from_ingestion_map(
     return date, url
 
 def _translate_to_english(text: str) -> str:
-    """Translate purpose to English; prefer Gemini when available."""
+    """Translate purpose to English using googletrans (non-LLM) only."""
     if not text:
         return ""
 
-    gem = _translate_purpose_gemini(text)
-    if gem:
-        return gem
+    # Non-LLM translation (preferred path)
+    gt = _translate_purpose_google(text)
+    if gt:
+        return gt
 
     known = {
         "bagian dari proses akuisisi": "Part of the acquisition process",
