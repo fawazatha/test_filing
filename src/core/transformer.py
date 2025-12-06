@@ -206,31 +206,68 @@ def _resolve_from_ingestion_map(
     return date, url
 
 def _translate_to_english(text: str) -> str:
-    """Translate purpose to English using googletrans (non-LLM) only."""
+    """Translate purpose to English using googletrans when possible, with robust fallbacks."""
     if not text:
         return ""
 
-    # Non-LLM translation (preferred path)
+    # 1) Try googletrans (non-LLM)
     gt = _translate_purpose_google(text)
-    if gt:
+    # Kadang-kadang library balikannya sama persis → anggap gagal
+    if gt and gt.strip().lower() != text.strip().lower():
         return gt
 
+    s = text.strip().lower()
+
+    # 2) Phrase-level mapping (substring, bukan exact)
+    phrase_map = {
+        "memperluas basis kepemilikan saham": "expanding the shareholder base",
+        "memperluas basis kepemilikan": "expanding the shareholder base",
+        "investasi lainnya": "other investment",
+        "investasi lain": "other investment",
+        "transaksi pribadi": "personal transaction",
+        "transaksi pribadi/investasi": "personal investment transaction",
+        "kepemilikan pribadi/individu/investasi": "personal / individual investment ownership",
+        "kepemilikan pribadi/individu": "personal or individual ownership",
+        "kepemilikan pribadi": "personal ownership",
+        "pembayaran utang": "debt repayment",
+        "pembayaran hutang": "debt repayment",
+        "pembayaran pinjaman": "loan repayment",
+    }
+    for key, val in phrase_map.items():
+        if key in s:
+            return val
+
+    # 3) Single-word / simple phrases (extend existing 'known')
     known = {
-        "bagian dari proses akuisisi": "Part of the acquisition process",
-        "strategi internal": "Internal strategy",
-        "pengembangan usaha": "Business expansion",
+        "bagian dari proses akuisisi": "part of the acquisition process",
+        "strategi internal": "internal strategy",
+        "pengembangan usaha": "business expansion",
         "investasi": "investment",
         "divestasi": "divestment",
-        "sesuai surat pemberitahuan dari": "In accordance with the notification letter",
-        "surat pemberitahuan": "In accordance with the notification letter",
+        "sesuai surat pemberitahuan dari": "in accordance with the notification letter",
+        "surat pemberitahuan": "in accordance with the notification letter",
+        "investation": "investment",
     }
-    s = text.strip().lower()
+
+    # Coba exact dulu
     if s in known:
         return known[s]
-    if s == "investation":
-        return "Investment"
-    logging.warning(f"No translation found for '{text}'. Using original.")
+    # Kalau tidak exact, cek sebagai substring
+    for key, val in known.items():
+        if key in s:
+            return val
+
+    # 4) Fallback terakhir: pakai PURPOSE_TAG_MAP → kategori Inggris
+    # (mis: "investasi lainnya" → tag "investment" → "investment")
+    for key, mapped_tag in PURPOSE_TAG_MAP.items():
+        if key in s:
+            # "share-transfer" → "share transfer", dll.
+            return mapped_tag.replace("-", " ")
+
+    # 5) Kalau semua gagal, pakai original (supaya tetap ada info)
+    logging.warning("No translation found for '%s'. Using original.", text)
     return text
+
 
 def _to_str(x: Any) -> Optional[str]:
     """Coerce any value to a trimmed string; return None for null/empty."""
