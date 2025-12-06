@@ -31,7 +31,7 @@ PURPOSE_TAG_MAP = {
 
 import google.generativeai as _genai 
 try:
-    from googletrans import Translator as _GTTranslator  # lightweight, non-LLM
+    from deep_translator import GoogleTranslator as _GTTranslator  # lightweight, non-LLM
 except Exception:  # pragma: no cover - optional dep
     _GTTranslator = None
 
@@ -108,7 +108,7 @@ def _get_google_translator():
     if _GTTranslator is None:
         return None
     try:
-        _GOOGLETRANS_CLIENT = _GTTranslator(service_urls=["translate.googleapis.com"])
+        _GOOGLETRANS_CLIENT = _GTTranslator(source="auto", target="en")
     except Exception as exc:  # pragma: no cover - best effort
         logging.warning("Failed to init Google Translate client: %s", exc)
         _GOOGLETRANS_CLIENT = None
@@ -123,8 +123,7 @@ def _translate_purpose_google(text: str) -> Optional[str]:
     if not client:
         return None
     try:
-        res = client.translate(text, dest="en")
-        out = (res.text or "").strip()
+        out = (client.translate(text) or "").strip()
         return out or None
     except Exception as exc:  # pragma: no cover - network best effort
         logging.warning("googletrans purpose translation failed: %s", exc)
