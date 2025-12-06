@@ -31,6 +31,9 @@ PURPOSE_TAG_MAP = {
 
 import google.generativeai as _genai 
 
+# Lazily initialized Gemini client (None when unavailable)
+_GEMINI_CLIENT: Optional[Any] = None
+
 def _get_gemini_translator():
     """Best-effort Gemini client for purpose translation."""
     global _GEMINI_CLIENT
