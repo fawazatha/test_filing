@@ -31,7 +31,7 @@ PURPOSE_TAG_MAP = {
 
 import google.generativeai as _genai 
 try:
-    from deep_translator import GoogleTranslator as _GTTranslator  # lightweight, non-LLM
+    from deep_translator import GoogleTranslator as _GTTranslator 
 except Exception:  # pragma: no cover - optional dep
     _GTTranslator = None
 
@@ -75,25 +75,6 @@ def _get_gemini_translator():
         _GEMINI_CLIENT = None
     return _GEMINI_CLIENT
 
-
-# def _translate_purpose_gemini(text: str) -> Optional[str]:
-#     """Use Gemini to translate a short purpose string to English (kept for compat; disabled by default)."""
-#     client = _get_gemini_translator()
-#     if not client or not text:
-#         return None
-
-#     prompt = (
-#         "Translate this filing transaction purpose into concise English (<= 12 words). "
-#         "Return only the translation without quotes or explanations.\n"
-#         f"Purpose: {text.strip()}"
-#     )
-#     try:
-#         resp = client.generate_content(prompt, request_options={"timeout": _GEMINI_PURPOSE_TIMEOUT})
-#         translated = (resp.text or "").strip()
-#         return translated or None
-#     except Exception as exc:  # pragma: no cover - network call best effort
-#         logging.warning("Gemini purpose translation failed: %s", exc)
-#         return None
 
 
 def _get_google_translator():
