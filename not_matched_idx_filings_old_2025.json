@@ -1,0 +1,3612 @@
+[
+  {
+    "id": 1305,
+    "created_at": "2025-10-14T07:41:43.318657+00:00",
+    "title": "PT Elang Mahkota Teknologi Tbk Buy Transaction of PT Surya Citra Media Tbk",
+    "body": "PT Elang Mahkota Teknologi Tbk, an insider, bought 25,698,420 shares of PT Surya Citra Media Tbk, increasing its holding from 49,711,335,640 to 49,968,319,840. The transaction occurred in the energy sector, specifically alternative-energy. The purpose of the transaction is not specified.",
+    "source": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_EREP/202510/425388a8a5_732c18d0de.pdf",
+    "timestamp": "2025-10-14T07:37:00",
+    "sector": "energy",
+    "sub_sector": "alternative-energy",
+    "tags": [
+      "bullish",
+      "investment"
+    ],
+    "tickers": [
+      "SCMA.JK"
+    ],
+    "transaction_type": "buy",
+    "holding_before": 49711335640,
+    "holding_after": 49968319840,
+    "amount_transaction": 256984200,
+    "holder_type": "insider",
+    "holder_name": "PT Elang Mahkota Teknologi Tbk",
+    "price": 400.171,
+    "transaction_value": 102837498000,
+    "price_transaction": {
+      "types": [
+        "buy",
+        "buy",
+        "buy",
+        "buy",
+        "buy",
+        "buy"
+      ],
+      "prices": [
+        338,
+        358,
+        383,
+        399,
+        400,
+        421
+      ],
+      "amount_transacted": [
+        5400000,
+        38218400,
+        9251700,
+        37951200,
+        62400000,
+        103762900
+      ]
+    },
+    "share_percentage_before": 67.2,
+    "share_percentage_after": 67.55,
+    "share_percentage_transaction": 0.349999999999994,
+    "UID": "931ba115-3b93-4e06-85e2-97477002d178",
+    "symbol": "SCMA.JK",
+    "source_is_manual": null
+  },
+  {
+    "id": 877,
+    "created_at": "2025-08-28T05:02:45.928182+00:00",
+    "title": "PT Garuda Indonesia (Persero) Tbk Buy Transaction of PT Garuda Maintenance Facility Aero",
+    "body": "PT Garuda Indonesia (Persero) Tbk purchased 9,093,245,600 shares ofPT Garuda Maintenance Facility Aero, increasing its holding from 25,156,058,796 shares to 34,249,304,396 shares. The transaction was done at a price of IDR 46 per share. The purpose of the transaction is undisclosed.",
+    "source": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_EREP/202501/0f03fccbd7_8f3b8d5704.pdf",
+    "timestamp": "2025-01-07T19:45:00",
+    "sector": "transportation-logistic",
+    "sub_sector": "transportation",
+    "tags": [
+      "bullish"
+    ],
+    "tickers": [
+      "GIAA.JK"
+    ],
+    "transaction_type": "buy",
+    "holding_before": 25156058796,
+    "holding_after": 34249304396,
+    "amount_transaction": 9093245600,
+    "holder_type": "insider",
+    "holder_name": "Pt Garuda Indonesia (Persero) Tbk",
+    "price": 46.0,
+    "transaction_value": 418289297600,
+    "price_transaction": {
+      "prices": [
+        46
+      ],
+      "amount_transacted": [
+        9093245600
+      ]
+    },
+    "share_percentage_before": 89.1,
+    "share_percentage_after": 91.76,
+    "share_percentage_transaction": 2.66000000000001,
+    "UID": "f86dc154-07c8-4a08-b66a-482a5de02f36",
+    "symbol": "GIAA.JK",
+    "source_is_manual": null
+  },
+  {
+    "id": 667,
+    "created_at": "2025-08-07T15:25:25.297702+00:00",
+    "title": "PT Meranti Samudra Perkasa Buy Transaction of PT Harapan Duta Pertiwi Tbk.",
+    "body": "On July 31, 2025, PT Meranti Samudra Perkasa, an institution shareholder, bought 106,518,100 shares of PT Harapan Duta Pertiwi Tbk., changing its holding from 0 to 106,518,100 shares.",
+    "source": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_EREP/202507/4e0de956e5_c10ba09db9.pdf",
+    "timestamp": "2025-07-31T21:48:15",
+    "sector": "industrials",
+    "sub_sector": "industrial-goods",
+    "tags": [
+      "investment"
+    ],
+    "tickers": null,
+    "transaction_type": "buy",
+    "holding_before": 0,
+    "holding_after": 106518100,
+    "amount_transaction": 106518100,
+    "holder_type": "institution",
+    "holder_name": "PT Meranti Samudra Perkasa",
+    "price": 90.0,
+    "transaction_value": 9586629000.0,
+    "price_transaction": {
+      "types": [
+        "buy"
+      ],
+      "prices": [
+        90
+      ],
+      "amount_transacted": [
+        106518100
+      ]
+    },
+    "share_percentage_before": 0,
+    "share_percentage_after": 0,
+    "share_percentage_transaction": 0,
+    "UID": null,
+    "symbol": "HOPE.JK",
+    "source_is_manual": null
+  },
+  {
+    "id": 879,
+    "created_at": "2025-08-28T05:05:27.387195+00:00",
+    "title": "PT Victoria Investama Tbk Buy Transaction of PT Bhuwanatala Indah Permai Tbk",
+    "body": "PT Victoria Investama Tbk acquired 231,354,000 shares of PT Bhuwanatala Indah Permai Tbk, increasing its holding from 36,371,000 to 267,725,000 shares, representing a significant increase in ownership. The purpose of the transaction was trading, with a total value of IDR 9,006,686,000,000. This transaction suggests that PT Victoria Investama Tbk is bullish on its own stock.",
+    "source": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_EREP/202507/7a72f09220_acfeb6d14d.pdf",
+    "timestamp": "2025-07-01T16:12:00",
+    "sector": "financials",
+    "sub_sector": "holding-investment-companies",
+    "tags": [
+      "bullish"
+    ],
+    "tickers": [
+      "VICO.JK"
+    ],
+    "transaction_type": "buy",
+    "holding_before": 36371000,
+    "holding_after": 267725000,
+    "amount_transaction": 231354000,
+    "holder_type": "insider",
+    "holder_name": "PT Victoria Investama Tbk",
+    "price": 39.0,
+    "transaction_value": 9022806000,
+    "price_transaction": {
+      "prices": [
+        39
+      ],
+      "amount_transacted": [
+        231354000
+      ]
+    },
+    "share_percentage_before": 0.72,
+    "share_percentage_after": 5.32,
+    "share_percentage_transaction": 4.6,
+    "UID": "79636ae9-0dfc-48f0-9a46-5f803620710a",
+    "symbol": "VICO.JK",
+    "source_is_manual": null
+  },
+  {
+    "id": 881,
+    "created_at": "2025-08-28T05:08:51.031164+00:00",
+    "title": "PT Victoria Investama Tbk Buy Transaction of PT Batavia Prosperindo Trans Tbk",
+    "body": "PT Victoria Investama Tbk acquired 174,884,300 shares of PT Batavia Prosperindo Trans Tbk's stock, increasing its holding from 195,327,900 to 370,212,200 shares. The transaction, classified as trading, took place on July 1, 2025, at a price of IDR 122 per share, with a total value of IDR 212,977,960,000.",
+    "source": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_EREP/202507/5eb0cf722d_b18ebb5e5b.pdf",
+    "timestamp": "2025-07-01T16:24:00",
+    "sector": "financials",
+    "sub_sector": "holding-investment-companies",
+    "tags": [
+      "bullish"
+    ],
+    "tickers": [
+      "VICO.JK"
+    ],
+    "transaction_type": "buy",
+    "holding_before": 195327900,
+    "holding_after": 370212200,
+    "amount_transaction": 174884300,
+    "holder_type": "insider",
+    "holder_name": "PT Victoria Investama Tbk",
+    "price": 122.0,
+    "transaction_value": 21335884600,
+    "price_transaction": {
+      "prices": [
+        122
+      ],
+      "amount_transacted": [
+        174884300
+      ]
+    },
+    "share_percentage_before": 5.53,
+    "share_percentage_after": 10.48,
+    "share_percentage_transaction": 4.95,
+    "UID": "a57f2f4c-523d-45e5-b46f-79a7be8889d4",
+    "symbol": "VICO.JK",
+    "source_is_manual": null
+  },
+  {
+    "id": 899,
+    "created_at": "2025-08-29T04:26:30.838257+00:00",
+    "title": "PT Elang Mahkota Teknologi Tbk Insider Buy Transaction of PT Surya Citra Media Tbk",
+    "body": "PT Elang Mahkota Teknologi Tbk, an insider, purchased 228,317,300 shares of PT Surya Citra Media Tbk, increasing its holding from 48,351,256,740 to 48,579,574,040 shares. The transaction was conducted in two tranches at prices of IDR 177 and IDR 187 per share, totaling IDR 228,317,300,000. This insider buy transaction may indicate the company's confidence in its future prospects.",
+    "source": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_EREP/202507/4e379e5121_c7f0049c00.pdf",
+    "timestamp": "2025-07-21T04:22:00",
+    "sector": "technology",
+    "sub_sector": "software-it-services",
+    "tags": [
+      "bullish"
+    ],
+    "tickers": [
+      "EMTK.JK"
+    ],
+    "transaction_type": "buy",
+    "holding_before": 48351256740,
+    "holding_after": 48579574040,
+    "amount_transaction": 228317300,
+    "holder_type": "insider",
+    "holder_name": "Pt Elang Mahkota Teknologi Tbk",
+    "price": 180.505,
+    "transaction_value": 41393013100,
+    "price_transaction": {
+      "prices": [
+        177,
+        187
+      ],
+      "amount_transacted": [
+        148932200,
+        80385100
+      ]
+    },
+    "share_percentage_before": 65.37,
+    "share_percentage_after": 65.67,
+    "share_percentage_transaction": 0.299999999999997,
+    "UID": "836fa5d2-3944-4945-bfdf-6620ead48d65",
+    "symbol": "EMTK.JK",
+    "source_is_manual": null
+  },
+  {
+    "id": 900,
+    "created_at": "2025-08-29T04:29:45.907143+00:00",
+    "title": "PT Elang Mahkota Teknologi Tbk Buys PT Surya Citra Media Tbk",
+    "body": "PT Elang Mahkota Teknologi Tbk, an insider, bought 22,831,730 shares of PT Surya Citra Media Tbk, increasing its holding from 48,351,257,740 to 48,579,574,040 shares. The transaction, conducted on 2025-07-21, consisted of two tranches at prices of IDR 177 and IDR 187 per share, totaling IDR 228,317,300,000.",
+    "source": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_EREP/202507/4e379e5121_c7f0049c00.pdf",
+    "timestamp": "2025-07-21T04:26:00",
+    "sector": "consumer-cyclicals",
+    "sub_sector": "media-entertainment",
+    "tags": [
+      "bullish"
+    ],
+    "tickers": [
+      "SCMA.JK"
+    ],
+    "transaction_type": "buy",
+    "holding_before": 48351256740,
+    "holding_after": 48579574040,
+    "amount_transaction": 228317300,
+    "holder_type": "insider",
+    "holder_name": "Pt Elang Mahkota Teknologi Tbk",
+    "price": 180.521,
+    "transaction_value": 41216013100,
+    "price_transaction": {
+      "prices": [
+        177,
+        187
+      ],
+      "amount_transacted": [
+        147932200,
+        80385100
+      ]
+    },
+    "share_percentage_before": 65.37,
+    "share_percentage_after": 65.67,
+    "share_percentage_transaction": 0.299999999999997,
+    "UID": "836fa5d2-3944-4945-bfdf-6620ead48d65",
+    "symbol": "SCMA.JK",
+    "source_is_manual": null
+  },
+  {
+    "id": 889,
+    "created_at": "2025-08-28T08:20:53.587931+00:00",
+    "title": "PT Indo Tambangraya Megah Tbk Buy Transaction of PT Adhi Kartiko Pratama Tbk",
+    "body": "PT Indo Tambangraya Megah Tbk acquired 585,000,000 shares of PT Adhi Kartiko Pratama Tbk, increasing its holding from 0 to 585,000,000 shares, representing a long-term investment and diversification strategy.",
+    "source": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_EREP/202507/18461218f6_94ea329fe5.pdf",
+    "timestamp": "2025-07-08T16:28:00",
+    "sector": "energy",
+    "sub_sector": "oil-gas-coal",
+    "tags": [
+      "bullish"
+    ],
+    "tickers": [
+      "ITMG.JK"
+    ],
+    "transaction_type": "buy",
+    "holding_before": 0,
+    "holding_after": 585000000,
+    "amount_transaction": 585000000,
+    "holder_type": "insider",
+    "holder_name": "Pt Indo Tambangraya Megah Tbk",
+    "price": 438.0,
+    "transaction_value": 256230000000,
+    "price_transaction": {
+      "prices": [
+        438
+      ],
+      "amount_transacted": [
+        585000000
+      ]
+    },
+    "share_percentage_before": 0,
+    "share_percentage_after": 9.62,
+    "share_percentage_transaction": 9.62,
+    "UID": "5a620cc4-0b89-45ef-852f-725929ffe0d0",
+    "symbol": "ITMG.JK",
+    "source_is_manual": null
+  },
+  {
+    "id": 939,
+    "created_at": "2025-09-02T06:54:44.680225+00:00",
+    "title": "Ubs Ag London Buy Transaction of PT Visi Media Asia Tbk",
+    "body": "Ubs Ag London, an institution, bought 150,000,000 shares of PT Visi Media Asia Tbk, increasing its holding to 1,817,894,074. The transaction is a buy, and the company operates in the consumer-cyclicals sector, specifically media-entertainment.",
+    "source": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_EREP/202507/07e3832677_faa540219c.pdf",
+    "timestamp": "2025-06-26T06:51:00",
+    "sector": "consumer-cyclicals",
+    "sub_sector": "media-entertainment",
+    "tags": [
+      "bullish"
+    ],
+    "tickers": [
+      "VIVA.JK"
+    ],
+    "transaction_type": "buy",
+    "holding_before": 1667894074,
+    "holding_after": 1817894074,
+    "amount_transaction": 150000000,
+    "holder_type": "institution",
+    "holder_name": "Ubs Ag London",
+    "price": 0.0,
+    "transaction_value": 0,
+    "price_transaction": {
+      "types": [
+        "buy"
+      ],
+      "prices": [
+        0
+      ],
+      "amount_transacted": [
+        150000000
+      ]
+    },
+    "share_percentage_before": 10.12,
+    "share_percentage_after": 11.04,
+    "share_percentage_transaction": 0.92,
+    "UID": null,
+    "symbol": "VIVA.JK",
+    "source_is_manual": null
+  },
+  {
+    "id": 907,
+    "created_at": "2025-08-29T05:34:46.801854+00:00",
+    "title": "PT Astra International Tbk Buy Transaction of PT Medikaloka Hermina Tbk",
+    "body": "PT Astra International Tbk acquired 313,271,000 shares of PT Medikaloka Hermina Tbk, increasing its holding from 1,233,240,000 to 1,536,595,000 shares, representing a 2.04% increase in its ownership stake. The purpose of the transaction is for investment. This buyback may indicate the company's confidence in its future prospects and potentially boost investor sentiment.",
+    "source": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_EREP/202508/dcaef8bc59_d8abcfb4ba.pdf",
+    "timestamp": "2025-08-01T17:06:00",
+    "sector": "industrials",
+    "sub_sector": "multi-sector-holdings",
+    "tags": [
+      "bullish",
+      "investment"
+    ],
+    "tickers": [
+      "ASII.JK"
+    ],
+    "transaction_type": "buy",
+    "holding_before": 1223324000,
+    "holding_after": 1536595000,
+    "amount_transaction": 313271000,
+    "holder_type": "insider",
+    "holder_name": "Pt Astra International Tbk",
+    "price": 1572.322,
+    "transaction_value": 492562752500,
+    "price_transaction": {
+      "prices": [
+        1680,
+        1505
+      ],
+      "amount_transacted": [
+        120513700,
+        192757300
+      ]
+    },
+    "share_percentage_before": 7.96,
+    "share_percentage_after": 10,
+    "share_percentage_transaction": 2.04,
+    "UID": "00ea7ec0-0446-44fc-9f97-99e628ec2a31",
+    "symbol": "ASII.JK",
+    "source_is_manual": null
+  },
+  {
+    "id": 331,
+    "created_at": "2025-05-12T04:54:46.892128+00:00",
+    "title": "Hana Dartiwan Buy Transaction of Bank Pembangunan Daerah Jawa Barat dan Banten Tbk",
+    "body": "Hana Dartiwan acquired 128,222 shares of Bank Pembangunan Daerah Jawa Barat dan Banten Tbk at IDR 945 per share, increasing her ownership stake from 252,309 to 380,531 shares, as part of a Long Term Incentive in the form of shares.",
+    "source": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_EREP/202505/eb2a2c1ed3_1ff536cda8.pdf",
+    "timestamp": "2025-05-05T16:29:00",
+    "sector": "financials",
+    "sub_sector": "banks",
+    "tags": [
+      "bullish",
+      "investment",
+      "incentive"
+    ],
+    "tickers": [
+      "BJBR.JK"
+    ],
+    "transaction_type": "buy",
+    "holding_before": 252309,
+    "holding_after": 380531,
+    "amount_transaction": 128222,
+    "holder_type": "insider",
+    "holder_name": "Hana Dartiwan",
+    "price": 945.0,
+    "transaction_value": 121169790,
+    "price_transaction": {
+      "prices": [
+        945
+      ],
+      "amount_transacted": [
+        128222
+      ]
+    },
+    "share_percentage_before": 0.0023,
+    "share_percentage_after": 0.0036,
+    "share_percentage_transaction": 0.0013,
+    "UID": null,
+    "symbol": "BJBR.JK",
+    "source_is_manual": null
+  },
+  {
+    "id": 895,
+    "created_at": "2025-08-28T08:35:12.78905+00:00",
+    "title": "PT Elang Mahkota Teknologi Tbk Buy Transaction of PT Surya Citra Media Tbk",
+    "body": "PT Elang Mahkota Teknologi Tbk acquired 244,921,100 shares of PT Surya Citra Media Tbk, increasing its holding from 48,106,335,640 to 48,351,256,740 shares for investment purposes.",
+    "source": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_EREP/202507/f778cdaf93_1addd17926.pdf",
+    "timestamp": "2025-07-08T16:28:00",
+    "sector": "technology",
+    "sub_sector": "software-it-services",
+    "tags": [
+      "bullish"
+    ],
+    "tickers": [
+      "EMTK.JK"
+    ],
+    "transaction_type": "buy",
+    "holding_before": 48106335640,
+    "holding_after": 48351256740,
+    "amount_transaction": 244921100,
+    "holder_type": "insider",
+    "holder_name": "Pt Elang Mahkota Teknologi Tbk",
+    "price": 156.864,
+    "transaction_value": 38419302400,
+    "price_transaction": {
+      "prices": [
+        149,
+        149,
+        150,
+        160,
+        163,
+        168
+      ],
+      "amount_transacted": [
+        48000000,
+        13914900,
+        76085100,
+        15500000,
+        11505500,
+        79915600
+      ]
+    },
+    "share_percentage_before": 65.03,
+    "share_percentage_after": 65.37,
+    "share_percentage_transaction": 0.339999999999989,
+    "UID": "5f6dab46-c3bf-4cda-a6a3-7784845743a3",
+    "symbol": "EMTK.JK",
+    "source_is_manual": null
+  },
+  {
+    "id": 896,
+    "created_at": "2025-08-28T08:35:13.413531+00:00",
+    "title": "PT Elang Mahkota Teknologi Tbk Buy Transaction of PT Surya Citra Media Tbk",
+    "body": "PT Elang Mahkota Teknologi Tbk acquired 244,921,100 shares of PT Surya Citra Media Tbk, increasing its holding from 48,106,335,640 to 48,351,256,740 shares for investment purposes.",
+    "source": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_EREP/202507/4e379e5121_c7f0049c00.pdf",
+    "timestamp": "2025-07-08T16:28:00",
+    "sector": "consumer-cyclicals",
+    "sub_sector": "media-entertainment",
+    "tags": [
+      "bullish"
+    ],
+    "tickers": [
+      "SCMA.JK"
+    ],
+    "transaction_type": "buy",
+    "holding_before": 48106335640,
+    "holding_after": 48351256740,
+    "amount_transaction": 244921100,
+    "holder_type": "insider",
+    "holder_name": "Pt Elang Mahkota Teknologi Tbk",
+    "price": 156.864,
+    "transaction_value": 38419302400,
+    "price_transaction": {
+      "prices": [
+        149,
+        149,
+        150,
+        160,
+        163,
+        168
+      ],
+      "amount_transacted": [
+        48000000,
+        13914900,
+        76085100,
+        15500000,
+        11505500,
+        79915600
+      ]
+    },
+    "share_percentage_before": 65.03,
+    "share_percentage_after": 65.370001,
+    "share_percentage_transaction": 0.340001000000001,
+    "UID": "5f6dab46-c3bf-4cda-a6a3-7784845743a3",
+    "symbol": "SCMA.JK",
+    "source_is_manual": null
+  },
+  {
+    "id": 912,
+    "created_at": "2025-08-29T07:12:21.260084+00:00",
+    "title": "PT Elang Mahkota Teknologi Tbk Buy Transaction of PT Surya Citra Media Tbk",
+    "body": "PT Elang Mahkota Teknologi Tbk acquired 325,024,100 shares of PT Surya Citra Media Tbk, increasing its stake from 48,579,574,040 to 48,904,598,140 shares. The transaction was made for investment purposes. This buy transaction suggests the company's confidence in its own growth prospects.",
+    "source": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_EREP/202508/3cab5fbe86_cf054a05f6.pdf",
+    "timestamp": "2025-08-05T08:47:00",
+    "sector": "technology",
+    "sub_sector": "software-it-services",
+    "tags": [
+      "bullish"
+    ],
+    "tickers": [
+      "EMTK.JK"
+    ],
+    "transaction_type": "buy",
+    "holding_before": 48579574040,
+    "holding_after": 48904598140,
+    "amount_transaction": 325024100,
+    "holder_type": "insider",
+    "holder_name": "Pt Elang Mahkota Teknologi Tbk",
+    "price": 210.556,
+    "transaction_value": 68435636300,
+    "price_transaction": {
+      "prices": [
+        193,
+        199,
+        227
+      ],
+      "amount_transacted": [
+        49565800,
+        130699900,
+        144758400
+      ]
+    },
+    "share_percentage_before": 65.67,
+    "share_percentage_after": 66.11,
+    "share_percentage_transaction": 0.439999999999998,
+    "UID": "c3589aa8-0ef3-4aa2-b2ca-9089f7c0db1d",
+    "symbol": "EMTK.JK",
+    "source_is_manual": null
+  },
+  {
+    "id": 596,
+    "created_at": "2025-08-07T11:01:32.227276+00:00",
+    "title": "PT Sanggraha Nusa Raya Sell Transaction of Star Pacific Tbk",
+    "body": "On July 17, 2025, PT Sanggraha Nusa Raya, an institution shareholder, sold 39,117,312 shares of Star Pacific Tbk, changing its holding from 67,300,000 to 28,182,688 shares.",
+    "source": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_EREP/202507/e8ea670796_6ab0bce0ca.pdf",
+    "timestamp": "2025-07-17T12:40:31",
+    "sector": "properties-real-estate",
+    "sub_sector": "properties-real-estate",
+    "tags": [
+      "bearish",
+      "divestment"
+    ],
+    "tickers": null,
+    "transaction_type": "sell",
+    "holding_before": 67300000,
+    "holding_after": 28182688,
+    "amount_transaction": 39117312,
+    "holder_type": "institution",
+    "holder_name": "PT Sanggraha Nusa Raya",
+    "price": 245.0,
+    "transaction_value": 9583741440.0,
+    "price_transaction": {
+      "types": [
+        "sell"
+      ],
+      "prices": [
+        245
+      ],
+      "amount_transacted": [
+        39117312
+      ]
+    },
+    "share_percentage_before": 5.8,
+    "share_percentage_after": 2.429,
+    "share_percentage_transaction": 3.371,
+    "UID": null,
+    "symbol": "LPLI.JK",
+    "source_is_manual": null
+  },
+  {
+    "id": 1042,
+    "created_at": "2025-09-07T18:57:07.791608+00:00",
+    "title": "PT Basis Utama Prima Buy Transaction of PT Pakuan Tbk",
+    "body": "On September 04, 2025, PT Basis Utama Prima, an institution shareholder, bought 196,446,000 shares of PT Pakuan Tbk, changing its holding from 0 to 196,446,000 shares.",
+    "source": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_EREP/202509/ecf28f48f7_96502248de.pdf",
+    "timestamp": "2025-09-04T18:17:44",
+    "sector": "properties-real-estate",
+    "sub_sector": "properties-real-estate",
+    "tags": [
+      "bullish",
+      "investment"
+    ],
+    "tickers": null,
+    "transaction_type": "buy",
+    "holding_before": 0,
+    "holding_after": 196446000,
+    "amount_transaction": 196446000,
+    "holder_type": "institution",
+    "holder_name": "PT Basis Utama Prima",
+    "price": 467.0,
+    "transaction_value": 91740282000.0,
+    "price_transaction": {
+      "type": [
+        "buy"
+      ],
+      "prices": [
+        467.0
+      ],
+      "amount_transacted": [
+        196446000
+      ]
+    },
+    "share_percentage_before": 0,
+    "share_percentage_after": 16.24,
+    "share_percentage_transaction": 16.24,
+    "UID": null,
+    "symbol": "UANG.JK",
+    "source_is_manual": null
+  },
+  {
+    "id": 1126,
+    "created_at": "2025-09-16T10:28:37.315075+00:00",
+    "title": "Bernard Widianto Buy Transaction of PT Widiant Jaya Krenindo Tbk.",
+    "body": "On September 16, 2025, Bernard Widianto, an insider shareholder, bought 8,290,000 shares of PT Widiant Jaya Krenindo Tbk., changing its holding from 924,400,000 to 924,400,000 shares.",
+    "source": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_EREP/202509/e9053d378c_e36d2b9ab7.pdf",
+    "timestamp": "2025-09-16T16:18:52",
+    "sector": "industrials",
+    "sub_sector": "industrial-goods",
+    "tags": [
+      "investment"
+    ],
+    "tickers": null,
+    "transaction_type": "buy",
+    "holding_before": 924400000,
+    "holding_after": 932690000,
+    "amount_transaction": 8290000,
+    "holder_type": "insider",
+    "holder_name": "Bernard Widianto",
+    "price": 44.0,
+    "transaction_value": 364760000,
+    "price_transaction": {
+      "type": [
+        "buy"
+      ],
+      "prices": [
+        44
+      ],
+      "amount_transacted": [
+        8290000
+      ]
+    },
+    "share_percentage_before": 57.77,
+    "share_percentage_after": 58.29,
+    "share_percentage_transaction": 0.52,
+    "UID": null,
+    "symbol": "WIDI.JK",
+    "source_is_manual": null
+  },
+  {
+    "id": 1052,
+    "created_at": "2025-09-09T04:54:28.026558+00:00",
+    "title": "PT Star Pacific Tbk Sell Transaction of PT Bank Nationalnobu Tbk",
+    "body": "PT Star Pacific Tbk sold 384549100 shares of NOBU.JK, reducing its holding from 1006170721 to 621621621. The transaction type was a sell, with a purpose of divestment, at a price of 1110.",
+    "source": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_EREP/202507/507ad9487d_22aeba57b9.pdf",
+    "timestamp": "2025-07-02T10:47:00",
+    "sector": "properties-real-estate",
+    "sub_sector": "properties-real-estate",
+    "tags": [
+      "bearish"
+    ],
+    "tickers": [
+      "LPLI.JK"
+    ],
+    "transaction_type": "sell",
+    "holding_before": 1006170721,
+    "holding_after": 621621621,
+    "amount_transaction": 384549100,
+    "holder_type": "insider",
+    "holder_name": "PT Star Pacific Tbk",
+    "price": 1110.0,
+    "transaction_value": 426849501000,
+    "price_transaction": {
+      "types": [
+        "sell"
+      ],
+      "prices": [
+        1110
+      ],
+      "amount_transacted": [
+        384549100
+      ]
+    },
+    "share_percentage_before": 13.45,
+    "share_percentage_after": 8.31,
+    "share_percentage_transaction": 5.14,
+    "UID": "413e1c65-f0b3-4580-abf7-9679650613c9",
+    "symbol": "LPLI.JK",
+    "source_is_manual": null
+  },
+  {
+    "id": 335,
+    "created_at": "2025-05-12T05:05:01.188793+00:00",
+    "title": "Tomsi Tohir Buy Transaction of Bank Pembangunan Daerah Jawa Barat dan Banten Tbk",
+    "body": "Tomsi Tohir acquired 109,903 shares of Bank Pembangunan Daerah Jawa Barat dan Banten Tbk at IDR 945 per share, increasing their stake from 40,811 to 150,714 shares, as part of a Long Term Incentive plan.",
+    "source": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_EREP/202505/a183aa296a_ae9008001f.pdf",
+    "timestamp": "2025-05-05T16:30:00",
+    "sector": "financials",
+    "sub_sector": "banks",
+    "tags": [
+      "bullish",
+      "investment",
+      "incentive"
+    ],
+    "tickers": [
+      "BJBR.JK"
+    ],
+    "transaction_type": "buy",
+    "holding_before": 40811,
+    "holding_after": 150714,
+    "amount_transaction": 109903,
+    "holder_type": "insider",
+    "holder_name": "Tomsi Tohir",
+    "price": 945.0,
+    "transaction_value": 103858335,
+    "price_transaction": {
+      "prices": [
+        945
+      ],
+      "amount_transacted": [
+        109903
+      ]
+    },
+    "share_percentage_before": 0.0003,
+    "share_percentage_after": 0.0014,
+    "share_percentage_transaction": 0.0011,
+    "UID": null,
+    "symbol": "BJBR.JK",
+    "source_is_manual": null
+  },
+  {
+    "id": 680,
+    "created_at": "2025-08-07T15:30:09.540284+00:00",
+    "title": "PT Hillcon Equity Management Buy Transaction of PT Hillcon Tbk",
+    "body": "On August 01, 2025, PT Hillcon Equity Management, an institution shareholder, bought 5,031,000 shares of PT Hillcon Tbk, changing its holding from 7,972,131,500 to 7,977,162,500 shares.",
+    "source": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_EREP/202508/2ed014d994_39b6c90999.pdf",
+    "timestamp": "2025-08-01T21:13:47",
+    "sector": "energy",
+    "sub_sector": "oil-gas-coal",
+    "tags": [
+      "bullish",
+      "investment"
+    ],
+    "tickers": null,
+    "transaction_type": "buy",
+    "holding_before": 7972131500,
+    "holding_after": 7977162500,
+    "amount_transaction": 5031000,
+    "holder_type": "institution",
+    "holder_name": "PT Hillcon Equity Management",
+    "price": 290.0,
+    "transaction_value": 1458990000.0,
+    "price_transaction": {
+      "types": [
+        "buy"
+      ],
+      "prices": [
+        290
+      ],
+      "amount_transacted": [
+        5031000
+      ]
+    },
+    "share_percentage_before": 54.08,
+    "share_percentage_after": 54.114,
+    "share_percentage_transaction": 0.034,
+    "UID": null,
+    "symbol": "HILL.JK",
+    "source_is_manual": null
+  },
+  {
+    "id": 721,
+    "created_at": "2025-08-10T04:10:56.92332+00:00",
+    "title": "PT Daya Kemilau Nusantara Investama Buy Transaction of PT Teknologi Karya Digital Nusa Tbk.",
+    "body": "On August 08, 2025, PT Daya Kemilau Nusantara Investama, an institution shareholder, bought 12,795,700 shares of PT Teknologi Karya Digital Nusa Tbk., changing its holding from 2,163,900,000 to 2,176,695,700 shares.",
+    "source": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_EREP/202508/6032727140_5c0949c569.pdf",
+    "timestamp": "2025-08-08T21:58:54",
+    "sector": "technology",
+    "sub_sector": "software-it-services",
+    "tags": [
+      "bullish",
+      "investment"
+    ],
+    "tickers": null,
+    "transaction_type": "buy",
+    "holding_before": 2163900000,
+    "holding_after": 2176695700,
+    "amount_transaction": 12795700,
+    "holder_type": "institution",
+    "holder_name": "PT Daya Kemilau Nusantara Investama",
+    "price": 491.347,
+    "transaction_value": 6287129700,
+    "price_transaction": {
+      "types": [
+        "sell",
+        "buy"
+      ],
+      "prices": [
+        243,
+        100
+      ],
+      "amount_transacted": [
+        35017900,
+        22222200
+      ]
+    },
+    "share_percentage_before": 73,
+    "share_percentage_after": 73.42,
+    "share_percentage_transaction": 0.42,
+    "UID": null,
+    "symbol": "TRON.JK",
+    "source_is_manual": null
+  },
+  {
+    "id": 1055,
+    "created_at": "2025-09-09T05:27:33.617976+00:00",
+    "title": "Compagnie Generale Des Etablissements Michelin Buy Transaction of PT Multistrada Arah Sarana",
+    "body": "Compagnie Generale Des Etablissements Michelin, an insider, bought 9,180,060,823 shares of PT Multistrada Arah Sarana Tbk, increasing its holding from 0 to 9,180,060,823 shares. The transaction occurred on July 25, 2025, at a price of 8,400. This significant purchase marks the establishment of Compagnie Generale Des Etablissements Michelin's stake in the consumer-cyclicals company.",
+    "source": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_EREP/202509/1c5f6c37b3_09a6e121ca.pdf",
+    "timestamp": "2025-07-25T05:24:00",
+    "sector": "consumer-cyclicals",
+    "sub_sector": "automobiles-components",
+    "tags": [
+      "bullish",
+      "investment",
+      "takeover"
+    ],
+    "tickers": [
+      "MASA.JK"
+    ],
+    "transaction_type": "buy",
+    "holding_before": 0,
+    "holding_after": 9180060823,
+    "amount_transaction": 9180060823,
+    "holder_type": "insider",
+    "holder_name": "Compagnie Generale Des Etablissements Michelin",
+    "price": 8400.0,
+    "transaction_value": 77112510913200,
+    "price_transaction": {
+      "types": [
+        "buy"
+      ],
+      "prices": [
+        8400
+      ],
+      "amount_transacted": [
+        9180060823
+      ]
+    },
+    "share_percentage_before": 0,
+    "share_percentage_after": 99.969,
+    "share_percentage_transaction": 99.969,
+    "UID": null,
+    "symbol": "MASA.JK",
+    "source_is_manual": null
+  },
+  {
+    "id": 687,
+    "created_at": "2025-08-07T15:41:13.653954+00:00",
+    "title": "PT Victoria Investama TBK Buy Transaction of PT Victoria Investama Tbk.",
+    "body": "On August 05, 2025, PT Victoria Investama TBK, an institution shareholder, bought 212,040,000 shares of PT Victoria Investama Tbk., changing its holding from 10,726,112,445 to 10,938,152,445 shares.",
+    "source": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_EREP/202508/d09e774eb6_805715534f.pdf",
+    "timestamp": "2025-08-05T13:43:01",
+    "sector": "financials",
+    "sub_sector": "holding-investment-companies",
+    "tags": [
+      "bullish",
+      "investment"
+    ],
+    "tickers": null,
+    "transaction_type": "buy",
+    "holding_before": 10726112445,
+    "holding_after": 10938152445,
+    "amount_transaction": 212040000,
+    "holder_type": "institution",
+    "holder_name": "PT Victoria Investama Tbk",
+    "price": 118.0,
+    "transaction_value": 25020720000.0,
+    "price_transaction": {
+      "types": [
+        "buy"
+      ],
+      "prices": [
+        118
+      ],
+      "amount_transacted": [
+        212040000
+      ]
+    },
+    "share_percentage_before": 58.25,
+    "share_percentage_after": 59.401,
+    "share_percentage_transaction": 1.151,
+    "UID": "798ba6b5-eb10-4486-a602-d0b592130163",
+    "symbol": "VICO.JK",
+    "source_is_manual": null
+  },
+  {
+    "id": 688,
+    "created_at": "2025-08-07T15:41:14.269951+00:00",
+    "title": "PT Victoria Investama TBK Buy Transaction of PT Bank Victoria International Tbk",
+    "body": "On August 05, 2025, PT Victoria Investama TBK, an institution shareholder, bought 212,040,000 shares of Bank Victoria International Tbk, changing its holding from 10,726,112,445 to 10,938,152,445 shares.",
+    "source": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_EREP/202508/a65a4c4a5f_99aaa6f6aa.pdf",
+    "timestamp": "2025-08-05T17:08:51",
+    "sector": "financials",
+    "sub_sector": "banks",
+    "tags": [
+      "bullish",
+      "investment"
+    ],
+    "tickers": null,
+    "transaction_type": "buy",
+    "holding_before": 10726112445,
+    "holding_after": 10938152445,
+    "amount_transaction": 212040000,
+    "holder_type": "institution",
+    "holder_name": "PT Victoria Investama TBK",
+    "price": 118.0,
+    "transaction_value": 25020720000.0,
+    "price_transaction": {
+      "types": [
+        "buy"
+      ],
+      "prices": [
+        118
+      ],
+      "amount_transacted": [
+        212040000
+      ]
+    },
+    "share_percentage_before": 58.25,
+    "share_percentage_after": 59.401,
+    "share_percentage_transaction": 1.151,
+    "UID": "798ba6b5-eb10-4486-a602-d0b592130163",
+    "symbol": "BVIC.JK",
+    "source_is_manual": null
+  },
+  {
+    "id": 1135,
+    "created_at": "2025-09-17T08:34:29.375064+00:00",
+    "title": "Walden Global Services Pte. Ltd. Buy Transaction of PT Wira Global Solusi Tbk",
+    "body": "On September 17, 2025, Walden Global Services Pte. Ltd., an institution shareholder, bought 1,450,000 shares of PT Wira Global Solusi Tbk, changing its holding from 39,000,000 to 40,450,000 shares.",
+    "source": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_EREP/202509/2efb5520b0_a75fa64389.pdf",
+    "timestamp": "2025-09-17T14:46:59",
+    "sector": "technology",
+    "sub_sector": "software-it-services",
+    "tags": [
+      "bullish",
+      "investment"
+    ],
+    "tickers": null,
+    "transaction_type": "buy",
+    "holding_before": 39000000,
+    "holding_after": 40450000,
+    "amount_transaction": 1450000,
+    "holder_type": "institution",
+    "holder_name": "Walden Global Services Pte. Ltd.",
+    "price": 174.0,
+    "transaction_value": 252300000.0,
+    "price_transaction": {
+      "type": [
+        "buy"
+      ],
+      "prices": [
+        174.0
+      ],
+      "amount_transacted": [
+        1450000
+      ]
+    },
+    "share_percentage_before": 3.74,
+    "share_percentage_after": 3.88,
+    "share_percentage_transaction": 0.14,
+    "UID": null,
+    "symbol": "WGSH.JK",
+    "source_is_manual": null
+  },
+  {
+    "id": 762,
+    "created_at": "2025-08-14T04:54:33.341371+00:00",
+    "title": "PT MNC Asia Holding Tbk Buys PT MNC Tourism Indonesia Tbk",
+    "body": "PT MNC Asia Holding Tbk acquired 4,620,000,000 shares of PT MNC Tourism Indonesia Tbk, increasing its holding from 20,853,847,680 to 25,473,847,680 shares. The transaction, valued at IDR 9,240,000,000,000, aims to strengthen strategic ownership in PT MNC Tourism Indonesia Tbk.",
+    "source": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_EREP/202507/e9e6830530_943909c95e.pdf",
+    "timestamp": "2025-07-03T09:40:00",
+    "sector": "consumer-cyclicals",
+    "sub_sector": "consumer-services",
+    "tags": [
+      "bullish",
+      "investment"
+    ],
+    "tickers": [
+      "BHIT.JK"
+    ],
+    "transaction_type": "buy",
+    "holding_before": 20853847680,
+    "holding_after": 25473847680,
+    "amount_transaction": 4620000000,
+    "holder_type": "insider",
+    "holder_name": "PT MNC Asia Holding Tbk",
+    "price": 200.0,
+    "transaction_value": 924000000000,
+    "price_transaction": {
+      "prices": [
+        200
+      ],
+      "amount_transacted": [
+        4620000000
+      ]
+    },
+    "share_percentage_before": 21.37,
+    "share_percentage_after": 26.11,
+    "share_percentage_transaction": 4.74,
+    "UID": "8e0d3768-f756-42f1-a61f-968d066e7289",
+    "symbol": "BHIT.JK",
+    "source_is_manual": null
+  },
+  {
+    "id": 722,
+    "created_at": "2025-08-10T04:10:57.612252+00:00",
+    "title": "PT Daya Kemilau Nusantara Investama Sell Transaction of PT Teknologi Karya Digital Nusa Tbk.",
+    "body": "On August 08, 2025, PT Daya Kemilau Nusantara Investama, an institution shareholder, sold 255,515700 shares of PT Teknologi Karya Digital Nusa Tbk. as repo, changing its holding from 2,176,695,700 to 1,921,180,000 shares.",
+    "source": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_EREP/202508/6032727140_5c0949c569.pdf",
+    "timestamp": "2025-08-08T21:58:54",
+    "sector": "technology",
+    "sub_sector": "software-it-services",
+    "tags": [
+      "bearish",
+      "divestment"
+    ],
+    "tickers": null,
+    "transaction_type": "sell",
+    "holding_before": 2176695700,
+    "holding_after": 1921180000,
+    "amount_transaction": 255515700,
+    "holder_type": "institution",
+    "holder_name": "PT Daya Kemilau Nusantara Investama",
+    "price": 99.2523,
+    "transaction_value": 25360538600,
+    "price_transaction": {
+      "types": [
+        "other",
+        "other"
+      ],
+      "prices": [
+        98,
+        100
+      ],
+      "amount_transacted": [
+        95515700,
+        160000000
+      ]
+    },
+    "share_percentage_before": 73.42,
+    "share_percentage_after": 65,
+    "share_percentage_transaction": 8.42,
+    "UID": "7b337f12-d4b6-50cf-82da-c2b289811858",
+    "symbol": "TRON.JK",
+    "source_is_manual": null
+  },
+  {
+    "id": 779,
+    "created_at": "2025-08-15T04:19:18.511752+00:00",
+    "title": "PT WIR Global Kreatif Buy Transaction of PT WIR ASIA Tbk",
+    "body": "PT WIR Global Kreatif, a shareholder, acquired 403,527,200 shares of PT WIR ASIA Tbk through a series of transactions at IDR 80, increasing its holding from 859,289,210 shares to 1,262,816,410 shares, representing a 32% increase in ownership, for the purpose of 'Peningkatan Saham' or increasing shares.",
+    "source": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_EREP/202507/8b75c0b4da_156e3f5c7b.pdf",
+    "timestamp": "2025-07-07T16:17:00",
+    "sector": "technology",
+    "sub_sector": "software-it-services",
+    "tags": [
+      "bullish"
+    ],
+    "tickers": [
+      "WIRG.JK"
+    ],
+    "transaction_type": "buy",
+    "holding_before": 859289210,
+    "holding_after": 1262816410,
+    "amount_transaction": 403527200,
+    "holder_type": "insider",
+    "holder_name": "Pt Wir Global Kreatif",
+    "price": 80.0,
+    "transaction_value": 32282176000,
+    "price_transaction": {
+      "prices": [
+        80
+      ],
+      "amount_transacted": [
+        403527200
+      ]
+    },
+    "share_percentage_before": 7.2,
+    "share_percentage_after": 10.578,
+    "share_percentage_transaction": 3.378,
+    "UID": null,
+    "symbol": "WIRG.JK",
+    "source_is_manual": null
+  },
+  {
+    "id": 769,
+    "created_at": "2025-08-14T06:55:28.572496+00:00",
+    "title": "PT WIR Global Kreatif Sold Transaction of PT WIR ASIA Tbk",
+    "body": "PT WIR Global Kreatif, a shareholder, sold 97,000,000 shares of PT WIR ASIA Tbk, increasing its stake from 956,289,210 to 859,289,210 shares. The transaction was conducted through eight trades at prices ranging from IDR 78 to IDR 83.",
+    "source": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_EREP/202507/8b75c0b4da_156e3f5c7b.pdf",
+    "timestamp": "2025-07-07T16:17:00",
+    "sector": "technology",
+    "sub_sector": "software-it-services",
+    "tags": [
+      "bearish"
+    ],
+    "tickers": [
+      "WIRG.JK"
+    ],
+    "transaction_type": "sell",
+    "holding_before": 956289210,
+    "holding_after": 859289210,
+    "amount_transaction": 97000000,
+    "holder_type": "insider",
+    "holder_name": "Pt Wir Global Kreatif",
+    "price": 80.447,
+    "transaction_value": 7803363200,
+    "price_transaction": {
+      "prices": [
+        78,
+        79,
+        78,
+        79,
+        80,
+        83,
+        81,
+        82
+      ],
+      "amount_transacted": [
+        31240000,
+        3450400,
+        3343300,
+        7826800,
+        300000,
+        35814000,
+        13686000,
+        1339500
+      ]
+    },
+    "share_percentage_before": 8.01,
+    "share_percentage_after": 7.2,
+    "share_percentage_transaction": 0.81,
+    "UID": null,
+    "symbol": "WIRG.JK",
+    "source_is_manual": null
+  },
+  {
+    "id": 787,
+    "created_at": "2025-08-15T08:34:07.385391+00:00",
+    "title": "Wong Michael Sell Transaction of PT Astrindo Nusantara Infrastruktur Tbk.",
+    "body": "On August 15, 2025, Wong Michael, an insider shareholder, sold 24,139,700 shares of PT Astrindo Nusantara Infrastruktur Tbk., changing its holding from 34,039,700 to 9,900,000 shares.",
+    "source": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_EREP/202508/58c675db49_f1fdb49e1f.pdf",
+    "timestamp": "2025-08-15T14:59:40",
+    "sector": "energy",
+    "sub_sector": "oil-gas-coal",
+    "tags": [
+      "bearish",
+      "divestment"
+    ],
+    "tickers": null,
+    "transaction_type": "sell",
+    "holding_before": 34039700,
+    "holding_after": 9900000,
+    "amount_transaction": 24139700,
+    "holder_type": "insider",
+    "holder_name": "Wong Michael",
+    "price": 88.73,
+    "transaction_value": 2141915581.0,
+    "price_transaction": {
+      "types": [
+        "sell"
+      ],
+      "prices": [
+        88.73
+      ],
+      "amount_transacted": [
+        24139700
+      ]
+    },
+    "share_percentage_before": 0.05,
+    "share_percentage_after": 0.015,
+    "share_percentage_transaction": 0.036,
+    "UID": null,
+    "symbol": "BIPI.JK",
+    "source_is_manual": null
+  },
+  {
+    "id": 789,
+    "created_at": "2025-08-15T08:34:08.32197+00:00",
+    "title": "Joseph Sulaiman Buy Transaction of Suparma Tbk",
+    "body": "On August 15, 2025, Joseph Sulaiman, an insider shareholder, bought 3,722,487 shares of Suparma Tbk, changing its holding from 13,114,217 to 16,836,704 shares.",
+    "source": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_EREP/202508/cedb10b780_a000fa07a6.pdf",
+    "timestamp": "2025-08-15T13:04:57",
+    "sector": "basic-materials",
+    "sub_sector": "basic-materials",
+    "tags": [
+      "bullish",
+      "investment"
+    ],
+    "tickers": null,
+    "transaction_type": "buy",
+    "holding_before": 13114217,
+    "holding_after": 16836704,
+    "amount_transaction": 3722487,
+    "holder_type": "insider",
+    "holder_name": "Joseph Sulaiman",
+    "price": 278.0,
+    "transaction_value": 1034851386.0,
+    "price_transaction": {
+      "types": [
+        "buy"
+      ],
+      "prices": [
+        278
+      ],
+      "amount_transacted": [
+        3722487
+      ]
+    },
+    "share_percentage_before": 0.42,
+    "share_percentage_after": 0.539,
+    "share_percentage_transaction": 0.119,
+    "UID": null,
+    "symbol": "SPMA.JK",
+    "source_is_manual": null
+  },
+  {
+    "id": 790,
+    "created_at": "2025-08-15T08:34:08.580963+00:00",
+    "title": "Welly Sell Transaction of Suparma Tbk",
+    "body": "On August 15, 2025, Welly, an insider shareholder, sold 13,028,705 shares of Suparma Tbk, changing its holding from 2,535,748,981 to 2,522,720,276 shares.",
+    "source": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_EREP/202508/6756d037d2_e8c0e22071.pdf",
+    "timestamp": "2025-08-15T13:00:44",
+    "sector": "basic-materials",
+    "sub_sector": "basic-materials",
+    "tags": [
+      "bearish",
+      "divestment"
+    ],
+    "tickers": null,
+    "transaction_type": "sell",
+    "holding_before": 2535748981,
+    "holding_after": 2522720276,
+    "amount_transaction": 13028705,
+    "holder_type": "insider",
+    "holder_name": "Welly",
+    "price": 278.0,
+    "transaction_value": 3621979990.0,
+    "price_transaction": {
+      "types": [
+        "sell"
+      ],
+      "prices": [
+        278
+      ],
+      "amount_transacted": [
+        13028705
+      ]
+    },
+    "share_percentage_before": 80.4,
+    "share_percentage_after": 79.987,
+    "share_percentage_transaction": 0.413,
+    "UID": null,
+    "symbol": "SPMA.JK",
+    "source_is_manual": null
+  },
+  {
+    "id": 792,
+    "created_at": "2025-08-15T08:34:09.118142+00:00",
+    "title": "Barli Leoponco Buy Transaction of Suparma Tbk",
+    "body": "On August 15, 2025, Barli Leoponco, an insider shareholder, bought 4,653,109 shares of Suparma Tbk, changing its holding from 12,183,595 to 16,836,704 shares.",
+    "source": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_EREP/202508/26cc2d7304_2793d0883c.pdf",
+    "timestamp": "2025-08-15T13:05:13",
+    "sector": "basic-materials",
+    "sub_sector": "basic-materials",
+    "tags": [
+      "bullish",
+      "investment"
+    ],
+    "tickers": null,
+    "transaction_type": "buy",
+    "holding_before": 12183595,
+    "holding_after": 16836704,
+    "amount_transaction": 4653109,
+    "holder_type": "insider",
+    "holder_name": "Barli Leoponco",
+    "price": 278.0,
+    "transaction_value": 1293564302.0,
+    "price_transaction": {
+      "types": [
+        "buy"
+      ],
+      "prices": [
+        278
+      ],
+      "amount_transacted": [
+        4653109
+      ]
+    },
+    "share_percentage_before": 0.39,
+    "share_percentage_after": 0.539,
+    "share_percentage_transaction": 0.149,
+    "UID": null,
+    "symbol": "SPMA.JK",
+    "source_is_manual": null
+  },
+  {
+    "id": 793,
+    "created_at": "2025-08-15T08:34:09.812594+00:00",
+    "title": "Edward Sopanan Buy Transaction of Suparma Tbk",
+    "body": "On August 15, 2025, Edward Sopanan, an insider shareholder, bought 4,653,109 shares of Suparma Tbk, changing its holding from 12,183,595 to 16,836,704 shares.",
+    "source": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_EREP/202508/33d445c607_877379dba7.pdf",
+    "timestamp": "2025-08-15T13:03:20",
+    "sector": "basic-materials",
+    "sub_sector": "basic-materials",
+    "tags": [
+      "bullish",
+      "investment"
+    ],
+    "tickers": null,
+    "transaction_type": "buy",
+    "holding_before": 12183595,
+    "holding_after": 16836704,
+    "amount_transaction": 4653109,
+    "holder_type": "insider",
+    "holder_name": "Edward Sopanan",
+    "price": 278.0,
+    "transaction_value": 1293564302.0,
+    "price_transaction": {
+      "types": [
+        "buy"
+      ],
+      "prices": [
+        278
+      ],
+      "amount_transacted": [
+        4653109
+      ]
+    },
+    "share_percentage_before": 0.39,
+    "share_percentage_after": 0.539,
+    "share_percentage_transaction": 0.149,
+    "UID": null,
+    "symbol": "SPMA.JK",
+    "source_is_manual": null
+  },
+  {
+    "id": 1144,
+    "created_at": "2025-09-18T12:53:10.861185+00:00",
+    "title": "PT Investasi Gemilang Maju Sell Transaction of PT Aviana Sinar Abadi Tbk",
+    "body": "On September 18, 2025, PT Investasi Gemilang Maju, an institution shareholder, sold 600,000,000 shares of PT Aviana Sinar Abadi Tbk, changing its holding from 600,000,000 to 0 shares.",
+    "source": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_EREP/202509/fdb1cbd6b4_5936876dd2.pdf",
+    "timestamp": "2025-09-18T19:31:39",
+    "sector": "technology",
+    "sub_sector": "software-it-services",
+    "tags": [
+      "bearish",
+      "divestment"
+    ],
+    "tickers": null,
+    "transaction_type": "sell",
+    "holding_before": 600000000,
+    "holding_after": 0,
+    "amount_transaction": 600000000,
+    "holder_type": "institution",
+    "holder_name": "PT Investasi Gemilang Maju",
+    "price": 25.0,
+    "transaction_value": 15000000000.0,
+    "price_transaction": {
+      "type": [
+        "sell"
+      ],
+      "prices": [
+        25.0
+      ],
+      "amount_transacted": [
+        600000000
+      ]
+    },
+    "share_percentage_before": 9.69,
+    "share_percentage_after": 0,
+    "share_percentage_transaction": 9.69,
+    "UID": null,
+    "symbol": "IRSX.JK",
+    "source_is_manual": null
+  },
+  {
+    "id": 1148,
+    "created_at": "2025-09-19T06:15:51.11297+00:00",
+    "title": "Elvi Felicia Sell Transaction of Leyand International Tbk",
+    "body": "On September 19, 2025, Elvi Felicia, an insider shareholder, sold 322,438,500 shares of Leyand International Tbk, changing its holding from 328,963,800 to 6,525,300 shares.",
+    "source": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_EREP/202509/55b46daa2f_33c5920e52.pdf",
+    "timestamp": "2025-09-19T12:13:56",
+    "sector": "infrastructures",
+    "sub_sector": "utilities",
+    "tags": [
+      "bearish",
+      "divestment"
+    ],
+    "tickers": null,
+    "transaction_type": "sell",
+    "holding_before": 328963800,
+    "holding_after": 6525300,
+    "amount_transaction": 322438500,
+    "holder_type": "insider",
+    "holder_name": "Elvi Felicia",
+    "price": 150.0,
+    "transaction_value": 48365967500.0,
+    "price_transaction": {
+      "type": [
+        "sell",
+        "sell"
+      ],
+      "prices": [
+        129.0,
+        155.0
+      ],
+      "amount_transacted": [
+        62000000,
+        260438500
+      ]
+    },
+    "share_percentage_before": 8.29,
+    "share_percentage_after": 0.16,
+    "share_percentage_transaction": 8.13,
+    "UID": null,
+    "symbol": "LAPD.JK",
+    "source_is_manual": null
+  },
+  {
+    "id": 1306,
+    "created_at": "2025-10-14T07:44:37.690608+00:00",
+    "title": "PT Elang Mahkota Teknologi Tbk Buy Transaction of PT Surya Citra Media Tbk",
+    "body": "PT Elang Mahkota Teknologi Tbk, an insider, bought 256984200 shares of PT Surya Citra Media Tbk, increasing its holding from 49711335640 to 49968319840 shares in the energy sector, specifically alternative-energy, with no disclosed purpose.",
+    "source": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_EREP/202510/425388a8a5_732c18d0de.pdf",
+    "timestamp": "2025-10-14T07:41:00",
+    "sector": "energy",
+    "sub_sector": "alternative-energy",
+    "tags": [
+      "bullish",
+      "investment"
+    ],
+    "tickers": [
+      "SCMA.JK"
+    ],
+    "transaction_type": "buy",
+    "holding_before": 49711335640,
+    "holding_after": 49968319840,
+    "amount_transaction": 256984200,
+    "holder_type": "insider",
+    "holder_name": "PT Elang Mahkota Teknologi Tbk",
+    "price": 400.171,
+    "transaction_value": 102837498000,
+    "price_transaction": {
+      "types": [
+        "buy",
+        "buy",
+        "buy",
+        "buy",
+        "buy",
+        "buy"
+      ],
+      "prices": [
+        338,
+        358,
+        383,
+        399,
+        400,
+        421
+      ],
+      "amount_transacted": [
+        5400000,
+        38218400,
+        9251700,
+        37951200,
+        62400000,
+        103762900
+      ]
+    },
+    "share_percentage_before": 67.2,
+    "share_percentage_after": 67.55,
+    "share_percentage_transaction": 0.349999999999994,
+    "UID": "931ba115-3b93-4e06-85e2-97477002d178",
+    "symbol": "EMTK.JK",
+    "source_is_manual": null
+  },
+  {
+    "id": 1609,
+    "created_at": "2025-10-24T04:22:11.971576+00:00",
+    "title": "Bambang Subagio Wiyono Buy Transaction of Pt Paragon Karya Perkasa Tbk",
+    "body": "Bambang Subagio Wiyono, an insider bought 134,800 shares of Pt Paragon Karya Perkasa Tbk, increasing its holdings from 2,285,000 to 2,419,800. The transaction occurred in the energy sector, specifically oil-gas-coal. The purpose of the transaction is INVESTASI.",
+    "source": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_EREP/202510/c4c0116794_5c581f6128.pdf",
+    "timestamp": "2025-10-24T11:05:58",
+    "sector": "energy",
+    "sub_sector": "oil-gas-coal",
+    "tags": [
+      "bullish",
+      "investment"
+    ],
+    "tickers": null,
+    "transaction_type": "buy",
+    "holding_before": 2285000,
+    "holding_after": 2419800,
+    "amount_transaction": 134800,
+    "holder_type": "insider",
+    "holder_name": "Bambang Subagio Wiyono",
+    "price": 540.76,
+    "transaction_value": 72894000.0,
+    "price_transaction": {
+      "prices": [
+        545,
+        540
+      ],
+      "amount_transacted": [
+        20400,
+        114400
+      ]
+    },
+    "share_percentage_before": 0.19,
+    "share_percentage_after": 0.2,
+    "share_percentage_transaction": 0.01,
+    "UID": null,
+    "symbol": "PKPK.JK",
+    "source_is_manual": null
+  },
+  {
+    "id": 1616,
+    "created_at": "2025-10-24T10:21:24.915415+00:00",
+    "title": "Pt Sumber Garam Pratama Sell Transaction of Pt Sumber Garam Pratama",
+    "body": "Pt Sumber Garam Pratama, an institution sold 197,407,074 shares of Pt Sumber Garam Pratama, decreasing its holdings from 1,246,180,419 to 1,048,773,345. The transaction occurred in the industrials sector, specifically multi-sector-holdings. The purpose of the transaction is Investasi.",
+    "source": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_EREP/202510/29cac99903_fe1e579f3f.pdf",
+    "timestamp": "2025-10-24T16:28:11",
+    "sector": "industrials",
+    "sub_sector": "multi-sector-holdings",
+    "tags": [
+      "bearish",
+      "divestment"
+    ],
+    "tickers": null,
+    "transaction_type": "sell",
+    "holding_before": 1246180419,
+    "holding_after": 1048773345,
+    "amount_transaction": 197407074,
+    "holder_type": "institution",
+    "holder_name": "PT Sumber Garam Pratama",
+    "price": 170.0,
+    "transaction_value": 33559202580.0,
+    "price_transaction": {
+      "prices": [
+        170
+      ],
+      "amount_transacted": [
+        197407074
+      ]
+    },
+    "share_percentage_before": 31.56,
+    "share_percentage_after": 26.56,
+    "share_percentage_transaction": 5,
+    "UID": null,
+    "symbol": "FOLK.JK",
+    "source_is_manual": null
+  },
+  {
+    "id": 227,
+    "created_at": "2025-02-06T08:22:34.267418+00:00",
+    "title": "PT Multipolar Tbk Insider Sells 37,500,000 Shares of Multipolar Tbk.",
+    "body": "On January 14, 2025, an insider trading transaction occurred involving PT Multipolar Tbk, where an undisclosed holder sold 37,500,000 shares at a price of 8,000, resulting in a decrease in their holding from 1,630,250,000 to 1,592,750,000 shares. This \"sell\" transaction, valued at 375,000,000,000, was reported as a routine \"jual beli saham\" (buy-sell shares) activity. The purpose of the transaction is not explicitly stated, but it may be related to portfolio rebalancing or profit-taking. The implications of this transaction are unclear, but it may affect the company's ownership structure and potentially influence the stock's market performance.",
+    "source": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_EREP/202501/4fafe5d57f_c43ccbb215.pdf",
+    "timestamp": "2025-01-14T11:01:00",
+    "sector": "consumer-non-cyclicals",
+    "sub_sector": "food-staples-retailing",
+    "tags": [
+      "divestment"
+    ],
+    "tickers": [
+      "MLPL.JK"
+    ],
+    "transaction_type": "sell",
+    "holding_before": 1630250000,
+    "holding_after": 1592750000,
+    "amount_transaction": 37500000,
+    "holder_type": "insider",
+    "holder_name": "PT Multipolar Tbk",
+    "price": 1.0,
+    "transaction_value": 37500000,
+    "price_transaction": {
+      "prices": [
+        1
+      ],
+      "amount_transacted": [
+        37500000
+      ]
+    },
+    "share_percentage_before": null,
+    "share_percentage_after": null,
+    "share_percentage_transaction": null,
+    "UID": null,
+    "symbol": "MLPL.JK",
+    "source_is_manual": null
+  },
+  {
+    "id": 237,
+    "created_at": "2025-02-12T02:29:27.594682+00:00",
+    "title": "Adi Putera Widjaja Sell Transaction of PT Tourindo Guide Indonesia Tbk.",
+    "body": "Adi Putera Widjaja, an insider, sold 17,624,250 shares of PT Tourindo Guide Indonesia Tbk, reducing their holding from 17,625,250 to 1,000 shares, realizing a profit. The transaction occurred on January 16, 2025, at a price of IDR 92 per share, resulting in a total transaction value of IDR 176,242,500. This significant reduction in ownership may indicate a shift in Widjaja's investment strategy or a desire to cash out profits, potentially impacting the company's ownership structure and market dynamics.",
+    "source": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_EREP/202501/624a21ea98_fc77290955.pdf",
+    "timestamp": "2025-01-16T15:49:00",
+    "sector": "technology",
+    "sub_sector": "software-it-services",
+    "tags": [
+      "divestment"
+    ],
+    "tickers": [
+      "PGJO.JK"
+    ],
+    "transaction_type": "sell",
+    "holding_before": 17625250,
+    "holding_after": 1000,
+    "amount_transaction": 17624250,
+    "holder_type": "insider",
+    "holder_name": "Adi Putera Widjaja",
+    "price": 92.0,
+    "transaction_value": 1621431000,
+    "price_transaction": {
+      "prices": [
+        92
+      ],
+      "amount_transacted": [
+        17624250
+      ]
+    },
+    "share_percentage_before": null,
+    "share_percentage_after": null,
+    "share_percentage_transaction": null,
+    "UID": null,
+    "symbol": "PGJO.JK",
+    "source_is_manual": null
+  },
+  {
+    "id": 246,
+    "created_at": "2025-02-12T02:47:09.062197+00:00",
+    "title": "Tan Suryanti Gunadi Buy Transaction of PT Medikaloka Hermina Tbk.",
+    "body": "On January 20, 2025, Tan Suryanti Gunadi, an insider, purchased 124,000 shares of PT Medikaloka Hermina Tbk, a healthcare company, at a price of IDR 1,595 per share, increasing their holding from 4,388,400 to 4,512,400 shares. This buy transaction, valued at IDR 124,000,000, is classified as an investment, suggesting that Gunadi is strengthening their stake in the company. This transaction may indicate confidence in the company's prospects, potentially influencing investor sentiment and stock performance.",
+    "source": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_EREP/202501/c80a0a0538_c72bd26ad6.pdf",
+    "timestamp": "2025-01-20T18:15:00",
+    "sector": "healthcare",
+    "sub_sector": "healthcare-equipment-providers",
+    "tags": [
+      "investment"
+    ],
+    "tickers": [
+      "HEAL.JK"
+    ],
+    "transaction_type": "buy",
+    "holding_before": 4388400,
+    "holding_after": 4512400,
+    "amount_transaction": 124000,
+    "holder_type": "insider",
+    "holder_name": "Tan Suryanti Gunadi",
+    "price": 1595.0,
+    "transaction_value": 197780000,
+    "price_transaction": {
+      "prices": [
+        1595
+      ],
+      "amount_transacted": [
+        124000
+      ]
+    },
+    "share_percentage_before": null,
+    "share_percentage_after": null,
+    "share_percentage_transaction": null,
+    "UID": null,
+    "symbol": "HEAL.JK",
+    "source_is_manual": null
+  },
+  {
+    "id": 262,
+    "created_at": "2025-03-21T03:47:22.003506+00:00",
+    "title": "Adi Putera Widjaja Buy Transaction of PT Tourindo Guide Indonesia Tbk.",
+    "body": "On January 22, 2025, Adi Putera Widjaja, an insider, executed a buy transaction of 23,400,000 shares in PT Tourindo Guide Indonesia Tbk, increasing their holding from 1,000 to 23,401,000 shares. The transaction was valued at IDR 2,040,000,000 (approximately USD 137,931) at a price of IDR 88 per share. The purpose of the transaction was to implement the MESOP (Management Employee Stock Option Program) Phase IV & V. This significant increase in ownership may indicate Widjaja's confidence in the company's future performance and could potentially impact the company's governance and decision-making processes.",
+    "source": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_EREP/202501/36d63c07d2_334e446dec.pdf",
+    "timestamp": "2025-01-22T16:38:00",
+    "sector": "technology",
+    "sub_sector": "software-it-services",
+    "tags": [
+      "investment"
+    ],
+    "tickers": [
+      "PGJO.JK"
+    ],
+    "transaction_type": "buy",
+    "holding_before": 1000,
+    "holding_after": 23401000,
+    "amount_transaction": 23400000,
+    "holder_type": "insider",
+    "holder_name": "Adi Putera Widjaja",
+    "price": 88.0,
+    "transaction_value": 2059200000,
+    "price_transaction": {
+      "prices": [
+        88
+      ],
+      "amount_transacted": [
+        23400000
+      ]
+    },
+    "share_percentage_before": null,
+    "share_percentage_after": null,
+    "share_percentage_transaction": null,
+    "UID": null,
+    "symbol": "PGJO.JK",
+    "source_is_manual": null
+  },
+  {
+    "id": 304,
+    "created_at": "2025-04-26T03:16:08.067376+00:00",
+    "title": "Go Darmadi Sell Transaction of PT Soechi Lines Tbk.",
+    "body": "Go Darmadi, an insider, sold 120,000,000 shares of PT Soechi Lines Tbk. at a price of 160, divesting their entire stake in the company, reducing their holding from 120,000,000 shares to 0 shares.",
+    "source": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_EREP/202502/9b87e99513_0a2bdb66b5.pdf",
+    "timestamp": "2025-02-04T14:25:00",
+    "sector": "energy",
+    "sub_sector": "oil-gas-coal",
+    "tags": [
+      "bearish",
+      "divestment"
+    ],
+    "tickers": [
+      "SOCI.JK"
+    ],
+    "transaction_type": "sell",
+    "holding_before": 120000000,
+    "holding_after": 0,
+    "amount_transaction": 120000000,
+    "holder_type": "insider",
+    "holder_name": "Go Darmadi",
+    "price": 160.0,
+    "transaction_value": 19200000000,
+    "price_transaction": {
+      "prices": [
+        160
+      ],
+      "amount_transacted": [
+        120000000
+      ]
+    },
+    "share_percentage_before": 1.7,
+    "share_percentage_after": 0,
+    "share_percentage_transaction": 1.7,
+    "UID": null,
+    "symbol": "SOCI.JK",
+    "source_is_manual": null
+  },
+  {
+    "id": 313,
+    "created_at": "2025-04-26T04:01:28.848026+00:00",
+    "title": "Penfabric Sdn Berhad Buy Transaction of PT Century Textile Industry Tbk",
+    "body": "Penfabric Sdn Berhad, an insider, bought 9,115,900 shares of PT Century Textile Industry Tbk, increasing their holding from 60,000,000 to 69,115,900 shares. The transaction, valued at 400 per share, represents a significant increase in ownership. The purpose of the transaction is unknown.",
+    "source": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_EREP/202502/cd407b575a_02fdd76b12.pdf",
+    "timestamp": "2025-01-24T03:58:00",
+    "sector": "consumer-cyclicals",
+    "sub_sector": "apparel-luxury-goods",
+    "tags": [
+      "bullish"
+    ],
+    "tickers": [
+      "CNTX.JK"
+    ],
+    "transaction_type": "buy",
+    "holding_before": 60000000,
+    "holding_after": 69115900,
+    "amount_transaction": 9115900,
+    "holder_type": "insider",
+    "holder_name": "Penfabric Sdn Berhad",
+    "price": 400.0,
+    "transaction_value": 3646360000,
+    "price_transaction": {
+      "prices": [
+        400
+      ],
+      "amount_transacted": [
+        9115900
+      ]
+    },
+    "share_percentage_before": 30,
+    "share_percentage_after": 34.56,
+    "share_percentage_transaction": 4.56,
+    "UID": null,
+    "symbol": "CNTX.JK",
+    "source_is_manual": null
+  },
+  {
+    "id": 322,
+    "created_at": "2025-05-12T04:28:05.070655+00:00",
+    "title": "Hadi Suhermin Buy Transaction of PT Sarana Mitra Luas Tbk",
+    "body": "Hadi Suhermin bought 20,000,000 shares of PT Sarana Mitra Luas Tbk on 2 May 2025, increasing his holding from 4,403,524,900 to 4,423,524,900 shares, representing an investment purpose.",
+    "source": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_EREP/202505/52cf253d1a_fbd838f754.pdf",
+    "timestamp": "2025-05-04T22:20:00",
+    "sector": "industrials",
+    "sub_sector": "industrial-goods",
+    "tags": [
+      "bullish",
+      "investment"
+    ],
+    "tickers": [
+      "SMIL.JK"
+    ],
+    "transaction_type": "buy",
+    "holding_before": 4403524900,
+    "holding_after": 4423524900,
+    "amount_transaction": 20000000,
+    "holder_type": "insider",
+    "holder_name": "Hadi Suhermin",
+    "price": 256.0,
+    "transaction_value": 5120000000,
+    "price_transaction": {
+      "prices": [
+        256
+      ],
+      "amount_transacted": [
+        20000000
+      ]
+    },
+    "share_percentage_before": 50.32,
+    "share_percentage_after": 50.55,
+    "share_percentage_transaction": 0.229999999999997,
+    "UID": null,
+    "symbol": "SMIL.JK",
+    "source_is_manual": null
+  },
+  {
+    "id": 328,
+    "created_at": "2025-05-12T04:46:10.623635+00:00",
+    "title": "Yusuf Saadudin Buy Transaction of Bank Pembangunan Daerah Jawa Barat dan Banten Tbk",
+    "body": "Yusuf Saadunin bought 128222 shares of Bank Pembangunan Daerah Jawa Barat dan Banten Tbk, increasing his holding from 725568 to 853790 shares, as part of a Long Term Incentive in the form of shares.",
+    "source": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_EREP/202505/98412b34a0_147033507d.pdf",
+    "timestamp": "2025-05-05T16:28:00",
+    "sector": "financials",
+    "sub_sector": "banks",
+    "tags": [
+      "bullish",
+      "investment",
+      "incentive"
+    ],
+    "tickers": [
+      "BJBR.JK"
+    ],
+    "transaction_type": "buy",
+    "holding_before": 725568,
+    "holding_after": 853790,
+    "amount_transaction": 128222,
+    "holder_type": "insider",
+    "holder_name": "Yusuf Saadudin",
+    "price": 945.0,
+    "transaction_value": 121169790,
+    "price_transaction": {
+      "prices": [
+        945
+      ],
+      "amount_transacted": [
+        128222
+      ]
+    },
+    "share_percentage_before": 0.0068,
+    "share_percentage_after": 0.0081,
+    "share_percentage_transaction": 0.0013,
+    "UID": null,
+    "symbol": "BJBR.JK",
+    "source_is_manual": null
+  },
+  {
+    "id": 336,
+    "created_at": "2025-05-12T05:06:07.793847+00:00",
+    "title": "Rudie Kusmayadi Buy Transaction of Bank Pembangunan Daerah Jawa Barat dan Banten Tbk",
+    "body": "Rudie Kusmayadi acquired 109,903 shares of Bank Pembangunan Daerah Jawa Barat dan Banten Tbk, increasing their stake from 40,811 to 150,714 shares, as part of a Long Term Incentive plan.",
+    "source": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_EREP/202505/2feb81b934_59d3e88ab1.pdf",
+    "timestamp": "2025-05-05T16:29:00",
+    "sector": "financials",
+    "sub_sector": "banks",
+    "tags": [
+      "bullish",
+      "investment",
+      "incentive"
+    ],
+    "tickers": [
+      "BJBR.JK"
+    ],
+    "transaction_type": "buy",
+    "holding_before": 40811,
+    "holding_after": 150714,
+    "amount_transaction": 109903,
+    "holder_type": "insider",
+    "holder_name": "Rudie Kusmayadi",
+    "price": 945.0,
+    "transaction_value": 103858335,
+    "price_transaction": {
+      "prices": [
+        945
+      ],
+      "amount_transacted": [
+        109903
+      ]
+    },
+    "share_percentage_before": 0.0003,
+    "share_percentage_after": 0.0014,
+    "share_percentage_transaction": 0.0011,
+    "UID": null,
+    "symbol": "BJBR.JK",
+    "source_is_manual": null
+  },
+  {
+    "id": 285,
+    "created_at": "2025-03-21T05:43:46.311141+00:00",
+    "title": "UBS AG LONDON Buys Transaction of PT Kawasan Industri Jababeka Tbk.",
+    "body": "On January 17, 2025, UBS AG London, an institutional holder, purchased 26,960,600 shares of PT Kawasan Industri Jababeka Tbk, a properties and real estate company, at a price of IDR 192 per share. This \"buy\" transaction increased UBS AG London's holding in the company from 1,025,680,210 shares to 1,052,528,621 shares. The purpose of the transaction is not disclosed. This significant increase in ownership may indicate UBS AG London's confidence in the company's growth prospects, potentially influencing the company's stock price and market sentiment.",
+    "source": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_EREP/202501/5ada6a251a_cb65014d0c.pdf",
+    "timestamp": "2025-01-17T05:41:00",
+    "sector": "properties-real-estate",
+    "sub_sector": "properties-real-estate",
+    "tags": [],
+    "tickers": [
+      "KIJA.JK"
+    ],
+    "transaction_type": "buy",
+    "holding_before": 1025568021,
+    "holding_after": 1052528621,
+    "amount_transaction": 26960600,
+    "holder_type": "institution",
+    "holder_name": "UBS AG LONDON",
+    "price": 192.0,
+    "transaction_value": 5176435200,
+    "price_transaction": {
+      "prices": [
+        192
+      ],
+      "amount_transacted": [
+        26960600
+      ]
+    },
+    "share_percentage_before": null,
+    "share_percentage_after": null,
+    "share_percentage_transaction": null,
+    "UID": null,
+    "symbol": "KIJA.JK",
+    "source_is_manual": null
+  },
+  {
+    "id": 368,
+    "created_at": "2025-05-13T03:57:02.90031+00:00",
+    "title": "Janto Lili Buy Transaction of PT Wintermar Offshore Marine Tbk",
+    "body": "Insider Janto Lili bought 80,000 shares at IDR 372 each, increasing their stake to 7,484,625 shares, or approximately 1.13% of PT Wintermar Offshore Marine Tbk, an energy company in the oil-gas-coal sub-sector.",
+    "source": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_EREP/202505/c1cfae4b6f_358933886e.pdf",
+    "timestamp": "2025-05-13T03:54:00",
+    "sector": "energy",
+    "sub_sector": "oil-gas-coal",
+    "tags": [
+      "bullish"
+    ],
+    "tickers": [
+      "WINS.JK"
+    ],
+    "transaction_type": "buy",
+    "holding_before": 7404625,
+    "holding_after": 7484625,
+    "amount_transaction": 80000,
+    "holder_type": "insider",
+    "holder_name": "Janto Lili",
+    "price": 372.0,
+    "transaction_value": 29760000,
+    "price_transaction": {
+      "prices": [
+        372
+      ],
+      "amount_transacted": [
+        80000
+      ]
+    },
+    "share_percentage_before": 0.17,
+    "share_percentage_after": 0.171,
+    "share_percentage_transaction": 0.001,
+    "UID": null,
+    "symbol": "WINS.JK",
+    "source_is_manual": null
+  },
+  {
+    "id": 1646,
+    "created_at": "2025-10-27T13:07:56.714028+00:00",
+    "title": "PT Iforte Solusi Infotek Sell Transaction of PT Inti Bangun Sejahtera Tbk",
+    "body": "PT Iforte Solusi Infotek, an insider, sold 332,000 shares of PT Inti Bangun Sejahtera Tbk, reducing its holding from 1,350,586,095 to 1,350,254,095. The transaction occurred in the telecommunication sector, with a price of 5,100. The purpose of the transaction is not specified.",
+    "source": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_EREP/202510/ce330818e9_5e7e145b72.pdf",
+    "timestamp": "2025-10-27T13:05:00",
+    "sector": "infrastructures",
+    "sub_sector": "telecommunication",
+    "tags": [
+      "bearish",
+      "divestment",
+      "ownership change",
+      "insider trading"
+    ],
+    "tickers": [
+      "IBST.JK"
+    ],
+    "transaction_type": "sell",
+    "holding_before": 1350586095,
+    "holding_after": 1350254095,
+    "amount_transaction": 332000,
+    "holder_type": "insider",
+    "holder_name": "PT Iforte Solusi Infotek",
+    "price": 5100.0,
+    "transaction_value": 1693200000,
+    "price_transaction": {
+      "types": [
+        "sell"
+      ],
+      "prices": [
+        5100
+      ],
+      "amount_transacted": [
+        332000
+      ]
+    },
+    "share_percentage_before": 99.976,
+    "share_percentage_after": 99.952,
+    "share_percentage_transaction": 0.0240000000000009,
+    "UID": null,
+    "symbol": "IBST.JK",
+    "source_is_manual": null
+  },
+  {
+    "id": 1993,
+    "created_at": "2025-11-18T18:02:33.194052+00:00",
+    "title": "PT Majukarya Mandiriindonesia buys shares of ITMA",
+    "body": "PT Majukarya Mandiriindonesia bought 55,214,405 shares of ITMA. This increases their holdings from 0 to 55,214,405 shares.",
+    "source": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_EREP/202511/f3b4a62f17_347f6d9716.pdf",
+    "timestamp": "2025-11-18T23:16:49",
+    "sector": "energy",
+    "sub_sector": "oil-gas-coal",
+    "tags": [
+      "bullish",
+      "investment"
+    ],
+    "tickers": null,
+    "transaction_type": "buy",
+    "holding_before": 0,
+    "holding_after": 55214405,
+    "amount_transaction": 55214405,
+    "holder_type": "institution",
+    "holder_name": " PT Majukarya Mandiriindonesia",
+    "price": 0,
+    "transaction_value": 0,
+    "price_transaction": {
+      "type": [],
+      "prices": [],
+      "amount_transacted": []
+    },
+    "share_percentage_before": 0,
+    "share_percentage_after": 5.527,
+    "share_percentage_transaction": 5.527,
+    "UID": null,
+    "symbol": "ITMA.JK",
+    "source_is_manual": null
+  },
+  {
+    "id": 845,
+    "created_at": "2025-08-21T07:38:07.57+00:00",
+    "title": "PT Victoria Investama TBK Buy Transaction of PT Victoria Investama Tbk.",
+    "body": "On July 01, 2025, PT Victoria Investama TBK, an institution shareholder, bought 758,695,034 shares of PT Victoria Investama Tbk., changing its holding from 9,967,417,411 to 10,726,112,445 shares.",
+    "source": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_EREP/202507/34370055b2_3a2f14dd78.pdf",
+    "timestamp": "2025-07-01T16:09:44",
+    "sector": "financials",
+    "sub_sector": "holding-investment-companies",
+    "tags": [
+      "bullish",
+      "investment"
+    ],
+    "tickers": null,
+    "transaction_type": "buy",
+    "holding_before": 9967417411,
+    "holding_after": 10726112445,
+    "amount_transaction": 758695034,
+    "holder_type": "institution",
+    "holder_name": "PT Victoria Investama Tbk",
+    "price": 113.0,
+    "transaction_value": 85732538842.0,
+    "price_transaction": {
+      "types": [
+        "buy"
+      ],
+      "prices": [
+        113
+      ],
+      "amount_transacted": [
+        758695034
+      ]
+    },
+    "share_percentage_before": 54.13,
+    "share_percentage_after": 58.25,
+    "share_percentage_transaction": 4.12,
+    "UID": "778b7ea4-7535-47f9-836f-a5d044d0b660",
+    "symbol": "VICO.JK",
+    "source_is_manual": null
+  },
+  {
+    "id": 844,
+    "created_at": "2025-08-21T07:38:06.984231+00:00",
+    "title": "PT Victoria Investama TBK Buy Transaction of PT Bank Victoria International Tbk",
+    "body": "On July 01, 2025, PT Victoria Investama TBK, an institution shareholder, bought 758,695,034 shares of Bank Victoria International Tbk, changing its holding from 9,967,417,411 to 10,726,112,445 shares.",
+    "source": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_EREP/202507/878469de05_ff282c9fea.pdf",
+    "timestamp": "2025-07-01T17:47:52",
+    "sector": "financials",
+    "sub_sector": "banks",
+    "tags": [
+      "bullish",
+      "investment"
+    ],
+    "tickers": null,
+    "transaction_type": "buy",
+    "holding_before": 9967417411,
+    "holding_after": 10726112445,
+    "amount_transaction": 758695034,
+    "holder_type": "institution",
+    "holder_name": "PT Victoria Investama TBK",
+    "price": 113.0,
+    "transaction_value": 85732538842.0,
+    "price_transaction": {
+      "types": [
+        "buy"
+      ],
+      "prices": [
+        113
+      ],
+      "amount_transacted": [
+        758695034
+      ]
+    },
+    "share_percentage_before": 54.13,
+    "share_percentage_after": 58.25,
+    "share_percentage_transaction": 4.12,
+    "UID": "778b7ea4-7535-47f9-836f-a5d044d0b660",
+    "symbol": "BVIC.JK",
+    "source_is_manual": null
+  },
+  {
+    "id": 377,
+    "created_at": "2025-05-28T06:26:40.479847+00:00",
+    "title": "Informasi insider trading PT Cakra Bhakti Para Putra dalam PT Steel Pipe Industry of Indonesia Tbk",
+    "body": "PT Cakra Bhakti Para Putra, a major shareholder, acquired 1,891,500 shares of PT Steel Pipe Industry of Indonesia Tbk (ISSP.JK) at IDR 294 per share, increasing its stake from 40.44% to 40.46% for investment purposes.",
+    "source": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_EREP/202407/a90ab57ce2_35e109818f.pdf",
+    "timestamp": "2025-05-28T10:10:00",
+    "sector": "basic-materials",
+    "sub_sector": "basic-materials",
+    "tags": [
+      "bullish"
+    ],
+    "tickers": [
+      "ISSP.JK"
+    ],
+    "transaction_type": "buy",
+    "holding_before": 4044056830,
+    "holding_after": 4045948330,
+    "amount_transaction": 1891500,
+    "holder_type": "institution",
+    "holder_name": "PT Cakra Bhakti Para Putra",
+    "price": 294.0,
+    "transaction_value": 556101000,
+    "price_transaction": {
+      "prices": [
+        294
+      ],
+      "amount_transacted": [
+        1891500
+      ]
+    },
+    "share_percentage_before": 56.28,
+    "share_percentage_after": 56.3,
+    "share_percentage_transaction": 0.019999999999996,
+    "UID": null,
+    "symbol": "ISSP.JK",
+    "source_is_manual": null
+  },
+  {
+    "id": 819,
+    "created_at": "2025-08-20T07:34:21.821716+00:00",
+    "title": "Amir Sunarko Buy Transaction of PT SLJ Global Tbk",
+    "body": "Amir Sunarko, an insider, purchased 18,987,342 shares of PT SLJ Global Tbk (SULI.JK) on 2025-07-15, increasing his stake. The transaction, valued at IDR 1,500,000,018, was conducted at IDR 79. This buy transaction suggests Amir Sunarko's confidence in the company's prospects.",
+    "source": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_EREP/202507/0a8743287d_da7ffaac92.pdf",
+    "timestamp": "2025-07-18T17:42:00",
+    "sector": "basic-materials",
+    "sub_sector": "basic-materials",
+    "tags": [
+      "bullish"
+    ],
+    "tickers": [
+      "SULI.JK"
+    ],
+    "transaction_type": "buy",
+    "holding_before": 285938115,
+    "holding_after": 304925457,
+    "amount_transaction": 18987342,
+    "holder_type": "insider",
+    "holder_name": "Amir Sunarko",
+    "price": 79.0,
+    "transaction_value": 1500000018,
+    "price_transaction": {
+      "prices": [
+        79
+      ],
+      "amount_transacted": [
+        18987342
+      ]
+    },
+    "share_percentage_before": 4.52,
+    "share_percentage_after": 4.82,
+    "share_percentage_transaction": 0.300000000000001,
+    "UID": null,
+    "symbol": "SULI.JK",
+    "source_is_manual": null
+  },
+  {
+    "id": 537,
+    "created_at": "2025-08-07T06:29:11.261746+00:00",
+    "title": "Raymond Buy Transaction of PT Chandra Asri Pacific Tbk",
+    "body": "On July 02, 2025, Raymond, an insider shareholder, bought 50,000 shares of PT Chandra Asri Pacific Tbk, changing its holding from 2,000,000 to 2,050,000 shares.",
+    "source": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_EREP/202507/f058e3fb67_1ab6d22dda.pdf",
+    "timestamp": "2025-07-02T16:43:42",
+    "sector": "basic-materials",
+    "sub_sector": "basic-materials",
+    "tags": [
+      "investment"
+    ],
+    "tickers": null,
+    "transaction_type": "buy",
+    "holding_before": 2000000,
+    "holding_after": 2050000,
+    "amount_transaction": 50000,
+    "holder_type": "insider",
+    "holder_name": "Raymond",
+    "price": 9300.0,
+    "transaction_value": 465000000.0,
+    "price_transaction": {
+      "types": [
+        "buy"
+      ],
+      "prices": [
+        9300
+      ],
+      "amount_transacted": [
+        50000
+      ]
+    },
+    "share_percentage_before": 0.002,
+    "share_percentage_after": 0.002,
+    "share_percentage_transaction": 0,
+    "UID": null,
+    "symbol": "TPIA.JK",
+    "source_is_manual": null
+  },
+  {
+    "id": 1191,
+    "created_at": "2025-09-23T08:14:20.576542+00:00",
+    "title": "Tohirin Buy Transaction of PT Klinko Karya Imaji Tbk",
+    "body": "On September 23, 2025, Tohirin, an insider shareholder, bought 4,976,000 shares of PT Klinko Karya Imaji Tbk, changing its holding from 61,699,700 to 66,675,700 shares.",
+    "source": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_EREP/202509/acf3e98bab_21e7ef5662.pdf",
+    "timestamp": "2025-09-23T14:16:47",
+    "sector": "consumer-cyclicals",
+    "sub_sector": "retailing",
+    "tags": [
+      "bullish",
+      "investment"
+    ],
+    "tickers": null,
+    "transaction_type": "buy",
+    "holding_before": 61699700,
+    "holding_after": 66675700,
+    "amount_transaction": 4976000,
+    "holder_type": "insider",
+    "holder_name": "Tohirin",
+    "price": 168.0,
+    "transaction_value": 835968000.0,
+    "price_transaction": {
+      "type": [
+        "buy"
+      ],
+      "prices": [
+        168.0
+      ],
+      "amount_transacted": [
+        4976000
+      ]
+    },
+    "share_percentage_before": 4.72,
+    "share_percentage_after": 5.1,
+    "share_percentage_transaction": 0.38,
+    "UID": null,
+    "symbol": "KLIN.JK",
+    "source_is_manual": null
+  },
+  {
+    "id": 1201,
+    "created_at": "2025-09-23T14:11:00.500195+00:00",
+    "title": "Wong Michael Sell Transaction of PT Astrindo Nusantara Infrastruktur Tbk.",
+    "body": "On September 23, 2025, Wong Michael, an insider shareholder, sold 6,000,000 shares of PT Astrindo Nusantara Infrastruktur Tbk., changing its holding from 9,900,000 to 3,900,000 shares.",
+    "source": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_EREP/202509/616a6e5364_a6ef342a65.pdf",
+    "timestamp": "2025-09-23T19:26:49",
+    "sector": "energy",
+    "sub_sector": "oil-gas-coal",
+    "tags": [
+      "bearish",
+      "divestment"
+    ],
+    "tickers": null,
+    "transaction_type": "sell",
+    "holding_before": 9900000,
+    "holding_after": 3900000,
+    "amount_transaction": 6000000,
+    "holder_type": "insider",
+    "holder_name": "Wong Michael",
+    "price": 82.66,
+    "transaction_value": 495960000.0,
+    "price_transaction": {
+      "type": [
+        "sell"
+      ],
+      "prices": [
+        82.66
+      ],
+      "amount_transacted": [
+        6000000
+      ]
+    },
+    "share_percentage_before": 0.02,
+    "share_percentage_after": 0.01,
+    "share_percentage_transaction": 0.01,
+    "UID": null,
+    "symbol": "BIPI.JK",
+    "source_is_manual": null
+  },
+  {
+    "id": 1209,
+    "created_at": "2025-09-24T14:09:43.313718+00:00",
+    "title": "Wong Michael Sell Transaction of PT Astrindo Nusantara Infrastruktur Tbk.",
+    "body": "On September 24, 2025, Wong Michael, an insider shareholder, sold 2,400,000 shares of PT Astrindo Nusantara Infrastruktur Tbk., changing its holding from 3,900,000 to 1,500,000 shares.",
+    "source": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_EREP/202509/4a01fc859d_64be1de6db.pdf",
+    "timestamp": "2025-09-24T19:38:14",
+    "sector": "energy",
+    "sub_sector": "oil-gas-coal",
+    "tags": [
+      "bearish",
+      "divestment"
+    ],
+    "tickers": null,
+    "transaction_type": "sell",
+    "holding_before": 3900000,
+    "holding_after": 1500000,
+    "amount_transaction": 2400000,
+    "holder_type": "insider",
+    "holder_name": "Wong Michael",
+    "price": 84.0,
+    "transaction_value": 201600000.0,
+    "price_transaction": {
+      "type": [
+        "sell"
+      ],
+      "prices": [
+        84.0
+      ],
+      "amount_transacted": [
+        2400000
+      ]
+    },
+    "share_percentage_before": 0.01,
+    "share_percentage_after": 0,
+    "share_percentage_transaction": 0.01,
+    "UID": null,
+    "symbol": "BIPI.JK",
+    "source_is_manual": null
+  },
+  {
+    "id": 1231,
+    "created_at": "2025-09-29T10:21:19.051437+00:00",
+    "title": "Rudi Reksa Sutantra Sell Transaction of PT Atlantis Subsea Indonesia Tbk",
+    "body": "On September 29, 2025, Rudi Reksa Sutantra, an insider shareholder, sold 31,605,600 shares of PT Atlantis Subsea Indonesia Tbk, changing its holding from 3,141,125,000 to 3,109,519,400 shares.",
+    "source": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_EREP/202509/5ecf26134a_62c7643a05.pdf",
+    "timestamp": "2025-09-29T16:00:15",
+    "sector": "energy",
+    "sub_sector": "oil-gas-coal",
+    "tags": [
+      "bearish",
+      "divestment"
+    ],
+    "tickers": null,
+    "transaction_type": "sell",
+    "holding_before": 3141125000,
+    "holding_after": 3109519400,
+    "amount_transaction": 31605600,
+    "holder_type": "insider",
+    "holder_name": "Rudi Reksa Sutantra",
+    "price": 69.45,
+    "transaction_value": 2195035200.0,
+    "price_transaction": {
+      "type": [
+        "sell",
+        "sell"
+      ],
+      "prices": [
+        67.0,
+        70.0
+      ],
+      "amount_transacted": [
+        5785600,
+        25820000
+      ]
+    },
+    "share_percentage_before": 50.67,
+    "share_percentage_after": 50.16,
+    "share_percentage_transaction": 0.51,
+    "UID": null,
+    "symbol": "ATLA.JK",
+    "source_is_manual": null
+  },
+  {
+    "id": 1263,
+    "created_at": "2025-10-02T08:57:01.637874+00:00",
+    "title": "PT Kalbe Farma Tbk Sell Transaction of PT Enseval Putera Megatrading Tbk",
+    "body": "PT Kalbe Farma Tbk, an insider, sold 5,500,000 shares of PT Enseval Putera Megatrading Tbk, reducing its holding from 2,496,785,795 to 2,491,285,795. The transaction occurred in the consumer-non-cyclicals sector, specifically in food-staples-retailing. The purpose of the transaction was not disclosed.",
+    "source": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_EREP/202509/128254602a_d4e082b28e.pdf",
+    "timestamp": "2025-10-02T08:52:00",
+    "sector": "consumer-non-cyclicals",
+    "sub_sector": "food-staples-retailing",
+    "tags": [
+      "bearish",
+      "divestment"
+    ],
+    "tickers": [
+      "EPMT.JK"
+    ],
+    "transaction_type": "sell",
+    "holding_before": 2496785795,
+    "holding_after": 2491285795,
+    "amount_transaction": 5500000,
+    "holder_type": "insider",
+    "holder_name": "PT Kalbe Farma Tbk",
+    "price": 2400.0,
+    "transaction_value": 13200000000,
+    "price_transaction": {
+      "types": [
+        "buy"
+      ],
+      "prices": [
+        2400
+      ],
+      "amount_transacted": [
+        5500000
+      ]
+    },
+    "share_percentage_before": 92.18,
+    "share_percentage_after": 91.98,
+    "share_percentage_transaction": 0.200000000000003,
+    "UID": "6fb31322-e427-4258-bd23-47ddc73104b6",
+    "symbol": "EPMT.JK",
+    "source_is_manual": null
+  },
+  {
+    "id": 1272,
+    "created_at": "2025-10-02T10:18:29.906293+00:00",
+    "title": "Rudi Reksa Sutantra Sell Transaction of PT Atlantis Subsea Indonesia Tbk",
+    "body": "On October 02, 2025, Rudi Reksa Sutantra, an insider shareholder, sold 7,035,100 shares of PT Atlantis Subsea Indonesia Tbk, changing its holding from 3,110,519,400 to 3,103,484,300 shares.",
+    "source": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_EREP/202510/accef46f4d_34f75d13f4.pdf",
+    "timestamp": "2025-10-02T17:03:17",
+    "sector": "energy",
+    "sub_sector": "oil-gas-coal",
+    "tags": [
+      "bearish",
+      "divestment"
+    ],
+    "tickers": null,
+    "transaction_type": "sell",
+    "holding_before": 3110519400,
+    "holding_after": 3103484300,
+    "amount_transaction": 7035100,
+    "holder_type": "insider",
+    "holder_name": "Rudi Reksa Sutantra",
+    "price": 70.0,
+    "transaction_value": 492457000.0,
+    "price_transaction": {
+      "type": [
+        "sell",
+        "sell"
+      ],
+      "prices": [
+        70.0,
+        70.0
+      ],
+      "amount_transacted": [
+        1000000,
+        6035100
+      ]
+    },
+    "share_percentage_before": 50.17,
+    "share_percentage_after": 50.06,
+    "share_percentage_transaction": 0.11,
+    "UID": null,
+    "symbol": "ATLA.JK",
+    "source_is_manual": null
+  },
+  {
+    "id": 1268,
+    "created_at": "2025-10-02T10:08:50.740243+00:00",
+    "title": "PT Elang Mahkota Teknologi Tbk Buy Transaction of PT Surya Citra Media Tbk",
+    "body": "PT Elang Mahkota Teknologi Tbk bought 23,358,970 shares of PT Surya Citra Media Tbk, increasing ownership to 49,711,335,640 shares. The transaction was for investment purposes, with prices ranging from 340 to 360.",
+    "source": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_EREP/202509/9e2e73474b_6727c863b7.pdf",
+    "timestamp": "2025-09-30T11:38:00",
+    "sector": "technology",
+    "sub_sector": "software-it-services",
+    "tags": [
+      "bullish",
+      "investment"
+    ],
+    "tickers": [
+      "EMTK.JK"
+    ],
+    "transaction_type": "buy",
+    "holding_before": 49477745940,
+    "holding_after": 49711335640,
+    "amount_transaction": 233589700,
+    "holder_type": "insider",
+    "holder_name": "PT Elang Mahkota Teknologi Tbk",
+    "price": 353.01,
+    "transaction_value": 82459536200,
+    "price_transaction": {
+      "types": [
+        "buy",
+        "buy",
+        "buy",
+        "buy",
+        "buy"
+      ],
+      "prices": [
+        346,
+        340,
+        351,
+        360,
+        350
+      ],
+      "amount_transacted": [
+        74589700,
+        9000000,
+        6500000,
+        108500000,
+        35000000
+      ]
+    },
+    "share_percentage_before": 66.89,
+    "share_percentage_after": 67.2,
+    "share_percentage_transaction": 0.310000000000002,
+    "UID": "e32195d3-b43f-4653-97bf-ad0fadd50256",
+    "symbol": "EMTK.JK",
+    "source_is_manual": null
+  },
+  {
+    "id": 1267,
+    "created_at": "2025-10-02T10:03:50.349486+00:00",
+    "title": "PT Elang Mahkota Teknologi Tbk Buy Transaction of PT Surya Citra Media Tbk",
+    "body": "PT Elang Mahkota Teknologi Tbk, an insider, bought 342410300 shares, increasing its holding from 49135335640 to 49477745940 in the energy sector, specifically alternative-energy. The transaction occurred on 2025-10-02.",
+    "source": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_EREP/202509/2db5d769cd_7f87b588f5.pdf",
+    "timestamp": "2025-10-02T10:01:00",
+    "sector": "energy",
+    "sub_sector": "alternative-energy",
+    "tags": [
+      "bullish",
+      "investment"
+    ],
+    "tickers": [
+      "EMTK.JK"
+    ],
+    "transaction_type": "buy",
+    "holding_before": 49135335640,
+    "holding_after": 49477745940,
+    "amount_transaction": 342410300,
+    "holder_type": "insider",
+    "holder_name": "PT Elang Mahkota Teknologi Tbk",
+    "price": 306.818,
+    "transaction_value": 105057643100,
+    "price_transaction": {
+      "types": [
+        "buy",
+        "buy",
+        "buy",
+        "buy",
+        "buy",
+        "buy",
+        "buy",
+        "buy"
+      ],
+      "prices": [
+        281,
+        299,
+        309,
+        304,
+        294,
+        324,
+        337,
+        340
+      ],
+      "amount_transacted": [
+        69508800,
+        38214000,
+        32260900,
+        34016300,
+        48229700,
+        73770300,
+        23500000,
+        22910300
+      ]
+    },
+    "share_percentage_before": 66.43,
+    "share_percentage_after": 66.89,
+    "share_percentage_transaction": 0.459999999999994,
+    "UID": "326bd3f4-0c4b-440a-9f02-fdacdb997a16",
+    "symbol": "EMTK.JK",
+    "source_is_manual": null
+  },
+  {
+    "id": 1264,
+    "created_at": "2025-10-02T09:03:36.676213+00:00",
+    "title": "PT Kalbe Farma Tbk Sell Transaction of PT Enseval Putera Megatrading Tbk",
+    "body": "PT Kalbe Farma Tbk, an insider, sold 5,500,000 shares of PT Enseval Putera Megatrading Tbk, reducing its holding from 2,496,785,795 to 2,491,285,795. The transaction occurred in the healthcare sector, specifically pharmaceuticals and healthcare research. The purpose of the transaction is not disclosed.",
+    "source": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_EREP/202509/128254602a_d4e082b28e.pdf",
+    "timestamp": "2025-10-02T09:00:00",
+    "sector": "healthcare",
+    "sub_sector": "pharmaceuticals-health-care-research",
+    "tags": [
+      "bearish",
+      "divestment"
+    ],
+    "tickers": [
+      "KLBF.JK"
+    ],
+    "transaction_type": "sell",
+    "holding_before": 2496785795,
+    "holding_after": 2491285795,
+    "amount_transaction": 5500000,
+    "holder_type": "insider",
+    "holder_name": "PT Kalbe Farma Tbk",
+    "price": 2400.0,
+    "transaction_value": 13200000000,
+    "price_transaction": {
+      "types": [
+        "sell"
+      ],
+      "prices": [
+        2400
+      ],
+      "amount_transacted": [
+        5500000
+      ]
+    },
+    "share_percentage_before": 92.18,
+    "share_percentage_after": 91.98,
+    "share_percentage_transaction": 0.200000000000003,
+    "UID": "6fb31322-e427-4258-bd23-47ddc73104b6",
+    "symbol": "KLBF.JK",
+    "source_is_manual": null
+  },
+  {
+    "id": 1169,
+    "created_at": "2025-09-19T08:14:17.27817+00:00",
+    "title": "Hendro Jap Sell Transaction of PT Oscar Mitra Sukses Sejahtera Tbk",
+    "body": "On September 19, 2025, Hendro Jap, an insider shareholder, sold 190,000,000 shares of PT Oscar Mitra Sukses Sejahtera Tbk, changing its holding from 1,365,000,000 to 1,175,000,000 shares.",
+    "source": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_EREP/202509/a5852de95e_0f137fab04.pdf",
+    "timestamp": "2025-09-19T14:12:48",
+    "sector": "consumer-cyclicals",
+    "sub_sector": "household-goods",
+    "tags": [
+      "bearish",
+      "divestment"
+    ],
+    "tickers": null,
+    "transaction_type": "sell",
+    "holding_before": 1365000000,
+    "holding_after": 1175000000,
+    "amount_transaction": 190000000,
+    "holder_type": "insider",
+    "holder_name": "Hendro Jap",
+    "price": 6.5789,
+    "transaction_value": 1250000000,
+    "price_transaction": {
+      "type": [
+        "sell"
+      ],
+      "prices": [
+        6.5789
+      ],
+      "amount_transacted": [
+        190000000
+      ]
+    },
+    "share_percentage_before": 71.84,
+    "share_percentage_after": 61.84,
+    "share_percentage_transaction": 10,
+    "UID": null,
+    "symbol": "OLIV.JK",
+    "source_is_manual": null
+  },
+  {
+    "id": 1262,
+    "created_at": "2025-10-02T07:28:14.289585+00:00",
+    "title": "Bapak Hapsoro Sell Transaction of PT Bukit Uluwatu Villa Tbk",
+    "body": "Bapak Hapsoro, an insider, sold 325,000,000 shares of PT Bukit Uluwatu Villa Tbk, reducing his holdings from 1,145,671,125 to 820,671,125. The transaction occurred in two parts, both at a price of 450. The purpose of the sale is not disclosed.",
+    "source": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_EREP/202510/1aeefcec5f_b8a3823006.pdf",
+    "timestamp": "2025-10-02T07:26:00",
+    "sector": "consumer-cyclicals",
+    "sub_sector": "consumer-services",
+    "tags": [
+      "bearish",
+      "divestment"
+    ],
+    "tickers": [
+      "BUVA.JK"
+    ],
+    "transaction_type": "sell",
+    "holding_before": 1145671125,
+    "holding_after": 820671125,
+    "amount_transaction": 325000000,
+    "holder_type": "insider",
+    "holder_name": "Hapsoro",
+    "price": 450.0,
+    "transaction_value": 146250000000,
+    "price_transaction": {
+      "types": [
+        "sell",
+        "sell"
+      ],
+      "prices": [
+        450,
+        450
+      ],
+      "amount_transacted": [
+        200000000,
+        125000000
+      ]
+    },
+    "share_percentage_before": 5.56,
+    "share_percentage_after": 3.99,
+    "share_percentage_transaction": 1.57,
+    "UID": null,
+    "symbol": "BUVA.JK",
+    "source_is_manual": null
+  },
+  {
+    "id": 883,
+    "created_at": "2025-08-28T05:11:30.803196+00:00",
+    "title": "PT Victoria Investama Tbk Buy Transaction of PT Victoria Insurance Tbk",
+    "body": "PT Victoria Investama Tbk acquired 55,000,000 shares of PT Victoria Insurance Tbk's stock, increasing its holding from 1,104,761,895 to 1,159,761,895, representing a 5% increase. The purpose of the transaction was to increase capital participation in its subsidiaries. This transaction suggests the company's confidence in its future prospects and its commitment to increasing its stake in its subsidiaries.",
+    "source": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_EREP/202507/22a02f1fbb_4dd23f136b.pdf",
+    "timestamp": "2025-07-01T16:19:00",
+    "sector": "financials",
+    "sub_sector": "holding-investment-companies",
+    "tags": [
+      "bullish",
+      "investment"
+    ],
+    "tickers": [
+      "VICO.JK"
+    ],
+    "transaction_type": "buy",
+    "holding_before": 1104761895,
+    "holding_after": 1159761895,
+    "amount_transaction": 55000000,
+    "holder_type": "insider",
+    "holder_name": "PT Victoria Investama Tbk",
+    "price": 153.0,
+    "transaction_value": 8415000000,
+    "price_transaction": {
+      "prices": [
+        153
+      ],
+      "amount_transacted": [
+        55000000
+      ]
+    },
+    "share_percentage_before": 75.64,
+    "share_percentage_after": 79.4,
+    "share_percentage_transaction": 3.76000000000001,
+    "UID": "9c3eece0-ca88-45b7-a4b8-c1841abe53ef",
+    "symbol": "VICO.JK",
+    "source_is_manual": null
+  },
+  {
+    "id": 1145,
+    "created_at": "2025-09-18T12:53:11.729258+00:00",
+    "title": "PT Matra Tri Abadi Buy Transaction of PT Aviana Sinar Abadi Tbk",
+    "body": "On September 18, 2025, PT Matra Tri Abadi, an institution shareholder, bought 600,000,000 shares of PT Aviana Sinar Abadi Tbk, changing its holding from 2,040,000,000 to 2,640,000,000 shares.",
+    "source": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_EREP/202509/cc4e8f23f5_9fdeaad0c3.pdf",
+    "timestamp": "2025-09-18T19:44:17",
+    "sector": "technology",
+    "sub_sector": "software-it-services",
+    "tags": [
+      "bullish",
+      "investment"
+    ],
+    "tickers": null,
+    "transaction_type": "buy",
+    "holding_before": 2040000000,
+    "holding_after": 2640000000,
+    "amount_transaction": 600000000,
+    "holder_type": "institution",
+    "holder_name": "PT Matra Tri Abadi",
+    "price": 25.0,
+    "transaction_value": 15000000000.0,
+    "price_transaction": {
+      "type": [
+        "buy"
+      ],
+      "prices": [
+        25
+      ],
+      "amount_transacted": [
+        600000000
+      ]
+    },
+    "share_percentage_before": 32.93,
+    "share_percentage_after": 42.61,
+    "share_percentage_transaction": 9.68,
+    "UID": null,
+    "symbol": "IRSX.JK",
+    "source_is_manual": null
+  },
+  {
+    "id": 1298,
+    "created_at": "2025-10-07T08:17:04.377563+00:00",
+    "title": "Morgan Stanley & Co. International Plc Sell Transaction of PT Sumber Alfaria Trijaya",
+    "body": "Morgan Stanley & Co. International Plc, an institutional holder, sold 43124508 shares of PT Sumber Alfaria Trijaya Tbk, reducing its holding from 3740813211 to 3697688703 shares. The transaction occurred in the energy sector, specifically alternative-energy. The purpose of the transaction is not disclosed.",
+    "source": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_EREP/202510/562a59c8e1_a792384a59.pdf",
+    "timestamp": "2025-10-07T07:47:00",
+    "sector": "energy",
+    "sub_sector": "alternative-energy",
+    "tags": [
+      "bearish",
+      "divestment"
+    ],
+    "tickers": [
+      "AMRT.JK"
+    ],
+    "transaction_type": "sell",
+    "holding_before": 3740813211,
+    "holding_after": 3697688703,
+    "amount_transaction": 43124508,
+    "holder_type": "institution",
+    "holder_name": "Morgan Stanley & Co. International Plc",
+    "price": 1909,
+    "transaction_value": 82329516972,
+    "price_transaction": {
+      "types": [
+        "buy",
+        "sell"
+      ],
+      "prices": [
+        1865,
+        1909
+      ],
+      "amount_transacted": [
+        109800,
+        43234308
+      ]
+    },
+    "share_percentage_before": 9.0087,
+    "share_percentage_after": 8.9048,
+    "share_percentage_transaction": 0.103899999999999,
+    "UID": null,
+    "symbol": "AMRT.JK",
+    "source_is_manual": null
+  },
+  {
+    "id": 284,
+    "created_at": "2025-03-21T05:41:47.878095+00:00",
+    "title": "UBS AG LONDON sells 589,951,245 shares of Visi Media Asia Tbk.",
+    "body": "On January 28, 2025, UBS AG London, an insider, sold 589,951,245 shares of Visi Media Asia Tbk, a company in the consumer-cyclicals sector and media-entertainment sub-sector. This transaction resulted in a decrease in UBS AG London's holding from 2,165,020,699 shares to 1,575,069,454 shares. The purpose of the transaction is not disclosed. This significant sale by an insider may indicate a loss of confidence in the company's prospects, potentially impacting investor sentiment and the company's stock price.",
+    "source": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_EREP/202501/a060c162f5_81b4ce2c81.pdf",
+    "timestamp": "2025-01-28T05:34:00",
+    "sector": "consumer-cyclicals",
+    "sub_sector": "media-entertainment",
+    "tags": [],
+    "tickers": [
+      "VIVA.JK"
+    ],
+    "transaction_type": "sell",
+    "holding_before": 2165020699,
+    "holding_after": 1575069454,
+    "amount_transaction": 589951245,
+    "holder_type": "insider",
+    "holder_name": "UBS AG LONDON",
+    "price": 0.0,
+    "transaction_value": 0,
+    "price_transaction": {
+      "prices": [
+        0
+      ],
+      "amount_transacted": [
+        589951245
+      ]
+    },
+    "share_percentage_before": null,
+    "share_percentage_after": null,
+    "share_percentage_transaction": null,
+    "UID": null,
+    "symbol": "VIVA.JK",
+    "source_is_manual": null
+  },
+  {
+    "id": 274,
+    "created_at": "2025-03-21T04:55:24.537462+00:00",
+    "title": "Wati Kumaedi Buy Transaction of PT Unilever Indonesia Tbk.",
+    "body": "On January 23, 2025, Wati Kumaedi, an insider, purchased 4,977 shares of PT Unilever Indonesia Tbk, a consumer non-cyclicals company in the nondurable household products sub-sector, at a price of IDR 1,000 per share. This \"buy\" transaction increased Kumaedi's holding from 2,483,523 to 2,488,500 shares. The purpose of the transaction is not disclosed. As an insider, Kumaedi's purchase may indicate confidence in the company's prospects, potentially influencing investor sentiment and share price.",
+    "source": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_EREP/202501/6d5224d96d_f7299b60a6.pdf",
+    "timestamp": "2025-01-23T04:52:00",
+    "sector": "consumer-non-cyclicals",
+    "sub_sector": "nondurable-household-products",
+    "tags": [],
+    "tickers": [
+      "UNVR.JK"
+    ],
+    "transaction_type": "buy",
+    "holding_before": 2483523,
+    "holding_after": 2488500,
+    "amount_transaction": 4977,
+    "holder_type": "insider",
+    "holder_name": "Wati Kumaedi",
+    "price": 1000.0,
+    "transaction_value": 4977000,
+    "price_transaction": {
+      "prices": [
+        1000
+      ],
+      "amount_transacted": [
+        4977
+      ]
+    },
+    "share_percentage_before": null,
+    "share_percentage_after": null,
+    "share_percentage_transaction": null,
+    "UID": null,
+    "symbol": "UNVR.JK",
+    "source_is_manual": null
+  },
+  {
+    "id": 820,
+    "created_at": "2025-08-20T07:38:33.280223+00:00",
+    "title": "Amir Sunarko Sell Transaction of PT SLJ Global Tbk",
+    "body": "Amir Sunarko, an insider, sold 13,761,468 shares of PT SLJ Global Tbk (SULI.JK) on 2025-07-15, decreasing his stake from 304,925,457 shares to 291,163,989 shares. The transaction was conducted at prices ranging from IDR 102 to IDR 103.",
+    "source": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_EREP/202507/0a8743287d_da7ffaac92.pdf",
+    "timestamp": "2025-07-18T17:42:00",
+    "sector": "basic-materials",
+    "sub_sector": "basic-materials",
+    "tags": [
+      "bearish"
+    ],
+    "tickers": [
+      "SULI.JK"
+    ],
+    "transaction_type": "sell",
+    "holding_before": 304925457,
+    "holding_after": 291163989,
+    "amount_transaction": 13761468,
+    "holder_type": "insider",
+    "holder_name": "Amir Sunarko",
+    "price": 102.782,
+    "transaction_value": 1414436204,
+    "price_transaction": {
+      "prices": [
+        102,
+        103
+      ],
+      "amount_transacted": [
+        2995000,
+        10766468
+      ]
+    },
+    "share_percentage_before": 4.82,
+    "share_percentage_after": 4.61,
+    "share_percentage_transaction": 0.21,
+    "UID": null,
+    "symbol": "SULI.JK",
+    "source_is_manual": null
+  },
+  {
+    "id": 905,
+    "created_at": "2025-08-29T05:30:05.899042+00:00",
+    "title": "Claudia Ingkiriwang, Ellen Yanury Luassa, Ing-Ing Sell Transaction of PT Tourindo Guide Indonesia Tbk. (Seller)",
+    "body": "Claudia Ingkiriwang, Ellen Yanury Luassa, Ing-Ing Cindy Eva, Adi Putera Widjaja, Henri Widodo and PT Surya Fajar Capital Tbk sold 493,088,500 shares of PT Tourindo Guide Indonesia Tbk. (PGJO.JK) on August 1, 2025, reducing their holding from 493,088,500 shares to 0 shares. The transaction was done for the purpose of selling shares.",
+    "source": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_EREP/202507/6022842de0_7d47c16e51.pdf",
+    "timestamp": "2025-08-01T11:05:00",
+    "sector": "technology",
+    "sub_sector": "software-it-services",
+    "tags": [
+      "bearish"
+    ],
+    "tickers": [
+      "PGJO.JK"
+    ],
+    "transaction_type": "sell",
+    "holding_before": 493088500,
+    "holding_after": 0,
+    "amount_transaction": 493088500,
+    "holder_type": "insider",
+    "holder_name": "Claudia Ingkiriwang, Ellen Yanury Luassa, Ing-Ing, Cindy Eva, Adi Putera Widjaja, Henri Widodo And Pt Surya Fajar Capital Tbk",
+    "price": 58.0,
+    "transaction_value": 28599133000,
+    "price_transaction": {
+      "prices": [
+        58,
+        58,
+        58,
+        58,
+        58,
+        58
+      ],
+      "amount_transacted": [
+        56291016,
+        23401000,
+        122927734,
+        189375000,
+        54218750,
+        46875000
+      ]
+    },
+    "share_percentage_before": 61.96,
+    "share_percentage_after": 0,
+    "share_percentage_transaction": 61.96,
+    "UID": null,
+    "symbol": "PGJO.JK",
+    "source_is_manual": null
+  },
+  {
+    "id": 1086,
+    "created_at": "2025-09-12T08:56:06.078021+00:00",
+    "title": "PT Green Power Group Tbk Buy Transaction of PT Bangun Karya Perkasa Jaya Tbk",
+    "body": "PT Green Power Group Tbk bought 282,879,400 shares of PT Bangun Karya Perkasa Jaya Tbk, increasing its holding from 0 to 282,879,400 shares. The transaction type was a buy, with a price of 33. The purpose was for the implementation of a takeover. This significant transaction indicates a substantial change in ownership.",
+    "source": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_EREP/202509/15fc38a7ac_decd08354f.pdf",
+    "timestamp": "2025-09-10T20:54:00",
+    "sector": "industrials",
+    "sub_sector": "industrial-goods",
+    "tags": [
+      "bullish"
+    ],
+    "tickers": [
+      "LABA.JK"
+    ],
+    "transaction_type": "buy",
+    "holding_before": 0,
+    "holding_after": 282879400,
+    "amount_transaction": 282879400,
+    "holder_type": "insider",
+    "holder_name": "PT Green Power Group Tbk",
+    "price": 33.0,
+    "transaction_value": 9335020200,
+    "price_transaction": {
+      "types": [
+        "buy"
+      ],
+      "prices": [
+        33
+      ],
+      "amount_transacted": [
+        282879400
+      ]
+    },
+    "share_percentage_before": 0,
+    "share_percentage_after": 17,
+    "share_percentage_transaction": 17,
+    "UID": "3e15fd97-8fc0-47b6-a782-91cd877e34fd",
+    "symbol": "LABA.JK",
+    "source_is_manual": null
+  },
+  {
+    "id": 1090,
+    "created_at": "2025-09-12T09:13:52.442255+00:00",
+    "title": "Leafgreen Demeter Holdings Pte. Ltd Buy Transaction of PT Nippon Indosari Corpindo",
+    "body": "Leafgreen Demeter Holdings Pte. Ltd, an insider, acquired 1,370,798,546 shares of PT Nippon Indosari Corpindo Tbk, increasing its holding from 0 to 1,370,798,546 shares in the energy sector, specifically alternative energy, with the transaction type being a buy.",
+    "source": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_EREP/202509/b527707649_eca6e59268.pdf",
+    "timestamp": "2025-09-11T09:04:00",
+    "sector": "consumer-non-cyclicals",
+    "sub_sector": "food-beverage",
+    "tags": [
+      "bullish",
+      "investment"
+    ],
+    "tickers": [
+      "ROTI.JK"
+    ],
+    "transaction_type": "buy",
+    "holding_before": 0,
+    "holding_after": 1370798546,
+    "amount_transaction": 1370798546,
+    "holder_type": "insider",
+    "holder_name": "Leafgreen Demeter Holdings Pte. Ltd",
+    "price": 0.0,
+    "transaction_value": 0,
+    "price_transaction": {
+      "types": [
+        "buy"
+      ],
+      "prices": [
+        0
+      ],
+      "amount_transacted": [
+        1370798546
+      ]
+    },
+    "share_percentage_before": 0,
+    "share_percentage_after": 22.16,
+    "share_percentage_transaction": 22.16,
+    "UID": "36b04f37-181c-4fb0-ae73-38c2594b2f16",
+    "symbol": "ROTI.JK",
+    "source_is_manual": null
+  },
+  {
+    "id": 1266,
+    "created_at": "2025-10-02T10:01:48.402605+00:00",
+    "title": "PT Elang Mahkota Teknologi Tbk Buy Transaction of PT Surya Citra Media Tbk",
+    "body": "PT Elang Mahkota Teknologi Tbk, an insider, bought 34,241,030,000 shares of PT Surya Citra Media Tbk, increasing its holding from 49,135,335,640 to 49,477,745,940. The transaction occurred in the consumer-cyclicals sector, specifically media-entertainment. The purpose of the transaction is not disclosed.",
+    "source": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_EREP/202509/2db5d769cd_7f87b588f5.pdf",
+    "timestamp": "2025-09-22T09:56:00",
+    "sector": "consumer-cyclicals",
+    "sub_sector": "media-entertainment",
+    "tags": [
+      "bullish",
+      "investment"
+    ],
+    "tickers": [
+      "SCMA.JK"
+    ],
+    "transaction_type": "buy",
+    "holding_before": 49135335640,
+    "holding_after": 49477745940,
+    "amount_transaction": 342410300,
+    "holder_type": "insider",
+    "holder_name": "PT Elang Mahkota Teknologi Tbk",
+    "price": 306.818,
+    "transaction_value": 105057643100,
+    "price_transaction": {
+      "types": [
+        "buy",
+        "buy",
+        "buy",
+        "buy",
+        "buy",
+        "buy",
+        "buy",
+        "buy"
+      ],
+      "prices": [
+        281,
+        299,
+        309,
+        304,
+        294,
+        324,
+        337,
+        340
+      ],
+      "amount_transacted": [
+        69508800,
+        38214000,
+        32260900,
+        34016300,
+        48229700,
+        73770300,
+        23500000,
+        22910300
+      ]
+    },
+    "share_percentage_before": 66.43,
+    "share_percentage_after": 66.89,
+    "share_percentage_transaction": 0.459999999999994,
+    "UID": "326bd3f4-0c4b-440a-9f02-fdacdb997a16",
+    "symbol": "SCMA.JK",
+    "source_is_manual": null
+  },
+  {
+    "id": 2010,
+    "created_at": "2025-11-20T10:01:53.338088+00:00",
+    "title": "PT Majukarya Mandiriindonesia sells shares of ITMA",
+    "body": "PT Majukarya Mandiriindonesia sold 55,214,405 shares of ITMA. This decreases their holdings from 55,214,405 to 0 shares.",
+    "source": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_EREP/202511/31665b652f_abc59e9d99.pdf",
+    "timestamp": "2025-11-20T15:58:19",
+    "sector": "energy",
+    "sub_sector": "oil-gas-coal",
+    "tags": [
+      "bearish",
+      "divestment"
+    ],
+    "tickers": null,
+    "transaction_type": "sell",
+    "holding_before": 55214405,
+    "holding_after": 0,
+    "amount_transaction": 55214405,
+    "holder_type": "institution",
+    "holder_name": " PT Majukarya Mandiriindonesia",
+    "price": 0,
+    "transaction_value": 0,
+    "price_transaction": {
+      "type": [],
+      "prices": [],
+      "amount_transacted": []
+    },
+    "share_percentage_before": 5.527,
+    "share_percentage_after": 0,
+    "share_percentage_transaction": 5.527,
+    "UID": null,
+    "symbol": "ITMA.JK",
+    "source_is_manual": null
+  },
+  {
+    "id": 1297,
+    "created_at": "2025-10-07T07:47:23.477961+00:00",
+    "title": "Van Eck Associates Corporation Buy Transaction of PT Bumi Resources Minerals Tbk",
+    "body": "Van Eck Associates Corporation, an institution, bought 50,450,100 shares of PT Bumi Resources Minerals Tbk, increasing its holding from 7,085,821,900 to 7,136,272,000. The transaction occurred in the energy sector, specifically oil-gas-coal sub-sector, at a price of 838. The purpose of the transaction is not specified.",
+    "source": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_EREP/202510/d613b4be9d_ec72a22979.pdf",
+    "timestamp": "2025-10-07T07:44:00",
+    "sector": "energy",
+    "sub_sector": "oil-gas-coal",
+    "tags": [
+      "bullish",
+      "investment"
+    ],
+    "tickers": [
+      "BUMI.JK"
+    ],
+    "transaction_type": "buy",
+    "holding_before": 7085821900,
+    "holding_after": 7136272000,
+    "amount_transaction": 50450100,
+    "holder_type": "institution",
+    "holder_name": "Van Eck Associates Corporation",
+    "price": 838.18,
+    "transaction_value": 42286264818,
+    "price_transaction": {
+      "types": [
+        "buy"
+      ],
+      "prices": [
+        838.18
+      ],
+      "amount_transacted": [
+        50450100
+      ]
+    },
+    "share_percentage_before": 4.998,
+    "share_percentage_after": 5.033,
+    "share_percentage_transaction": 0.0350000000000001,
+    "UID": null,
+    "symbol": "BUMI.JK",
+    "source_is_manual": null
+  },
+  {
+    "id": 1303,
+    "created_at": "2025-10-14T07:35:08.700814+00:00",
+    "title": "Ubs Switzerland Ag Buy Transaction of Wicaksana Overseas International Tbk",
+    "body": "Ubs Switzerland Ag, an institution, got 350,145,665 shares of Wicaksana Overseas International Tbk, increasing its holdings from 0 to 350,145,665. The transaction occurred in the consumer-non-cyclicals sector, specifically food-staples-retailing. The purpose of the transaction is transfer of shares from client into UBS.",
+    "source": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_EREP/202510/2466aae0e8_bce097fade.pdf",
+    "timestamp": "2025-10-14T07:32:00",
+    "sector": "consumer-non-cyclicals",
+    "sub_sector": "food-staples-retailing",
+    "tags": [
+      "bullish",
+      "investment"
+    ],
+    "tickers": [
+      "WICO.JK"
+    ],
+    "transaction_type": "others",
+    "holding_before": 0,
+    "holding_after": 350145665,
+    "amount_transaction": 350145665,
+    "holder_type": "institution",
+    "holder_name": "Ubs Switzerland Ag",
+    "price": 0,
+    "transaction_value": 0,
+    "price_transaction": {
+      "types": [],
+      "prices": [],
+      "amount_transacted": []
+    },
+    "share_percentage_before": 0,
+    "share_percentage_after": 14.63,
+    "share_percentage_transaction": 14.63,
+    "UID": null,
+    "symbol": "WICO.JK",
+    "source_is_manual": null
+  },
+  {
+    "id": 1304,
+    "created_at": "2025-10-14T07:37:49.505529+00:00",
+    "title": "Ubs Ag London Buy Transaction of Resource Alam Indonesia Tbk",
+    "body": "Ubs Ag London, an institution, got 1,855,447,105 shares of Resource Alam Indonesia Tbk, increasing its holding from 118,922 to 1,855,566,027. The transaction occurred in the energy sector, specifically oil, gas & coal. The purpose of the transaction is that UBS client consolidated the assets in UBS.",
+    "source": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_EREP/202510/2af3062c00_1c4ce08a76.pdf",
+    "timestamp": "2025-10-14T07:35:00",
+    "sector": "energy",
+    "sub_sector": "oil-gas-coal",
+    "tags": [
+      "bullish",
+      "investment"
+    ],
+    "tickers": [
+      "KKGI.JK"
+    ],
+    "transaction_type": "others",
+    "holding_before": 118922,
+    "holding_after": 1855566027,
+    "amount_transaction": 1855447105,
+    "holder_type": "institution",
+    "holder_name": "Ubs Ag London",
+    "price": 0,
+    "transaction_value": 0,
+    "price_transaction": {
+      "types": [],
+      "prices": [],
+      "amount_transacted": []
+    },
+    "share_percentage_before": 0.002,
+    "share_percentage_after": 37.11,
+    "share_percentage_transaction": 37.108,
+    "UID": null,
+    "symbol": "KKGI.JK",
+    "source_is_manual": null
+  },
+  {
+    "id": 1089,
+    "created_at": "2025-09-12T09:04:32.843727+00:00",
+    "title": "Demeter Indo Holdings Pte. Ltd Transfer Transaction of PT Nippon Indosari Corpindo",
+    "body": "Demeter Indo Holdings Pte. Ltd, an insider, transferred 1,370,798,546 shares of PT Nippon Indosari Corpindo Tbk, reducing its holding to 0.",
+    "source": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_EREP/202509/4e88d57f4a_958ec2f010.pdf",
+    "timestamp": "2025-09-12T09:02:00",
+    "sector": "consumer-non-cyclicals",
+    "sub_sector": "food-beverage",
+    "tags": [
+      "bearish",
+      "divestment"
+    ],
+    "tickers": [
+      "ROTI.JK"
+    ],
+    "transaction_type": "sell",
+    "holding_before": 1370798546,
+    "holding_after": 0,
+    "amount_transaction": 1370798546,
+    "holder_type": "insider",
+    "holder_name": "Demeter Indo Holdings Pte. Ltd",
+    "price": 0.0,
+    "transaction_value": 0,
+    "price_transaction": {
+      "types": [
+        "sell"
+      ],
+      "prices": [
+        0
+      ],
+      "amount_transacted": [
+        1370798546
+      ]
+    },
+    "share_percentage_before": 22.16,
+    "share_percentage_after": 0,
+    "share_percentage_transaction": 22.16,
+    "UID": "36b04f37-181c-4fb0-ae73-38c2594b2f16",
+    "symbol": "ROTI.JK",
+    "source_is_manual": null
+  },
+  {
+    "id": 1335,
+    "created_at": "2025-10-14T07:52:58.710193+00:00",
+    "title": "Mahogany Global Investment Pte Ltd Sell Transaction of PT Wahana Interfood Nusantara Tbk",
+    "body": "Mahogany Global Investment Pte Ltd, an insider, sold 580,500 shares of PT Wahana Interfood Nusantara Tbk, reducing its holding from 459,637,051 to 459,056,551. The transaction occurred in the energy sector, specifically alternative energy, with a share price of 450.",
+    "source": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_EREP/202510/e6cc2294d3_bf84e75f9e.pdf",
+    "timestamp": "2025-10-14T07:44:00",
+    "sector": "energy",
+    "sub_sector": "alternative-energy",
+    "tags": [
+      "bearish",
+      "divestment"
+    ],
+    "tickers": [
+      "COCO.JK"
+    ],
+    "transaction_type": "sell",
+    "holding_before": 459637051,
+    "holding_after": 459056551,
+    "amount_transaction": 580500,
+    "holder_type": "insider",
+    "holder_name": "Mahogany Global Investment Pte Ltd",
+    "price": 450.39,
+    "transaction_value": 261451395,
+    "price_transaction": {
+      "types": [
+        "buy"
+      ],
+      "prices": [
+        450.39
+      ],
+      "amount_transacted": [
+        580500
+      ]
+    },
+    "share_percentage_before": 45.33,
+    "share_percentage_after": 45.2,
+    "share_percentage_transaction": 0.129999999999995,
+    "UID": null,
+    "symbol": "COCO.JK",
+    "source_is_manual": null
+  },
+  {
+    "id": 1237,
+    "created_at": "2025-09-29T16:18:53.813957+00:00",
+    "title": "PT Abadimukti Gunalestari Sell Transaction of Perdana Gapura Prima Tbk",
+    "body": "On September 29, 2025, PT Abadimukti Gunalestari, an institution shareholder, sold 81,893,900 shares of Perdana Gapura Prima Tbk, changing its holding from 2,373,100,720 to 2,335,942,520 shares.",
+    "source": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_EREP/202509/d6fd819c87_a5b9f59459.pdf",
+    "timestamp": "2025-09-29T21:44:36",
+    "sector": "properties-real-estate",
+    "sub_sector": "properties-real-estate",
+    "tags": [
+      "bearish",
+      "divestment"
+    ],
+    "tickers": null,
+    "transaction_type": "sell",
+    "holding_before": 2373100720,
+    "holding_after": 2337242520,
+    "amount_transaction": 35858200,
+    "holder_type": "insider",
+    "holder_name": "PT Abadimukti Gunalestari",
+    "price": 137.608,
+    "transaction_value": 4934392800,
+    "price_transaction": {
+      "type": [
+        "buy",
+        "buy",
+        "buy",
+        "sell",
+        "sell",
+        "sell",
+        "sell",
+        "sell",
+        "buy",
+        "buy",
+        "buy",
+        "buy",
+        "buy",
+        "buy",
+        "buy",
+        "buy",
+        "buy",
+        "sell",
+        "sell",
+        "sell",
+        "sell",
+        "sell",
+        "buy",
+        "buy",
+        "buy",
+        "buy",
+        "buy",
+        "buy",
+        "buy",
+        "buy",
+        "sell",
+        "sell",
+        "sell",
+        "sell"
+      ],
+      "prices": [
+        143,
+        144,
+        145,
+        146,
+        147,
+        143,
+        144,
+        145,
+        125,
+        126,
+        127,
+        128,
+        129,
+        130,
+        131,
+        133,
+        134,
+        123,
+        124,
+        125,
+        126,
+        127,
+        124,
+        129,
+        123,
+        130,
+        127,
+        128,
+        129,
+        130,
+        127,
+        128,
+        129,
+        127
+      ],
+      "amount_transacted": [
+        500000,
+        1500100,
+        600,
+        5000000,
+        1800000,
+        10000000,
+        10000000,
+        7900000,
+        6772200,
+        1116500,
+        959900,
+        466100,
+        1020900,
+        100800,
+        250000,
+        13000000,
+        14162300,
+        7334600,
+        815500,
+        4544600,
+        768600,
+        1002100,
+        100000,
+        500000,
+        100000,
+        550000,
+        100000,
+        1486200,
+        1100100,
+        1600000,
+        7000000,
+        15078500,
+        7000000,
+        3000000
+      ]
+    },
+    "share_percentage_before": 55.49,
+    "share_percentage_after": 54.65,
+    "share_percentage_transaction": 0.84,
+    "UID": null,
+    "symbol": "GPRA.JK",
+    "source_is_manual": null
+  }
+]
