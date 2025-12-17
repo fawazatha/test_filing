@@ -1,63 +1,192 @@
 [
   {
-    "date": "2025-12-17T12:36:49",
-    "title": "REPORT OF OWNERSHIP OR ANY CHANGES IN SHARE OWNERSHIP OF PUBLIC COMPANIES",
-    "title_slug": "report-of-ownership-or-any-changes-in-share-ownership-of-public-companies",
-    "company_name": "SILO",
-    "main_link": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_KSEI/LK-17122025-0144-00.pdf-0.pdf",
-    "filename": "lk-17122025-0144-00.pdf-0.pdf",
-    "attachments": [],
-    "attachment_count": 0,
-    "category": "Ownership Report",
-    "description": "Ownership report for SILO",
-    "link": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_KSEI/LK-17122025-0144-00.pdf-0.pdf",
-    "scraped_at": "2025-12-17T15:04:06+07:00"
-  },
-  {
-    "date": "2025-12-17T12:05:31",
-    "title": "REPORT OF OWNERSHIP OR ANY CHANGES IN SHARE OWNERSHIP OF PUBLIC COMPANIES",
-    "title_slug": "report-of-ownership-or-any-changes-in-share-ownership-of-public-companies",
-    "company_name": "IMPC",
-    "main_link": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_KSEI/LK-17122025-6944-00.pdf-0.pdf",
-    "filename": "lk-17122025-6944-00.pdf-0.pdf",
-    "attachments": [],
-    "attachment_count": 0,
-    "category": "Ownership Report",
-    "description": "Ownership report for IMPC",
-    "link": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_KSEI/LK-17122025-6944-00.pdf-0.pdf",
-    "scraped_at": "2025-12-17T15:04:06+07:00"
-  },
-  {
-    "date": "2025-12-17T10:29:44",
-    "title": "Approval of the Change in the Share Ownership Composition of PT Bank Pembangunan Daerah Sulawesi Tenggara Resulting in the Addition of a New Controlling Shareholder (PSP).",
-    "title_slug": "approval-of-the-change-in-the-share-ownership-composition-of-pt-bank-pembangunan-daerah-sulawesi-tenggara-resulting-in-the-addition-of-a-new-controlling-shareholder-psp",
-    "company_name": "BJTM",
-    "main_link": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_EREP/202512/b4a19121de_7dfa6b5c02.pdf",
-    "filename": "b4a19121de_7dfa6b5c02.pdf",
+    "date": "2025-12-04T21:10:25",
+    "title": "Ownership Report or Any Changes in Ownership of Public Company Shares",
+    "title_slug": "ownership-report-or-any-changes-in-ownership-of-public-company-shares",
+    "company_name": "DEWA",
+    "main_link": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_EREP/202512/780512b694_5d1bc2c6c6.pdf",
+    "filename": "780512b694_5d1bc2c6c6.pdf",
     "attachments": [
       {
-        "filename": "20251217_BJTM_Laporan Informasi dan Fakta Material_32013634_lamp1.pdf",
-        "url": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_EREP/202512/5b63e287f9_57d0e36767.pdf"
+        "filename": "20251204_DEWA_Laporan Kepemilikan atau Setiap Perubahan Kepemilikan Saham Perusahaan Terbuka_32000092_lamp1.pdf",
+        "url": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_EREP/202512/eddb5c85dc_ae9f9a7a81.pdf"
       }
     ],
     "attachment_count": 1,
     "category": "Ownership Report",
-    "description": "Ownership report for BJTM",
-    "link": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_EREP/202512/b4a19121de_7dfa6b5c02.pdf",
-    "scraped_at": "2025-12-17T15:04:06+07:00"
+    "description": "Ownership report for DEWA",
+    "link": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_EREP/202512/780512b694_5d1bc2c6c6.pdf",
+    "scraped_at": "2025-12-17T15:31:14+07:00"
   },
   {
-    "date": "2025-12-17T09:53:58",
-    "title": "REPORT OF OWNERSHIP OR ANY CHANGES IN SHARE OWNERSHIP OF PUBLIC COMPANIES",
-    "title_slug": "report-of-ownership-or-any-changes-in-share-ownership-of-public-companies",
-    "company_name": "AKPI",
-    "main_link": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_KSEI/LK-17122025-1938-00.pdf-0.pdf",
-    "filename": "lk-17122025-1938-00.pdf-0.pdf",
+    "date": "2025-12-04T21:01:47",
+    "title": "Ownership Report or Any Changes in Ownership of Public Company Shares",
+    "title_slug": "ownership-report-or-any-changes-in-ownership-of-public-company-shares",
+    "company_name": "KKES",
+    "main_link": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_EREP/202512/7a5bbc9c92_af52a0887f.pdf",
+    "filename": "7a5bbc9c92_af52a0887f.pdf",
+    "attachments": [
+      {
+        "filename": "20251204_KKES_Laporan Kepemilikan atau Setiap Perubahan Kepemilikan Saham Perusahaan Terbuka_32000168_lamp2.pdf",
+        "url": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_EREP/202512/4d6c4be689_42678335a4.pdf"
+      },
+      {
+        "filename": "20251204_KKES_Laporan Kepemilikan atau Setiap Perubahan Kepemilikan Saham Perusahaan Terbuka_32000168_lamp3.pdf",
+        "url": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_EREP/202512/bdf5893ab2_a9650ae540.pdf"
+      },
+      {
+        "filename": "20251204_KKES_Laporan Kepemilikan atau Setiap Perubahan Kepemilikan Saham Perusahaan Terbuka_32000168_lamp4.pdf",
+        "url": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_EREP/202512/f171220632_29c251a7c8.pdf"
+      },
+      {
+        "filename": "20251204_KKES_Laporan Kepemilikan atau Setiap Perubahan Kepemilikan Saham Perusahaan Terbuka_32000168_lamp1.pdf",
+        "url": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_EREP/202512/face9877ec_2e623c6850.pdf"
+      }
+    ],
+    "attachment_count": 4,
+    "category": "Ownership Report",
+    "description": "Ownership report for KKES",
+    "link": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_EREP/202512/7a5bbc9c92_af52a0887f.pdf",
+    "scraped_at": "2025-12-17T15:31:14+07:00"
+  },
+  {
+    "date": "2025-12-04T18:13:26",
+    "title": "Ownership Report or Any Changes in Ownership of Public Company Shares",
+    "title_slug": "ownership-report-or-any-changes-in-ownership-of-public-company-shares",
+    "company_name": "MEDS",
+    "main_link": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_EREP/202512/7483ba4089_640eca2fd5.pdf",
+    "filename": "7483ba4089_640eca2fd5.pdf",
+    "attachments": [
+      {
+        "filename": "20251204_MEDS_Laporan Kepemilikan atau Setiap Perubahan Kepemilikan Saham Perusahaan Terbuka_31999961_lamp1.pdf",
+        "url": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_EREP/202512/8df17c0d7c_b6f3694024.pdf"
+      }
+    ],
+    "attachment_count": 1,
+    "category": "Ownership Report",
+    "description": "Ownership report for MEDS",
+    "link": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_EREP/202512/7483ba4089_640eca2fd5.pdf",
+    "scraped_at": "2025-12-17T15:31:14+07:00"
+  },
+  {
+    "date": "2025-12-04T17:53:13",
+    "title": "Ownership Report or Any Changes in Ownership of Public Company Shares",
+    "title_slug": "ownership-report-or-any-changes-in-ownership-of-public-company-shares",
+    "company_name": "ARKO",
+    "main_link": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_EREP/202512/f32f34d50b_965d0f641b.pdf",
+    "filename": "f32f34d50b_965d0f641b.pdf",
+    "attachments": [
+      {
+        "filename": "20251204_ARKO_Laporan Kepemilikan atau Setiap Perubahan Kepemilikan Saham Perusahaan Terbuka_32000135_lamp2.pdf",
+        "url": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_EREP/202512/5c14d5f806_27f1502d27.pdf"
+      },
+      {
+        "filename": "20251204_ARKO_Laporan Kepemilikan atau Setiap Perubahan Kepemilikan Saham Perusahaan Terbuka_32000135_lamp1.pdf",
+        "url": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_EREP/202512/69134a343d_73c53a6fb5.pdf"
+      }
+    ],
+    "attachment_count": 2,
+    "category": "Ownership Report",
+    "description": "Ownership report for ARKO",
+    "link": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_EREP/202512/f32f34d50b_965d0f641b.pdf",
+    "scraped_at": "2025-12-17T15:31:14+07:00"
+  },
+  {
+    "date": "2025-12-04T16:18:08",
+    "title": "Ownership Report or Any Changes in Ownership of Public Company Shares",
+    "title_slug": "ownership-report-or-any-changes-in-ownership-of-public-company-shares",
+    "company_name": "SDMU",
+    "main_link": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_EREP/202512/697b7d9c87_21cad228e3.pdf",
+    "filename": "697b7d9c87_21cad228e3.pdf",
+    "attachments": [
+      {
+        "filename": "20251204_SDMU_Laporan Kepemilikan atau Setiap Perubahan Kepemilikan Saham Perusahaan Terbuka_32000050_lamp1.pdf",
+        "url": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_EREP/202512/68c3837ccf_3e60fe1fe9.pdf"
+      },
+      {
+        "filename": "20251204_SDMU_Laporan Kepemilikan atau Setiap Perubahan Kepemilikan Saham Perusahaan Terbuka_32000050_lamp2.pdf",
+        "url": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_EREP/202512/ff899751b4_e25e065d8c.pdf"
+      }
+    ],
+    "attachment_count": 2,
+    "category": "Ownership Report",
+    "description": "Ownership report for SDMU",
+    "link": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_EREP/202512/697b7d9c87_21cad228e3.pdf",
+    "scraped_at": "2025-12-17T15:31:14+07:00"
+  },
+  {
+    "date": "2025-12-04T13:54:26",
+    "title": "Ownership Report or Any Changes in Ownership of Public Company Shares",
+    "title_slug": "ownership-report-or-any-changes-in-ownership-of-public-company-shares",
+    "company_name": "FUJI",
+    "main_link": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_EREP/202512/3092e1a419_7c00291da0.pdf",
+    "filename": "3092e1a419_7c00291da0.pdf",
+    "attachments": [
+      {
+        "filename": "20251204_FUJI_Laporan Kepemilikan atau Setiap Perubahan Kepemilikan Saham Perusahaan Terbuka_31999852_lamp1.pdf",
+        "url": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_EREP/202512/d3a6502e93_fe257eec97.pdf"
+      }
+    ],
+    "attachment_count": 1,
+    "category": "Ownership Report",
+    "description": "Ownership report for FUJI",
+    "link": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_EREP/202512/3092e1a419_7c00291da0.pdf",
+    "scraped_at": "2025-12-17T15:31:14+07:00"
+  },
+  {
+    "date": "2025-12-04T12:39:35",
+    "title": "Ownership Report or Any Changes in Ownership of Public Company Shares",
+    "title_slug": "ownership-report-or-any-changes-in-ownership-of-public-company-shares",
+    "company_name": "TRON",
+    "main_link": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_EREP/202512/6721c41cbb_ff6d5ad021.pdf",
+    "filename": "6721c41cbb_ff6d5ad021.pdf",
+    "attachments": [
+      {
+        "filename": "20251204_TRON_Laporan Kepemilikan atau Setiap Perubahan Kepemilikan Saham Perusahaan Terbuka_31999867_lamp2.pdf",
+        "url": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_EREP/202512/a54acec8ab_037ea40cb1.pdf"
+      },
+      {
+        "filename": "20251204_TRON_Laporan Kepemilikan atau Setiap Perubahan Kepemilikan Saham Perusahaan Terbuka_31999867_lamp1.pdf",
+        "url": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_EREP/202512/bef5f8989e_618fbc3817.pdf"
+      }
+    ],
+    "attachment_count": 2,
+    "category": "Ownership Report",
+    "description": "Ownership report for TRON",
+    "link": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_EREP/202512/6721c41cbb_ff6d5ad021.pdf",
+    "scraped_at": "2025-12-17T15:31:14+07:00"
+  },
+  {
+    "date": "2025-12-04T12:02:55",
+    "title": "Ownership Report or Any Changes in Ownership of Public Company Shares",
+    "title_slug": "ownership-report-or-any-changes-in-ownership-of-public-company-shares",
+    "company_name": "HOPE",
+    "main_link": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_EREP/202512/a1e892fc7e_ea5be879de.pdf",
+    "filename": "a1e892fc7e_ea5be879de.pdf",
     "attachments": [],
     "attachment_count": 0,
     "category": "Ownership Report",
-    "description": "Ownership report for AKPI",
-    "link": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_KSEI/LK-17122025-1938-00.pdf-0.pdf",
-    "scraped_at": "2025-12-17T15:04:06+07:00"
+    "description": "Ownership report for HOPE",
+    "link": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_EREP/202512/a1e892fc7e_ea5be879de.pdf",
+    "scraped_at": "2025-12-17T15:31:14+07:00"
+  },
+  {
+    "date": "2025-12-04T10:26:45",
+    "title": "Ownership Report or Any Changes in Ownership of Public Company Shares",
+    "title_slug": "ownership-report-or-any-changes-in-ownership-of-public-company-shares",
+    "company_name": "GPSO",
+    "main_link": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_EREP/202512/a42be75f99_50e708f320.pdf",
+    "filename": "a42be75f99_50e708f320.pdf",
+    "attachments": [
+      {
+        "filename": "20251204_GPSO_Laporan Kepemilikan atau Setiap Perubahan Kepemilikan Saham Perusahaan Terbuka_31999750_lamp1.pdf",
+        "url": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_EREP/202512/edc34c9d78_0ae99054a7.pdf"
+      }
+    ],
+    "attachment_count": 1,
+    "category": "Ownership Report",
+    "description": "Ownership report for GPSO",
+    "link": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_EREP/202512/a42be75f99_50e708f320.pdf",
+    "scraped_at": "2025-12-17T15:31:14+07:00"
   }
 ]

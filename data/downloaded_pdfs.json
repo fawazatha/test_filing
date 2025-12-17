@@ -1,30 +1,65 @@
 [
   {
-    "ticker": "SILO",
-    "title": "REPORT OF OWNERSHIP OR ANY CHANGES IN SHARE OWNERSHIP OF PUBLIC COMPANIES",
-    "url": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_KSEI/LK-17122025-0144-00.pdf-0.pdf",
-    "filename": "lk-17122025-0144-00.pdf-0.pdf",
-    "timestamp": "2025-12-17T12:36:49"
+    "ticker": "DEWA",
+    "title": "Ownership Report or Any Changes in Ownership of Public Company Shares",
+    "url": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_EREP/202512/780512b694_5d1bc2c6c6.pdf",
+    "filename": "780512b694_5d1bc2c6c6.pdf",
+    "timestamp": "2025-12-04T21:10:25"
   },
   {
-    "ticker": "IMPC",
-    "title": "REPORT OF OWNERSHIP OR ANY CHANGES IN SHARE OWNERSHIP OF PUBLIC COMPANIES",
-    "url": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_KSEI/LK-17122025-6944-00.pdf-0.pdf",
-    "filename": "lk-17122025-6944-00.pdf-0.pdf",
-    "timestamp": "2025-12-17T12:05:31"
+    "ticker": "KKES",
+    "title": "Ownership Report or Any Changes in Ownership of Public Company Shares",
+    "url": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_EREP/202512/7a5bbc9c92_af52a0887f.pdf",
+    "filename": "7a5bbc9c92_af52a0887f.pdf",
+    "timestamp": "2025-12-04T21:01:47"
   },
   {
-    "ticker": "BJTM",
-    "title": "Approval of the Change in the Share Ownership Composition of PT Bank Pembangunan Daerah Sulawesi Tenggara Resulting in the Addition of a New Controlling Shareholder (PSP).",
-    "url": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_EREP/202512/5b63e287f9_57d0e36767.pdf",
-    "filename": "5b63e287f9_57d0e36767.pdf",
-    "timestamp": "2025-12-17T10:29:44"
+    "ticker": "MEDS",
+    "title": "Ownership Report or Any Changes in Ownership of Public Company Shares",
+    "url": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_EREP/202512/7483ba4089_640eca2fd5.pdf",
+    "filename": "7483ba4089_640eca2fd5.pdf",
+    "timestamp": "2025-12-04T18:13:26"
   },
   {
-    "ticker": "AKPI",
-    "title": "REPORT OF OWNERSHIP OR ANY CHANGES IN SHARE OWNERSHIP OF PUBLIC COMPANIES",
-    "url": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_KSEI/LK-17122025-1938-00.pdf-0.pdf",
-    "filename": "lk-17122025-1938-00.pdf-0.pdf",
-    "timestamp": "2025-12-17T09:53:58"
+    "ticker": "ARKO",
+    "title": "Ownership Report or Any Changes in Ownership of Public Company Shares",
+    "url": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_EREP/202512/f32f34d50b_965d0f641b.pdf",
+    "filename": "f32f34d50b_965d0f641b.pdf",
+    "timestamp": "2025-12-04T17:53:13"
+  },
+  {
+    "ticker": "SDMU",
+    "title": "Ownership Report or Any Changes in Ownership of Public Company Shares",
+    "url": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_EREP/202512/697b7d9c87_21cad228e3.pdf",
+    "filename": "697b7d9c87_21cad228e3.pdf",
+    "timestamp": "2025-12-04T16:18:08"
+  },
+  {
+    "ticker": "FUJI",
+    "title": "Ownership Report or Any Changes in Ownership of Public Company Shares",
+    "url": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_EREP/202512/3092e1a419_7c00291da0.pdf",
+    "filename": "3092e1a419_7c00291da0.pdf",
+    "timestamp": "2025-12-04T13:54:26"
+  },
+  {
+    "ticker": "TRON",
+    "title": "Ownership Report or Any Changes in Ownership of Public Company Shares",
+    "url": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_EREP/202512/6721c41cbb_ff6d5ad021.pdf",
+    "filename": "6721c41cbb_ff6d5ad021.pdf",
+    "timestamp": "2025-12-04T12:39:35"
+  },
+  {
+    "ticker": "HOPE",
+    "title": "Ownership Report or Any Changes in Ownership of Public Company Shares",
+    "url": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_EREP/202512/a1e892fc7e_ea5be879de.pdf",
+    "filename": "a1e892fc7e_ea5be879de.pdf",
+    "timestamp": "2025-12-04T12:02:55"
+  },
+  {
+    "ticker": "GPSO",
+    "title": "Ownership Report or Any Changes in Ownership of Public Company Shares",
+    "url": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_EREP/202512/a42be75f99_50e708f320.pdf",
+    "filename": "a42be75f99_50e708f320.pdf",
+    "timestamp": "2025-12-04T10:26:45"
   }
 ]
