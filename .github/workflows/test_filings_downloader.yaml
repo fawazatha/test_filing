@@ -32,7 +32,7 @@ jobs:
 
       - name: Run Ingestion (Fetch List)
         env:
-          PYTHONPATH: .
+          PYTHONPATH: .:src
         run: |
           mkdir -p data
           echo "Fetching announcements for ${{ inputs.date }}..."
@@ -40,7 +40,7 @@ jobs:
 
       - name: Run Downloader (Fetch PDFs)
         env:
-          PYTHONPATH: .
+          PYTHONPATH: .:src
           PROXY: ${{ secrets.PROXY }}
         run: |
           mkdir -p downloads/idx-format downloads/non-idx-format
