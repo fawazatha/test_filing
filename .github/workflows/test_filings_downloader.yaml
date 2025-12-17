@@ -33,6 +33,7 @@ jobs:
       - name: Run Ingestion (Fetch List)
         env:
           PYTHONPATH: .:src
+          PROXY: ${{ secrets.PROXY }}
         run: |
           mkdir -p data
           echo "Fetching announcements for ${{ inputs.date }}..."
