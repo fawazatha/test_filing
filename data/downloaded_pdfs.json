@@ -1,1 +1,30 @@
-[]
+[
+  {
+    "ticker": "SILO",
+    "title": "REPORT OF OWNERSHIP OR ANY CHANGES IN SHARE OWNERSHIP OF PUBLIC COMPANIES",
+    "url": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_KSEI/LK-17122025-0144-00.pdf-0.pdf",
+    "filename": "lk-17122025-0144-00.pdf-0.pdf",
+    "timestamp": "2025-12-17T12:36:49"
+  },
+  {
+    "ticker": "IMPC",
+    "title": "REPORT OF OWNERSHIP OR ANY CHANGES IN SHARE OWNERSHIP OF PUBLIC COMPANIES",
+    "url": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_KSEI/LK-17122025-6944-00.pdf-0.pdf",
+    "filename": "lk-17122025-6944-00.pdf-0.pdf",
+    "timestamp": "2025-12-17T12:05:31"
+  },
+  {
+    "ticker": "BJTM",
+    "title": "Approval of the Change in the Share Ownership Composition of PT Bank Pembangunan Daerah Sulawesi Tenggara Resulting in the Addition of a New Controlling Shareholder (PSP).",
+    "url": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_EREP/202512/5b63e287f9_57d0e36767.pdf",
+    "filename": "5b63e287f9_57d0e36767.pdf",
+    "timestamp": "2025-12-17T10:29:44"
+  },
+  {
+    "ticker": "AKPI",
+    "title": "REPORT OF OWNERSHIP OR ANY CHANGES IN SHARE OWNERSHIP OF PUBLIC COMPANIES",
+    "url": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_KSEI/LK-17122025-1938-00.pdf-0.pdf",
+    "filename": "lk-17122025-1938-00.pdf-0.pdf",
+    "timestamp": "2025-12-17T09:53:58"
+  }
+]
