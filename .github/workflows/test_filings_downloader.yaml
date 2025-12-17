@@ -41,6 +41,7 @@ jobs:
       - name: Run Downloader (Fetch PDFs)
         env:
           PYTHONPATH: .
+          PROXY: ${{ secrets.PROXY }}
         run: |
           mkdir -p downloads/idx-format downloads/non-idx-format
           echo "Downloading PDFs..."
