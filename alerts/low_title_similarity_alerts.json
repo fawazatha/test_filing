@@ -1,0 +1,86 @@
+[
+  {
+    "timestamp": "2025-12-17T05:30:08Z",
+    "category": "not_inserted",
+    "stage": "downloader",
+    "code": "download_failed",
+    "message": "Failed to download the document after several attempts.",
+    "reasons": [
+      {
+        "scope": "system",
+        "code": "download_failed",
+        "message": "Failed to download the document after several attempts.",
+        "details": {
+          "url": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_KSEI/LK-17122025-6944-00.pdf-0.pdf",
+          "retries": 3
+        }
+      }
+    ],
+    "context": {
+      "doc": {
+        "filename": "lk-17122025-6944-00.pdf-0.pdf",
+        "url": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_KSEI/LK-17122025-6944-00.pdf-0.pdf",
+        "title": "REPORT OF OWNERSHIP OR ANY CHANGES IN SHARE OWNERSHIP OF PUBLIC COMPANIES"
+      },
+      "announcement": null
+    },
+    "severity": "fatal",
+    "needs_review": true
+  },
+  {
+    "timestamp": "2025-12-17T05:30:14Z",
+    "category": "not_inserted",
+    "stage": "downloader",
+    "code": "download_failed",
+    "message": "Failed to download the document after several attempts.",
+    "reasons": [
+      {
+        "scope": "system",
+        "code": "download_failed",
+        "message": "Failed to download the document after several attempts.",
+        "details": {
+          "url": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_EREP/202512/5b63e287f9_57d0e36767.pdf",
+          "retries": 3
+        }
+      }
+    ],
+    "context": {
+      "doc": {
+        "filename": "5b63e287f9_57d0e36767.pdf",
+        "url": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_EREP/202512/5b63e287f9_57d0e36767.pdf",
+        "title": "Approval of the Change in the Share Ownership Composition of PT Bank Pembangunan Daerah Sulawesi Tenggara Resulting in the Addition of a New Controlling Shareholder (PSP)."
+      },
+      "announcement": null
+    },
+    "severity": "fatal",
+    "needs_review": true
+  },
+  {
+    "timestamp": "2025-12-17T05:30:21Z",
+    "category": "not_inserted",
+    "stage": "downloader",
+    "code": "download_failed",
+    "message": "Failed to download the document after several attempts.",
+    "reasons": [
+      {
+        "scope": "system",
+        "code": "download_failed",
+        "message": "Failed to download the document after several attempts.",
+        "details": {
+          "url": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_KSEI/LK-17122025-1938-00.pdf-0.pdf",
+          "retries": 3
+        }
+      }
+    ],
+    "context": {
+      "doc": {
+        "filename": "lk-17122025-1938-00.pdf-0.pdf",
+        "url": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_KSEI/LK-17122025-1938-00.pdf-0.pdf",
+        "title": "REPORT OF OWNERSHIP OR ANY CHANGES IN SHARE OWNERSHIP OF PUBLIC COMPANIES"
+      },
+      "announcement": null
+    },
+    "severity": "fatal",
+    "needs_review": true
+  }
+]

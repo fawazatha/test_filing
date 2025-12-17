@@ -1,0 +1,62 @@
+name: Manual Downloader (Debug)
+
+on:
+  workflow_dispatch:
+    inputs:
+      date:
+        description: "Date to scrape (YYYYMMDD)"
+        required: true
+        default: "20251014"
+      retries:
+        description: "Download retries"
+        required: false
+        default: "3"
+
+jobs:
+  run-downloader:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: "pip"
+
+      - name: Install Dependencies
+        run: |
+          pip install -U pip
+          pip install -r requirements.txt
+
+      - name: Run Ingestion (Fetch List)
+        env:
+          PYTHONPATH: .
+        run: |
+          mkdir -p data
+          echo "Fetching announcements for ${{ inputs.date }}..."
+          python -m src.ingestion.cli --date ${{ inputs.date }} --out data/ingestion.json
+
+      - name: Run Downloader (Fetch PDFs)
+        env:
+          PYTHONPATH: .
+        run: |
+          mkdir -p downloads/idx-format downloads/non-idx-format
+          echo "Downloading PDFs..."
+          python -m src.downloader.cli \
+            --input data/ingestion.json \
+            --out-idx downloads/idx-format \
+            --out-non-idx downloads/non-idx-format \
+            --meta-out data/downloaded_pdfs.json \
+            --retries ${{ inputs.retries }} \
+            --verbose
+
+      - name: Upload Artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: downloads-${{ inputs.date }}
+          path: |
+            downloads/
+            data/
+          retention-days: 1
