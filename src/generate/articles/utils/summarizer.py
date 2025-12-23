@@ -6,7 +6,7 @@ from pydantic import BaseModel, Field
 import os
 import json
 import time 
-
+import random
 
 # Optional: Gemini SDK
 _GEMINI_OK = False
@@ -141,7 +141,7 @@ class Summarizer:
         # keep signature compat
         self.use_llm = use_llm
         self.provider = (provider or os.getenv("LLM_PROVIDER") or "").strip().lower()
-        self.model = (os.getenv("GEMINI_MODEL") or "gemini-2.5-flash") if self.provider == "gemini" else groq_model
+        self.model = (os.getenv("GEMINI_MODEL") or "gemini-2.5-flash-lite") if self.provider == "gemini" else groq_model
 
         # Prepare Gemini client if chosen
         self._gem_client = None
@@ -166,8 +166,9 @@ class Summarizer:
                 if title and body:
                     return title, body
                 
-            except Exception:
-                pass  # fall back if anything fails
+            except Exception as error:
+                if "429" in str(error):
+                    time.sleep(15 + random.random())  # fall back if anything fails
 
         # Fallback to rule-based if Gemini is unavailable or failed
         return _compose_rule_based(facts)
