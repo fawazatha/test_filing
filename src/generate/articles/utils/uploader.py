@@ -172,22 +172,25 @@ def upload_news_file_cli(
         key=supabase_key,
     )
 
-    res = uploader.upload_records(
-        table=table,
-        rows=normed,
-        allowed_columns=list(_ALLOWED_COLS),
-        normalize_keys=False,
-        stop_on_first_error=False,
-    )
-    ok = res.inserted
-    bad = len(res.failed_rows)
+    with open("debug_filings_to_news.json", "w", encoding="utf-8") as file:
+        json.dump(normed, file, indent=2)
 
-    if bad:
-        log.warning("Some rows failed to insert: %d failed / %d total", bad, len(normed))
-        for i, fr in enumerate(res.failed_rows[:5]):
-            log.error("Failed row %d: %s", i, fr)
-    else:
-        log.info("All rows inserted OK: %d", ok)
-    return (ok, bad)
+    # res = uploader.upload_records(
+    #     table=table,
+    #     rows=normed,
+    #     allowed_columns=list(_ALLOWED_COLS),
+    #     normalize_keys=False,
+    #     stop_on_first_error=False,
+    # )
+    # ok = res.inserted
+    # bad = len(res.failed_rows)
+
+    # if bad:
+    #     log.warning("Some rows failed to insert: %d failed / %d total", bad, len(normed))
+    #     for i, fr in enumerate(res.failed_rows[:5]):
+    #         log.error("Failed row %d: %s", i, fr)
+    # else:
+    #     log.info("All rows inserted OK: %d", ok)
+    # return (ok, bad)
 
 __all__ = ["upload_news_file_cli"]

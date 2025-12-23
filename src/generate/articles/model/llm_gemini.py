@@ -5,7 +5,8 @@ from typing import Optional
 import os
 
 try:
-    import google.generativeai as genai
+    from google import genai
+    from google.genai import types
     from google.api_core.exceptions import ResourceExhausted  # rate-limit
 except Exception:  # pragma: no cover
     genai = None  # type: ignore
@@ -34,10 +35,15 @@ class GeminiLLM:
 
         genai.configure(api_key=key)
 
-        self.model_name = (model or os.getenv("GEMINI_MODEL") or "gemini-1.5-flash").strip()
+        self.model_name = (model or os.getenv("GEMINI_MODEL") or "gemini-2.5-flash").strip()
         self.temperature = float(os.getenv("GEMINI_TEMPERATURE", str(temperature)))
         self.max_output_tokens = int(os.getenv("GEMINI_MAX_TOKENS", str(max_output_tokens)))
         self.system = system
+
+        self.client = genai.Client(
+            api_key=self.api_key,
+            http_options=types.HttpOptions(api_version='v1alpha')
+        )
 
     def invoke(self, prompt: str) -> _Msg:
         model = genai.GenerativeModel(self.model_name, system_instruction=self.system)

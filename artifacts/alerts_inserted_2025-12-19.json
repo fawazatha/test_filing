@@ -1,0 +1,205 @@
+[
+  {
+    "timestamp": "2025-12-19T07:43:16Z",
+    "category": "inserted",
+    "stage": "parser",
+    "code": "parse_exception",
+    "message": "Unexpected error while parsing the document.",
+    "reasons": [
+      {
+        "scope": "system",
+        "code": "parse_exception",
+        "message": "Unexpected error while parsing the document.",
+        "details": {
+          "announcement": {},
+          "message": "'NoneType' object has no attribute 'get'",
+          "parser_type": "idx"
+        }
+      }
+    ],
+    "context": {
+      "doc": {
+        "filename": "73fdcfe934_d5c5059c0b.pdf",
+        "url": null,
+        "title": null
+      },
+      "announcement": {}
+    },
+    "severity": "fatal",
+    "needs_review": true
+  },
+  {
+    "timestamp": "2025-12-19T07:43:16Z",
+    "category": "inserted",
+    "stage": "parser",
+    "code": "parse_exception",
+    "message": "Unexpected error while parsing the document.",
+    "reasons": [
+      {
+        "scope": "system",
+        "code": "parse_exception",
+        "message": "Unexpected error while parsing the document.",
+        "details": {
+          "announcement": {},
+          "message": "'NoneType' object has no attribute 'get'",
+          "parser_type": "idx"
+        }
+      }
+    ],
+    "context": {
+      "doc": {
+        "filename": "lk-17122025-0144-00.pdf-0.pdf",
+        "url": null,
+        "title": null
+      },
+      "announcement": {}
+    },
+    "severity": "fatal",
+    "needs_review": true
+  },
+  {
+    "timestamp": "2025-12-19T07:43:16Z",
+    "category": "inserted",
+    "stage": "parser",
+    "code": "parse_exception",
+    "message": "Unexpected error while parsing the document.",
+    "reasons": [
+      {
+        "scope": "system",
+        "code": "parse_exception",
+        "message": "Unexpected error while parsing the document.",
+        "details": {
+          "announcement": {},
+          "message": "'NoneType' object has no attribute 'get'",
+          "parser_type": "idx"
+        }
+      }
+    ],
+    "context": {
+      "doc": {
+        "filename": "lk-17122025-1938-00.pdf-0.pdf",
+        "url": null,
+        "title": null
+      },
+      "announcement": {}
+    },
+    "severity": "fatal",
+    "needs_review": true
+  },
+  {
+    "timestamp": "2025-12-19T07:43:16Z",
+    "category": "inserted",
+    "stage": "parser",
+    "code": "parse_exception",
+    "message": "Unexpected error while parsing the document.",
+    "reasons": [
+      {
+        "scope": "system",
+        "code": "parse_exception",
+        "message": "Unexpected error while parsing the document.",
+        "details": {
+          "announcement": {},
+          "message": "'NoneType' object has no attribute 'get'",
+          "parser_type": "idx"
+        }
+      }
+    ],
+    "context": {
+      "doc": {
+        "filename": "LK-17122025-2402-00.pdf-0.pdf",
+        "url": null,
+        "title": null
+      },
+      "announcement": {}
+    },
+    "severity": "fatal",
+    "needs_review": true
+  },
+  {
+    "timestamp": "2025-12-19T07:43:16Z",
+    "category": "inserted",
+    "stage": "parser",
+    "code": "parse_exception",
+    "message": "Unexpected error while parsing the document.",
+    "reasons": [
+      {
+        "scope": "system",
+        "code": "parse_exception",
+        "message": "Unexpected error while parsing the document.",
+        "details": {
+          "announcement": {},
+          "message": "'NoneType' object has no attribute 'get'",
+          "parser_type": "idx"
+        }
+      }
+    ],
+    "context": {
+      "doc": {
+        "filename": "lk-17122025-6944-00.pdf-0.pdf",
+        "url": null,
+        "title": null
+      },
+      "announcement": {}
+    },
+    "severity": "fatal",
+    "needs_review": true
+  },
+  {
+    "timestamp": "2025-12-19T07:43:16Z",
+    "category": "inserted",
+    "stage": "parser",
+    "code": "parse_exception",
+    "message": "Unexpected error while parsing the document.",
+    "reasons": [
+      {
+        "scope": "system",
+        "code": "parse_exception",
+        "message": "Unexpected error while parsing the document.",
+        "details": {
+          "announcement": {},
+          "message": "'NoneType' object has no attribute 'get'",
+          "parser_type": "idx"
+        }
+      }
+    ],
+    "context": {
+      "doc": {
+        "filename": "LK-17122025-7717-00.pdf-0.pdf",
+        "url": null,
+        "title": null
+      },
+      "announcement": {}
+    },
+    "severity": "fatal",
+    "needs_review": true
+  },
+  {
+    "timestamp": "2025-12-19T07:43:17Z",
+    "category": "inserted",
+    "stage": "parser",
+    "code": "parse_exception",
+    "message": "Unexpected error while parsing the document.",
+    "reasons": [
+      {
+        "scope": "system",
+        "code": "parse_exception",
+        "message": "Unexpected error while parsing the document.",
+        "details": {
+          "announcement": {},
+          "message": "'NoneType' object has no attribute 'get'",
+          "parser_type": "idx"
+        }
+      }
+    ],
+    "context": {
+      "doc": {
+        "filename": "LK-19122025-8658-00.pdf-0.pdf",
+        "url": null,
+        "title": null
+      },
+      "announcement": {}
+    },
+    "severity": "fatal",
+    "needs_review": true
+  }
+]

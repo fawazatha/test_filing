@@ -15,6 +15,7 @@ FILINGS_ALLOWED_COLUMNS = {
     "sector", "sub_sector",
     "tags",                      
     "holder_type",
+    "source_is_manual"
 }
 
 # Numeric helpers 
@@ -37,7 +38,7 @@ def floor_pct_5(x):
     if d is None:
         return None
     # multiply → floor to integer → divide back
-    q = (d * Decimal("1e5")).to_integral_value(rounding=ROUND_FLOOR) / Decimal("1e5")
+    q = (d * Decimal("1e3")).to_integral_value(rounding=ROUND_FLOOR) / Decimal("1e3")
     return float(q.normalize())
 
 def close_pct(a, b, tol: Decimal = PCT_ABS_TOL_AUDIT) -> bool:

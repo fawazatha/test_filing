@@ -1,0 +1,723 @@
+[
+  {
+    "price_transaction": [
+      {
+        "date": "2025-12-15",
+        "type": "buy",
+        "price": 356,
+        "amount_transacted": 4136200
+      }
+    ],
+    "symbol": "SAFE.JK",
+    "transaction_type": "buy",
+    "title": "Infiniti Wahana buys shares of Steady Safe Tbk",
+    "source": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_KSEI/LK-19122025-0280-00.pdf-0.pdf",
+    "amount_transaction": 4136200,
+    "share_percentage_after": 56.57,
+    "share_percentage_before": 56.07,
+    "timestamp": "2025-12-19",
+    "holding_before": 460460813,
+    "sector": "transportation-logistic",
+    "sub_sector": "transportation",
+    "body": "Infiniti Wahana bought 4,136,200 shares of Steady Safe Tbk. This increases their holdings from 460,460,813 to 464,597,013 shares. The stated purpose of the transaction was pembelian.",
+    "transaction_value": 1472487200,
+    "price": 356.0,
+    "holding_after": 464597013,
+    "tags": [
+      "investment"
+    ],
+    "holder_name": "Infiniti Wahana"
+  },
+  {
+    "price_transaction": [
+      {
+        "date": "2025-12-11",
+        "type": "sell",
+        "price": 97,
+        "amount_transacted": 443700
+      },
+      {
+        "date": "2025-12-11",
+        "type": "sell",
+        "price": 95,
+        "amount_transacted": 1200000
+      },
+      {
+        "date": "2025-12-11",
+        "type": "sell",
+        "price": 96,
+        "amount_transacted": 386100
+      },
+      {
+        "date": "2025-12-11",
+        "type": "sell",
+        "price": 99,
+        "amount_transacted": 370200
+      },
+      {
+        "date": "2025-12-11",
+        "type": "sell",
+        "price": 102,
+        "amount_transacted": 700000
+      },
+      {
+        "date": "2025-12-12",
+        "type": "sell",
+        "price": 96,
+        "amount_transacted": 200000
+      },
+      {
+        "date": "2025-12-15",
+        "type": "sell",
+        "price": 94,
+        "amount_transacted": 400000
+      },
+      {
+        "date": "2025-12-15",
+        "type": "sell",
+        "price": 95,
+        "amount_transacted": 1200000
+      },
+      {
+        "date": "2025-12-16",
+        "type": "sell",
+        "price": 94,
+        "amount_transacted": 500000
+      },
+      {
+        "date": "2025-12-16",
+        "type": "sell",
+        "price": 95,
+        "amount_transacted": 650000
+      },
+      {
+        "date": "2025-12-17",
+        "type": "sell",
+        "price": 95,
+        "amount_transacted": 600000
+      },
+      {
+        "date": "2025-12-17",
+        "type": "sell",
+        "price": 96,
+        "amount_transacted": 700000
+      },
+      {
+        "date": "2025-12-18",
+        "type": "sell",
+        "price": 94,
+        "amount_transacted": 600000
+      },
+      {
+        "date": "2025-12-18",
+        "type": "sell",
+        "price": 95,
+        "amount_transacted": 700000
+      }
+    ],
+    "symbol": "VTNY.JK",
+    "transaction_type": "sell",
+    "title": "Junichiro Waide sells shares of PT Venteny Fortuna International Tbk",
+    "source": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_KSEI/LK-19122025-0429-00.pdf-0.pdf",
+    "amount_transaction": 8650000,
+    "share_percentage_after": 20.58,
+    "share_percentage_before": 20.72,
+    "timestamp": "2025-12-19",
+    "holding_before": 1298016974,
+    "sector": "financials",
+    "sub_sector": "financing-service",
+    "body": "Junichiro Waide sold 8,650,000 shares of PT Venteny Fortuna International Tbk. This decreases their holdings from 1,298,016,974 to 1,289,366,974 shares. The stated purpose of the transaction was penyesuaian portofolio.",
+    "transaction_value": 828804300,
+    "price": 95.816,
+    "holding_after": 1289366974,
+    "tags": [
+      "divestment"
+    ],
+    "holder_name": "Junichiro Waide"
+  },
+  {
+    "price_transaction": [
+      {
+        "date": "2025-12-15",
+        "type": "sell",
+        "price": 6450,
+        "amount_transacted": 10188600
+      },
+      {
+        "date": "2025-12-16",
+        "type": "sell",
+        "price": 6450,
+        "amount_transacted": 16177900
+      },
+      {
+        "date": "2025-12-17",
+        "type": "sell",
+        "price": 6450,
+        "amount_transacted": 225534214
+      },
+      {
+        "date": "2025-12-18",
+        "type": "sell",
+        "price": 6450,
+        "amount_transacted": 466439565
+      },
+      {
+        "date": "2025-12-19",
+        "type": "sell",
+        "price": 6450,
+        "amount_transacted": 387596899
+      }
+    ],
+    "symbol": "CBDK.JK",
+    "transaction_type": "sell",
+    "title": "Agung Sedayu sells shares of PT Bangun Kosambi Sukses Tbk",
+    "source": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_KSEI/LK-19122025-0600-00.pdf-0.pdf",
+    "amount_transaction": 1105937178,
+    "share_percentage_after": 2.54,
+    "share_percentage_before": 22.05,
+    "timestamp": "2025-12-19",
+    "holding_before": 1250000000,
+    "sector": "properties-real-estate",
+    "sub_sector": "properties-real-estate",
+    "body": "Agung Sedayu sold 1,105,937,178 shares of PT Bangun Kosambi Sukses Tbk. This decreases their holdings from 1,250,000,000 to 144,062,822 shares. The stated purpose of the transaction was divestasi untuk realisasi nilai investasi.",
+    "transaction_value": 7133294798100,
+    "price": 6450.0,
+    "holding_after": 144062822,
+    "tags": [
+      "divestment"
+    ],
+    "holder_name": "Agung Sedayu"
+  },
+  {
+    "price_transaction": [
+      {
+        "date": "2025-12-16",
+        "type": "sell",
+        "price": 2004,
+        "amount_transacted": 200000
+      },
+      {
+        "date": "2025-12-17",
+        "type": "sell",
+        "price": 2024,
+        "amount_transacted": 1000000
+      },
+      {
+        "date": "2025-12-18",
+        "type": "sell",
+        "price": 2044,
+        "amount_transacted": 1000000
+      }
+    ],
+    "symbol": "NRCA.JK",
+    "transaction_type": "sell",
+    "title": "Eddy Purwana Wikanta, Ir sells shares of PT Nusa Raya Cipta Tbk",
+    "source": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_KSEI/LK-19122025-1204-00.pdf-0.pdf",
+    "amount_transaction": 2200000,
+    "share_percentage_after": 2.37,
+    "share_percentage_before": 2.46,
+    "timestamp": "2025-12-19",
+    "holding_before": 61352500,
+    "sector": "infrastructures",
+    "sub_sector": "heavy-constructions-civil-engineering",
+    "body": "Eddy Purwana Wikanta, Ir sold 2,200,000 shares of PT Nusa Raya Cipta Tbk. This decreases their holdings from 61,352,500 to 59,152,500 shares. The stated purpose of the transaction was investment.",
+    "transaction_value": 4468800000,
+    "price": 2031.273,
+    "holding_after": 59152500,
+    "tags": [
+      "investment"
+    ],
+    "holder_name": "Eddy Purwana Wikanta, Ir"
+  },
+  {
+    "price_transaction": [
+      {
+        "date": "2025-12-15",
+        "type": "buy",
+        "price": 236,
+        "amount_transacted": 500000
+      },
+      {
+        "date": "2025-12-15",
+        "type": "buy",
+        "price": 238,
+        "amount_transacted": 500000
+      },
+      {
+        "date": "2025-12-15",
+        "type": "buy",
+        "price": 234,
+        "amount_transacted": 500000
+      },
+      {
+        "date": "2025-12-15",
+        "type": "buy",
+        "price": 230,
+        "amount_transacted": 47400
+      },
+      {
+        "date": "2025-12-15",
+        "type": "buy",
+        "price": 232,
+        "amount_transacted": 250000
+      },
+      {
+        "date": "2025-12-16",
+        "type": "buy",
+        "price": 232,
+        "amount_transacted": 500000
+      },
+      {
+        "date": "2025-12-16",
+        "type": "buy",
+        "price": 234,
+        "amount_transacted": 25200
+      },
+      {
+        "date": "2025-12-16",
+        "type": "buy",
+        "price": 236,
+        "amount_transacted": 224800
+      },
+      {
+        "date": "2025-12-16",
+        "type": "buy",
+        "price": 238,
+        "amount_transacted": 250000
+      }
+    ],
+    "symbol": "RAAM.JK",
+    "transaction_type": "buy",
+    "title": "Ram Jethmal Punjabi buys shares of PT Tripar Multivision Plus Tbk",
+    "source": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_KSEI/LK-19122025-1594-00.pdf-0.pdf",
+    "amount_transaction": 2797400,
+    "share_percentage_after": 67.504,
+    "share_percentage_before": 67.463,
+    "timestamp": "2025-12-19",
+    "holding_before": 4596669982,
+    "sector": "consumer-cyclicals",
+    "sub_sector": "media-entertainment",
+    "body": "Ram Jethmal Punjabi bought 2,797,400 shares of PT Tripar Multivision Plus Tbk. This increases their holdings from 4,596,669,982 to 4,599,467,382 shares. The stated purpose of the transaction was investasi.",
+    "transaction_value": 657351600,
+    "price": 234.987,
+    "holding_after": 4599467382,
+    "tags": [
+      "investment"
+    ],
+    "holder_name": "Ram Jethmal Punjabi"
+  },
+  {
+    "price_transaction": [
+      {
+        "date": "2025-12-17",
+        "type": "others",
+        "price": 1,
+        "amount_transacted": 100000000
+      }
+    ],
+    "symbol": "PBSA.JK",
+    "transaction_type": "others",
+    "title": "Bank Of Singapore Limited Others transaction of PT Paramita Bangun Sarana Tbk",
+    "source": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_KSEI/LK-19122025-2214-00.pdf-0.pdf",
+    "amount_transaction": 100000000,
+    "share_percentage_after": 4.008,
+    "share_percentage_before": 7.342,
+    "timestamp": "2025-12-19",
+    "holding_before": 220252900,
+    "sector": "infrastructures",
+    "sub_sector": "heavy-constructions-civil-engineering",
+    "body": "Bank Of Singapore Limited executed a transaction for 100,000,000 shares of PT Paramita Bangun Sarana Tbk. This decreases their holdings from 220,252,900 to 120,252,900 shares. The stated purpose of the transaction was free of paymen - transfer out.",
+    "transaction_value": 100000000,
+    "price": 1.0,
+    "holding_after": 120252900,
+    "tags": [
+      "share-transfer"
+    ],
+    "holder_name": "Bank Of Singapore Limited"
+  },
+  {
+    "price_transaction": [
+      {
+        "date": "2025-12-18",
+        "type": "buy",
+        "price": 133,
+        "amount_transacted": 569458100
+      }
+    ],
+    "symbol": "BKSL.JK",
+    "transaction_type": "buy",
+    "title": "Samuel Sekuritas Indonesia buys shares of Sentul City Tbk",
+    "source": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_KSEI/LK-19122025-4180-00.pdf-0.pdf",
+    "amount_transaction": 569458100,
+    "share_percentage_after": 5.27,
+    "share_percentage_before": 4.94,
+    "timestamp": "2025-12-19",
+    "holding_before": 8276843654,
+    "sector": "properties-real-estate",
+    "sub_sector": "properties-real-estate",
+    "body": "Samuel Sekuritas Indonesia bought 569,458,100 shares of Sentul City Tbk. This increases their holdings from 8,276,843,654 to 8,846,301,754 shares. The stated purpose of the transaction was penempatan saham revo.",
+    "transaction_value": 75737927300,
+    "price": 133.0,
+    "holding_after": 8846301754,
+    "tags": [
+      "share-transfer"
+    ],
+    "holder_name": "Samuel Sekuritas Indonesia"
+  },
+  {
+    "price_transaction": [
+      {
+        "date": "2025-12-15",
+        "type": "sell",
+        "price": 300,
+        "amount_transacted": 144614496
+      }
+    ],
+    "symbol": "KETR.JK",
+    "transaction_type": "sell",
+    "title": "PT Lintas Benua sells shares of PT Ketrosden Triasmitra Tbk",
+    "source": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_KSEI/LK-19122025-4217-00.pdf-0.pdf",
+    "amount_transaction": 144614496,
+    "share_percentage_after": 20.0,
+    "share_percentage_before": 25.09,
+    "timestamp": "2025-12-19",
+    "holding_before": 712867083,
+    "sector": "infrastructures",
+    "sub_sector": "telecommunication",
+    "body": "PT Lintas Benua sold 144,614,496 shares of PT Ketrosden Triasmitra Tbk. This decreases their holdings from 712,867,083 to 568,252,587 shares. The stated purpose of the transaction was kebutuhan kas.",
+    "transaction_value": 43384348800,
+    "price": 300.0,
+    "holding_after": 568252587,
+    "tags": [
+      "divestment"
+    ],
+    "holder_name": "PT Lintas Benua"
+  },
+  {
+    "price_transaction": [
+      {
+        "date": "2025-12-17",
+        "type": "buy",
+        "price": 609,
+        "amount_transacted": 365000
+      }
+    ],
+    "symbol": "MCAS.JK",
+    "transaction_type": "buy",
+    "title": "Martin Suharlie buys shares of PT M Cash Integrasi Tbk",
+    "source": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_KSEI/LK-19122025-5356-00.pdf-0.pdf",
+    "amount_transaction": 365000,
+    "share_percentage_after": 8.15,
+    "share_percentage_before": 8.1,
+    "timestamp": "2025-12-19",
+    "holding_before": 70311200,
+    "sector": "technology",
+    "sub_sector": "software-it-services",
+    "body": "Martin Suharlie bought 365,000 shares of PT M Cash Integrasi Tbk. This increases their holdings from 70,311,200 to 70,676,200 shares. The stated purpose of the transaction was investasi.",
+    "transaction_value": 222285000,
+    "price": 609.0,
+    "holding_after": 70676200,
+    "tags": [
+      "investment"
+    ],
+    "holder_name": "Martin Suharlie"
+  },
+  {
+    "price_transaction": [
+      {
+        "date": "2025-12-16",
+        "type": "buy",
+        "price": 675,
+        "amount_transacted": 826200
+      }
+    ],
+    "symbol": "MCAS.JK",
+    "transaction_type": "buy",
+    "title": "1 Inti Dot Com buys shares of PT M Cash Integrasi Tbk",
+    "source": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_KSEI/LK-19122025-5393-00.pdf-0.pdf",
+    "amount_transaction": 826200,
+    "share_percentage_after": 13.49,
+    "share_percentage_before": 13.38,
+    "timestamp": "2025-12-19",
+    "holding_before": 116166000,
+    "sector": "technology",
+    "sub_sector": "software-it-services",
+    "body": "1 Inti Dot Com bought 826,200 shares of PT M Cash Integrasi Tbk. This increases their holdings from 116,166,000 to 116,992,200 shares. The stated purpose of the transaction was investasi.",
+    "transaction_value": 557685000,
+    "price": 675.0,
+    "holding_after": 116992200,
+    "tags": [
+      "investment"
+    ],
+    "holder_name": "1 Inti Dot Com"
+  },
+  {
+    "price_transaction": [
+      {
+        "date": "2025-12-15",
+        "type": "buy",
+        "price": 300,
+        "amount_transacted": 144614496
+      }
+    ],
+    "symbol": "KETR.JK",
+    "transaction_type": "buy",
+    "title": "Ascendia Capital Indonesia buys shares of PT Ketrosden Triasmitra Tbk",
+    "source": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_KSEI/LK-19122025-6254-00.pdf-0.pdf",
+    "amount_transaction": 144614496,
+    "share_percentage_after": 5.09,
+    "share_percentage_before": 0.0,
+    "timestamp": "2025-12-19",
+    "holding_before": 0,
+    "sector": "infrastructures",
+    "sub_sector": "telecommunication",
+    "body": "Ascendia Capital Indonesia bought 144,614,496 shares of PT Ketrosden Triasmitra Tbk. This increases their holdings from 0 to 144,614,496 shares. The stated purpose of the transaction was investasi.",
+    "transaction_value": 43384348800,
+    "price": 300.0,
+    "holding_after": 144614496,
+    "tags": [
+      "investment"
+    ],
+    "holder_name": "Ascendia Capital Indonesia"
+  },
+  {
+    "price_transaction": [
+      {
+        "date": "2025-12-16",
+        "type": "sell",
+        "price": 290,
+        "amount_transacted": 10000000
+      },
+      {
+        "date": "2025-12-16",
+        "type": "sell",
+        "price": 270,
+        "amount_transacted": 10000000
+      },
+      {
+        "date": "2025-12-16",
+        "type": "sell",
+        "price": 300,
+        "amount_transacted": 20567500
+      },
+      {
+        "date": "2025-12-16",
+        "type": "sell",
+        "price": 296,
+        "amount_transacted": 40900
+      },
+      {
+        "date": "2025-12-16",
+        "type": "sell",
+        "price": 298,
+        "amount_transacted": 1500
+      },
+      {
+        "date": "2025-12-16",
+        "type": "sell",
+        "price": 294,
+        "amount_transacted": 390100
+      }
+    ],
+    "symbol": "GULA.JK",
+    "transaction_type": "sell",
+    "title": "Andreas Utomo sells shares of PT Aman Agrindo Tbk",
+    "source": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_KSEI/LK-19122025-8072-00.pdf-0.pdf",
+    "amount_transaction": 41000000,
+    "share_percentage_after": 11.53,
+    "share_percentage_before": 15.36,
+    "timestamp": "2025-12-19",
+    "holding_before": 164393100,
+    "sector": "consumer-non-cyclicals",
+    "sub_sector": "food-beverage",
+    "body": "Andreas Utomo sold 41,000,000 shares of PT Aman Agrindo Tbk. This decreases their holdings from 164,393,100 to 123,393,100 shares. The stated purpose of the transaction was divestasi.",
+    "transaction_value": 11897492800,
+    "price": 290.183,
+    "holding_after": 123393100,
+    "tags": [
+      "divestment"
+    ],
+    "holder_name": "Andreas Utomo"
+  },
+  {
+    "price_transaction": [
+      {
+        "date": "2025-12-15",
+        "type": "buy",
+        "price": 6450,
+        "amount_transacted": 20377200
+      },
+      {
+        "date": "2025-12-16",
+        "type": "buy",
+        "price": 6450,
+        "amount_transacted": 782614191
+      },
+      {
+        "date": "2025-12-17",
+        "type": "buy",
+        "price": 6450,
+        "amount_transacted": 225534214
+      },
+      {
+        "date": "2025-12-18",
+        "type": "buy",
+        "price": 6450,
+        "amount_transacted": 466439565
+      },
+      {
+        "date": "2025-12-19",
+        "type": "buy",
+        "price": 6450,
+        "amount_transacted": 775193798
+      }
+    ],
+    "symbol": "CBDK.JK",
+    "transaction_type": "buy",
+    "title": "Pantai Indah Kapuk Dua Tbk buys shares of PT Bangun Kosambi Sukses Tbk",
+    "source": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_KSEI/LK-19122025-8159-00.pdf-0.pdf",
+    "amount_transaction": 2270158968,
+    "share_percentage_after": 85.95,
+    "share_percentage_before": 45.9,
+    "timestamp": "2025-12-19",
+    "holding_before": 2602050000,
+    "sector": "properties-real-estate",
+    "sub_sector": "properties-real-estate",
+    "body": "Pantai Indah Kapuk Dua Tbk bought 2,270,158,968 shares of PT Bangun Kosambi Sukses Tbk. This increases their holdings from 2,602,050,000 to 4,872,208,968 shares. The stated purpose of the transaction was peningkatan kepemilikan pada perseroan.",
+    "transaction_value": 14642525343600,
+    "price": 6450.0,
+    "holding_after": 4872208968,
+    "tags": [
+      "investment"
+    ],
+    "holder_name": "Pantai Indah Kapuk Dua Tbk"
+  },
+  {
+    "price_transaction": [
+      {
+        "date": "2025-12-15",
+        "type": "sell",
+        "price": 6450,
+        "amount_transacted": 10188600
+      },
+      {
+        "date": "2025-12-16",
+        "type": "sell",
+        "price": 6450,
+        "amount_transacted": 766436291
+      },
+      {
+        "date": "2025-12-19",
+        "type": "sell",
+        "price": 6450,
+        "amount_transacted": 387596899
+      }
+    ],
+    "symbol": "CBDK.JK",
+    "transaction_type": "sell",
+    "title": "Tunas Mekar Jaya sells shares of PT Bangun Kosambi Sukses Tbk",
+    "source": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_KSEI/LK-19122025-8604-00.pdf-0.pdf",
+    "amount_transaction": 1164221790,
+    "share_percentage_after": 1.51,
+    "share_percentage_before": 22.05,
+    "timestamp": "2025-12-19",
+    "holding_before": 1250000000,
+    "sector": "properties-real-estate",
+    "sub_sector": "properties-real-estate",
+    "body": "Tunas Mekar Jaya sold 1,164,221,790 shares of PT Bangun Kosambi Sukses Tbk. This decreases their holdings from 1,250,000,000 to 85,778,210 shares. The stated purpose of the transaction was divestasi untuk realisasi nilai investasi.",
+    "transaction_value": 7509230545500,
+    "price": 6450.0,
+    "holding_after": 85778210,
+    "tags": [
+      "divestment"
+    ],
+    "holder_name": "Tunas Mekar Jaya"
+  },
+  {
+    "price_transaction": [
+      {
+        "date": "2025-12-18",
+        "type": "others",
+        "price": 12975,
+        "amount_transacted": 385356454
+      }
+    ],
+    "symbol": "PANI.JK",
+    "transaction_type": "others",
+    "title": "Multi Artha Pratama Others transaction of PT Pantai Indah Kapuk Dua Tbk.",
+    "source": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_KSEI/LK-19122025-8658-00.pdf-0.pdf",
+    "amount_transaction": 385356454,
+    "share_percentage_after": 84.08,
+    "share_percentage_before": 87.78,
+    "timestamp": "2025-12-19",
+    "holding_before": 14838980935,
+    "sector": "properties-real-estate",
+    "sub_sector": "properties-real-estate",
+    "body": "Multi Artha Pratama executed a transaction for 385,356,454 shares of PT Pantai Indah Kapuk Dua Tbk.. This increases their holdings from 14,838,980,935 to 15,224,337,389 shares. The stated purpose of the transaction was peningkatan penyertaan modal pada perseroan.",
+    "transaction_value": 4999999990650,
+    "price": 12975.0,
+    "holding_after": 15224337389,
+    "tags": [
+      "investment"
+    ],
+    "holder_name": "Multi Artha Pratama"
+  },
+  {
+    "price_transaction": [
+      {
+        "date": "2025-12-12",
+        "type": "buy",
+        "price": 1000,
+        "amount_transacted": 45000000
+      }
+    ],
+    "symbol": "BOLT.JK",
+    "transaction_type": "buy",
+    "title": "Garuda Multi Investama buys shares of PT Garuda Metalindo Tbk.",
+    "source": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_KSEI/LK-19122025-9223-00.pdf-0.pdf",
+    "amount_transaction": 45000000,
+    "share_percentage_after": 59.52,
+    "share_percentage_before": 57.6,
+    "timestamp": "2025-12-19",
+    "holding_before": 1350000000,
+    "sector": "consumer-cyclicals",
+    "sub_sector": "automobiles-components",
+    "body": "Garuda Multi Investama bought 45,000,000 shares of PT Garuda Metalindo Tbk.. This increases their holdings from 1,350,000,000 to 1,395,000,000 shares. The stated purpose of the transaction was peningkatan saham pengendali.",
+    "transaction_value": 45000000000,
+    "price": 1000.0,
+    "holding_after": 1395000000,
+    "tags": [
+      "investment"
+    ],
+    "holder_name": "Garuda Multi Investama"
+  },
+  {
+    "price_transaction": [
+      {
+        "date": "2025-12-17",
+        "type": "sell",
+        "price": 444,
+        "amount_transacted": 587900
+      }
+    ],
+    "symbol": "SAFE.JK",
+    "transaction_type": "sell",
+    "title": "Infiniti Wahana sells shares of Steady Safe Tbk",
+    "source": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_KSEI/LK-19122025-9489-00.pdf-0.pdf",
+    "amount_transaction": 587900,
+    "share_percentage_after": 56.5,
+    "share_percentage_before": 56.57,
+    "timestamp": "2025-12-19",
+    "holding_before": 464597013,
+    "sector": "transportation-logistic",
+    "sub_sector": "transportation",
+    "body": "Infiniti Wahana sold 587,900 shares of Steady Safe Tbk. This decreases their holdings from 464,597,013 to 464,009,113 shares. The stated purpose of the transaction was penjualan.",
+    "transaction_value": 261027600,
+    "price": 444.0,
+    "holding_after": 464009113,
+    "tags": [
+      "divestment"
+    ],
+    "holder_name": "Infiniti Wahana"
+  }
+]

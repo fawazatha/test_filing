@@ -1,0 +1,185 @@
+[
+  {
+    "timestamp": "2025-12-18T10:00:28Z",
+    "category": "not_inserted",
+    "stage": "parser",
+    "code": "parse_exception",
+    "message": "Unexpected error while parsing the document.",
+    "reasons": [
+      {
+        "scope": "parser",
+        "code": "parse_exception",
+        "message": "Error while extracting fields from IDX NEW FORMAT PDF: update expected at most 1 argument, got 2",
+        "details": {
+          "announcement": {
+            "date": "2025-12-18T10:02:06",
+            "title": "REPORT OF OWNERSHIP OR ANY CHANGES IN SHARE OWNERSHIP OF PUBLIC COMPANIES",
+            "title_slug": "report-of-ownership-or-any-changes-in-share-ownership-of-public-companies",
+            "company_name": "AKPI",
+            "main_link": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_KSEI/LK-18122025-4309-00.pdf-0.pdf",
+            "filename": "lk-18122025-4309-00.pdf-0.pdf",
+            "attachments": [],
+            "attachment_count": 0,
+            "category": "Ownership Report",
+            "description": "Ownership report for AKPI",
+            "link": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_KSEI/LK-18122025-4309-00.pdf-0.pdf",
+            "scraped_at": "2025-12-18T14:28:25+07:00"
+          }
+        }
+      },
+      {
+        "scope": "system",
+        "code": "parse_exception",
+        "message": "Unexpected error while parsing the document.",
+        "details": {
+          "parser_type": "idx"
+        }
+      }
+    ],
+    "context": {
+      "doc": {
+        "filename": "lk-18122025-4309-00.pdf-0.pdf",
+        "url": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_KSEI/LK-18122025-4309-00.pdf-0.pdf",
+        "title": "REPORT OF OWNERSHIP OR ANY CHANGES IN SHARE OWNERSHIP OF PUBLIC COMPANIES"
+      },
+      "announcement": {
+        "date": "2025-12-18T10:02:06",
+        "title": "REPORT OF OWNERSHIP OR ANY CHANGES IN SHARE OWNERSHIP OF PUBLIC COMPANIES",
+        "title_slug": "report-of-ownership-or-any-changes-in-share-ownership-of-public-companies",
+        "company_name": "AKPI",
+        "main_link": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_KSEI/LK-18122025-4309-00.pdf-0.pdf",
+        "filename": "lk-18122025-4309-00.pdf-0.pdf",
+        "attachments": [],
+        "attachment_count": 0,
+        "category": "Ownership Report",
+        "description": "Ownership report for AKPI",
+        "link": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_KSEI/LK-18122025-4309-00.pdf-0.pdf",
+        "scraped_at": "2025-12-18T14:28:25+07:00"
+      }
+    },
+    "severity": "fatal",
+    "needs_review": true
+  },
+  {
+    "timestamp": "2025-12-18T10:00:28Z",
+    "category": "not_inserted",
+    "stage": "parser",
+    "code": "parse_exception",
+    "message": "Unexpected error while parsing the document.",
+    "reasons": [
+      {
+        "scope": "parser",
+        "code": "parse_exception",
+        "message": "Error while extracting fields from IDX NEW FORMAT PDF: update expected at most 1 argument, got 2",
+        "details": {
+          "announcement": {
+            "date": "2025-12-18T11:28:08",
+            "title": "REPORT OF OWNERSHIP OR ANY CHANGES IN SHARE OWNERSHIP OF PUBLIC COMPANIES",
+            "title_slug": "report-of-ownership-or-any-changes-in-share-ownership-of-public-companies",
+            "company_name": "MAXI",
+            "main_link": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_KSEI/LK-18122025-5053-00.pdf-0.pdf",
+            "filename": "lk-18122025-5053-00.pdf-0.pdf",
+            "attachments": [],
+            "attachment_count": 0,
+            "category": "Ownership Report",
+            "description": "Ownership report for MAXI",
+            "link": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_KSEI/LK-18122025-5053-00.pdf-0.pdf",
+            "scraped_at": "2025-12-18T14:28:25+07:00"
+          }
+        }
+      },
+      {
+        "scope": "system",
+        "code": "parse_exception",
+        "message": "Unexpected error while parsing the document.",
+        "details": {
+          "parser_type": "idx"
+        }
+      }
+    ],
+    "context": {
+      "doc": {
+        "filename": "lk-18122025-5053-00.pdf-0.pdf",
+        "url": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_KSEI/LK-18122025-5053-00.pdf-0.pdf",
+        "title": "REPORT OF OWNERSHIP OR ANY CHANGES IN SHARE OWNERSHIP OF PUBLIC COMPANIES"
+      },
+      "announcement": {
+        "date": "2025-12-18T11:28:08",
+        "title": "REPORT OF OWNERSHIP OR ANY CHANGES IN SHARE OWNERSHIP OF PUBLIC COMPANIES",
+        "title_slug": "report-of-ownership-or-any-changes-in-share-ownership-of-public-companies",
+        "company_name": "MAXI",
+        "main_link": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_KSEI/LK-18122025-5053-00.pdf-0.pdf",
+        "filename": "lk-18122025-5053-00.pdf-0.pdf",
+        "attachments": [],
+        "attachment_count": 0,
+        "category": "Ownership Report",
+        "description": "Ownership report for MAXI",
+        "link": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_KSEI/LK-18122025-5053-00.pdf-0.pdf",
+        "scraped_at": "2025-12-18T14:28:25+07:00"
+      }
+    },
+    "severity": "fatal",
+    "needs_review": true
+  },
+  {
+    "timestamp": "2025-12-18T10:00:28Z",
+    "category": "not_inserted",
+    "stage": "parser",
+    "code": "parse_exception",
+    "message": "Unexpected error while parsing the document.",
+    "reasons": [
+      {
+        "scope": "parser",
+        "code": "parse_exception",
+        "message": "Error while extracting fields from IDX NEW FORMAT PDF: update expected at most 1 argument, got 2",
+        "details": {
+          "announcement": {
+            "date": "2025-12-18T13:37:02",
+            "title": "REPORT OF OWNERSHIP OR ANY CHANGES IN SHARE OWNERSHIP OF PUBLIC COMPANIES",
+            "title_slug": "report-of-ownership-or-any-changes-in-share-ownership-of-public-companies",
+            "company_name": "BKSL",
+            "main_link": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_KSEI/LK-18122025-6808-00.pdf-0.pdf",
+            "filename": "lk-18122025-6808-00.pdf-0.pdf",
+            "attachments": [],
+            "attachment_count": 0,
+            "category": "Ownership Report",
+            "description": "Ownership report for BKSL",
+            "link": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_KSEI/LK-18122025-6808-00.pdf-0.pdf",
+            "scraped_at": "2025-12-18T14:28:25+07:00"
+          }
+        }
+      },
+      {
+        "scope": "system",
+        "code": "parse_exception",
+        "message": "Unexpected error while parsing the document.",
+        "details": {
+          "parser_type": "idx"
+        }
+      }
+    ],
+    "context": {
+      "doc": {
+        "filename": "lk-18122025-6808-00.pdf-0.pdf",
+        "url": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_KSEI/LK-18122025-6808-00.pdf-0.pdf",
+        "title": "REPORT OF OWNERSHIP OR ANY CHANGES IN SHARE OWNERSHIP OF PUBLIC COMPANIES"
+      },
+      "announcement": {
+        "date": "2025-12-18T13:37:02",
+        "title": "REPORT OF OWNERSHIP OR ANY CHANGES IN SHARE OWNERSHIP OF PUBLIC COMPANIES",
+        "title_slug": "report-of-ownership-or-any-changes-in-share-ownership-of-public-companies",
+        "company_name": "BKSL",
+        "main_link": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_KSEI/LK-18122025-6808-00.pdf-0.pdf",
+        "filename": "lk-18122025-6808-00.pdf-0.pdf",
+        "attachments": [],
+        "attachment_count": 0,
+        "category": "Ownership Report",
+        "description": "Ownership report for BKSL",
+        "link": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_KSEI/LK-18122025-6808-00.pdf-0.pdf",
+        "scraped_at": "2025-12-18T14:28:25+07:00"
+      }
+    },
+    "severity": "fatal",
+    "needs_review": true
+  }
+]

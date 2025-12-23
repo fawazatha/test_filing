@@ -7,6 +7,7 @@ import json
 import hashlib
 from datetime import datetime
 from typing import Any, Dict, List, Optional, Tuple, Union, Set, Protocol, Sequence
+import json 
 
 import httpx  # noqa: F401 (kept for parity with original; safe to remove if unused)
 
@@ -127,7 +128,7 @@ def _fetch_existing_rows_same_days(
         "symbol", "timestamp", "transaction_type", "holder_name",
         "holding_before", "holding_after",
         "share_percentage_before", "share_percentage_after",
-        "amount_transaction", "transaction_value", "price", "filings_input_source"
+        "amount_transaction", "transaction_value", "price"
     ])
 
     try:
@@ -198,19 +199,22 @@ def upload_filings_with_dedup(
             final_rows.append(r)
 
     # 7) Upload only new rows
-    res: UploadResult = uploader.upload_records(
-        table=table,
-        rows=final_rows,
-        allowed_columns=allowed_columns,
-        stop_on_first_error=stop_on_first_error,
-    )
+    with open("debug_final_rows_filings.json", "w", encoding="utf-8") as f:
+        json.dump(final_rows, f, indent=2)
 
-    stats = {
-        "input": len(rows),
-        "intrarun_unique": len(intra),
-        "existing_same_day_rows": len(existing_rows),
-        "to_insert": len(final_rows),
-        "inserted": getattr(res, "inserted", 0),
-        "failed": len(getattr(res, "failed_rows", [])),
-    }
-    return res, stats
+    # res: UploadResult = uploader.upload_records(
+    #     table=table,
+    #     rows=final_rows,
+    #     allowed_columns=allowed_columns,
+    #     stop_on_first_error=stop_on_first_error,
+    # )
+
+    # stats = {
+    #     "input": len(rows),
+    #     "intrarun_unique": len(intra),
+    #     "existing_same_day_rows": len(existing_rows),
+    #     "to_insert": len(final_rows),
+    #     "inserted": getattr(res, "inserted", 0),
+    #     "failed": len(getattr(res, "failed_rows", [])),
+    # }
+    # return res, stats
