@@ -1,8 +1,11 @@
 name: IDX Filings
 
+# on:
+#   schedule:
+#     - cron: "0 */2 * * 1-5"
 on:
   schedule:
-    - cron: "0 */2 * * 1-5"
+    - cron: "0 0 * * 1"
   workflow_dispatch:
     inputs:
       mode:
@@ -52,7 +55,7 @@ on:
 
 permissions:
   contents: read
-  
+
 env:
   PYTHONPATH: src
   TZ: Asia/Jakarta
