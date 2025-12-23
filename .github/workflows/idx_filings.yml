@@ -109,22 +109,11 @@ jobs:
         run: |
           set -euo pipefail
 
-          # Ensure minimal deps if the single-source script needs them
-          python - <<'PY'
-          import importlib, sys
-          for m in ("requests","dotenv"):
-              try: importlib.import_module(m)
-              except Exception: sys.exit(1)
-          PY
-          if [[ $? -ne 0 ]]; then
-            pip install requests python-dotenv
-          fi
-
           echo "[Warm-up] Refresh company_map via ${COMPANY_MAP_SCRIPT}"
-          python "${COMPANY_MAP_SCRIPT}" refresh
+          uv run python "${COMPANY_MAP_SCRIPT}" refresh
 
           echo "[Warm-up] Status company_map:"
-          python "${COMPANY_MAP_SCRIPT}" status || true
+          uv run python "${COMPANY_MAP_SCRIPT}" status || true
 
       # Main pipeline
       - name: Run orchestrator
@@ -272,8 +261,8 @@ jobs:
             echo "::notice::Email alerts disabled for this run."
           fi
 
-          echo "python -m pipeline.orchestrator ${ARGS[*]}"
-          python -m pipeline.orchestrator "${ARGS[@]}"
+          echo "uv run python -m pipeline.orchestrator ${ARGS[*]}"
+          uv run python -m pipeline.orchestrator "${ARGS[@]}"
 
       - name: Upload artifacts
         uses: actions/upload-artifact@v4
