@@ -598,7 +598,9 @@ def step_upload_supabase(
     LOG.info("[UPLOAD] Loaded %d rows from %s. Starting deduplication and upload...", len(rows), input_json)
 
     # 3. Call the deduplication service
-    rows['source_is_manual'] = False 
+    for row in rows:
+        row['source_is_manual'] = False 
+        
     res, stats = upload_filings_with_dedup(
         uploader=uploader,
         table=table,
