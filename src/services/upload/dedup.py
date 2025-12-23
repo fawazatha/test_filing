@@ -202,6 +202,8 @@ def upload_filings_with_dedup(
     with open("debug_final_rows_filings.json", "w", encoding="utf-8") as f:
         json.dump(final_rows, f, indent=2)
 
+    print(f'debug data to filing: {json.dumps(final_rows, indent=2)}')
+
     class MockResult:
         inserted = len(final_rows)
         failed_rows = []

@@ -285,6 +285,8 @@ jobs:
             alerts/*.json
             alerts_inserted/*.json
             alerts_not_inserted/*.json
+            debug_final_rows_filings.json
+            debug_filings_to_news.json
           if-no-files-found: warn
           retention-days: 14
           compression-level: 6

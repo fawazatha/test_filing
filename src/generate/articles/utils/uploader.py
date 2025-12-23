@@ -175,6 +175,8 @@ def upload_news_file_cli(
     with open("debug_filings_to_news.json", "w", encoding="utf-8") as file:
         json.dump(normed, file, indent=2)
 
+    print(f'debug data to filing to news: {json.dumps(normed, indent=2)}')
+
     ok = len(normed)
     bad = 0
     return (ok, bad)
