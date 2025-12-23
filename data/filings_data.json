@@ -2,2005 +2,35 @@
   {
     "price_transaction": [
       {
-        "date": "2025-12-15",
-        "type": "buy",
-        "price": 356.0,
-        "amount_transacted": 4136200
-      }
-    ],
-    "share_percentage_transaction": 0.5,
-    "sub_sector": "transportation",
-    "holding_after": 464597013,
-    "transaction_value": 1472487200.0,
-    "body": "Infiniti Wahana bought 4,136,200 shares of Steady Safe Tbk. This increases their holdings from 460,460,813 to 464,597,013 shares. The stated purpose of the transaction was purchase.",
-    "source": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_KSEI/LK-19122025-0280-00.pdf-0.pdf",
-    "holding_before": 460460813,
-    "holder_type": "insider",
-    "share_percentage_before": 56.07,
-    "price": 356.0,
-    "timestamp": "2025-12-19T00:00:00",
-    "share_percentage_after": 56.57,
-    "amount_transaction": 4136200,
-    "holder_name": "Infiniti Wahana",
-    "title": "Infiniti Wahana buys shares of Steady Safe Tbk",
-    "symbol": "SAFE.JK",
-    "sector": "transportation-logistic",
-    "transaction_type": "buy",
-    "tags": [
-      "investment"
-    ],
-    "type": "buy",
-    "amount": 4136200,
-    "value": 1472487200.0,
-    "audit_flags": {
-      "announcement": {
-        "id": "lk-19122025-0280-00.pdf-0",
-        "title": "REPORT OF OWNERSHIP OR ANY CHANGES IN SHARE OWNERSHIP OF PUBLIC COMPANIES",
-        "url": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_KSEI/LK-19122025-0280-00.pdf-0.pdf",
-        "pdf_url": null,
-        "source_type": "idx"
-      },
-      "document_median_price": 356.0,
-      "market_reference": {
-        "ref_price": 177.0,
-        "ref_type": "close",
-        "asof_date": "2025-10-29",
-        "n_days": 1,
-        "freshness_days": 54
-      },
-      "total_shares_model": 821224920.6349207,
-      "delta_pp_model": 0.503,
-      "pp_after_model": 56.573,
-      "percent_discrepancy": false,
-      "discrepancy_pp": 0.0030000000000001137,
-      "stale_price": true,
-      "suspicious_price_level": true,
-      "needs_review": true,
-      "reasons": [
-        {
-          "scope": "row",
-          "code": "stale_price",
-          "message": "Market reference price is stale: 54.0 days old (>14d).",
-          "details": {
-            "freshness_days": 54.0,
-            "price_lookback_days": 14,
-            "market_ref": {
-              "ref_price": 177.0,
-              "ref_type": "close",
-              "asof_date": "2025-10-29",
-              "n_days": 1,
-              "freshness_days": 54
-            }
-          }
-        },
-        {
-          "scope": "tx",
-          "code": "price_deviation_vs_market",
-          "message": "Price deviates from market-ref by ratio 2.011",
-          "details": {
-            "price": 356.0,
-            "market_ref": {
-              "ref_price": 177.0,
-              "ref_type": "close",
-              "asof_date": "2025-10-29",
-              "n_days": 1,
-              "freshness_days": 54
-            },
-            "ratio": 2.0112994350282487
-          }
-        }
-      ]
-    },
-    "suspicious_price_level": true,
-    "percent_discrepancy": false,
-    "stale_price": true,
-    "needs_review": true,
-    "reasons": [
-      {
-        "scope": "row",
-        "code": "stale_price",
-        "message": "Market reference price is stale: 54.0 days old (>14d).",
-        "details": {
-          "freshness_days": 54.0,
-          "price_lookback_days": 14,
-          "market_ref": {
-            "ref_price": 177.0,
-            "ref_type": "close",
-            "asof_date": "2025-10-29",
-            "n_days": 1,
-            "freshness_days": 54
-          }
-        }
-      },
-      {
-        "scope": "tx",
-        "code": "price_deviation_vs_market",
-        "message": "Price deviates from market-ref by ratio 2.011",
-        "details": {
-          "price": 356.0,
-          "market_ref": {
-            "ref_price": 177.0,
-            "ref_type": "close",
-            "asof_date": "2025-10-29",
-            "n_days": 1,
-            "freshness_days": 54
-          },
-          "ratio": 2.0112994350282487
-        }
-      }
-    ],
-    "market_reference": {
-      "ref_price": 177.0,
-      "ref_type": "close",
-      "asof_date": "2025-10-29",
-      "n_days": 1,
-      "freshness_days": 54
-    },
-    "document_median_price": 356.0,
-    "skip_reason": "stale_price"
-  },
-  {
-    "price_transaction": [
-      {
-        "date": "2025-12-11",
-        "type": "sell",
-        "price": 97.0,
-        "amount_transacted": 443700
-      },
-      {
-        "date": "2025-12-11",
-        "type": "sell",
-        "price": 95.0,
-        "amount_transacted": 1200000
-      },
-      {
-        "date": "2025-12-11",
-        "type": "sell",
-        "price": 96.0,
-        "amount_transacted": 386100
-      },
-      {
-        "date": "2025-12-11",
-        "type": "sell",
-        "price": 99.0,
-        "amount_transacted": 370200
-      },
-      {
-        "date": "2025-12-11",
-        "type": "sell",
-        "price": 102.0,
-        "amount_transacted": 700000
-      },
-      {
-        "date": "2025-12-12",
-        "type": "sell",
-        "price": 96.0,
-        "amount_transacted": 200000
-      },
-      {
-        "date": "2025-12-15",
-        "type": "sell",
-        "price": 94.0,
-        "amount_transacted": 400000
-      },
-      {
-        "date": "2025-12-15",
-        "type": "sell",
-        "price": 95.0,
-        "amount_transacted": 1200000
-      },
-      {
-        "date": "2025-12-16",
-        "type": "sell",
-        "price": 94.0,
-        "amount_transacted": 500000
-      },
-      {
-        "date": "2025-12-16",
-        "type": "sell",
-        "price": 95.0,
-        "amount_transacted": 650000
-      },
-      {
-        "date": "2025-12-17",
-        "type": "sell",
-        "price": 95.0,
-        "amount_transacted": 600000
-      },
-      {
-        "date": "2025-12-17",
-        "type": "sell",
-        "price": 96.0,
-        "amount_transacted": 700000
-      },
-      {
-        "date": "2025-12-18",
-        "type": "sell",
-        "price": 94.0,
-        "amount_transacted": 600000
-      },
-      {
-        "date": "2025-12-18",
-        "type": "sell",
-        "price": 95.0,
-        "amount_transacted": 700000
-      }
-    ],
-    "share_percentage_transaction": 0.14,
-    "sub_sector": "financing-service",
-    "holding_after": 1289366974,
-    "transaction_value": 828804300.0,
-    "body": "Junichiro Waide sold 8,650,000 shares of PT Venteny Fortuna International Tbk. This decreases their holdings from 1,298,016,974 to 1,289,366,974 shares. The stated purpose of the transaction was portfolio adjustments.",
-    "source": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_KSEI/LK-19122025-0429-00.pdf-0.pdf",
-    "holding_before": 1298016974,
-    "holder_type": "insider",
-    "share_percentage_before": 20.72,
-    "price": 95.816,
-    "timestamp": "2025-12-19T00:00:00",
-    "share_percentage_after": 20.58,
-    "amount_transaction": 8650000,
-    "holder_name": "Junichiro Waide",
-    "title": "Junichiro Waide sells shares of PT Venteny Fortuna International Tbk",
-    "symbol": "VTNY.JK",
-    "sector": "financials",
-    "transaction_type": "sell",
-    "tags": [
-      "divestment"
-    ],
-    "type": "sell",
-    "amount": 8650000,
-    "value": 828804300.0,
-    "audit_flags": {
-      "announcement": {
-        "id": "lk-19122025-0429-00.pdf-0",
-        "title": "REPORT OF OWNERSHIP OR ANY CHANGES IN SHARE OWNERSHIP OF PUBLIC COMPANIES",
-        "url": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_KSEI/LK-19122025-0429-00.pdf-0.pdf",
-        "pdf_url": null,
-        "source_type": "idx"
-      },
-      "document_median_price": 95.0,
-      "market_reference": {
-        "ref_price": 92.0,
-        "ref_type": "close",
-        "asof_date": "2025-10-29",
-        "n_days": 1,
-        "freshness_days": 54
-      },
-      "total_shares_model": 6264560685.328185,
-      "delta_pp_model": -0.139,
-      "pp_after_model": 20.581,
-      "percent_discrepancy": false,
-      "discrepancy_pp": 0.0010000000000012221,
-      "stale_price": true,
-      "needs_review": true,
-      "reasons": [
-        {
-          "scope": "row",
-          "code": "stale_price",
-          "message": "Market reference price is stale: 54.0 days old (>14d).",
-          "details": {
-            "freshness_days": 54.0,
-            "price_lookback_days": 14,
-            "market_ref": {
-              "ref_price": 92.0,
-              "ref_type": "close",
-              "asof_date": "2025-10-29",
-              "n_days": 1,
-              "freshness_days": 54
-            }
-          }
-        }
-      ]
-    },
-    "percent_discrepancy": false,
-    "stale_price": true,
-    "needs_review": true,
-    "reasons": [
-      {
-        "scope": "row",
-        "code": "stale_price",
-        "message": "Market reference price is stale: 54.0 days old (>14d).",
-        "details": {
-          "freshness_days": 54.0,
-          "price_lookback_days": 14,
-          "market_ref": {
-            "ref_price": 92.0,
-            "ref_type": "close",
-            "asof_date": "2025-10-29",
-            "n_days": 1,
-            "freshness_days": 54
-          }
-        }
-      }
-    ],
-    "market_reference": {
-      "ref_price": 92.0,
-      "ref_type": "close",
-      "asof_date": "2025-10-29",
-      "n_days": 1,
-      "freshness_days": 54
-    },
-    "document_median_price": 95.0,
-    "skip_reason": "stale_price"
-  },
-  {
-    "price_transaction": [
-      {
-        "date": "2025-12-15",
-        "type": "sell",
-        "price": 6450.0,
-        "amount_transacted": 10188600
-      },
-      {
-        "date": "2025-12-16",
-        "type": "sell",
-        "price": 6450.0,
-        "amount_transacted": 16177900
-      },
-      {
-        "date": "2025-12-17",
-        "type": "sell",
-        "price": 6450.0,
-        "amount_transacted": 225534214
-      },
-      {
-        "date": "2025-12-18",
-        "type": "sell",
-        "price": 6450.0,
-        "amount_transacted": 466439565
-      },
-      {
-        "date": "2025-12-19",
-        "type": "sell",
-        "price": 6450.0,
-        "amount_transacted": 387596899
-      }
-    ],
-    "share_percentage_transaction": 19.51,
-    "sub_sector": "properties-real-estate",
-    "holding_after": 144062822,
-    "transaction_value": 7133294798100.0,
-    "body": "Agung Sedayu sold 1,105,937,178 shares of PT Bangun Kosambi Sukses Tbk. This decreases their holdings from 1,250,000,000 to 144,062,822 shares. The stated purpose of the transaction was divestment to realize investment value.",
-    "source": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_KSEI/LK-19122025-0600-00.pdf-0.pdf",
-    "holding_before": 1250000000,
-    "holder_type": "insider",
-    "share_percentage_before": 22.05,
-    "price": 6450.0,
-    "timestamp": "2025-12-19T00:00:00",
-    "share_percentage_after": 2.54,
-    "amount_transaction": 1105937178,
-    "holder_name": "Agung Sedayu",
-    "title": "Agung Sedayu sells shares of PT Bangun Kosambi Sukses Tbk",
-    "symbol": "CBDK.JK",
-    "sector": "properties-real-estate",
-    "transaction_type": "sell",
-    "tags": [
-      "divestment"
-    ],
-    "type": "sell",
-    "amount": 1105937178,
-    "value": 7133294798100.0,
-    "audit_flags": {
-      "announcement": {
-        "id": "lk-19122025-0600-00.pdf-0",
-        "title": "REPORT OF OWNERSHIP OR ANY CHANGES IN SHARE OWNERSHIP OF PUBLIC COMPANIES",
-        "url": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_KSEI/LK-19122025-0600-00.pdf-0.pdf",
-        "pdf_url": null,
-        "source_type": "idx"
-      },
-      "document_median_price": 6450.0,
-      "market_reference": {
-        "ref_price": 5975.0,
-        "ref_type": "close",
-        "asof_date": "2025-10-29",
-        "n_days": 1,
-        "freshness_days": 54
-      },
-      "total_shares_model": 5668934240.362812,
-      "delta_pp_model": -19.509,
-      "pp_after_model": 2.541,
-      "percent_discrepancy": false,
-      "discrepancy_pp": 0.0009999999999998899,
-      "stale_price": true,
-      "needs_review": true,
-      "reasons": [
-        {
-          "scope": "row",
-          "code": "stale_price",
-          "message": "Market reference price is stale: 54.0 days old (>14d).",
-          "details": {
-            "freshness_days": 54.0,
-            "price_lookback_days": 14,
-            "market_ref": {
-              "ref_price": 5975.0,
-              "ref_type": "close",
-              "asof_date": "2025-10-29",
-              "n_days": 1,
-              "freshness_days": 54
-            }
-          }
-        }
-      ]
-    },
-    "percent_discrepancy": false,
-    "stale_price": true,
-    "needs_review": true,
-    "reasons": [
-      {
-        "scope": "row",
-        "code": "stale_price",
-        "message": "Market reference price is stale: 54.0 days old (>14d).",
-        "details": {
-          "freshness_days": 54.0,
-          "price_lookback_days": 14,
-          "market_ref": {
-            "ref_price": 5975.0,
-            "ref_type": "close",
-            "asof_date": "2025-10-29",
-            "n_days": 1,
-            "freshness_days": 54
-          }
-        }
-      }
-    ],
-    "market_reference": {
-      "ref_price": 5975.0,
-      "ref_type": "close",
-      "asof_date": "2025-10-29",
-      "n_days": 1,
-      "freshness_days": 54
-    },
-    "document_median_price": 6450.0,
-    "skip_reason": "stale_price"
-  },
-  {
-    "price_transaction": [
-      {
-        "date": "2025-12-16",
-        "type": "sell",
-        "price": 2004.0,
-        "amount_transacted": 200000
-      },
-      {
-        "date": "2025-12-17",
-        "type": "sell",
-        "price": 2024.0,
-        "amount_transacted": 1000000
-      },
-      {
-        "date": "2025-12-18",
-        "type": "sell",
-        "price": 2044.0,
-        "amount_transacted": 1000000
-      }
-    ],
-    "share_percentage_transaction": 0.09,
-    "sub_sector": "heavy-constructions-civil-engineering",
-    "holding_after": 59152500,
-    "transaction_value": 4468800000.0,
-    "body": "Eddy Purwana Wikanta, Ir sold 2,200,000 shares of PT Nusa Raya Cipta Tbk. This decreases their holdings from 61,352,500 to 59,152,500 shares. The stated purpose of the transaction was investment.",
-    "source": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_KSEI/LK-19122025-1204-00.pdf-0.pdf",
-    "holding_before": 61352500,
-    "holder_type": "insider",
-    "share_percentage_before": 2.46,
-    "price": 2031.273,
-    "timestamp": "2025-12-19T00:00:00",
-    "share_percentage_after": 2.37,
-    "amount_transaction": 2200000,
-    "holder_name": "Eddy Purwana Wikanta, Ir",
-    "title": "Eddy Purwana Wikanta, Ir sells shares of PT Nusa Raya Cipta Tbk",
-    "symbol": "NRCA.JK",
-    "sector": "infrastructures",
-    "transaction_type": "sell",
-    "tags": [
-      "investment"
-    ],
-    "type": "sell",
-    "amount": 2200000,
-    "value": 4468800000.0,
-    "audit_flags": {
-      "announcement": {
-        "id": "lk-19122025-1204-00.pdf-0",
-        "title": "REPORT OF OWNERSHIP OR ANY CHANGES IN SHARE OWNERSHIP OF PUBLIC COMPANIES",
-        "url": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_KSEI/LK-19122025-1204-00.pdf-0.pdf",
-        "pdf_url": null,
-        "source_type": "idx"
-      },
-      "document_median_price": 2024.0,
-      "market_reference": {
-        "ref_price": 690.0,
-        "ref_type": "close",
-        "asof_date": "2025-10-29",
-        "n_days": 1,
-        "freshness_days": 54
-      },
-      "total_shares_model": 2494004065.0406504,
-      "delta_pp_model": -0.089,
-      "pp_after_model": 2.371,
-      "percent_discrepancy": false,
-      "discrepancy_pp": 0.0009999999999998899,
-      "stale_price": true,
-      "suspicious_price_level": true,
-      "needs_review": true,
-      "reasons": [
-        {
-          "scope": "row",
-          "code": "stale_price",
-          "message": "Market reference price is stale: 54.0 days old (>14d).",
-          "details": {
-            "freshness_days": 54.0,
-            "price_lookback_days": 14,
-            "market_ref": {
-              "ref_price": 690.0,
-              "ref_type": "close",
-              "asof_date": "2025-10-29",
-              "n_days": 1,
-              "freshness_days": 54
-            }
-          }
-        },
-        {
-          "scope": "tx",
-          "code": "price_deviation_vs_market",
-          "message": "Price deviates from market-ref by ratio 2.904",
-          "details": {
-            "price": 2004.0,
-            "market_ref": {
-              "ref_price": 690.0,
-              "ref_type": "close",
-              "asof_date": "2025-10-29",
-              "n_days": 1,
-              "freshness_days": 54
-            },
-            "ratio": 2.9043478260869566
-          }
-        },
-        {
-          "scope": "tx",
-          "code": "price_deviation_vs_market",
-          "message": "Price deviates from market-ref by ratio 2.933",
-          "details": {
-            "price": 2024.0,
-            "market_ref": {
-              "ref_price": 690.0,
-              "ref_type": "close",
-              "asof_date": "2025-10-29",
-              "n_days": 1,
-              "freshness_days": 54
-            },
-            "ratio": 2.933333333333333
-          }
-        },
-        {
-          "scope": "tx",
-          "code": "price_deviation_vs_market",
-          "message": "Price deviates from market-ref by ratio 2.962",
-          "details": {
-            "price": 2044.0,
-            "market_ref": {
-              "ref_price": 690.0,
-              "ref_type": "close",
-              "asof_date": "2025-10-29",
-              "n_days": 1,
-              "freshness_days": 54
-            },
-            "ratio": 2.96231884057971
-          }
-        }
-      ]
-    },
-    "suspicious_price_level": true,
-    "percent_discrepancy": false,
-    "stale_price": true,
-    "needs_review": true,
-    "reasons": [
-      {
-        "scope": "row",
-        "code": "stale_price",
-        "message": "Market reference price is stale: 54.0 days old (>14d).",
-        "details": {
-          "freshness_days": 54.0,
-          "price_lookback_days": 14,
-          "market_ref": {
-            "ref_price": 690.0,
-            "ref_type": "close",
-            "asof_date": "2025-10-29",
-            "n_days": 1,
-            "freshness_days": 54
-          }
-        }
-      },
-      {
-        "scope": "tx",
-        "code": "price_deviation_vs_market",
-        "message": "Price deviates from market-ref by ratio 2.904",
-        "details": {
-          "price": 2004.0,
-          "market_ref": {
-            "ref_price": 690.0,
-            "ref_type": "close",
-            "asof_date": "2025-10-29",
-            "n_days": 1,
-            "freshness_days": 54
-          },
-          "ratio": 2.9043478260869566
-        }
-      },
-      {
-        "scope": "tx",
-        "code": "price_deviation_vs_market",
-        "message": "Price deviates from market-ref by ratio 2.933",
-        "details": {
-          "price": 2024.0,
-          "market_ref": {
-            "ref_price": 690.0,
-            "ref_type": "close",
-            "asof_date": "2025-10-29",
-            "n_days": 1,
-            "freshness_days": 54
-          },
-          "ratio": 2.933333333333333
-        }
-      },
-      {
-        "scope": "tx",
-        "code": "price_deviation_vs_market",
-        "message": "Price deviates from market-ref by ratio 2.962",
-        "details": {
-          "price": 2044.0,
-          "market_ref": {
-            "ref_price": 690.0,
-            "ref_type": "close",
-            "asof_date": "2025-10-29",
-            "n_days": 1,
-            "freshness_days": 54
-          },
-          "ratio": 2.96231884057971
-        }
-      }
-    ],
-    "market_reference": {
-      "ref_price": 690.0,
-      "ref_type": "close",
-      "asof_date": "2025-10-29",
-      "n_days": 1,
-      "freshness_days": 54
-    },
-    "document_median_price": 2024.0,
-    "skip_reason": "stale_price"
-  },
-  {
-    "price_transaction": [
-      {
-        "date": "2025-12-15",
-        "type": "buy",
-        "price": 236.0,
-        "amount_transacted": 500000
-      },
-      {
-        "date": "2025-12-15",
-        "type": "buy",
-        "price": 238.0,
-        "amount_transacted": 500000
-      },
-      {
-        "date": "2025-12-15",
-        "type": "buy",
-        "price": 234.0,
-        "amount_transacted": 500000
-      },
-      {
-        "date": "2025-12-15",
-        "type": "buy",
-        "price": 230.0,
-        "amount_transacted": 47400
-      },
-      {
-        "date": "2025-12-15",
-        "type": "buy",
-        "price": 232.0,
-        "amount_transacted": 250000
-      },
-      {
-        "date": "2025-12-16",
-        "type": "buy",
-        "price": 232.0,
-        "amount_transacted": 500000
-      },
-      {
-        "date": "2025-12-16",
-        "type": "buy",
-        "price": 234.0,
-        "amount_transacted": 25200
-      },
-      {
-        "date": "2025-12-16",
-        "type": "buy",
-        "price": 236.0,
-        "amount_transacted": 224800
-      },
-      {
-        "date": "2025-12-16",
-        "type": "buy",
-        "price": 238.0,
-        "amount_transacted": 250000
-      }
-    ],
-    "share_percentage_transaction": 0.041,
-    "sub_sector": "media-entertainment",
-    "holding_after": 4599467382,
-    "transaction_value": 657351600.0,
-    "body": "Ram Jethmal Punjabi bought 2,797,400 shares of PT Tripar Multivision Plus Tbk. This increases their holdings from 4,596,669,982 to 4,599,467,382 shares. The stated purpose of the transaction was investment.",
-    "source": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_KSEI/LK-19122025-1594-00.pdf-0.pdf",
-    "holding_before": 4596669982,
-    "holder_type": "insider",
-    "share_percentage_before": 67.463,
-    "price": 234.987,
-    "timestamp": "2025-12-19T00:00:00",
-    "share_percentage_after": 67.504,
-    "amount_transaction": 2797400,
-    "holder_name": "Ram Jethmal Punjabi",
-    "title": "Ram Jethmal Punjabi buys shares of PT Tripar Multivision Plus Tbk",
-    "symbol": "RAAM.JK",
-    "sector": "consumer-cyclicals",
-    "transaction_type": "buy",
-    "tags": [
-      "investment"
-    ],
-    "type": "buy",
-    "amount": 2797400,
-    "value": 657351600.0,
-    "audit_flags": {
-      "announcement": {
-        "id": "lk-19122025-1594-00.pdf-0",
-        "title": "REPORT OF OWNERSHIP OR ANY CHANGES IN SHARE OWNERSHIP OF PUBLIC COMPANIES",
-        "url": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_KSEI/LK-19122025-1594-00.pdf-0.pdf",
-        "pdf_url": null,
-        "source_type": "idx"
-      },
-      "document_median_price": 234.0,
-      "market_reference": {
-        "ref_price": 270.0,
-        "ref_type": "close",
-        "asof_date": "2025-10-29",
-        "n_days": 1,
-        "freshness_days": 54
-      },
-      "total_shares_model": 6813616325.986096,
-      "delta_pp_model": 0.041,
-      "pp_after_model": 67.503,
-      "percent_discrepancy": false,
-      "discrepancy_pp": 0.0010000000000047748,
-      "stale_price": true,
-      "needs_review": true,
-      "reasons": [
-        {
-          "scope": "row",
-          "code": "stale_price",
-          "message": "Market reference price is stale: 54.0 days old (>14d).",
-          "details": {
-            "freshness_days": 54.0,
-            "price_lookback_days": 14,
-            "market_ref": {
-              "ref_price": 270.0,
-              "ref_type": "close",
-              "asof_date": "2025-10-29",
-              "n_days": 1,
-              "freshness_days": 54
-            }
-          }
-        }
-      ]
-    },
-    "percent_discrepancy": false,
-    "stale_price": true,
-    "needs_review": true,
-    "reasons": [
-      {
-        "scope": "row",
-        "code": "stale_price",
-        "message": "Market reference price is stale: 54.0 days old (>14d).",
-        "details": {
-          "freshness_days": 54.0,
-          "price_lookback_days": 14,
-          "market_ref": {
-            "ref_price": 270.0,
-            "ref_type": "close",
-            "asof_date": "2025-10-29",
-            "n_days": 1,
-            "freshness_days": 54
-          }
-        }
-      }
-    ],
-    "market_reference": {
-      "ref_price": 270.0,
-      "ref_type": "close",
-      "asof_date": "2025-10-29",
-      "n_days": 1,
-      "freshness_days": 54
-    },
-    "document_median_price": 234.0,
-    "skip_reason": "stale_price"
-  },
-  {
-    "price_transaction": [
-      {
-        "date": "2025-12-17",
-        "type": "others",
-        "price": 1.0,
-        "amount_transacted": 100000000
-      }
-    ],
-    "share_percentage_transaction": 3.334,
-    "sub_sector": "heavy-constructions-civil-engineering",
-    "holding_after": 120252900,
-    "transaction_value": 100000000.0,
-    "body": "Bank Of Singapore Limited executed a transaction for 100,000,000 shares of PT Paramita Bangun Sarana Tbk. This decreases their holdings from 220,252,900 to 120,252,900 shares. The stated purpose of the transaction was share transfer.",
-    "source": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_KSEI/LK-19122025-2214-00.pdf-0.pdf",
-    "holding_before": 220252900,
-    "holder_type": "institution",
-    "share_percentage_before": 7.342,
-    "price": 1.0,
-    "timestamp": "2025-12-19T00:00:00",
-    "share_percentage_after": 4.008,
-    "amount_transaction": 100000000,
-    "holder_name": "Bank Of Singapore Limited",
-    "title": "Bank Of Singapore Limited Others transaction of PT Paramita Bangun Sarana Tbk",
-    "symbol": "PBSA.JK",
-    "sector": "infrastructures",
-    "transaction_type": "others",
-    "tags": [
-      "share-transfer"
-    ],
-    "type": "others",
-    "amount": 100000000,
-    "value": 100000000.0,
-    "audit_flags": {
-      "needs_manual_uid": true,
-      "reason": "others detected",
-      "announcement": {
-        "id": "lk-19122025-2214-00.pdf-0",
-        "title": "REPORT OF OWNERSHIP OR ANY CHANGES IN SHARE OWNERSHIP OF PUBLIC COMPANIES",
-        "url": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_KSEI/LK-19122025-2214-00.pdf-0.pdf",
-        "pdf_url": null,
-        "source_type": "idx"
-      },
-      "document_median_price": 1.0,
-      "market_reference": {
-        "ref_price": 885.0,
-        "ref_type": "close",
-        "asof_date": "2025-10-29",
-        "n_days": 1,
-        "freshness_days": 54
-      },
-      "total_shares_model": 2999903296.104604,
-      "delta_pp_model": 0.0,
-      "pp_after_model": 7.342,
-      "percent_discrepancy": true,
-      "discrepancy_pp": 3.3339999999999996,
-      "stale_price": true,
-      "suspicious_price_level": true,
-      "needs_review": true,
-      "reasons": [
-        {
-          "scope": "row",
-          "code": "stale_price",
-          "message": "Market reference price is stale: 54.0 days old (>14d).",
-          "details": {
-            "freshness_days": 54.0,
-            "price_lookback_days": 14,
-            "market_ref": {
-              "ref_price": 885.0,
-              "ref_type": "close",
-              "asof_date": "2025-10-29",
-              "n_days": 1,
-              "freshness_days": 54
-            }
-          }
-        },
-        {
-          "scope": "tx",
-          "code": "price_deviation_vs_market",
-          "message": "Price deviates from market-ref by ratio 0.001",
-          "details": {
-            "price": 1.0,
-            "market_ref": {
-              "ref_price": 885.0,
-              "ref_type": "close",
-              "asof_date": "2025-10-29",
-              "n_days": 1,
-              "freshness_days": 54
-            },
-            "ratio": 0.0011299435028248588
-          }
-        },
-        {
-          "scope": "row",
-          "code": "percent_discrepancy",
-          "message": "Model pp_after deviates from PDF by 3.33400 pp",
-          "details": {
-            "total_shares_model": 2999903296.104604,
-            "delta_pp_model": 0.0,
-            "pp_after_model": 7.342,
-            "percent_discrepancy": true,
-            "discrepancy_pp": 3.3339999999999996
-          }
-        }
-      ]
-    },
-    "suspicious_price_level": true,
-    "percent_discrepancy": true,
-    "stale_price": true,
-    "needs_review": true,
-    "reasons": [
-      {
-        "scope": "row",
-        "code": "stale_price",
-        "message": "Market reference price is stale: 54.0 days old (>14d).",
-        "details": {
-          "freshness_days": 54.0,
-          "price_lookback_days": 14,
-          "market_ref": {
-            "ref_price": 885.0,
-            "ref_type": "close",
-            "asof_date": "2025-10-29",
-            "n_days": 1,
-            "freshness_days": 54
-          }
-        }
-      },
-      {
-        "scope": "tx",
-        "code": "price_deviation_vs_market",
-        "message": "Price deviates from market-ref by ratio 0.001",
-        "details": {
-          "price": 1.0,
-          "market_ref": {
-            "ref_price": 885.0,
-            "ref_type": "close",
-            "asof_date": "2025-10-29",
-            "n_days": 1,
-            "freshness_days": 54
-          },
-          "ratio": 0.0011299435028248588
-        }
-      },
-      {
-        "scope": "row",
-        "code": "percent_discrepancy",
-        "message": "Model pp_after deviates from PDF by 3.33400 pp",
-        "details": {
-          "total_shares_model": 2999903296.104604,
-          "delta_pp_model": 0.0,
-          "pp_after_model": 7.342,
-          "percent_discrepancy": true,
-          "discrepancy_pp": 3.3339999999999996
-        }
-      }
-    ],
-    "market_reference": {
-      "ref_price": 885.0,
-      "ref_type": "close",
-      "asof_date": "2025-10-29",
-      "n_days": 1,
-      "freshness_days": 54
-    },
-    "document_median_price": 1.0,
-    "skip_reason": "stale_price"
-  },
-  {
-    "price_transaction": [
-      {
-        "date": "2025-12-18",
-        "type": "buy",
-        "price": 133.0,
-        "amount_transacted": 569458100
-      }
-    ],
-    "share_percentage_transaction": 0.33,
-    "sub_sector": "properties-real-estate",
-    "holding_after": 8846301754,
-    "transaction_value": 75737927300.0,
-    "body": "Samuel Sekuritas Indonesia bought 569,458,100 shares of Sentul City Tbk. This increases their holdings from 8,276,843,654 to 8,846,301,754 shares. The stated purpose of the transaction was revo share placement.",
-    "source": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_KSEI/LK-19122025-4180-00.pdf-0.pdf",
-    "holding_before": 8276843654,
-    "holder_type": "institution",
-    "share_percentage_before": 4.94,
-    "price": 133.0,
-    "timestamp": "2025-12-19T00:00:00",
-    "share_percentage_after": 5.27,
-    "amount_transaction": 569458100,
-    "holder_name": "Samuel Sekuritas Indonesia",
-    "title": "Samuel Sekuritas Indonesia buys shares of Sentul City Tbk",
-    "symbol": "BKSL.JK",
-    "sector": "properties-real-estate",
-    "transaction_type": "buy",
-    "tags": [
-      "repurchase-agreement"
-    ],
-    "type": "buy",
-    "amount": 569458100,
-    "value": 75737927300.0,
-    "audit_flags": {
-      "announcement": {
-        "id": "lk-19122025-4180-00.pdf-0",
-        "title": "REPORT OF OWNERSHIP OR ANY CHANGES IN SHARE OWNERSHIP OF PUBLIC COMPANIES",
-        "url": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_KSEI/LK-19122025-4180-00.pdf-0.pdf",
-        "pdf_url": null,
-        "source_type": "idx"
-      },
-      "document_median_price": 133.0,
-      "market_reference": {
-        "ref_price": 118.0,
-        "ref_type": "close",
-        "asof_date": "2025-10-29",
-        "n_days": 1,
-        "freshness_days": 54
-      },
-      "total_shares_model": 167547442388.66394,
-      "delta_pp_model": 0.339,
-      "pp_after_model": 5.279,
-      "percent_discrepancy": false,
-      "discrepancy_pp": 0.009000000000000341,
-      "stale_price": true,
-      "needs_review": true,
-      "reasons": [
-        {
-          "scope": "row",
-          "code": "stale_price",
-          "message": "Market reference price is stale: 54.0 days old (>14d).",
-          "details": {
-            "freshness_days": 54.0,
-            "price_lookback_days": 14,
-            "market_ref": {
-              "ref_price": 118.0,
-              "ref_type": "close",
-              "asof_date": "2025-10-29",
-              "n_days": 1,
-              "freshness_days": 54
-            }
-          }
-        }
-      ]
-    },
-    "percent_discrepancy": false,
-    "stale_price": true,
-    "needs_review": true,
-    "reasons": [
-      {
-        "scope": "row",
-        "code": "stale_price",
-        "message": "Market reference price is stale: 54.0 days old (>14d).",
-        "details": {
-          "freshness_days": 54.0,
-          "price_lookback_days": 14,
-          "market_ref": {
-            "ref_price": 118.0,
-            "ref_type": "close",
-            "asof_date": "2025-10-29",
-            "n_days": 1,
-            "freshness_days": 54
-          }
-        }
-      }
-    ],
-    "market_reference": {
-      "ref_price": 118.0,
-      "ref_type": "close",
-      "asof_date": "2025-10-29",
-      "n_days": 1,
-      "freshness_days": 54
-    },
-    "document_median_price": 133.0,
-    "skip_reason": "stale_price"
-  },
-  {
-    "price_transaction": [
-      {
-        "date": "2025-12-15",
-        "type": "sell",
-        "price": 300.0,
-        "amount_transacted": 144614496
-      }
-    ],
-    "share_percentage_transaction": 5.09,
-    "sub_sector": "telecommunication",
-    "holding_after": 568252587,
-    "transaction_value": 43384348800.0,
-    "body": "PT Lintas Benua sold 144,614,496 shares of PT Ketrosden Triasmitra Tbk. This decreases their holdings from 712,867,083 to 568,252,587 shares. The stated purpose of the transaction was cash requirements.",
-    "source": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_KSEI/LK-19122025-4217-00.pdf-0.pdf",
-    "holding_before": 712867083,
-    "holder_type": "institution",
-    "share_percentage_before": 25.09,
-    "price": 300.0,
-    "timestamp": "2025-12-19T00:00:00",
-    "share_percentage_after": 20.0,
-    "amount_transaction": 144614496,
-    "holder_name": "PT Lintas Benua",
-    "title": "PT Lintas Benua sells shares of PT Ketrosden Triasmitra Tbk",
-    "symbol": "KETR.JK",
-    "sector": "infrastructures",
-    "transaction_type": "sell",
-    "tags": [
-      "divestment"
-    ],
-    "type": "sell",
-    "amount": 144614496,
-    "value": 43384348800.0,
-    "audit_flags": {
-      "announcement": {
-        "id": "lk-19122025-4217-00.pdf-0",
-        "title": "REPORT OF OWNERSHIP OR ANY CHANGES IN SHARE OWNERSHIP OF PUBLIC COMPANIES",
-        "url": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_KSEI/LK-19122025-4217-00.pdf-0.pdf",
-        "pdf_url": null,
-        "source_type": "idx"
-      },
-      "document_median_price": 300.0,
-      "market_reference": {
-        "ref_price": 580.0,
-        "ref_type": "close",
-        "asof_date": "2025-10-29",
-        "n_days": 1,
-        "freshness_days": 54
-      },
-      "total_shares_model": 2841239868.4734955,
-      "delta_pp_model": -5.09,
-      "pp_after_model": 20.0,
-      "percent_discrepancy": false,
-      "discrepancy_pp": 0.0,
-      "stale_price": true,
-      "suspicious_price_level": true,
-      "needs_review": true,
-      "reasons": [
-        {
-          "scope": "row",
-          "code": "stale_price",
-          "message": "Market reference price is stale: 54.0 days old (>14d).",
-          "details": {
-            "freshness_days": 54.0,
-            "price_lookback_days": 14,
-            "market_ref": {
-              "ref_price": 580.0,
-              "ref_type": "close",
-              "asof_date": "2025-10-29",
-              "n_days": 1,
-              "freshness_days": 54
-            }
-          }
-        },
-        {
-          "scope": "tx",
-          "code": "price_deviation_vs_market",
-          "message": "Price deviates from market-ref by ratio 0.517",
-          "details": {
-            "price": 300.0,
-            "market_ref": {
-              "ref_price": 580.0,
-              "ref_type": "close",
-              "asof_date": "2025-10-29",
-              "n_days": 1,
-              "freshness_days": 54
-            },
-            "ratio": 0.5172413793103449
-          }
-        }
-      ]
-    },
-    "suspicious_price_level": true,
-    "percent_discrepancy": false,
-    "stale_price": true,
-    "needs_review": true,
-    "reasons": [
-      {
-        "scope": "row",
-        "code": "stale_price",
-        "message": "Market reference price is stale: 54.0 days old (>14d).",
-        "details": {
-          "freshness_days": 54.0,
-          "price_lookback_days": 14,
-          "market_ref": {
-            "ref_price": 580.0,
-            "ref_type": "close",
-            "asof_date": "2025-10-29",
-            "n_days": 1,
-            "freshness_days": 54
-          }
-        }
-      },
-      {
-        "scope": "tx",
-        "code": "price_deviation_vs_market",
-        "message": "Price deviates from market-ref by ratio 0.517",
-        "details": {
-          "price": 300.0,
-          "market_ref": {
-            "ref_price": 580.0,
-            "ref_type": "close",
-            "asof_date": "2025-10-29",
-            "n_days": 1,
-            "freshness_days": 54
-          },
-          "ratio": 0.5172413793103449
-        }
-      }
-    ],
-    "market_reference": {
-      "ref_price": 580.0,
-      "ref_type": "close",
-      "asof_date": "2025-10-29",
-      "n_days": 1,
-      "freshness_days": 54
-    },
-    "document_median_price": 300.0,
-    "skip_reason": "stale_price"
-  },
-  {
-    "price_transaction": [
-      {
-        "date": "2025-12-17",
-        "type": "buy",
-        "price": 609.0,
-        "amount_transacted": 365000
-      }
-    ],
-    "share_percentage_transaction": 0.05,
-    "sub_sector": "software-it-services",
-    "holding_after": 70676200,
-    "transaction_value": 222285000.0,
-    "body": "Martin Suharlie bought 365,000 shares of PT M Cash Integrasi Tbk. This increases their holdings from 70,311,200 to 70,676,200 shares. The stated purpose of the transaction was investment.",
-    "source": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_KSEI/LK-19122025-5356-00.pdf-0.pdf",
-    "holding_before": 70311200,
-    "holder_type": "insider",
-    "share_percentage_before": 8.1,
-    "price": 609.0,
-    "timestamp": "2025-12-19T00:00:00",
-    "share_percentage_after": 8.15,
-    "amount_transaction": 365000,
-    "holder_name": "Martin Suharlie",
-    "title": "Martin Suharlie buys shares of PT M Cash Integrasi Tbk",
-    "symbol": "MCAS.JK",
-    "sector": "technology",
-    "transaction_type": "buy",
-    "tags": [
-      "investment"
-    ],
-    "type": "buy",
-    "amount": 365000,
-    "value": 222285000.0,
-    "audit_flags": {
-      "announcement": {
-        "id": "lk-19122025-5356-00.pdf-0",
-        "title": "REPORT OF OWNERSHIP OR ANY CHANGES IN SHARE OWNERSHIP OF PUBLIC COMPANIES",
-        "url": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_KSEI/LK-19122025-5356-00.pdf-0.pdf",
-        "pdf_url": null,
-        "source_type": "idx"
-      },
-      "document_median_price": 609.0,
-      "market_reference": {
-        "ref_price": 800.0,
-        "ref_type": "close",
-        "asof_date": "2025-10-29",
-        "n_days": 1,
-        "freshness_days": 54
-      },
-      "total_shares_model": 868039506.1728395,
-      "delta_pp_model": 0.042,
-      "pp_after_model": 8.142,
-      "percent_discrepancy": false,
-      "discrepancy_pp": 0.008000000000000895,
-      "stale_price": true,
-      "needs_review": true,
-      "reasons": [
-        {
-          "scope": "row",
-          "code": "stale_price",
-          "message": "Market reference price is stale: 54.0 days old (>14d).",
-          "details": {
-            "freshness_days": 54.0,
-            "price_lookback_days": 14,
-            "market_ref": {
-              "ref_price": 800.0,
-              "ref_type": "close",
-              "asof_date": "2025-10-29",
-              "n_days": 1,
-              "freshness_days": 54
-            }
-          }
-        }
-      ]
-    },
-    "percent_discrepancy": false,
-    "stale_price": true,
-    "needs_review": true,
-    "reasons": [
-      {
-        "scope": "row",
-        "code": "stale_price",
-        "message": "Market reference price is stale: 54.0 days old (>14d).",
-        "details": {
-          "freshness_days": 54.0,
-          "price_lookback_days": 14,
-          "market_ref": {
-            "ref_price": 800.0,
-            "ref_type": "close",
-            "asof_date": "2025-10-29",
-            "n_days": 1,
-            "freshness_days": 54
-          }
-        }
-      }
-    ],
-    "market_reference": {
-      "ref_price": 800.0,
-      "ref_type": "close",
-      "asof_date": "2025-10-29",
-      "n_days": 1,
-      "freshness_days": 54
-    },
-    "document_median_price": 609.0,
-    "skip_reason": "stale_price"
-  },
-  {
-    "price_transaction": [
-      {
-        "date": "2025-12-16",
-        "type": "buy",
-        "price": 675.0,
-        "amount_transacted": 826200
-      }
-    ],
-    "share_percentage_transaction": 0.11,
-    "sub_sector": "software-it-services",
-    "holding_after": 116992200,
-    "transaction_value": 557685000.0,
-    "body": "1 Inti Dot Com bought 826,200 shares of PT M Cash Integrasi Tbk. This increases their holdings from 116,166,000 to 116,992,200 shares. The stated purpose of the transaction was investment.",
-    "source": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_KSEI/LK-19122025-5393-00.pdf-0.pdf",
-    "holding_before": 116166000,
-    "holder_type": "insider",
-    "share_percentage_before": 13.38,
-    "price": 675.0,
-    "timestamp": "2025-12-19T00:00:00",
-    "share_percentage_after": 13.49,
-    "amount_transaction": 826200,
-    "holder_name": "1 Inti Dot Com",
-    "title": "1 Inti Dot Com buys shares of PT M Cash Integrasi Tbk",
-    "symbol": "MCAS.JK",
-    "sector": "technology",
-    "transaction_type": "buy",
-    "tags": [
-      "investment"
-    ],
-    "type": "buy",
-    "amount": 826200,
-    "value": 557685000.0,
-    "audit_flags": {
-      "announcement": {
-        "id": "lk-19122025-5393-00.pdf-0",
-        "title": "REPORT OF OWNERSHIP OR ANY CHANGES IN SHARE OWNERSHIP OF PUBLIC COMPANIES",
-        "url": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_KSEI/LK-19122025-5393-00.pdf-0.pdf",
-        "pdf_url": null,
-        "source_type": "idx"
-      },
-      "document_median_price": 675.0,
-      "market_reference": {
-        "ref_price": 800.0,
-        "ref_type": "close",
-        "asof_date": "2025-10-29",
-        "n_days": 1,
-        "freshness_days": 54
-      },
-      "total_shares_model": 868206278.0269058,
-      "delta_pp_model": 0.095,
-      "pp_after_model": 13.475,
-      "percent_discrepancy": false,
-      "discrepancy_pp": 0.015000000000000568,
-      "stale_price": true,
-      "needs_review": true,
-      "reasons": [
-        {
-          "scope": "row",
-          "code": "stale_price",
-          "message": "Market reference price is stale: 54.0 days old (>14d).",
-          "details": {
-            "freshness_days": 54.0,
-            "price_lookback_days": 14,
-            "market_ref": {
-              "ref_price": 800.0,
-              "ref_type": "close",
-              "asof_date": "2025-10-29",
-              "n_days": 1,
-              "freshness_days": 54
-            }
-          }
-        }
-      ]
-    },
-    "percent_discrepancy": false,
-    "stale_price": true,
-    "needs_review": true,
-    "reasons": [
-      {
-        "scope": "row",
-        "code": "stale_price",
-        "message": "Market reference price is stale: 54.0 days old (>14d).",
-        "details": {
-          "freshness_days": 54.0,
-          "price_lookback_days": 14,
-          "market_ref": {
-            "ref_price": 800.0,
-            "ref_type": "close",
-            "asof_date": "2025-10-29",
-            "n_days": 1,
-            "freshness_days": 54
-          }
-        }
-      }
-    ],
-    "market_reference": {
-      "ref_price": 800.0,
-      "ref_type": "close",
-      "asof_date": "2025-10-29",
-      "n_days": 1,
-      "freshness_days": 54
-    },
-    "document_median_price": 675.0,
-    "skip_reason": "stale_price"
-  },
-  {
-    "price_transaction": [
-      {
-        "date": "2025-12-15",
-        "type": "buy",
-        "price": 300.0,
-        "amount_transacted": 144614496
-      }
-    ],
-    "share_percentage_transaction": 5.09,
-    "sub_sector": "telecommunication",
-    "holding_after": 144614496,
-    "transaction_value": 43384348800.0,
-    "body": "Ascendia Capital Indonesia bought 144,614,496 shares of PT Ketrosden Triasmitra Tbk. This increases their holdings from 0 to 144,614,496 shares. The stated purpose of the transaction was investment.",
-    "source": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_KSEI/LK-19122025-6254-00.pdf-0.pdf",
-    "holding_before": 0,
-    "holder_type": "insider",
-    "share_percentage_before": 0.0,
-    "price": 300.0,
-    "timestamp": "2025-12-19T00:00:00",
-    "share_percentage_after": 5.09,
-    "amount_transaction": 144614496,
-    "holder_name": "Ascendia Capital Indonesia",
-    "title": "Ascendia Capital Indonesia buys shares of PT Ketrosden Triasmitra Tbk",
-    "symbol": "KETR.JK",
-    "sector": "infrastructures",
-    "transaction_type": "buy",
-    "tags": [
-      "investment"
-    ],
-    "type": "buy",
-    "amount": 144614496,
-    "value": 43384348800.0,
-    "audit_flags": {
-      "announcement": {
-        "id": "lk-19122025-6254-00.pdf-0",
-        "title": "REPORT OF OWNERSHIP OR ANY CHANGES IN SHARE OWNERSHIP OF PUBLIC COMPANIES",
-        "url": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_KSEI/LK-19122025-6254-00.pdf-0.pdf",
-        "pdf_url": null,
-        "source_type": "idx"
-      },
-      "document_median_price": 300.0,
-      "market_reference": {
-        "ref_price": 580.0,
-        "ref_type": "close",
-        "asof_date": "2025-10-29",
-        "n_days": 1,
-        "freshness_days": 54
-      },
-      "total_shares_model": 2841149233.7917485,
-      "delta_pp_model": 5.09,
-      "pp_after_model": 5.09,
-      "percent_discrepancy": false,
-      "discrepancy_pp": 0.0,
-      "stale_price": true,
-      "suspicious_price_level": true,
-      "needs_review": true,
-      "reasons": [
-        {
-          "scope": "row",
-          "code": "stale_price",
-          "message": "Market reference price is stale: 54.0 days old (>14d).",
-          "details": {
-            "freshness_days": 54.0,
-            "price_lookback_days": 14,
-            "market_ref": {
-              "ref_price": 580.0,
-              "ref_type": "close",
-              "asof_date": "2025-10-29",
-              "n_days": 1,
-              "freshness_days": 54
-            }
-          }
-        },
-        {
-          "scope": "tx",
-          "code": "price_deviation_vs_market",
-          "message": "Price deviates from market-ref by ratio 0.517",
-          "details": {
-            "price": 300.0,
-            "market_ref": {
-              "ref_price": 580.0,
-              "ref_type": "close",
-              "asof_date": "2025-10-29",
-              "n_days": 1,
-              "freshness_days": 54
-            },
-            "ratio": 0.5172413793103449
-          }
-        }
-      ]
-    },
-    "suspicious_price_level": true,
-    "percent_discrepancy": false,
-    "stale_price": true,
-    "needs_review": true,
-    "reasons": [
-      {
-        "scope": "row",
-        "code": "stale_price",
-        "message": "Market reference price is stale: 54.0 days old (>14d).",
-        "details": {
-          "freshness_days": 54.0,
-          "price_lookback_days": 14,
-          "market_ref": {
-            "ref_price": 580.0,
-            "ref_type": "close",
-            "asof_date": "2025-10-29",
-            "n_days": 1,
-            "freshness_days": 54
-          }
-        }
-      },
-      {
-        "scope": "tx",
-        "code": "price_deviation_vs_market",
-        "message": "Price deviates from market-ref by ratio 0.517",
-        "details": {
-          "price": 300.0,
-          "market_ref": {
-            "ref_price": 580.0,
-            "ref_type": "close",
-            "asof_date": "2025-10-29",
-            "n_days": 1,
-            "freshness_days": 54
-          },
-          "ratio": 0.5172413793103449
-        }
-      }
-    ],
-    "market_reference": {
-      "ref_price": 580.0,
-      "ref_type": "close",
-      "asof_date": "2025-10-29",
-      "n_days": 1,
-      "freshness_days": 54
-    },
-    "document_median_price": 300.0,
-    "skip_reason": "stale_price"
-  },
-  {
-    "price_transaction": [
-      {
-        "date": "2025-12-16",
-        "type": "sell",
-        "price": 290.0,
-        "amount_transacted": 10000000
-      },
-      {
-        "date": "2025-12-16",
-        "type": "sell",
-        "price": 270.0,
-        "amount_transacted": 10000000
-      },
-      {
-        "date": "2025-12-16",
-        "type": "sell",
-        "price": 300.0,
-        "amount_transacted": 20567500
-      },
-      {
-        "date": "2025-12-16",
-        "type": "sell",
-        "price": 296.0,
-        "amount_transacted": 40900
-      },
-      {
-        "date": "2025-12-16",
-        "type": "sell",
-        "price": 298.0,
-        "amount_transacted": 1500
-      },
-      {
-        "date": "2025-12-16",
-        "type": "sell",
-        "price": 294.0,
-        "amount_transacted": 390100
-      }
-    ],
-    "share_percentage_transaction": 3.83,
-    "sub_sector": "food-beverage",
-    "holding_after": 123393100,
-    "transaction_value": 11897492800.0,
-    "body": "Andreas Utomo sold 41,000,000 shares of PT Aman Agrindo Tbk. This decreases their holdings from 164,393,100 to 123,393,100 shares. The stated purpose of the transaction was divestment.",
-    "source": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_KSEI/LK-19122025-8072-00.pdf-0.pdf",
-    "holding_before": 164393100,
-    "holder_type": "insider",
-    "share_percentage_before": 15.36,
-    "price": 290.183,
-    "timestamp": "2025-12-19T00:00:00",
-    "share_percentage_after": 11.53,
-    "amount_transaction": 41000000,
-    "holder_name": "Andreas Utomo",
-    "title": "Andreas Utomo sells shares of PT Aman Agrindo Tbk",
-    "symbol": "GULA.JK",
-    "sector": "consumer-non-cyclicals",
-    "transaction_type": "sell",
-    "tags": [
-      "divestment"
-    ],
-    "type": "sell",
-    "amount": 41000000,
-    "value": 11897492800.0,
-    "audit_flags": {
-      "announcement": {
-        "id": "lk-19122025-8072-00.pdf-0",
-        "title": "REPORT OF OWNERSHIP OR ANY CHANGES IN SHARE OWNERSHIP OF PUBLIC COMPANIES",
-        "url": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_KSEI/LK-19122025-8072-00.pdf-0.pdf",
-        "pdf_url": null,
-        "source_type": "idx"
-      },
-      "document_median_price": 295.0,
-      "market_reference": {
-        "ref_price": 428.0,
-        "ref_type": "close",
-        "asof_date": "2025-10-29",
-        "n_days": 1,
-        "freshness_days": 54
-      },
-      "total_shares_model": 1070267578.1250001,
-      "delta_pp_model": -3.831,
-      "pp_after_model": 11.529,
-      "percent_discrepancy": false,
-      "discrepancy_pp": 0.0009999999999994458,
-      "stale_price": true,
-      "needs_review": true,
-      "reasons": [
-        {
-          "scope": "row",
-          "code": "stale_price",
-          "message": "Market reference price is stale: 54.0 days old (>14d).",
-          "details": {
-            "freshness_days": 54.0,
-            "price_lookback_days": 14,
-            "market_ref": {
-              "ref_price": 428.0,
-              "ref_type": "close",
-              "asof_date": "2025-10-29",
-              "n_days": 1,
-              "freshness_days": 54
-            }
-          }
-        }
-      ]
-    },
-    "percent_discrepancy": false,
-    "stale_price": true,
-    "needs_review": true,
-    "reasons": [
-      {
-        "scope": "row",
-        "code": "stale_price",
-        "message": "Market reference price is stale: 54.0 days old (>14d).",
-        "details": {
-          "freshness_days": 54.0,
-          "price_lookback_days": 14,
-          "market_ref": {
-            "ref_price": 428.0,
-            "ref_type": "close",
-            "asof_date": "2025-10-29",
-            "n_days": 1,
-            "freshness_days": 54
-          }
-        }
-      }
-    ],
-    "market_reference": {
-      "ref_price": 428.0,
-      "ref_type": "close",
-      "asof_date": "2025-10-29",
-      "n_days": 1,
-      "freshness_days": 54
-    },
-    "document_median_price": 295.0,
-    "skip_reason": "stale_price"
-  },
-  {
-    "price_transaction": [
-      {
-        "date": "2025-12-15",
-        "type": "buy",
-        "price": 6450.0,
-        "amount_transacted": 20377200
-      },
-      {
-        "date": "2025-12-16",
-        "type": "buy",
-        "price": 6450.0,
-        "amount_transacted": 782614191
-      },
-      {
-        "date": "2025-12-17",
-        "type": "buy",
-        "price": 6450.0,
-        "amount_transacted": 225534214
-      },
-      {
-        "date": "2025-12-18",
-        "type": "buy",
-        "price": 6450.0,
-        "amount_transacted": 466439565
-      },
-      {
-        "date": "2025-12-19",
-        "type": "buy",
-        "price": 6450.0,
-        "amount_transacted": 775193798
-      }
-    ],
-    "share_percentage_transaction": 40.05,
-    "sub_sector": "properties-real-estate",
-    "holding_after": 4872208968,
-    "transaction_value": 14642525343600.0,
-    "body": "Pantai Indah Kapuk Dua Tbk bought 2,270,158,968 shares of PT Bangun Kosambi Sukses Tbk. This increases their holdings from 2,602,050,000 to 4,872,208,968 shares. The stated purpose of the transaction was increased ownership of the company.",
-    "source": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_KSEI/LK-19122025-8159-00.pdf-0.pdf",
-    "holding_before": 2602050000,
-    "holder_type": "institution",
-    "share_percentage_before": 45.9,
-    "price": 6450.0,
-    "timestamp": "2025-12-19T00:00:00",
-    "share_percentage_after": 85.95,
-    "amount_transaction": 2270158968,
-    "holder_name": "Pantai Indah Kapuk Dua Tbk",
-    "title": "Pantai Indah Kapuk Dua Tbk buys shares of PT Bangun Kosambi Sukses Tbk",
-    "symbol": "CBDK.JK",
-    "sector": "properties-real-estate",
-    "transaction_type": "buy",
-    "tags": [
-      "investment"
-    ],
-    "type": "buy",
-    "amount": 2270158968,
-    "value": 14642525343600.0,
-    "audit_flags": {
-      "announcement": {
-        "id": "lk-19122025-8159-00.pdf-0",
-        "title": "REPORT OF OWNERSHIP OR ANY CHANGES IN SHARE OWNERSHIP OF PUBLIC COMPANIES",
-        "url": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_KSEI/LK-19122025-8159-00.pdf-0.pdf",
-        "pdf_url": null,
-        "source_type": "idx"
-      },
-      "document_median_price": 6450.0,
-      "market_reference": {
-        "ref_price": 5975.0,
-        "ref_type": "close",
-        "asof_date": "2025-10-29",
-        "n_days": 1,
-        "freshness_days": 54
-      },
-      "total_shares_model": 5668954248.366014,
-      "delta_pp_model": 40.045,
-      "pp_after_model": 85.945,
-      "percent_discrepancy": false,
-      "discrepancy_pp": 0.005000000000009663,
-      "stale_price": true,
-      "needs_review": true,
-      "reasons": [
-        {
-          "scope": "row",
-          "code": "stale_price",
-          "message": "Market reference price is stale: 54.0 days old (>14d).",
-          "details": {
-            "freshness_days": 54.0,
-            "price_lookback_days": 14,
-            "market_ref": {
-              "ref_price": 5975.0,
-              "ref_type": "close",
-              "asof_date": "2025-10-29",
-              "n_days": 1,
-              "freshness_days": 54
-            }
-          }
-        }
-      ]
-    },
-    "percent_discrepancy": false,
-    "stale_price": true,
-    "needs_review": true,
-    "reasons": [
-      {
-        "scope": "row",
-        "code": "stale_price",
-        "message": "Market reference price is stale: 54.0 days old (>14d).",
-        "details": {
-          "freshness_days": 54.0,
-          "price_lookback_days": 14,
-          "market_ref": {
-            "ref_price": 5975.0,
-            "ref_type": "close",
-            "asof_date": "2025-10-29",
-            "n_days": 1,
-            "freshness_days": 54
-          }
-        }
-      }
-    ],
-    "market_reference": {
-      "ref_price": 5975.0,
-      "ref_type": "close",
-      "asof_date": "2025-10-29",
-      "n_days": 1,
-      "freshness_days": 54
-    },
-    "document_median_price": 6450.0,
-    "skip_reason": "stale_price"
-  },
-  {
-    "price_transaction": [
-      {
-        "date": "2025-12-15",
-        "type": "sell",
-        "price": 6450.0,
-        "amount_transacted": 10188600
-      },
-      {
-        "date": "2025-12-16",
-        "type": "sell",
-        "price": 6450.0,
-        "amount_transacted": 766436291
-      },
-      {
-        "date": "2025-12-19",
-        "type": "sell",
-        "price": 6450.0,
-        "amount_transacted": 387596899
-      }
-    ],
-    "share_percentage_transaction": 20.54,
-    "sub_sector": "properties-real-estate",
-    "holding_after": 85778210,
-    "transaction_value": 7509230545500.0,
-    "body": "Tunas Mekar Jaya sold 1,164,221,790 shares of PT Bangun Kosambi Sukses Tbk. This decreases their holdings from 1,250,000,000 to 85,778,210 shares. The stated purpose of the transaction was divestment to realize investment value.",
-    "source": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_KSEI/LK-19122025-8604-00.pdf-0.pdf",
-    "holding_before": 1250000000,
-    "holder_type": "insider",
-    "share_percentage_before": 22.05,
-    "price": 6450.0,
-    "timestamp": "2025-12-19T00:00:00",
-    "share_percentage_after": 1.51,
-    "amount_transaction": 1164221790,
-    "holder_name": "Tunas Mekar Jaya",
-    "title": "Tunas Mekar Jaya sells shares of PT Bangun Kosambi Sukses Tbk",
-    "symbol": "CBDK.JK",
-    "sector": "properties-real-estate",
-    "transaction_type": "sell",
-    "tags": [
-      "divestment"
-    ],
-    "type": "sell",
-    "amount": 1164221790,
-    "value": 7509230545500.0,
-    "audit_flags": {
-      "announcement": {
-        "id": "lk-19122025-8604-00.pdf-0",
-        "title": "REPORT OF OWNERSHIP OR ANY CHANGES IN SHARE OWNERSHIP OF PUBLIC COMPANIES",
-        "url": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_KSEI/LK-19122025-8604-00.pdf-0.pdf",
-        "pdf_url": null,
-        "source_type": "idx"
-      },
-      "document_median_price": 6450.0,
-      "market_reference": {
-        "ref_price": 5975.0,
-        "ref_type": "close",
-        "asof_date": "2025-10-29",
-        "n_days": 1,
-        "freshness_days": 54
-      },
-      "total_shares_model": 5668934240.362812,
-      "delta_pp_model": -20.537,
-      "pp_after_model": 1.513,
-      "percent_discrepancy": false,
-      "discrepancy_pp": 0.0029999999999998916,
-      "stale_price": true,
-      "needs_review": true,
-      "reasons": [
-        {
-          "scope": "row",
-          "code": "stale_price",
-          "message": "Market reference price is stale: 54.0 days old (>14d).",
-          "details": {
-            "freshness_days": 54.0,
-            "price_lookback_days": 14,
-            "market_ref": {
-              "ref_price": 5975.0,
-              "ref_type": "close",
-              "asof_date": "2025-10-29",
-              "n_days": 1,
-              "freshness_days": 54
-            }
-          }
-        }
-      ]
-    },
-    "percent_discrepancy": false,
-    "stale_price": true,
-    "needs_review": true,
-    "reasons": [
-      {
-        "scope": "row",
-        "code": "stale_price",
-        "message": "Market reference price is stale: 54.0 days old (>14d).",
-        "details": {
-          "freshness_days": 54.0,
-          "price_lookback_days": 14,
-          "market_ref": {
-            "ref_price": 5975.0,
-            "ref_type": "close",
-            "asof_date": "2025-10-29",
-            "n_days": 1,
-            "freshness_days": 54
-          }
-        }
-      }
-    ],
-    "market_reference": {
-      "ref_price": 5975.0,
-      "ref_type": "close",
-      "asof_date": "2025-10-29",
-      "n_days": 1,
-      "freshness_days": 54
-    },
-    "document_median_price": 6450.0,
-    "skip_reason": "stale_price"
-  },
-  {
-    "price_transaction": [
-      {
         "date": "2025-12-18",
         "type": "others",
         "price": 12975.0,
         "amount_transacted": 385356454
       }
     ],
-    "share_percentage_transaction": 3.7,
-    "sub_sector": "properties-real-estate",
-    "holding_after": 15224337389,
-    "transaction_value": 4999999990650.0,
-    "body": "Multi Artha Pratama executed a transaction for 385,356,454 shares of PT Pantai Indah Kapuk Dua Tbk.. This increases their holdings from 14,838,980,935 to 15,224,337,389 shares. The stated purpose of the transaction was increased capital participation in the company.",
-    "source": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_KSEI/LK-19122025-8658-00.pdf-0.pdf",
-    "holding_before": 14838980935,
-    "holder_type": "insider",
-    "share_percentage_before": 87.78,
-    "price": 12975.0,
-    "timestamp": "2025-12-19T00:00:00",
     "share_percentage_after": 84.08,
     "amount_transaction": 385356454,
-    "holder_name": "Multi Artha Pratama",
-    "title": "Multi Artha Pratama Others transaction of PT Pantai Indah Kapuk Dua Tbk.",
-    "symbol": "PANI.JK",
-    "sector": "properties-real-estate",
     "transaction_type": "others",
+    "holding_after": 15224337389,
+    "holder_name": "Multi Artha Pratama",
+    "share_percentage_transaction": 3.7,
+    "sub_sector": "properties-real-estate",
+    "timestamp": "2025-12-19T00:00:00",
+    "symbol": "PANI.JK",
+    "holding_before": 14838980935,
+    "source": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_KSEI/LK-19122025-8658-00.pdf-0.pdf",
+    "share_percentage_before": 87.78,
+    "price": 12975.0,
+    "title": "Multi Artha Pratama Others transaction of PT Pantai Indah Kapuk Dua Tbk.",
+    "body": "Multi Artha Pratama executed a transaction for 385,356,454 shares of PT Pantai Indah Kapuk Dua Tbk.. This increases their holdings from 14,838,980,935 to 15,224,337,389 shares. The stated purpose of the transaction was increased capital participation in the company.",
+    "company_name": "PT Pantai Indah Kapuk Dua Tbk.",
+    "holder_type": "insider",
+    "purpose_of_transaction": "Increased capital participation in the Company",
     "tags": [
       "investment"
     ],
+    "transaction_value": 4999999990650.0,
+    "sector": "properties-real-estate",
     "type": "others",
     "amount": 385356454,
     "value": 4999999990650.0,
@@ -2020,7 +50,7 @@
         "ref_type": "close",
         "asof_date": "2025-10-29",
         "n_days": 1,
-        "freshness_days": 54
+        "freshness_days": 55
       },
       "total_shares_model": 16904740185.691502,
       "delta_pp_model": 0.0,
@@ -2033,16 +63,16 @@
         {
           "scope": "row",
           "code": "stale_price",
-          "message": "Market reference price is stale: 54.0 days old (>14d).",
+          "message": "Market reference price is stale: 55.0 days old (>14d).",
           "details": {
-            "freshness_days": 54.0,
+            "freshness_days": 55.0,
             "price_lookback_days": 14,
             "market_ref": {
               "ref_price": 14000.0,
               "ref_type": "close",
               "asof_date": "2025-10-29",
               "n_days": 1,
-              "freshness_days": 54
+              "freshness_days": 55
             }
           }
         },
@@ -2067,16 +97,16 @@
       {
         "scope": "row",
         "code": "stale_price",
-        "message": "Market reference price is stale: 54.0 days old (>14d).",
+        "message": "Market reference price is stale: 55.0 days old (>14d).",
         "details": {
-          "freshness_days": 54.0,
+          "freshness_days": 55.0,
           "price_lookback_days": 14,
           "market_ref": {
             "ref_price": 14000.0,
             "ref_type": "close",
             "asof_date": "2025-10-29",
             "n_days": 1,
-            "freshness_days": 54
+            "freshness_days": 55
           }
         }
       },
@@ -2098,7 +128,7 @@
       "ref_type": "close",
       "asof_date": "2025-10-29",
       "n_days": 1,
-      "freshness_days": 54
+      "freshness_days": 55
     },
     "document_median_price": 12975.0,
     "skip_reason": "stale_price"
@@ -2112,27 +142,29 @@
         "amount_transacted": 45000000
       }
     ],
-    "share_percentage_transaction": 1.92,
-    "sub_sector": "automobiles-components",
-    "holding_after": 1395000000,
-    "transaction_value": 45000000000.0,
-    "body": "Garuda Multi Investama bought 45,000,000 shares of PT Garuda Metalindo Tbk.. This increases their holdings from 1,350,000,000 to 1,395,000,000 shares. The stated purpose of the transaction was increase in operator shares.",
-    "source": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_KSEI/LK-19122025-9223-00.pdf-0.pdf",
-    "holding_before": 1350000000,
-    "holder_type": "institution",
-    "share_percentage_before": 57.6,
-    "price": 1000.0,
-    "timestamp": "2025-12-19T00:00:00",
     "share_percentage_after": 59.52,
     "amount_transaction": 45000000,
-    "holder_name": "Garuda Multi Investama",
-    "title": "Garuda Multi Investama buys shares of PT Garuda Metalindo Tbk.",
-    "symbol": "BOLT.JK",
-    "sector": "consumer-cyclicals",
     "transaction_type": "buy",
+    "holding_after": 1395000000,
+    "holder_name": "Garuda Multi Investama",
+    "share_percentage_transaction": 1.92,
+    "sub_sector": "automobiles-components",
+    "timestamp": "2025-12-19T00:00:00",
+    "symbol": "BOLT.JK",
+    "holding_before": 1350000000,
+    "source": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_KSEI/LK-19122025-9223-00.pdf-0.pdf",
+    "share_percentage_before": 57.6,
+    "price": 1000.0,
+    "title": "Garuda Multi Investama buys shares of PT Garuda Metalindo Tbk.",
+    "body": "Garuda Multi Investama bought 45,000,000 shares of PT Garuda Metalindo Tbk.. This increases their holdings from 1,350,000,000 to 1,395,000,000 shares. The stated purpose of the transaction was increase in operator shares.",
+    "company_name": "PT Garuda Metalindo Tbk.",
+    "holder_type": "institution",
+    "purpose_of_transaction": "Increase in Operator Shares",
     "tags": [
       "investment"
     ],
+    "transaction_value": 45000000000.0,
+    "sector": "consumer-cyclicals",
     "type": "buy",
     "amount": 45000000,
     "value": 45000000000.0,
@@ -2150,7 +182,7 @@
         "ref_type": "close",
         "asof_date": "2025-10-29",
         "n_days": 1,
-        "freshness_days": 54
+        "freshness_days": 55
       },
       "total_shares_model": 2343749999.9999995,
       "delta_pp_model": 1.92,
@@ -2163,16 +195,16 @@
         {
           "scope": "row",
           "code": "stale_price",
-          "message": "Market reference price is stale: 54.0 days old (>14d).",
+          "message": "Market reference price is stale: 55.0 days old (>14d).",
           "details": {
-            "freshness_days": 54.0,
+            "freshness_days": 55.0,
             "price_lookback_days": 14,
             "market_ref": {
               "ref_price": 1090.0,
               "ref_type": "close",
               "asof_date": "2025-10-29",
               "n_days": 1,
-              "freshness_days": 54
+              "freshness_days": 55
             }
           }
         }
@@ -2185,16 +217,16 @@
       {
         "scope": "row",
         "code": "stale_price",
-        "message": "Market reference price is stale: 54.0 days old (>14d).",
+        "message": "Market reference price is stale: 55.0 days old (>14d).",
         "details": {
-          "freshness_days": 54.0,
+          "freshness_days": 55.0,
           "price_lookback_days": 14,
           "market_ref": {
             "ref_price": 1090.0,
             "ref_type": "close",
             "asof_date": "2025-10-29",
             "n_days": 1,
-            "freshness_days": 54
+            "freshness_days": 55
           }
         }
       }
@@ -2204,7 +236,7 @@
       "ref_type": "close",
       "asof_date": "2025-10-29",
       "n_days": 1,
-      "freshness_days": 54
+      "freshness_days": 55
     },
     "document_median_price": 1000.0,
     "skip_reason": "stale_price"
@@ -2218,27 +250,29 @@
         "amount_transacted": 587900
       }
     ],
-    "share_percentage_transaction": 0.07,
-    "sub_sector": "transportation",
-    "holding_after": 464009113,
-    "transaction_value": 261027600.0,
-    "body": "Infiniti Wahana sold 587,900 shares of Steady Safe Tbk. This decreases their holdings from 464,597,013 to 464,009,113 shares. The stated purpose of the transaction was sale.",
-    "source": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_KSEI/LK-19122025-9489-00.pdf-0.pdf",
-    "holding_before": 464597013,
-    "holder_type": "insider",
-    "share_percentage_before": 56.57,
-    "price": 444.0,
-    "timestamp": "2025-12-19T00:00:00",
     "share_percentage_after": 56.5,
     "amount_transaction": 587900,
-    "holder_name": "Infiniti Wahana",
-    "title": "Infiniti Wahana sells shares of Steady Safe Tbk",
-    "symbol": "SAFE.JK",
-    "sector": "transportation-logistic",
     "transaction_type": "sell",
+    "holding_after": 464009113,
+    "holder_name": "Infiniti Wahana",
+    "share_percentage_transaction": 0.07,
+    "sub_sector": "transportation",
+    "timestamp": "2025-12-19T00:00:00",
+    "symbol": "SAFE.JK",
+    "holding_before": 464597013,
+    "source": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_KSEI/LK-19122025-9489-00.pdf-0.pdf",
+    "share_percentage_before": 56.57,
+    "price": 444.0,
+    "title": "Infiniti Wahana sells shares of Steady Safe Tbk",
+    "body": "Infiniti Wahana sold 587,900 shares of Steady Safe Tbk. This decreases their holdings from 464,597,013 to 464,009,113 shares. The stated purpose of the transaction was sale.",
+    "company_name": "Steady Safe Tbk",
+    "holder_type": "insider",
+    "purpose_of_transaction": "Sale",
     "tags": [
       "divestment"
     ],
+    "transaction_value": 261027600.0,
+    "sector": "transportation-logistic",
     "type": "sell",
     "amount": 587900,
     "value": 261027600.0,
@@ -2256,7 +290,7 @@
         "ref_type": "close",
         "asof_date": "2025-10-29",
         "n_days": 1,
-        "freshness_days": 54
+        "freshness_days": 55
       },
       "total_shares_model": 821278085.5577161,
       "delta_pp_model": -0.072,
@@ -2270,16 +304,16 @@
         {
           "scope": "row",
           "code": "stale_price",
-          "message": "Market reference price is stale: 54.0 days old (>14d).",
+          "message": "Market reference price is stale: 55.0 days old (>14d).",
           "details": {
-            "freshness_days": 54.0,
+            "freshness_days": 55.0,
             "price_lookback_days": 14,
             "market_ref": {
               "ref_price": 177.0,
               "ref_type": "close",
               "asof_date": "2025-10-29",
               "n_days": 1,
-              "freshness_days": 54
+              "freshness_days": 55
             }
           }
         },
@@ -2294,7 +328,7 @@
               "ref_type": "close",
               "asof_date": "2025-10-29",
               "n_days": 1,
-              "freshness_days": 54
+              "freshness_days": 55
             },
             "ratio": 2.5084745762711864
           }
@@ -2309,16 +343,16 @@
       {
         "scope": "row",
         "code": "stale_price",
-        "message": "Market reference price is stale: 54.0 days old (>14d).",
+        "message": "Market reference price is stale: 55.0 days old (>14d).",
         "details": {
-          "freshness_days": 54.0,
+          "freshness_days": 55.0,
           "price_lookback_days": 14,
           "market_ref": {
             "ref_price": 177.0,
             "ref_type": "close",
             "asof_date": "2025-10-29",
             "n_days": 1,
-            "freshness_days": 54
+            "freshness_days": 55
           }
         }
       },
@@ -2333,7 +367,7 @@
             "ref_type": "close",
             "asof_date": "2025-10-29",
             "n_days": 1,
-            "freshness_days": 54
+            "freshness_days": 55
           },
           "ratio": 2.5084745762711864
         }
@@ -2344,7 +378,7 @@
       "ref_type": "close",
       "asof_date": "2025-10-29",
       "n_days": 1,
-      "freshness_days": 54
+      "freshness_days": 55
     },
     "document_median_price": 444.0,
     "skip_reason": "stale_price"

@@ -29,7 +29,7 @@ def _to_decimal(x):
     except (InvalidOperation, TypeError, ValueError):
         return None
     
-def floor_pct_5(x):
+def floor_pct_3(x):
     """
     Floor to 5 decimals (⌊x·10^5⌋/10^5), then normalize.
     Returns float or None.
@@ -73,6 +73,7 @@ class FilingRecord:
     timestamp: str                  
     transaction_type: str         
     holder_name: str
+    company_name: str
 
     # Holdings
     holding_before: Optional[int] = None
@@ -205,6 +206,9 @@ class FilingRecord:
             "title", "body",
             "tags", "sector", "sub_sector",
             "source", "holder_type",
+
+            # use for llm generation news 
+            "purpose_of_transaction", "company_name"
         }
 
         db_dict: Dict[str, Any] = {}
@@ -233,6 +237,6 @@ class FilingRecord:
         # 5) normalize percentage fields with Decimal rounding (max 5 decimals)
         for key in ("share_percentage_before", "share_percentage_after", "share_percentage_transaction"):
             if key in db_dict:
-                db_dict[key] = floor_pct_5(db_dict.get(key))
+                db_dict[key] = floor_pct_3(db_dict.get(key))
 
         return db_dict

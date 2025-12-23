@@ -12,7 +12,7 @@ from pydantic import BaseModel, Field
 from dotenv import load_dotenv
 from deep_translator import GoogleTranslator
 
-from src.core.types import FilingRecord, PriceTransaction, floor_pct_5, close_pct
+from src.core.types import FilingRecord, PriceTransaction, floor_pct_3, close_pct
 from src.common.strings import to_float, to_int, kebab
 
 import os 
@@ -385,50 +385,6 @@ def _generate_title_and_body(
     return title, body
 
 
-# def _apply_bull_bear_tags(
-#     tags: List[str],
-#     tx_type: str,
-#     hb: Optional[int],
-#     ha: Optional[int],
-#     pp_before: Optional[float],
-#     pp_after: Optional[float],
-# ) -> List[str]:
-#     """
-#     Add 'bullish' for effective buys (holding or % up), 'bearish' for sells (down).
-#     Works even when tx_type was inferred as 'other' but the delta is clear.
-#     """
-#     out = set(tags or [])
-#     t = (tx_type or "").lower()
-
-#     # Prefer explicit tx_type first
-#     if t == "buy":
-#         out.add("bullish")
-#     elif t == "sell":
-#         out.add("bearish")
-#     else:
-#         # Fall back to deltas if available
-#         if hb is not None and ha is not None:
-#             if ha > hb:
-#                 out.add("bullish")
-#             elif ha < hb:
-#                 out.add("bearish")
-#         elif pp_before is not None and pp_after is not None:
-#             try:
-#                 if not close_pct(pp_after, pp_before):
-#                     if pp_after > pp_before:
-#                         tags = sorted(set(tags) | {"bullish"})
-#                     elif pp_after < pp_before:
-#                         tags = sorted(set(tags) | {"bearish"})
-#             except NameError:
-#                 delta = (pp_after or 0) - (pp_before or 0)
-#                 if delta > 1e-5:
-#                     tags = sorted(set(tags) | {"bullish"})
-#                 elif delta < -1e-5:
-#                     tags = sorted(set(tags) | {"bearish"})
-
-#     return sorted(out)
-
-
 def _enrich_sector_from_provider(symbol: Optional[str], sec: Any, sub: Any) -> tuple[str, str]:
     from src.generate.filings.utils.provider import get_company_info
     s = _to_str(sec)
@@ -511,9 +467,9 @@ def transform_raw_to_record(
     )
 
     # Percentages
-    pp_before = floor_pct_5(raw_dict.get("share_percentage_before"))
-    pp_after  = floor_pct_5(raw_dict.get("share_percentage_after"))
-    pp_tx     = floor_pct_5(raw_dict.get("share_percentage_transaction"))
+    pp_before = floor_pct_3(raw_dict.get("share_percentage_before"))
+    pp_after  = floor_pct_3(raw_dict.get("share_percentage_after"))
+    pp_tx     = floor_pct_3(raw_dict.get("share_percentage_transaction"))
 
     # Timestamp & source (ingestion_map → parser → first tx)
         # Timestamp & source (robust resolver for IDX & NON-IDX)
@@ -611,25 +567,6 @@ def transform_raw_to_record(
     tags = _normalize_tags(raw_dict.get("tags"), purpose_en, tx_type)
     print(f'\ntags after normalize: {tags}\n')
 
-    # Add bullish/bearish from direction (tx_type or holdings/% deltas)
-    # t_low = (tx_type or "").lower()
-    # if t_low == "buy":
-    #     tags = sorted(set(tags) | {"bullish"})
-    # elif t_low == "sell":
-    #     tags = sorted(set(tags) | {"bearish"})
-    # else:
-    #     # Infer from holdings or percentages when tx_type is "other"/"share-transfer"/etc.
-    #     if holding_before is not None and holding_after is not None:
-    #         if holding_after > holding_before:
-    #             tags = sorted(set(tags) | {"bullish"})
-    #         elif holding_after < holding_before:
-    #             tags = sorted(set(tags) | {"bearish"})
-    #     elif pp_before is not None and pp_after is not None:
-    #         if pp_after > pp_before:
-    #             tags = sorted(set(tags) | {"bullish"})
-    #         elif pp_after < pp_before:
-    #             tags = sorted(set(tags) | {"bearish"})
-
     # Symbol + sector/sub_sector (provider enrichment)
     symbol_norm = _normalize_symbol(raw_dict.get("symbol") or raw_dict.get("issuer_code"))
 
@@ -658,6 +595,7 @@ def transform_raw_to_record(
         timestamp=_to_iso_date_full(main_date),
         transaction_type=tx_type,
         holder_name=holder_name,
+        company_name=company_name,
 
         holding_before=holding_before,
         holding_after=holding_after,
