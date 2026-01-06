@@ -24,7 +24,7 @@ jobs:
 
       - name: Install uv (Python package manager)
         uses: astral-sh/setup-uv@v2
-        
+
       - name: Setup Python
         uses: actions/setup-python@v5
         with:
@@ -42,7 +42,7 @@ jobs:
         run: |
           mkdir -p data
           echo "Fetching announcements for ${{ inputs.date }}..."
-          python -m src.ingestion.cli --date ${{ inputs.date }} --out data/ingestion.json
+          uv run -m src.ingestion.cli --date ${{ inputs.date }} --out data/ingestion.json
 
       - name: Run Downloader (Fetch PDFs)
         env:
