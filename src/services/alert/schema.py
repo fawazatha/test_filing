@@ -35,6 +35,11 @@ MESSAGE_TEMPLATES = {
     "invalid_price_transaction": "price_transaction block is empty or missing date/type/amount for buy/sell filings.",
     "mixed_transaction_type": "Buy/Sell appears together with transfer/other; requires manual review.",
     "transfer_only_transaction": "Transfer/other-only transaction; requires manual handling.",
+
+    # MESSAGE_TEMPLATES
+    "non_idx_document": "Non-IDX document detected; parsing is skipped.",
+    # DEFAULT_SEVERITY
+    "non_idx_document": "warning",
 }
 
 # Default severity per alert code (aligned with README policy)

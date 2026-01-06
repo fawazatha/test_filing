@@ -145,6 +145,7 @@ jobs:
           GROQ_API_KEY:   ${{ secrets.GROQ_API_KEY }}
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          GEMINI_API_KEY_BACKUP: ${{ secrets.GEMINI_API_KEY_BACKUP }}
           SUPABASE_NEWS_TABLE:   ${{ secrets.SUPABASE_NEWS_TABLE }}
         shell: bash
         run: |
