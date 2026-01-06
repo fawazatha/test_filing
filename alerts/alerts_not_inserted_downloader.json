@@ -1,0 +1,60 @@
+[
+  {
+    "timestamp": "2026-01-06T09:21:20Z",
+    "category": "not_inserted",
+    "stage": "downloader",
+    "code": "non_idx_document",
+    "message": "warning",
+    "reasons": [
+      {
+        "scope": "system",
+        "code": "non_idx_document",
+        "message": "warning",
+        "details": {
+          "classification": "NON-IDX",
+          "similarity_idx": 63.63636363636363,
+          "similarity_non_idx": 81.08108108108108
+        }
+      }
+    ],
+    "context": {
+      "doc": {
+        "filename": "a24243f573_dbe70cea15.pdf",
+        "url": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_EREP/202601/a24243f573_dbe70cea15.pdf",
+        "title": "KSEI Data on Share Ownership of Listed Companies by Investor Type as of 30 December 2025"
+      },
+      "announcement": null
+    },
+    "severity": "warning",
+    "needs_review": true
+  },
+  {
+    "timestamp": "2026-01-06T09:21:30Z",
+    "category": "not_inserted",
+    "stage": "downloader",
+    "code": "non_idx_document",
+    "message": "warning",
+    "reasons": [
+      {
+        "scope": "system",
+        "code": "non_idx_document",
+        "message": "warning",
+        "details": {
+          "classification": "NON-IDX",
+          "similarity_idx": 63.63636363636363,
+          "similarity_non_idx": 81.08108108108108
+        }
+      }
+    ],
+    "context": {
+      "doc": {
+        "filename": "bcef6be290_bea03953ab.pdf",
+        "url": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_EREP/202601/bcef6be290_bea03953ab.pdf",
+        "title": "KSEI Data on Share Ownership of Listed Companies by Investor Type as of 28 November 2025"
+      },
+      "announcement": null
+    },
+    "severity": "warning",
+    "needs_review": true
+  }
+]
