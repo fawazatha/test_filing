@@ -28,10 +28,9 @@ jobs:
           python-version: "3.12"
           cache: "pip"
 
-      - name: Install Dependencies
+      - name: Install dependencies
         run: |
-          pip install -U pip
-          pip install -r requirements.txt
+          uv sync
 
       - name: Run Ingestion (Fetch List)
         env:
@@ -49,7 +48,7 @@ jobs:
         run: |
           mkdir -p downloads/idx-format downloads/non-idx-format
           echo "Downloading PDFs..."
-          python -m src.downloader.cli \
+          uv run -m src.downloader.cli \
             --input data/ingestion.json \
             --out-idx downloads/idx-format \
             --out-non-idx downloads/non-idx-format \
@@ -63,7 +62,7 @@ jobs:
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
           
           # Add the folders we want to inspect
-          git add data/ downloads/
+          git add data/ downloads/ alerts/
           
           # Only commit if there are changes
           if git diff --staged --quiet; then
@@ -80,4 +79,5 @@ jobs:
           path: |
             downloads/
             data/
+            alerts/
           retention-days: 1
