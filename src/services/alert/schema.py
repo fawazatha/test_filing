@@ -9,6 +9,7 @@ MESSAGE_TEMPLATES = {
     "unsupported_format": "Attachment is not a valid PDF or the format is unsupported.",
     "content_mismatch": "Attachment content does not match the expected announcement.",
     "low_title_similarity": "Announcement title and document name have low similarity.",
+    "non_idx_document": "Non-IDX document detected, parsing is skipped.",
 
     # Parser (not_inserted / fatal)
     "symbol_missing": "Could not resolve the issuer symbol from the document or mapping.",
@@ -35,11 +36,6 @@ MESSAGE_TEMPLATES = {
     "invalid_price_transaction": "price_transaction block is empty or missing date/type/amount for buy/sell filings.",
     "mixed_transaction_type": "Buy/Sell appears together with transfer/other; requires manual review.",
     "transfer_only_transaction": "Transfer/other-only transaction; requires manual handling.",
-
-    # MESSAGE_TEMPLATES
-    "non_idx_document": "Non-IDX document detected; parsing is skipped.",
-    # DEFAULT_SEVERITY
-    "non_idx_document": "warning",
 }
 
 # Default severity per alert code (aligned with README policy)
@@ -73,6 +69,7 @@ DEFAULT_SEVERITY = {
     "invalid_price_transaction": "hard",
     "mixed_transaction_type": "hard",
     "transfer_only_transaction": "hard",
+    "non_idx_document": "warning",
 }
 
 def build_alert(

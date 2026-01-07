@@ -305,7 +305,8 @@ def download_pdfs(
     not_inserted = [a for a in alerts if a.get("category") == "not_inserted"]
 
     # Legacy file: mirror all not_inserted alerts for readability/compat
-    atomic_write_json(paths["alerts_out"], not_inserted)
+    # Legacy file disabled to avoid duplicates/misleading name
+    # atomic_write_json(paths["alerts_out"], not_inserted)
 
     # v2 standardized outputs
     safe_mkdirs("alerts")

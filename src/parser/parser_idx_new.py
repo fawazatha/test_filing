@@ -1,7 +1,10 @@
+from src.common.log import get_logger
+
 import fitz
 import re
 import json 
 
+LOGGER = get_logger(__name__)
 
 def open_json(filepath: str) -> dict | None:
     try:
@@ -10,7 +13,7 @@ def open_json(filepath: str) -> dict | None:
             return data
     
     except Exception as error:
-        print(f'Error opening JSON file {filepath}: {error}')
+        LOGGER.error(f'Error opening JSON file {filepath}: {error}')
         return None
 
 
@@ -23,7 +26,7 @@ def clean_number(num_str) -> int:
     try:
         return int(float(clean_str))
     except ValueError as error:
-        print(f'clean number error: {error} {num_str}')
+        LOGGER.error(f'clean number error: {error} {num_str}')
         return None
 
 
@@ -36,7 +39,7 @@ def clean_percentage(num_str) -> float:
     try:
         return round(float(clean_str), 3)
     except ValueError as error:
-        print(f'clean percentage error: {error}')
+        LOGGER.error(f'clean percentage error: {error}')
         return None
     
 
@@ -49,7 +52,7 @@ def standardize_date(date_raw: str) -> str:
         }
 
         parts = date_raw.split('-')
-        # print(f'\nraw parts date: {parts}')
+        
         if len(parts) == 3:
             day = parts[0].zfill(2)
             month = month_map.get(parts[1].strip(), '01')
@@ -61,7 +64,7 @@ def standardize_date(date_raw: str) -> str:
         return date.strip()
     
     except Exception as error:
-        print(f'standardize date error: {error}') 
+        LOGGER.error(f'standardize date error: {error}') 
         return None 
 
 
@@ -101,7 +104,7 @@ def extract_holder_name(text: str) -> dict[str, str]:
         return holder_name
     
     except Exception as error: 
-        print(f'extract holder name error: {error}')
+        LOGGER.error(f'extract holder name error: {error}')
         return None 
 
 
@@ -123,7 +126,7 @@ def extract_symbol_and_company_name(text: str) -> dict[str, str]:
             if 'Tbk' in text[match.end():match.end()+20]:
                 company_name += ' Tbk'
             
-            print(f'\nExtracted symbol: {symbol}, company_name: {company_name}')
+            LOGGER.info(f'\nExtracted symbol: {symbol}, company_name: {company_name}')
             return {
                 'symbol': f'{symbol}.JK',
                 'company_name': company_name
@@ -132,7 +135,7 @@ def extract_symbol_and_company_name(text: str) -> dict[str, str]:
         return {'symbol': None, 'company_name': None}
 
     except Exception as error: 
-        print(f'extract symbol and company name error: {error}')
+        LOGGER.error(f'extract symbol and company name error: {error}')
         return {'symbol': None, 'company_name': None}
 
 
@@ -162,7 +165,7 @@ def extract_shares(text: str) -> dict[str, any]:
         return shares_payload
     
     except Exception as error:
-        print(f'extract shares error: {error}')
+        LOGGER.error(f'extract shares error: {error}')
         return {} 
 
 
@@ -170,7 +173,7 @@ def extract_price_transaction(text: str) -> dict[str, any]:
     try:
         lines = [line.strip() for line in text.split('\n') if line.strip()]
         
-        # 1. Header Detection
+        # Header Detection
         header_start_idx = None
         for index, line in enumerate(lines):
             if line == "Jenis" and index + 1 < len(lines) and lines[index + 1] == "Transaksi":
@@ -180,7 +183,7 @@ def extract_price_transaction(text: str) -> dict[str, any]:
         if header_start_idx is None:
             return None
         
-        # 2. Find Start of Data (After "Tujuan Transaksi")
+        # Find Start of Data (After "Tujuan Transaksi")
         data_start_idx = None
         for index in range(header_start_idx, len(lines) - 1):
             if lines[index] == "Tujuan" and lines[index + 1] == "Transaksi":
@@ -200,7 +203,7 @@ def extract_price_transaction(text: str) -> dict[str, any]:
         if data_start_idx is None:
             return None
 
-        # 3. Parse Transactions
+        # Parse Transactions
         transactions = []
         index = data_start_idx
         
@@ -210,23 +213,23 @@ def extract_price_transaction(text: str) -> dict[str, any]:
         while index < len(lines):
             line = lines[index]
             
-            # GLOBAL STOP: If we hit a footer line, stop everything.
+            # If we hit a footer line, stop everything.
             if any(line.startswith(k) for k in footer_keywords):
                 break
 
             if line in transaction_keywords:
-                # --- CHECK: IS THIS A REAL TRANSACTION? ---
                 # A real transaction must be followed by "Tidak", "Ya", or "Langsung" 
                 # before hitting a footer.
                 is_real_start = False
-                for i in range(1, 10): # Look ahead 10 lines
+                # Look ahead 10 lines
+                for i in range(1, 10): 
                     if index + i >= len(lines): break
                     val = lines[index + i]
                     if val in ["Tidak", "Ya", "Langsung"]:
                         is_real_start = True
                         break
                     if any(val.startswith(fk) for fk in footer_keywords):
-                        break # Hit footer before finding ownership status
+                        break 
                 
                 # If it's not a real start (e.g., it's just the word "Penjualan" in the purpose),
                 # skip this block and let the 'else' handle it or the previous purpose loop consume it.
@@ -234,24 +237,31 @@ def extract_price_transaction(text: str) -> dict[str, any]:
                     index += 1
                     continue
 
-                # --- A. Parse Transaction Type ---
+                # Parse Transaction Type 
                 type_parts = [line]
                 index += 1
                 while index < len(lines):
                     curr = lines[index]
-                    if curr in ["Tidak", "Ya"]: break
+                    if curr in ["Tidak", "Ya"]:
+                        break
+
                     # Don't break on keywords here, or we break multi-word types.
                     # Instead check if we are hitting the ownership field.
-                    if any(curr.startswith(k) for k in footer_keywords): break
+                    if any(curr.startswith(k) for k in footer_keywords): 
+                        break
+
                     type_parts.append(curr)
                     index += 1
                 
                 transaction_type = ' '.join(type_parts)
                 
-                if index < len(lines) and lines[index] in ["Tidak", "Ya"]: index += 1
-                if index < len(lines) and lines[index] == "Langsung": index += 1
+                if index < len(lines) and lines[index] in ["Tidak", "Ya"]: 
+                    index += 1
 
-                # --- B. Find Amount (Anchor to "Saham") ---
+                if index < len(lines) and lines[index] == "Langsung": 
+                    index += 1
+
+                # Find Amount (Anchor to "Saham") 
                 scan_limit = min(index + 15, len(lines))
                 for i in range(index, scan_limit):
                     if lines[i] == "Saham":
@@ -260,34 +270,58 @@ def extract_price_transaction(text: str) -> dict[str, any]:
                 
                 amount = lines[index] if index < len(lines) else None
                 index += 1 # At Saham
-                if index < len(lines) and lines[index] == "Saham": index += 1
-                if index < len(lines) and lines[index] == "Biasa": index += 1
+
+                if index < len(lines) and lines[index] == "Saham": 
+                    index += 1
                 
-                # --- C. Find Price ---
-                price = lines[index] if index < len(lines) else None
-                index += 1
+                # Find Price
+                # The item immediately before the date is the Price.
+                date_start_index = -1
+                scan_limit_date = min(index + 10, len(lines))
                 
-                # --- D. Find Date ---
+                for k in range(index, scan_limit_date):
+                    val = lines[k]
+                    # Regex to find Date start: 1 or 2 digits followed by hyphen (e.g., "01-", "24-")
+                    if re.match(r'^\d{1,2}\s?-$', val): 
+                        date_start_index = k
+                        break
+                
+                if date_start_index != -1 and date_start_index > index:
+                    # Found the date, The line before it is the Price
+                    price = lines[date_start_index - 1]
+                    index = date_start_index 
+
+                else:
+                    # Fallback if Regex fails (assume standard "Biasa" structure)
+                    if index < len(lines) and lines[index] == "Biasa": 
+                        index += 1
+
+                    price = lines[index] if index < len(lines) else None
+                    index += 1
+                
+                # Find Date
                 date_parts = []
                 while index < len(lines):
                     part = lines[index]
                     date_parts.append(part)
                     index += 1
-                    if part.isdigit() and len(part) == 4: break
-                    if len(date_parts) >= 5: break
+                    if part.isdigit() and len(part) == 4: 
+                        break
+                    if len(date_parts) >= 5: 
+                        break
                 
                 date = ' '.join(date_parts)
 
-                # --- E. Find Purpose (Fixed) ---
+                # Find Purpose
                 purpose_parts = []
                 while index < len(lines):
                     curr = lines[index]
                     
-                    # 1. Stop if footer
+                    # Stop if footer
                     if any(curr.startswith(k) for k in footer_keywords): 
                         break
 
-                    # 2. Stop if NEW Transaction, but only if it's a REAL one
+                    # Stop if NEW Transaction, but only if it's a REAL one
                     if curr in transaction_keywords:
                         is_next_real_start = False
                         for i in range(1, 10):
@@ -308,7 +342,7 @@ def extract_price_transaction(text: str) -> dict[str, any]:
                 
                 purpose = ' '.join(purpose_parts)
 
-                # --- F. Build Object ---
+                # Build Object
                 type_mapped = map_transaction_type(transaction_type)
                 amount_clean = clean_number(amount) 
                 price_clean = clean_number(price) 
@@ -338,7 +372,7 @@ def extract_price_transaction(text: str) -> dict[str, any]:
         return result
         
     except Exception as error:
-        print(f'extract price transaction error: {error}')
+        LOGGER.error(f'extract price transaction error: {error}')
         return None
 
 
@@ -416,15 +450,12 @@ def compute_transactions(price_transactions: list[dict[str, any]]) -> dict[str, 
             }
 
     except Exception as error:
-        print(f'compute transaction error: {error}')
+        LOGGER.error(f'compute transaction error: {error}')
         return {}
 
 
 def parser_new_document(filename: str): 
     doc = fitz.open(filename)
-    # for page in doc:
-    #     text = page.get_text()
-    #     print(text)
 
     extracted_data = {}
 
@@ -446,9 +477,10 @@ def parser_new_document(filename: str):
 
         if share_before is not None and share_after is not None:
             if share_before == share_after:
-                print(f"Skipping {filename}: Shares unchanged.")
+                LOGGER.info(f"Skipping {filename}: Shares unchanged.")
                 return None
-    print(f'\nextracted_data_shares: {extracted_data}\n')
+            
+    LOGGER.info(f'extracted_data_shares: {extracted_data}\n')
 
     company_lookup = open_json('data/company/company_map.json')
 
@@ -464,6 +496,7 @@ def parser_new_document(filename: str):
     holder_name = extract_holder_name(text)
 
     symbol = extract_symbol_and_company_name(text)
+    
     # Cross verify symbol with company lookup
     if company_lookup and symbol: 
         company_name_lookup = company_lookup.get(symbol.get('symbol'))
@@ -473,7 +506,7 @@ def parser_new_document(filename: str):
     extracted_data.update(symbol)
     extracted_data.update(holder_name)
 
-    print(f'\nextracted_data holder and symbol: {extracted_data}\n')
+    LOGGER.info(f'\nextracted_data holder and symbol: {extracted_data}\n')
 
     # Extract price transaction
     full_text_lines = []
@@ -487,7 +520,7 @@ def parser_new_document(filename: str):
         price_data = extract_price_transaction(combined_text)
         if price_data:
             extracted_data.update(price_data)
-            print(f"Found price transaction on page {page_index + 1}\n")
+            LOGGER.info(f"Found price transaction on page {page_index + 1}\n")
     
     # Compute top level transaction type, transaction value, price
     transaction_computed = compute_transactions(extracted_data.get('price_transaction'))
