@@ -265,20 +265,30 @@ jobs:
           echo "uv run python -m pipeline.orchestrator ${ARGS[*]}"
           uv run python -m pipeline.orchestrator "${ARGS[@]}"
 
+      - name: Commit and Push Results
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          
+          # Add the folders we want to inspect
+          git add .
+          
+          # Only commit if there are changes
+          if git diff --staged --quiet; then
+            echo "No changes to commit."
+          else
+            git commit -m "Debug: Add downloads and data for ${{ inputs.date }}"
+            git push
+          fi
+
       - name: Upload artifacts
         uses: actions/upload-artifact@v4
         with:
           name: filings-manual-${{ steps.ts.outputs.stamp }}-run${{ github.run_number }}
           path: |
-            artifacts/*.zip
-            data/*.json
-            data/*.jsonl
-            data/company/*.json
-            alerts/*.json
-            alerts_inserted/*.json
-            alerts_not_inserted/*.json
-            debug_final_rows_filings.json
-            debug_filings_to_news.json
+            downloads/
+            data/
+            alerts/
           if-no-files-found: warn
           retention-days: 14
           compression-level: 6
