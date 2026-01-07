@@ -3,6 +3,8 @@ from __future__ import annotations
 from typing import Dict, Tuple, Optional, Any, List
 from pydantic import BaseModel, Field 
 
+from src.generate.articles.model.llm_collection import LLMCollection
+
 import os
 import json
 import time 
@@ -155,7 +157,8 @@ class Summarizer:
         self.api_key_backup = os.getenv('GEMINI_API_KEY_BACKUP')
         self.provider = (provider or os.getenv("LLM_PROVIDER") or "").strip().lower()
         self.model = (os.getenv("GEMINI_MODEL") or "gemini-2.5-flash-lite") if self.provider == "gemini" else groq_model
-
+        self.llm_collection = LLMCollection()
+        
         # Prepare Gemini client if chosen
         self._gem_client = None
         if self.provider == "gemini":
