@@ -2,385 +2,1417 @@
   {
     "price_transaction": [
       {
-        "date": "2025-12-18",
-        "type": "others",
-        "price": 12975.0,
-        "amount_transacted": 385356454
+        "date": "2025-12-30",
+        "type": "buy",
+        "price": 1387.0,
+        "amount_transacted": 11274200
       }
     ],
-    "share_percentage_after": 84.08,
-    "amount_transaction": 385356454,
-    "transaction_type": "others",
-    "holding_after": 15224337389,
-    "holder_name": "Multi Artha Pratama",
-    "share_percentage_transaction": 3.7,
-    "sub_sector": "properties-real-estate",
-    "timestamp": "2025-12-19T00:00:00",
-    "symbol": "PANI.JK",
-    "holding_before": 14838980935,
-    "source": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_KSEI/LK-19122025-8658-00.pdf-0.pdf",
-    "share_percentage_before": 87.78,
-    "price": 12975.0,
-    "title": "Multi Artha Pratama Others transaction of PT Pantai Indah Kapuk Dua Tbk.",
-    "body": "Multi Artha Pratama executed a transaction for 385,356,454 shares of PT Pantai Indah Kapuk Dua Tbk.. This increases their holdings from 14,838,980,935 to 15,224,337,389 shares. The stated purpose of the transaction was increased capital participation in the company.",
-    "company_name": "PT Pantai Indah Kapuk Dua Tbk.",
+    "holder_name": "Yulisar Khiat",
+    "transaction_type": "buy",
+    "timestamp": "2026-01-05T12:54:44",
+    "purpose_of_transaction": "Investment",
+    "transaction_value": 15637315400.0,
+    "share_percentage_after": 6.42,
     "holder_type": "insider",
-    "purpose_of_transaction": "Increased capital participation in the Company",
+    "price": 1387.0,
+    "source": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_KSEI/LK-05012026-4493-00.pdf-0.pdf",
     "tags": [
       "investment"
     ],
-    "transaction_value": 4999999990650.0,
-    "sector": "properties-real-estate",
-    "type": "others",
-    "amount": 385356454,
-    "value": 4999999990650.0,
+    "symbol": "HEAL.JK",
+    "title": "Yulisar Khiat buys shares of PT Medikaloka Hermina Tbk",
+    "holding_after": 986829166,
+    "share_percentage_transaction": 0.07,
+    "holding_before": 975554966,
+    "amount_transaction": 11274200,
+    "company_name": "PT Medikaloka Hermina Tbk",
+    "sub_sector": "healthcare-equipment-providers",
+    "sector": "healthcare",
+    "body": "Yulisar Khiat bought 11,274,200 shares of PT Medikaloka Hermina Tbk. This increases their holdings from 975,554,966 to 986,829,166 shares. The stated purpose of the transaction was investment.",
+    "share_percentage_before": 6.35,
+    "type": "buy",
+    "amount": 11274200,
+    "value": 15637315400.0,
     "audit_flags": {
-      "needs_manual_uid": true,
-      "reason": "others detected",
       "announcement": {
-        "id": "lk-19122025-8658-00.pdf-0",
+        "id": "lk-05012026-4493-00.pdf-0",
         "title": "REPORT OF OWNERSHIP OR ANY CHANGES IN SHARE OWNERSHIP OF PUBLIC COMPANIES",
-        "url": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_KSEI/LK-19122025-8658-00.pdf-0.pdf",
+        "url": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_KSEI/LK-05012026-4493-00.pdf-0.pdf",
         "pdf_url": null,
         "source_type": "idx"
       },
-      "document_median_price": 12975.0,
+      "document_median_price": 1387.0,
       "market_reference": {
-        "ref_price": 14000.0,
+        "ref_price": 1410.0,
         "ref_type": "close",
-        "asof_date": "2025-10-29",
+        "asof_date": "2026-01-08",
         "n_days": 1,
-        "freshness_days": 55
+        "freshness_days": 1
       },
-      "total_shares_model": 16904740185.691502,
-      "delta_pp_model": 0.0,
-      "pp_after_model": 87.78,
-      "percent_discrepancy": true,
-      "discrepancy_pp": 3.700000000000003,
-      "stale_price": true,
-      "needs_review": true,
-      "reasons": [
-        {
-          "scope": "row",
-          "code": "stale_price",
-          "message": "Market reference price is stale: 55.0 days old (>14d).",
-          "details": {
-            "freshness_days": 55.0,
-            "price_lookback_days": 14,
-            "market_ref": {
-              "ref_price": 14000.0,
-              "ref_type": "close",
-              "asof_date": "2025-10-29",
-              "n_days": 1,
-              "freshness_days": 55
-            }
-          }
-        },
-        {
-          "scope": "row",
-          "code": "percent_discrepancy",
-          "message": "Model pp_after deviates from PDF by 3.70000 pp",
-          "details": {
-            "total_shares_model": 16904740185.691502,
-            "delta_pp_model": 0.0,
-            "pp_after_model": 87.78,
-            "percent_discrepancy": true,
-            "discrepancy_pp": 3.700000000000003
-          }
-        }
-      ]
+      "total_shares_model": 15363070330.708662,
+      "delta_pp_model": 0.073,
+      "pp_after_model": 6.423,
+      "percent_discrepancy": false,
+      "discrepancy_pp": 0.0030000000000001137,
+      "needs_review": false,
+      "reasons": []
     },
-    "percent_discrepancy": true,
-    "stale_price": true,
-    "needs_review": true,
-    "reasons": [
-      {
-        "scope": "row",
-        "code": "stale_price",
-        "message": "Market reference price is stale: 55.0 days old (>14d).",
-        "details": {
-          "freshness_days": 55.0,
-          "price_lookback_days": 14,
-          "market_ref": {
-            "ref_price": 14000.0,
-            "ref_type": "close",
-            "asof_date": "2025-10-29",
-            "n_days": 1,
-            "freshness_days": 55
-          }
-        }
-      },
-      {
-        "scope": "row",
-        "code": "percent_discrepancy",
-        "message": "Model pp_after deviates from PDF by 3.70000 pp",
-        "details": {
-          "total_shares_model": 16904740185.691502,
-          "delta_pp_model": 0.0,
-          "pp_after_model": 87.78,
-          "percent_discrepancy": true,
-          "discrepancy_pp": 3.700000000000003
-        }
-      }
-    ],
+    "percent_discrepancy": false,
+    "needs_review": false,
     "market_reference": {
-      "ref_price": 14000.0,
+      "ref_price": 1410.0,
       "ref_type": "close",
-      "asof_date": "2025-10-29",
+      "asof_date": "2026-01-08",
       "n_days": 1,
-      "freshness_days": 55
+      "freshness_days": 1
     },
-    "document_median_price": 12975.0,
-    "skip_reason": "stale_price"
+    "document_median_price": 1387.0
   },
   {
     "price_transaction": [
       {
-        "date": "2025-12-12",
-        "type": "buy",
-        "price": 1000.0,
-        "amount_transacted": 45000000
+        "date": "2026-01-02",
+        "type": "sell",
+        "price": 71.0,
+        "amount_transacted": 5908500
+      },
+      {
+        "date": "2026-01-02",
+        "type": "sell",
+        "price": 72.0,
+        "amount_transacted": 1481500
       }
     ],
-    "share_percentage_after": 59.52,
-    "amount_transaction": 45000000,
-    "transaction_type": "buy",
-    "holding_after": 1395000000,
-    "holder_name": "Garuda Multi Investama",
-    "share_percentage_transaction": 1.92,
-    "sub_sector": "automobiles-components",
-    "timestamp": "2025-12-19T00:00:00",
-    "symbol": "BOLT.JK",
-    "holding_before": 1350000000,
-    "source": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_KSEI/LK-19122025-9223-00.pdf-0.pdf",
-    "share_percentage_before": 57.6,
-    "price": 1000.0,
-    "title": "Garuda Multi Investama buys shares of PT Garuda Metalindo Tbk.",
-    "body": "Garuda Multi Investama bought 45,000,000 shares of PT Garuda Metalindo Tbk.. This increases their holdings from 1,350,000,000 to 1,395,000,000 shares. The stated purpose of the transaction was increase in operator shares.",
-    "company_name": "PT Garuda Metalindo Tbk.",
-    "holder_type": "institution",
-    "purpose_of_transaction": "Increase in Operator Shares",
+    "holder_name": "Jemmy Kurniawan",
+    "transaction_type": "sell",
+    "timestamp": "2026-01-05T11:21:53",
+    "purpose_of_transaction": "Divestment",
+    "transaction_value": 526171500.0,
+    "share_percentage_after": 62.86,
+    "holder_type": "insider",
+    "price": 71.2,
+    "source": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_KSEI/LK-05012026-8048-00.pdf-0.pdf",
     "tags": [
-      "investment"
+      "divestment"
     ],
-    "transaction_value": 45000000000.0,
-    "sector": "consumer-cyclicals",
-    "type": "buy",
-    "amount": 45000000,
-    "value": 45000000000.0,
+    "symbol": "MEDS.JK",
+    "title": "Jemmy Kurniawan sells shares of PT Hetzer Medical Indonesia Tbk",
+    "holding_after": 982110000,
+    "share_percentage_transaction": 0.47,
+    "holding_before": 989500000,
+    "amount_transaction": 7390000,
+    "company_name": "PT Hetzer Medical Indonesia Tbk",
+    "sub_sector": "healthcare-equipment-providers",
+    "sector": "healthcare",
+    "body": "Jemmy Kurniawan sold 7,390,000 shares of PT Hetzer Medical Indonesia Tbk. This decreases their holdings from 989,500,000 to 982,110,000 shares. The stated purpose of the transaction was divestment.",
+    "share_percentage_before": 63.33,
+    "type": "sell",
+    "amount": 7390000,
+    "value": 526171500.0,
     "audit_flags": {
       "announcement": {
-        "id": "lk-19122025-9223-00.pdf-0",
+        "id": "lk-05012026-8048-00.pdf-0",
         "title": "REPORT OF OWNERSHIP OR ANY CHANGES IN SHARE OWNERSHIP OF PUBLIC COMPANIES",
-        "url": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_KSEI/LK-19122025-9223-00.pdf-0.pdf",
+        "url": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_KSEI/LK-05012026-8048-00.pdf-0.pdf",
         "pdf_url": null,
         "source_type": "idx"
       },
-      "document_median_price": 1000.0,
+      "document_median_price": 71.5,
       "market_reference": {
-        "ref_price": 1090.0,
+        "ref_price": 84.0,
         "ref_type": "close",
-        "asof_date": "2025-10-29",
+        "asof_date": "2026-01-08",
         "n_days": 1,
-        "freshness_days": 55
+        "freshness_days": 1
       },
-      "total_shares_model": 2343749999.9999995,
-      "delta_pp_model": 1.92,
-      "pp_after_model": 59.52,
+      "total_shares_model": 1562450655.2976472,
+      "delta_pp_model": -0.473,
+      "pp_after_model": 62.857,
       "percent_discrepancy": false,
-      "discrepancy_pp": 0.0,
-      "stale_price": true,
-      "needs_review": true,
-      "reasons": [
-        {
-          "scope": "row",
-          "code": "stale_price",
-          "message": "Market reference price is stale: 55.0 days old (>14d).",
-          "details": {
-            "freshness_days": 55.0,
-            "price_lookback_days": 14,
-            "market_ref": {
-              "ref_price": 1090.0,
-              "ref_type": "close",
-              "asof_date": "2025-10-29",
-              "n_days": 1,
-              "freshness_days": 55
-            }
-          }
-        }
-      ]
+      "discrepancy_pp": 0.0030000000000001137,
+      "needs_review": false,
+      "reasons": []
     },
     "percent_discrepancy": false,
-    "stale_price": true,
-    "needs_review": true,
-    "reasons": [
-      {
-        "scope": "row",
-        "code": "stale_price",
-        "message": "Market reference price is stale: 55.0 days old (>14d).",
-        "details": {
-          "freshness_days": 55.0,
-          "price_lookback_days": 14,
-          "market_ref": {
-            "ref_price": 1090.0,
-            "ref_type": "close",
-            "asof_date": "2025-10-29",
-            "n_days": 1,
-            "freshness_days": 55
-          }
-        }
-      }
-    ],
+    "needs_review": false,
     "market_reference": {
-      "ref_price": 1090.0,
+      "ref_price": 84.0,
       "ref_type": "close",
-      "asof_date": "2025-10-29",
+      "asof_date": "2026-01-08",
       "n_days": 1,
-      "freshness_days": 55
+      "freshness_days": 1
     },
-    "document_median_price": 1000.0,
-    "skip_reason": "stale_price"
+    "document_median_price": 71.5
   },
   {
     "price_transaction": [
       {
         "date": "2025-12-17",
         "type": "sell",
-        "price": 444.0,
-        "amount_transacted": 587900
+        "price": 420.0,
+        "amount_transacted": 100
+      },
+      {
+        "date": "2025-12-30",
+        "type": "buy",
+        "price": 422.0,
+        "amount_transacted": 138800
       }
     ],
-    "share_percentage_after": 56.5,
-    "amount_transaction": 587900,
-    "transaction_type": "sell",
-    "holding_after": 464009113,
-    "holder_name": "Infiniti Wahana",
-    "share_percentage_transaction": 0.07,
-    "sub_sector": "transportation",
-    "timestamp": "2025-12-19T00:00:00",
-    "symbol": "SAFE.JK",
-    "holding_before": 464597013,
-    "source": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_KSEI/LK-19122025-9489-00.pdf-0.pdf",
-    "share_percentage_before": 56.57,
-    "price": 444.0,
-    "title": "Infiniti Wahana sells shares of Steady Safe Tbk",
-    "body": "Infiniti Wahana sold 587,900 shares of Steady Safe Tbk. This decreases their holdings from 464,597,013 to 464,009,113 shares. The stated purpose of the transaction was sale.",
-    "company_name": "Steady Safe Tbk",
+    "holder_name": "Oki Widjaja",
+    "transaction_type": "buy",
+    "timestamp": "2026-01-05T17:43:52",
+    "purpose_of_transaction": "Investment",
+    "transaction_value": 58531600.0,
+    "share_percentage_after": 2.47,
     "holder_type": "insider",
-    "purpose_of_transaction": "Sale",
+    "price": 422.001,
+    "source": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_KSEI/LK-05012026-1634-00.pdf-0.pdf",
     "tags": [
-      "divestment"
+      "investment"
     ],
-    "transaction_value": 261027600.0,
-    "sector": "transportation-logistic",
-    "type": "sell",
-    "amount": 587900,
-    "value": 261027600.0,
+    "symbol": "GLVA.JK",
+    "title": "Oki Widjaja buys shares of PT Galva Technologies Tbk",
+    "holding_after": 37016400,
+    "share_percentage_transaction": 0.01,
+    "holding_before": 36877700,
+    "amount_transaction": 138700,
+    "company_name": "PT Galva Technologies Tbk",
+    "sub_sector": "technology-hardware-equipment",
+    "sector": "technology",
+    "body": "Oki Widjaja bought 138,700 shares of PT Galva Technologies Tbk. This increases their holdings from 36,877,700 to 37,016,400 shares. The stated purpose of the transaction was investment.",
+    "share_percentage_before": 2.46,
+    "type": "buy",
+    "amount": 138700,
+    "value": 58531600.0,
     "audit_flags": {
       "announcement": {
-        "id": "lk-19122025-9489-00.pdf-0",
+        "id": "lk-05012026-1634-00.pdf-0",
         "title": "REPORT OF OWNERSHIP OR ANY CHANGES IN SHARE OWNERSHIP OF PUBLIC COMPANIES",
-        "url": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_KSEI/LK-19122025-9489-00.pdf-0.pdf",
+        "url": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_KSEI/LK-05012026-1634-00.pdf-0.pdf",
         "pdf_url": null,
         "source_type": "idx"
       },
-      "document_median_price": 444.0,
+      "document_median_price": 421.0,
       "market_reference": {
-        "ref_price": 177.0,
+        "ref_price": 404.0,
         "ref_type": "close",
-        "asof_date": "2025-10-29",
+        "asof_date": "2026-01-08",
         "n_days": 1,
-        "freshness_days": 55
+        "freshness_days": 1
       },
-      "total_shares_model": 821278085.5577161,
-      "delta_pp_model": -0.072,
-      "pp_after_model": 56.498,
+      "total_shares_model": 1499093495.9349594,
+      "delta_pp_model": 0.009,
+      "pp_after_model": 2.469,
       "percent_discrepancy": false,
-      "discrepancy_pp": 0.0020000000000024443,
-      "stale_price": true,
-      "suspicious_price_level": true,
+      "discrepancy_pp": 0.001000000000000334,
+      "needs_review": false,
+      "reasons": []
+    },
+    "percent_discrepancy": false,
+    "needs_review": false,
+    "market_reference": {
+      "ref_price": 404.0,
+      "ref_type": "close",
+      "asof_date": "2026-01-08",
+      "n_days": 1,
+      "freshness_days": 1
+    },
+    "document_median_price": 421.0
+  },
+  {
+    "price_transaction": [
+      {
+        "date": "2025-12-30",
+        "type": "buy",
+        "price": 1795.0,
+        "amount_transacted": 489400
+      },
+      {
+        "date": "2025-12-30",
+        "type": "buy",
+        "price": 1835.0,
+        "amount_transacted": 100100
+      },
+      {
+        "date": "2025-12-30",
+        "type": "buy",
+        "price": 1845.0,
+        "amount_transacted": 6800
+      },
+      {
+        "date": "2025-12-30",
+        "type": "buy",
+        "price": 1970.0,
+        "amount_transacted": 500100
+      },
+      {
+        "date": "2026-01-02",
+        "type": "buy",
+        "price": 1760.0,
+        "amount_transacted": 13800
+      },
+      {
+        "date": "2026-01-02",
+        "type": "buy",
+        "price": 1765.0,
+        "amount_transacted": 123600
+      },
+      {
+        "date": "2026-01-02",
+        "type": "buy",
+        "price": 1830.0,
+        "amount_transacted": 6700
+      }
+    ],
+    "holder_name": "Patrick Rudolf Dannacher",
+    "transaction_type": "buy",
+    "timestamp": "2026-01-05T19:47:57",
+    "purpose_of_transaction": "Investment",
+    "transaction_value": 2314602500.0,
+    "share_percentage_after": 3.028,
+    "holder_type": "insider",
+    "price": 1865.863,
+    "source": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_KSEI/LK-05012026-8663-00.pdf-0.pdf",
+    "tags": [
+      "investment"
+    ],
+    "symbol": "CYBR.JK",
+    "title": "Patrick Rudolf Dannacher buys shares of PT ITSEC Asia Tbk.",
+    "holding_after": 201523622,
+    "share_percentage_transaction": 0.018,
+    "holding_before": 200283122,
+    "amount_transaction": 1240500,
+    "company_name": "PT ITSEC Asia Tbk.",
+    "sub_sector": "software-it-services",
+    "sector": "technology",
+    "body": "Patrick Rudolf Dannacher bought 1,240,500 shares of PT ITSEC Asia Tbk.. This increases their holdings from 200,283,122 to 201,523,622 shares. The stated purpose of the transaction was investment.",
+    "share_percentage_before": 3.01,
+    "type": "buy",
+    "amount": 1240500,
+    "value": 2314602500.0,
+    "audit_flags": {
+      "announcement": {
+        "id": "lk-05012026-8663-00.pdf-0",
+        "title": "REPORT OF OWNERSHIP OR ANY CHANGES IN SHARE OWNERSHIP OF PUBLIC COMPANIES",
+        "url": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_KSEI/LK-05012026-8663-00.pdf-0.pdf",
+        "pdf_url": null,
+        "source_type": "idx"
+      },
+      "document_median_price": 1830.0,
+      "market_reference": {
+        "ref_price": 1800.0,
+        "ref_type": "close",
+        "asof_date": "2026-01-08",
+        "n_days": 1,
+        "freshness_days": 1
+      },
+      "total_shares_model": 6653924318.936877,
+      "delta_pp_model": 0.018,
+      "pp_after_model": 3.027,
+      "percent_discrepancy": false,
+      "discrepancy_pp": 0.0009999999999998899,
+      "needs_review": false,
+      "reasons": []
+    },
+    "percent_discrepancy": false,
+    "needs_review": false,
+    "market_reference": {
+      "ref_price": 1800.0,
+      "ref_type": "close",
+      "asof_date": "2026-01-08",
+      "n_days": 1,
+      "freshness_days": 1
+    },
+    "document_median_price": 1830.0
+  },
+  {
+    "price_transaction": [
+      {
+        "date": "2025-12-02",
+        "type": "buy",
+        "price": 655.0,
+        "amount_transacted": 149
+      }
+    ],
+    "holder_name": "Ika Kusuma Putri B",
+    "transaction_type": "buy",
+    "timestamp": "2026-01-05T15:24:30",
+    "purpose_of_transaction": "INVESTMENT",
+    "transaction_value": 97595.0,
+    "share_percentage_after": 0.0,
+    "holder_type": "insider",
+    "price": 655.0,
+    "source": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_KSEI/LK-05012026-6314-00.pdf-0.pdf",
+    "tags": [
+      "investment"
+    ],
+    "symbol": "LFLO.JK",
+    "title": "Ika Kusuma Putri B buys shares of PT Imago Mulia Persada Tbk",
+    "holding_after": 149,
+    "share_percentage_transaction": 0.0,
+    "holding_before": 0,
+    "amount_transaction": 149,
+    "company_name": "PT Imago Mulia Persada Tbk",
+    "sub_sector": "household-goods",
+    "sector": "consumer-cyclicals",
+    "body": "Ika Kusuma Putri B bought 149 shares of PT Imago Mulia Persada Tbk. This increases their holdings from 0 to 149 shares. The stated purpose of the transaction was investment.",
+    "share_percentage_before": 0.0,
+    "type": "buy",
+    "amount": 149,
+    "value": 97595.0,
+    "audit_flags": {
+      "announcement": {
+        "id": "lk-05012026-6314-00.pdf-0",
+        "title": "REPORT OF OWNERSHIP OR ANY CHANGES IN SHARE OWNERSHIP OF PUBLIC COMPANIES",
+        "url": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_KSEI/LK-05012026-6314-00.pdf-0.pdf",
+        "pdf_url": null,
+        "source_type": "idx"
+      },
+      "document_median_price": 655.0,
+      "market_reference": {
+        "ref_price": 625.0,
+        "ref_type": "close",
+        "asof_date": "2026-01-08",
+        "n_days": 1,
+        "freshness_days": 1
+      },
+      "total_shares_model": null,
+      "delta_pp_model": null,
+      "pp_after_model": null,
+      "percent_discrepancy": false,
+      "discrepancy_pp": null,
+      "needs_review": false,
+      "reasons": []
+    },
+    "percent_discrepancy": false,
+    "needs_review": false,
+    "market_reference": {
+      "ref_price": 625.0,
+      "ref_type": "close",
+      "asof_date": "2026-01-08",
+      "n_days": 1,
+      "freshness_days": 1
+    },
+    "document_median_price": 655.0
+  },
+  {
+    "price_transaction": [
+      {
+        "date": "2026-01-02",
+        "type": "buy",
+        "price": 1400.0,
+        "amount_transacted": 45900
+      },
+      {
+        "date": "2026-01-02",
+        "type": "buy",
+        "price": 1395.0,
+        "amount_transacted": 4100
+      }
+    ],
+    "holder_name": "Haryanto Sofian",
+    "transaction_type": "buy",
+    "timestamp": "2026-01-05T15:04:24",
+    "purpose_of_transaction": "INVESTMENT",
+    "transaction_value": 69979500.0,
+    "share_percentage_after": 0.18,
+    "holder_type": "insider",
+    "price": 1399.59,
+    "source": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_KSEI/LK-05012026-7611-00.pdf-0.pdf",
+    "tags": [
+      "investment"
+    ],
+    "symbol": "PKPK.JK",
+    "title": "Haryanto Sofian buys shares of Perdana Karya Perkasa Tbk",
+    "holding_after": 2149200,
+    "share_percentage_transaction": 0.01,
+    "holding_before": 2099200,
+    "amount_transaction": 50000,
+    "company_name": "Perdana Karya Perkasa Tbk",
+    "sub_sector": "oil-gas-coal",
+    "sector": "energy",
+    "body": "Haryanto Sofian bought 50,000 shares of Perdana Karya Perkasa Tbk. This increases their holdings from 2,099,200 to 2,149,200 shares. The stated purpose of the transaction was investment.",
+    "share_percentage_before": 0.17,
+    "type": "buy",
+    "amount": 50000,
+    "value": 69979500.0,
+    "audit_flags": {
+      "announcement": {
+        "id": "lk-05012026-7611-00.pdf-0",
+        "title": "REPORT OF OWNERSHIP OR ANY CHANGES IN SHARE OWNERSHIP OF PUBLIC COMPANIES",
+        "url": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_KSEI/LK-05012026-7611-00.pdf-0.pdf",
+        "pdf_url": null,
+        "source_type": "idx"
+      },
+      "document_median_price": 1397.5,
+      "market_reference": {
+        "ref_price": 1790.0,
+        "ref_type": "close",
+        "asof_date": "2026-01-08",
+        "n_days": 1,
+        "freshness_days": 1
+      },
+      "total_shares_model": 1234823529.4117646,
+      "delta_pp_model": 0.004,
+      "pp_after_model": 0.174,
+      "percent_discrepancy": false,
+      "discrepancy_pp": 0.006000000000000005,
+      "needs_review": false,
+      "reasons": []
+    },
+    "percent_discrepancy": false,
+    "needs_review": false,
+    "market_reference": {
+      "ref_price": 1790.0,
+      "ref_type": "close",
+      "asof_date": "2026-01-08",
+      "n_days": 1,
+      "freshness_days": 1
+    },
+    "document_median_price": 1397.5
+  },
+  {
+    "price_transaction": [
+      {
+        "date": "2025-12-30",
+        "type": "buy",
+        "price": 570.0,
+        "amount_transacted": 100000
+      }
+    ],
+    "holder_name": "Buana Graha Utama",
+    "transaction_type": "buy",
+    "timestamp": "2026-01-05T17:48:55",
+    "purpose_of_transaction": "Investment",
+    "transaction_value": 57000000.0,
+    "share_percentage_after": 47.874,
+    "holder_type": "insider",
+    "price": 570.0,
+    "source": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_KSEI/LK-05012026-0335-00.pdf-0.pdf",
+    "tags": [
+      "investment"
+    ],
+    "symbol": "MICE.JK",
+    "title": "Buana Graha Utama buys shares of Multi Indocitra Tbk",
+    "holding_after": 287246518,
+    "share_percentage_transaction": 0.016,
+    "holding_before": 287146518,
+    "amount_transaction": 100000,
+    "company_name": "Multi Indocitra Tbk",
+    "sub_sector": "household-goods",
+    "sector": "consumer-cyclicals",
+    "body": "Buana Graha Utama bought 100,000 shares of Multi Indocitra Tbk. This increases their holdings from 287,146,518 to 287,246,518 shares. The stated purpose of the transaction was investment.",
+    "share_percentage_before": 47.858,
+    "type": "buy",
+    "amount": 100000,
+    "value": 57000000.0,
+    "audit_flags": {
+      "announcement": {
+        "id": "lk-05012026-0335-00.pdf-0",
+        "title": "REPORT OF OWNERSHIP OR ANY CHANGES IN SHARE OWNERSHIP OF PUBLIC COMPANIES",
+        "url": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_KSEI/LK-05012026-0335-00.pdf-0.pdf",
+        "pdf_url": null,
+        "source_type": "idx"
+      },
+      "document_median_price": 570.0,
+      "market_reference": {
+        "ref_price": 570.0,
+        "ref_type": "close",
+        "asof_date": "2026-01-08",
+        "n_days": 1,
+        "freshness_days": 1
+      },
+      "total_shares_model": 599996903.3390447,
+      "delta_pp_model": 0.016,
+      "pp_after_model": 47.873,
+      "percent_discrepancy": false,
+      "discrepancy_pp": 0.0010000000000047748,
+      "needs_review": false,
+      "reasons": []
+    },
+    "percent_discrepancy": false,
+    "needs_review": false,
+    "market_reference": {
+      "ref_price": 570.0,
+      "ref_type": "close",
+      "asof_date": "2026-01-08",
+      "n_days": 1,
+      "freshness_days": 1
+    },
+    "document_median_price": 570.0
+  },
+  {
+    "price_transaction": [
+      {
+        "date": "2025-12-29",
+        "type": "sell",
+        "price": 164.0,
+        "amount_transacted": 2905000
+      },
+      {
+        "date": "2025-12-29",
+        "type": "sell",
+        "price": 192.0,
+        "amount_transacted": 10200
+      },
+      {
+        "date": "2025-12-29",
+        "type": "sell",
+        "price": 167.0,
+        "amount_transacted": 10300
+      },
+      {
+        "date": "2025-12-29",
+        "type": "sell",
+        "price": 174.0,
+        "amount_transacted": 25500
+      },
+      {
+        "date": "2025-12-29",
+        "type": "sell",
+        "price": 175.0,
+        "amount_transacted": 1600
+      },
+      {
+        "date": "2025-12-29",
+        "type": "sell",
+        "price": 179.0,
+        "amount_transacted": 36600
+      },
+      {
+        "date": "2025-12-29",
+        "type": "sell",
+        "price": 180.0,
+        "amount_transacted": 1100
+      },
+      {
+        "date": "2025-12-29",
+        "type": "sell",
+        "price": 181.0,
+        "amount_transacted": 12300
+      },
+      {
+        "date": "2025-12-29",
+        "type": "sell",
+        "price": 169.0,
+        "amount_transacted": 18700
+      },
+      {
+        "date": "2025-12-29",
+        "type": "sell",
+        "price": 170.0,
+        "amount_transacted": 192700
+      },
+      {
+        "date": "2025-12-29",
+        "type": "sell",
+        "price": 171.0,
+        "amount_transacted": 25900
+      },
+      {
+        "date": "2025-12-29",
+        "type": "sell",
+        "price": 165.0,
+        "amount_transacted": 31300
+      },
+      {
+        "date": "2025-12-29",
+        "type": "sell",
+        "price": 172.0,
+        "amount_transacted": 15800
+      },
+      {
+        "date": "2025-12-29",
+        "type": "sell",
+        "price": 168.0,
+        "amount_transacted": 10100
+      },
+      {
+        "date": "2025-12-29",
+        "type": "sell",
+        "price": 173.0,
+        "amount_transacted": 41600
+      },
+      {
+        "date": "2025-12-29",
+        "type": "sell",
+        "price": 182.0,
+        "amount_transacted": 300
+      },
+      {
+        "date": "2025-12-29",
+        "type": "sell",
+        "price": 185.0,
+        "amount_transacted": 102100
+      },
+      {
+        "date": "2025-12-29",
+        "type": "sell",
+        "price": 186.0,
+        "amount_transacted": 32100
+      },
+      {
+        "date": "2025-12-29",
+        "type": "sell",
+        "price": 187.0,
+        "amount_transacted": 20100
+      },
+      {
+        "date": "2025-12-29",
+        "type": "sell",
+        "price": 188.0,
+        "amount_transacted": 9700
+      },
+      {
+        "date": "2025-12-29",
+        "type": "sell",
+        "price": 189.0,
+        "amount_transacted": 50600
+      },
+      {
+        "date": "2025-12-29",
+        "type": "sell",
+        "price": 190.0,
+        "amount_transacted": 20400
+      },
+      {
+        "date": "2025-12-29",
+        "type": "sell",
+        "price": 191.0,
+        "amount_transacted": 15000
+      },
+      {
+        "date": "2025-12-29",
+        "type": "sell",
+        "price": 166.0,
+        "amount_transacted": 24600
+      }
+    ],
+    "holder_name": "Dewi Irianty Wijaya",
+    "transaction_type": "sell",
+    "timestamp": "2026-01-05T20:38:05",
+    "purpose_of_transaction": "-",
+    "transaction_value": 601799100.0,
+    "share_percentage_after": 5.52,
+    "holder_type": "insider",
+    "price": 166.537,
+    "source": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_KSEI/LK-05012026-7452-00.pdf-0.pdf",
+    "tags": [
+      "divestment"
+    ],
+    "symbol": "BOBA.JK",
+    "title": "Dewi Irianty Wijaya sells shares of PT Formosa Ingredient Factory Tbk",
+    "holding_after": 63810300,
+    "share_percentage_transaction": 0.31,
+    "holding_before": 67423900,
+    "amount_transaction": 3613600,
+    "company_name": "PT Formosa Ingredient Factory Tbk",
+    "sub_sector": "food-beverage",
+    "sector": "consumer-non-cyclicals",
+    "body": "Dewi Irianty Wijaya sold 3,613,600 shares of PT Formosa Ingredient Factory Tbk. This decreases their holdings from 67,423,900 to 63,810,300 shares. The stated purpose of the transaction was -.",
+    "share_percentage_before": 5.83,
+    "type": "sell",
+    "amount": 3613600,
+    "value": 601799100.0,
+    "audit_flags": {
+      "announcement": {
+        "id": "lk-05012026-7452-00.pdf-0",
+        "title": "REPORT OF OWNERSHIP OR ANY CHANGES IN SHARE OWNERSHIP OF PUBLIC COMPANIES",
+        "url": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_KSEI/LK-05012026-7452-00.pdf-0.pdf",
+        "pdf_url": null,
+        "source_type": "idx"
+      },
+      "document_median_price": 177.0,
+      "market_reference": {
+        "ref_price": 185.0,
+        "ref_type": "close",
+        "asof_date": "2026-01-08",
+        "n_days": 1,
+        "freshness_days": 1
+      },
+      "total_shares_model": 1156499142.3670669,
+      "delta_pp_model": -0.313,
+      "pp_after_model": 5.517,
+      "percent_discrepancy": false,
+      "discrepancy_pp": 0.0029999999999992255,
+      "needs_review": false,
+      "reasons": []
+    },
+    "percent_discrepancy": false,
+    "needs_review": false,
+    "market_reference": {
+      "ref_price": 185.0,
+      "ref_type": "close",
+      "asof_date": "2026-01-08",
+      "n_days": 1,
+      "freshness_days": 1
+    },
+    "document_median_price": 177.0
+  },
+  {
+    "price_transaction": [
+      {
+        "date": "2025-12-30",
+        "type": "buy",
+        "price": 580.0,
+        "amount_transacted": 534813870
+      }
+    ],
+    "holder_name": "Saka Industrial Arjaya",
+    "transaction_type": "buy",
+    "timestamp": "2026-01-05T15:02:29",
+    "purpose_of_transaction": "Investment",
+    "transaction_value": 310192044600.0,
+    "share_percentage_after": 91.43,
+    "holder_type": "insider",
+    "price": 580.0,
+    "source": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_KSEI/LK-05012026-1336-00.pdf-0.pdf",
+    "tags": [
+      "investment"
+    ],
+    "symbol": "MMLP.JK",
+    "title": "Saka Industrial Arjaya buys shares of PT Mega Manunggal Property Tbk",
+    "holding_after": 6299185199,
+    "share_percentage_transaction": 7.76,
+    "holding_before": 5764371329,
+    "amount_transaction": 534813870,
+    "company_name": "PT Mega Manunggal Property Tbk",
+    "sub_sector": "properties-real-estate",
+    "sector": "properties-real-estate",
+    "body": "Saka Industrial Arjaya bought 534,813,870 shares of PT Mega Manunggal Property Tbk. This increases their holdings from 5,764,371,329 to 6,299,185,199 shares. The stated purpose of the transaction was investment.",
+    "share_percentage_before": 83.67,
+    "type": "buy",
+    "amount": 534813870,
+    "value": 310192044600.0,
+    "audit_flags": {
+      "announcement": {
+        "id": "lk-05012026-1336-00.pdf-0",
+        "title": "REPORT OF OWNERSHIP OR ANY CHANGES IN SHARE OWNERSHIP OF PUBLIC COMPANIES",
+        "url": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_KSEI/LK-05012026-1336-00.pdf-0.pdf",
+        "pdf_url": null,
+        "source_type": "idx"
+      },
+      "document_median_price": 580.0,
+      "market_reference": {
+        "ref_price": 555.0,
+        "ref_type": "close",
+        "asof_date": "2026-01-08",
+        "n_days": 1,
+        "freshness_days": 1
+      },
+      "total_shares_model": 6889412368.829927,
+      "delta_pp_model": 7.762,
+      "pp_after_model": 91.432,
+      "percent_discrepancy": false,
+      "discrepancy_pp": 0.001999999999995339,
+      "needs_review": false,
+      "reasons": []
+    },
+    "percent_discrepancy": false,
+    "needs_review": false,
+    "market_reference": {
+      "ref_price": 555.0,
+      "ref_type": "close",
+      "asof_date": "2026-01-08",
+      "n_days": 1,
+      "freshness_days": 1
+    },
+    "document_median_price": 580.0
+  },
+  {
+    "price_transaction": [
+      {
+        "date": "2025-12-18",
+        "type": "buy",
+        "price": 1715.0,
+        "amount_transacted": 7050000
+      }
+    ],
+    "holder_name": "1 Inti Dot Com",
+    "transaction_type": "buy",
+    "timestamp": "2026-01-05T11:13:50",
+    "purpose_of_transaction": "Investment",
+    "transaction_value": 12090750000.0,
+    "share_percentage_after": 11.85,
+    "holder_type": "insider",
+    "price": 1715.0,
+    "source": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_KSEI/LK-05012026-4393-00.pdf-0.pdf",
+    "tags": [
+      "investment"
+    ],
+    "symbol": "NFCX.JK",
+    "title": "1 Inti Dot Com buys shares of PT NFC Indonesia Tbk",
+    "holding_after": 78978300,
+    "share_percentage_transaction": 1.63,
+    "holding_before": 68103300,
+    "amount_transaction": 10875000,
+    "company_name": "PT NFC Indonesia Tbk",
+    "sub_sector": "software-it-services",
+    "sector": "technology",
+    "body": "1 Inti Dot Com bought 10,875,000 shares of PT NFC Indonesia Tbk. This increases their holdings from 68,103,300 to 78,978,300 shares. The stated purpose of the transaction was investment.",
+    "share_percentage_before": 10.22,
+    "type": "buy",
+    "amount": 10875000,
+    "value": 12090750000.0,
+    "audit_flags": {
+      "announcement": {
+        "id": "lk-05012026-4393-00.pdf-0",
+        "title": "REPORT OF OWNERSHIP OR ANY CHANGES IN SHARE OWNERSHIP OF PUBLIC COMPANIES",
+        "url": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_KSEI/LK-05012026-4393-00.pdf-0.pdf",
+        "pdf_url": null,
+        "source_type": "idx"
+      },
+      "document_median_price": 1715.0,
+      "market_reference": {
+        "ref_price": 1575.0,
+        "ref_type": "close",
+        "asof_date": "2026-01-08",
+        "n_days": 1,
+        "freshness_days": 1
+      },
+      "total_shares_model": 666372798.4344422,
+      "delta_pp_model": 1.057,
+      "pp_after_model": 11.277,
+      "percent_discrepancy": true,
+      "discrepancy_pp": 0.5730000000000004,
       "needs_review": true,
       "reasons": [
         {
           "scope": "row",
-          "code": "stale_price",
-          "message": "Market reference price is stale: 55.0 days old (>14d).",
+          "code": "percent_discrepancy",
+          "message": "Model pp_after deviates from PDF by 0.57300 pp",
           "details": {
-            "freshness_days": 55.0,
-            "price_lookback_days": 14,
-            "market_ref": {
-              "ref_price": 177.0,
-              "ref_type": "close",
-              "asof_date": "2025-10-29",
-              "n_days": 1,
-              "freshness_days": 55
-            }
+            "total_shares_model": 666372798.4344422,
+            "delta_pp_model": 1.057,
+            "pp_after_model": 11.277,
+            "percent_discrepancy": true,
+            "discrepancy_pp": 0.5730000000000004
           }
-        },
+        }
+      ]
+    },
+    "percent_discrepancy": true,
+    "needs_review": true,
+    "reasons": [
+      {
+        "scope": "row",
+        "code": "percent_discrepancy",
+        "message": "Model pp_after deviates from PDF by 0.57300 pp",
+        "details": {
+          "total_shares_model": 666372798.4344422,
+          "delta_pp_model": 1.057,
+          "pp_after_model": 11.277,
+          "percent_discrepancy": true,
+          "discrepancy_pp": 0.5730000000000004
+        }
+      }
+    ],
+    "market_reference": {
+      "ref_price": 1575.0,
+      "ref_type": "close",
+      "asof_date": "2026-01-08",
+      "n_days": 1,
+      "freshness_days": 1
+    },
+    "document_median_price": 1715.0,
+    "skip_reason": "percent_discrepancy"
+  },
+  {
+    "price_transaction": [
+      {
+        "date": "2025-12-30",
+        "type": "buy",
+        "price": 910.0,
+        "amount_transacted": 28317400
+      }
+    ],
+    "holder_name": "Elang Media Visitama",
+    "transaction_type": "buy",
+    "timestamp": "2026-01-05T11:26:56",
+    "purpose_of_transaction": "For Investment",
+    "transaction_value": 25768834000.0,
+    "share_percentage_after": 27.6,
+    "holder_type": "insider",
+    "price": 910.0,
+    "source": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_KSEI/LK-05012026-9782-00.pdf-0.pdf",
+    "tags": [
+      "investment"
+    ],
+    "symbol": "SUPA.JK",
+    "title": "Elang Media Visitama buys shares of PT Super Bank Indonesia Tbk",
+    "holding_after": 9354117559,
+    "share_percentage_transaction": 0.09,
+    "holding_before": 9325800159,
+    "amount_transaction": 28317400,
+    "company_name": "PT Super Bank Indonesia Tbk",
+    "sub_sector": "banks",
+    "sector": "financials",
+    "body": "Elang Media Visitama bought 28,317,400 shares of PT Super Bank Indonesia Tbk. This increases their holdings from 9,325,800,159 to 9,354,117,559 shares. The stated purpose of the transaction was for investment.",
+    "share_percentage_before": 27.51,
+    "type": "buy",
+    "amount": 28317400,
+    "value": 25768834000.0,
+    "audit_flags": {
+      "announcement": {
+        "id": "lk-05012026-9782-00.pdf-0",
+        "title": "REPORT OF OWNERSHIP OR ANY CHANGES IN SHARE OWNERSHIP OF PUBLIC COMPANIES",
+        "url": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_KSEI/LK-05012026-9782-00.pdf-0.pdf",
+        "pdf_url": null,
+        "source_type": "idx"
+      },
+      "document_median_price": 910.0,
+      "market_reference": {
+        "ref_price": 1165.0,
+        "ref_type": "close",
+        "asof_date": "2026-01-08",
+        "n_days": 1,
+        "freshness_days": 1
+      },
+      "total_shares_model": 33899673424.209377,
+      "delta_pp_model": 0.083,
+      "pp_after_model": 27.593,
+      "percent_discrepancy": false,
+      "discrepancy_pp": 0.0070000000000014495,
+      "needs_review": false,
+      "reasons": []
+    },
+    "percent_discrepancy": false,
+    "needs_review": false,
+    "market_reference": {
+      "ref_price": 1165.0,
+      "ref_type": "close",
+      "asof_date": "2026-01-08",
+      "n_days": 1,
+      "freshness_days": 1
+    },
+    "document_median_price": 910.0
+  },
+  {
+    "price_transaction": [
+      {
+        "date": "2025-12-30",
+        "type": "buy",
+        "price": 179.0,
+        "amount_transacted": 22500
+      },
+      {
+        "date": "2025-12-30",
+        "type": "buy",
+        "price": 182.0,
+        "amount_transacted": 12000
+      },
+      {
+        "date": "2025-12-30",
+        "type": "buy",
+        "price": 183.0,
+        "amount_transacted": 10100
+      },
+      {
+        "date": "2025-12-30",
+        "type": "buy",
+        "price": 181.0,
+        "amount_transacted": 17500
+      },
+      {
+        "date": "2025-12-30",
+        "type": "buy",
+        "price": 180.0,
+        "amount_transacted": 77500
+      },
+      {
+        "date": "2025-12-30",
+        "type": "buy",
+        "price": 186.0,
+        "amount_transacted": 18000
+      },
+      {
+        "date": "2025-12-30",
+        "type": "buy",
+        "price": 187.0,
+        "amount_transacted": 100000
+      },
+      {
+        "date": "2025-12-30",
+        "type": "buy",
+        "price": 184.0,
+        "amount_transacted": 15300
+      }
+    ],
+    "holder_name": "Yunita Sugiarto Ew",
+    "transaction_type": "buy",
+    "timestamp": "2026-01-05T20:20:41",
+    "purpose_of_transaction": "Investment",
+    "transaction_value": 50040500.0,
+    "share_percentage_after": 2.82,
+    "holder_type": "insider",
+    "price": 183.366,
+    "source": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_KSEI/LK-05012026-3518-00.pdf-0.pdf",
+    "tags": [
+      "investment"
+    ],
+    "symbol": "BOBA.JK",
+    "title": "Yunita Sugiarto Ew buys shares of PT Formosa Ingredient Factory Tbk",
+    "holding_after": 32544900,
+    "share_percentage_transaction": 0.03,
+    "holding_before": 32272000,
+    "amount_transaction": 272900,
+    "company_name": "PT Formosa Ingredient Factory Tbk",
+    "sub_sector": "food-beverage",
+    "sector": "consumer-non-cyclicals",
+    "body": "Yunita Sugiarto Ew bought 272,900 shares of PT Formosa Ingredient Factory Tbk. This increases their holdings from 32,272,000 to 32,544,900 shares. The stated purpose of the transaction was investment.",
+    "share_percentage_before": 2.79,
+    "type": "buy",
+    "amount": 272900,
+    "value": 50040500.0,
+    "audit_flags": {
+      "announcement": {
+        "id": "lk-05012026-3518-00.pdf-0",
+        "title": "REPORT OF OWNERSHIP OR ANY CHANGES IN SHARE OWNERSHIP OF PUBLIC COMPANIES",
+        "url": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_KSEI/LK-05012026-3518-00.pdf-0.pdf",
+        "pdf_url": null,
+        "source_type": "idx"
+      },
+      "document_median_price": 182.5,
+      "market_reference": {
+        "ref_price": 185.0,
+        "ref_type": "close",
+        "asof_date": "2026-01-08",
+        "n_days": 1,
+        "freshness_days": 1
+      },
+      "total_shares_model": 1156702508.9605734,
+      "delta_pp_model": 0.023,
+      "pp_after_model": 2.813,
+      "percent_discrepancy": false,
+      "discrepancy_pp": 0.006999999999999673,
+      "needs_review": false,
+      "reasons": []
+    },
+    "percent_discrepancy": false,
+    "needs_review": false,
+    "market_reference": {
+      "ref_price": 185.0,
+      "ref_type": "close",
+      "asof_date": "2026-01-08",
+      "n_days": 1,
+      "freshness_days": 1
+    },
+    "document_median_price": 182.5
+  },
+  {
+    "price_transaction": [
+      {
+        "date": "2025-12-30",
+        "type": "sell",
+        "price": 341.0,
+        "amount_transacted": 20514159
+      }
+    ],
+    "holder_name": "Sumber Garam Pratama",
+    "transaction_type": "sell",
+    "timestamp": "2026-01-05T14:26:14",
+    "purpose_of_transaction": "Divestment",
+    "transaction_value": 6995328219.0,
+    "share_percentage_after": 28.57,
+    "holder_type": "insider",
+    "price": 341.0,
+    "source": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_KSEI/LK-05012026-3987-00.pdf-0.pdf",
+    "tags": [
+      "divestment"
+    ],
+    "symbol": "FOLK.JK",
+    "title": "Sumber Garam Pratama sells shares of PT Multi Garam Utama Tbk",
+    "holding_after": 1127996781,
+    "share_percentage_transaction": 0.52,
+    "holding_before": 1148510940,
+    "amount_transaction": 20514159,
+    "company_name": "PT Multi Garam Utama Tbk",
+    "sub_sector": "multi-sector-holdings",
+    "sector": "industrials",
+    "body": "Sumber Garam Pratama sold 20,514,159 shares of PT Multi Garam Utama Tbk. This decreases their holdings from 1,148,510,940 to 1,127,996,781 shares. The stated purpose of the transaction was divestment.",
+    "share_percentage_before": 29.09,
+    "type": "sell",
+    "amount": 20514159,
+    "value": 6995328219.0,
+    "audit_flags": {
+      "announcement": {
+        "id": "lk-05012026-3987-00.pdf-0",
+        "title": "REPORT OF OWNERSHIP OR ANY CHANGES IN SHARE OWNERSHIP OF PUBLIC COMPANIES",
+        "url": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_KSEI/LK-05012026-3987-00.pdf-0.pdf",
+        "pdf_url": null,
+        "source_type": "idx"
+      },
+      "document_median_price": 341.0,
+      "market_reference": {
+        "ref_price": 635.0,
+        "ref_type": "close",
+        "asof_date": "2026-01-08",
+        "n_days": 1,
+        "freshness_days": 1
+      },
+      "total_shares_model": 3948129735.3042283,
+      "delta_pp_model": -0.52,
+      "pp_after_model": 28.57,
+      "percent_discrepancy": false,
+      "discrepancy_pp": 0.0,
+      "suspicious_price_level": true,
+      "needs_review": true,
+      "reasons": [
         {
           "scope": "tx",
           "code": "price_deviation_vs_market",
-          "message": "Price deviates from market-ref by ratio 2.508",
+          "message": "Price deviates from market-ref by ratio 0.537",
           "details": {
-            "price": 444.0,
+            "price": 341.0,
             "market_ref": {
-              "ref_price": 177.0,
+              "ref_price": 635.0,
               "ref_type": "close",
-              "asof_date": "2025-10-29",
+              "asof_date": "2026-01-08",
               "n_days": 1,
-              "freshness_days": 55
+              "freshness_days": 1
             },
-            "ratio": 2.5084745762711864
+            "ratio": 0.537007874015748
           }
         }
       ]
     },
     "suspicious_price_level": true,
     "percent_discrepancy": false,
-    "stale_price": true,
     "needs_review": true,
     "reasons": [
       {
-        "scope": "row",
-        "code": "stale_price",
-        "message": "Market reference price is stale: 55.0 days old (>14d).",
-        "details": {
-          "freshness_days": 55.0,
-          "price_lookback_days": 14,
-          "market_ref": {
-            "ref_price": 177.0,
-            "ref_type": "close",
-            "asof_date": "2025-10-29",
-            "n_days": 1,
-            "freshness_days": 55
-          }
-        }
-      },
-      {
         "scope": "tx",
         "code": "price_deviation_vs_market",
-        "message": "Price deviates from market-ref by ratio 2.508",
+        "message": "Price deviates from market-ref by ratio 0.537",
         "details": {
-          "price": 444.0,
+          "price": 341.0,
           "market_ref": {
-            "ref_price": 177.0,
+            "ref_price": 635.0,
             "ref_type": "close",
-            "asof_date": "2025-10-29",
+            "asof_date": "2026-01-08",
             "n_days": 1,
-            "freshness_days": 55
+            "freshness_days": 1
           },
-          "ratio": 2.5084745762711864
+          "ratio": 0.537007874015748
         }
       }
     ],
     "market_reference": {
-      "ref_price": 177.0,
+      "ref_price": 635.0,
       "ref_type": "close",
-      "asof_date": "2025-10-29",
+      "asof_date": "2026-01-08",
       "n_days": 1,
-      "freshness_days": 55
+      "freshness_days": 1
     },
-    "document_median_price": 444.0,
-    "skip_reason": "stale_price"
+    "document_median_price": 341.0,
+    "skip_reason": "suspicious_price_level"
+  },
+  {
+    "price_transaction": [
+      {
+        "date": "2025-12-30",
+        "type": "buy",
+        "price": 424.0,
+        "amount_transacted": 1239100
+      }
+    ],
+    "holder_name": "Cakra Bhakti Para Putra",
+    "transaction_type": "buy",
+    "timestamp": "2026-01-05T15:17:45",
+    "purpose_of_transaction": "Investment",
+    "transaction_value": 525378400.0,
+    "share_percentage_after": 57.61,
+    "holder_type": "insider",
+    "price": 424.0,
+    "source": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_KSEI/LK-05012026-9832-00.pdf-0.pdf",
+    "tags": [
+      "investment"
+    ],
+    "symbol": "ISSP.JK",
+    "title": "Cakra Bhakti Para Putra buys shares of PT Steel Pipe Industry of Indonesia Tbk",
+    "holding_after": 4140006630,
+    "share_percentage_transaction": 0.02,
+    "holding_before": 4138767530,
+    "amount_transaction": 1239100,
+    "company_name": "PT Steel Pipe Industry of Indonesia Tbk",
+    "sub_sector": "basic-materials",
+    "sector": "basic-materials",
+    "body": "Cakra Bhakti Para Putra bought 1,239,100 shares of PT Steel Pipe Industry of Indonesia Tbk. This increases their holdings from 4,138,767,530 to 4,140,006,630 shares. The stated purpose of the transaction was investment.",
+    "share_percentage_before": 57.59,
+    "type": "buy",
+    "amount": 1239100,
+    "value": 525378400.0,
+    "audit_flags": {
+      "announcement": {
+        "id": "lk-05012026-9832-00.pdf-0",
+        "title": "REPORT OF OWNERSHIP OR ANY CHANGES IN SHARE OWNERSHIP OF PUBLIC COMPANIES",
+        "url": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_KSEI/LK-05012026-9832-00.pdf-0.pdf",
+        "pdf_url": null,
+        "source_type": "idx"
+      },
+      "document_median_price": 424.0,
+      "market_reference": {
+        "ref_price": 456.0,
+        "ref_type": "close",
+        "asof_date": "2026-01-08",
+        "n_days": 1,
+        "freshness_days": 1
+      },
+      "total_shares_model": 7186607970.133703,
+      "delta_pp_model": 0.017,
+      "pp_after_model": 57.607,
+      "percent_discrepancy": false,
+      "discrepancy_pp": 0.0030000000000001137,
+      "needs_review": false,
+      "reasons": []
+    },
+    "percent_discrepancy": false,
+    "needs_review": false,
+    "market_reference": {
+      "ref_price": 456.0,
+      "ref_type": "close",
+      "asof_date": "2026-01-08",
+      "n_days": 1,
+      "freshness_days": 1
+    },
+    "document_median_price": 424.0
+  },
+  {
+    "price_transaction": [
+      {
+        "date": "2025-12-29",
+        "type": "sell",
+        "price": 1710.0,
+        "amount_transacted": 200000
+      },
+      {
+        "date": "2025-12-29",
+        "type": "sell",
+        "price": 1500.0,
+        "amount_transacted": 200000
+      },
+      {
+        "date": "2025-12-29",
+        "type": "sell",
+        "price": 1525.0,
+        "amount_transacted": 100000
+      },
+      {
+        "date": "2025-12-29",
+        "type": "sell",
+        "price": 1640.0,
+        "amount_transacted": 100000
+      },
+      {
+        "date": "2025-12-29",
+        "type": "sell",
+        "price": 1650.0,
+        "amount_transacted": 200000
+      },
+      {
+        "date": "2025-12-29",
+        "type": "sell",
+        "price": 1660.0,
+        "amount_transacted": 100000
+      },
+      {
+        "date": "2025-12-29",
+        "type": "sell",
+        "price": 1505.0,
+        "amount_transacted": 100000
+      },
+      {
+        "date": "2025-12-29",
+        "type": "sell",
+        "price": 1680.0,
+        "amount_transacted": 100000
+      },
+      {
+        "date": "2025-12-29",
+        "type": "sell",
+        "price": 1695.0,
+        "amount_transacted": 100000
+      },
+      {
+        "date": "2025-12-29",
+        "type": "sell",
+        "price": 1700.0,
+        "amount_transacted": 100000
+      },
+      {
+        "date": "2025-12-29",
+        "type": "sell",
+        "price": 1730.0,
+        "amount_transacted": 100000
+      },
+      {
+        "date": "2025-12-30",
+        "type": "sell",
+        "price": 1875.0,
+        "amount_transacted": 100000
+      }
+    ],
+    "holder_name": "Andri Hutama Putra",
+    "transaction_type": "sell",
+    "timestamp": "2026-01-05T14:34:28",
+    "purpose_of_transaction": "Other Investments",
+    "transaction_value": 2473000000.0,
+    "share_percentage_after": 0.268,
+    "holder_type": "insider",
+    "price": 1648.667,
+    "source": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_KSEI/LK-05012026-5148-00.pdf-0.pdf",
+    "tags": [
+      "investment"
+    ],
+    "symbol": "CYBR.JK",
+    "title": "Andri Hutama Putra sells shares of PT ITSEC Asia Tbk.",
+    "holding_after": 17852100,
+    "share_percentage_transaction": 0.023,
+    "holding_before": 19352100,
+    "amount_transaction": 1500000,
+    "company_name": "PT ITSEC Asia Tbk.",
+    "sub_sector": "software-it-services",
+    "sector": "technology",
+    "body": "Andri Hutama Putra sold 1,500,000 shares of PT ITSEC Asia Tbk.. This decreases their holdings from 19,352,100 to 17,852,100 shares. The stated purpose of the transaction was other investments.",
+    "share_percentage_before": 0.291,
+    "type": "sell",
+    "amount": 1500000,
+    "value": 2473000000.0,
+    "audit_flags": {
+      "announcement": {
+        "id": "lk-05012026-5148-00.pdf-0",
+        "title": "REPORT OF OWNERSHIP OR ANY CHANGES IN SHARE OWNERSHIP OF PUBLIC COMPANIES",
+        "url": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_KSEI/LK-05012026-5148-00.pdf-0.pdf",
+        "pdf_url": null,
+        "source_type": "idx"
+      },
+      "document_median_price": 1670.0,
+      "market_reference": {
+        "ref_price": 1800.0,
+        "ref_type": "close",
+        "asof_date": "2026-01-08",
+        "n_days": 1,
+        "freshness_days": 1
+      },
+      "total_shares_model": 6650206185.567011,
+      "delta_pp_model": -0.023,
+      "pp_after_model": 0.267,
+      "percent_discrepancy": false,
+      "discrepancy_pp": 0.0010000000000000009,
+      "needs_review": false,
+      "reasons": []
+    },
+    "percent_discrepancy": false,
+    "needs_review": false,
+    "market_reference": {
+      "ref_price": 1800.0,
+      "ref_type": "close",
+      "asof_date": "2026-01-08",
+      "n_days": 1,
+      "freshness_days": 1
+    },
+    "document_median_price": 1670.0
   }
 ]

@@ -1,65 +1,107 @@
 [
   {
+    "ticker": "BOBA",
+    "title": "REPORT OF OWNERSHIP OR ANY CHANGES IN SHARE OWNERSHIP OF PUBLIC COMPANIES",
+    "url": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_KSEI/LK-05012026-7452-00.pdf-0.pdf",
+    "filename": "lk-05012026-7452-00.pdf-0.pdf",
+    "timestamp": "2026-01-05T20:38:05"
+  },
+  {
+    "ticker": "BOBA",
+    "title": "REPORT OF OWNERSHIP OR ANY CHANGES IN SHARE OWNERSHIP OF PUBLIC COMPANIES",
+    "url": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_KSEI/LK-05012026-3518-00.pdf-0.pdf",
+    "filename": "lk-05012026-3518-00.pdf-0.pdf",
+    "timestamp": "2026-01-05T20:20:41"
+  },
+  {
+    "ticker": "CYBR",
+    "title": "REPORT OF OWNERSHIP OR ANY CHANGES IN SHARE OWNERSHIP OF PUBLIC COMPANIES",
+    "url": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_KSEI/LK-05012026-8663-00.pdf-0.pdf",
+    "filename": "lk-05012026-8663-00.pdf-0.pdf",
+    "timestamp": "2026-01-05T19:47:57"
+  },
+  {
+    "ticker": "MICE",
+    "title": "REPORT OF OWNERSHIP OR ANY CHANGES IN SHARE OWNERSHIP OF PUBLIC COMPANIES",
+    "url": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_KSEI/LK-05012026-0335-00.pdf-0.pdf",
+    "filename": "lk-05012026-0335-00.pdf-0.pdf",
+    "timestamp": "2026-01-05T17:48:55"
+  },
+  {
+    "ticker": "GLVA",
+    "title": "REPORT OF OWNERSHIP OR ANY CHANGES IN SHARE OWNERSHIP OF PUBLIC COMPANIES",
+    "url": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_KSEI/LK-05012026-1634-00.pdf-0.pdf",
+    "filename": "lk-05012026-1634-00.pdf-0.pdf",
+    "timestamp": "2026-01-05T17:43:52"
+  },
+  {
+    "ticker": "LFLO",
+    "title": "REPORT OF OWNERSHIP OR ANY CHANGES IN SHARE OWNERSHIP OF PUBLIC COMPANIES",
+    "url": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_KSEI/LK-05012026-6314-00.pdf-0.pdf",
+    "filename": "lk-05012026-6314-00.pdf-0.pdf",
+    "timestamp": "2026-01-05T15:24:30"
+  },
+  {
+    "ticker": "ISSP",
+    "title": "REPORT OF OWNERSHIP OR ANY CHANGES IN SHARE OWNERSHIP OF PUBLIC COMPANIES",
+    "url": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_KSEI/LK-05012026-9832-00.pdf-0.pdf",
+    "filename": "lk-05012026-9832-00.pdf-0.pdf",
+    "timestamp": "2026-01-05T15:17:45"
+  },
+  {
+    "ticker": "PKPK",
+    "title": "REPORT OF OWNERSHIP OR ANY CHANGES IN SHARE OWNERSHIP OF PUBLIC COMPANIES",
+    "url": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_KSEI/LK-05012026-7611-00.pdf-0.pdf",
+    "filename": "lk-05012026-7611-00.pdf-0.pdf",
+    "timestamp": "2026-01-05T15:04:24"
+  },
+  {
+    "ticker": "MMLP",
+    "title": "REPORT OF OWNERSHIP OR ANY CHANGES IN SHARE OWNERSHIP OF PUBLIC COMPANIES",
+    "url": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_KSEI/LK-05012026-1336-00.pdf-0.pdf",
+    "filename": "lk-05012026-1336-00.pdf-0.pdf",
+    "timestamp": "2026-01-05T15:02:29"
+  },
+  {
+    "ticker": "CYBR",
+    "title": "REPORT OF OWNERSHIP OR ANY CHANGES IN SHARE OWNERSHIP OF PUBLIC COMPANIES",
+    "url": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_KSEI/LK-05012026-5148-00.pdf-0.pdf",
+    "filename": "lk-05012026-5148-00.pdf-0.pdf",
+    "timestamp": "2026-01-05T14:34:28"
+  },
+  {
+    "ticker": "FOLK",
+    "title": "REPORT OF OWNERSHIP OR ANY CHANGES IN SHARE OWNERSHIP OF PUBLIC COMPANIES",
+    "url": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_KSEI/LK-05012026-3987-00.pdf-0.pdf",
+    "filename": "lk-05012026-3987-00.pdf-0.pdf",
+    "timestamp": "2026-01-05T14:26:14"
+  },
+  {
+    "ticker": "HEAL",
+    "title": "REPORT OF OWNERSHIP OR ANY CHANGES IN SHARE OWNERSHIP OF PUBLIC COMPANIES",
+    "url": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_KSEI/LK-05012026-4493-00.pdf-0.pdf",
+    "filename": "lk-05012026-4493-00.pdf-0.pdf",
+    "timestamp": "2026-01-05T12:54:44"
+  },
+  {
+    "ticker": "SUPA",
+    "title": "REPORT OF OWNERSHIP OR ANY CHANGES IN SHARE OWNERSHIP OF PUBLIC COMPANIES",
+    "url": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_KSEI/LK-05012026-9782-00.pdf-0.pdf",
+    "filename": "lk-05012026-9782-00.pdf-0.pdf",
+    "timestamp": "2026-01-05T11:26:56"
+  },
+  {
     "ticker": "MEDS",
     "title": "REPORT OF OWNERSHIP OR ANY CHANGES IN SHARE OWNERSHIP OF PUBLIC COMPANIES",
-    "url": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_KSEI/LK-02012026-4161-00.pdf-0.pdf",
-    "filename": "lk-02012026-4161-00.pdf-0.pdf",
-    "timestamp": "2026-01-02T18:57:50"
+    "url": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_KSEI/LK-05012026-8048-00.pdf-0.pdf",
+    "filename": "lk-05012026-8048-00.pdf-0.pdf",
+    "timestamp": "2026-01-05T11:21:53"
   },
   {
-    "ticker": "HILL",
+    "ticker": "NFCX",
     "title": "REPORT OF OWNERSHIP OR ANY CHANGES IN SHARE OWNERSHIP OF PUBLIC COMPANIES",
-    "url": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_KSEI/LK-02012026-0750-00.pdf-0.pdf",
-    "filename": "lk-02012026-0750-00.pdf-0.pdf",
-    "timestamp": "2026-01-02T17:23:24"
-  },
-  {
-    "ticker": "AMMS",
-    "title": "REPORT OF OWNERSHIP OR ANY CHANGES IN SHARE OWNERSHIP OF PUBLIC COMPANIES",
-    "url": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_KSEI/LK-02012026-6690-00.pdf-0.pdf",
-    "filename": "lk-02012026-6690-00.pdf-0.pdf",
-    "timestamp": "2026-01-02T16:28:38"
-  },
-  {
-    "ticker": "AMMS",
-    "title": "REPORT OF OWNERSHIP OR ANY CHANGES IN SHARE OWNERSHIP OF PUBLIC COMPANIES",
-    "url": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_KSEI/LK-02012026-7783-00.pdf-0.pdf",
-    "filename": "lk-02012026-7783-00.pdf-0.pdf",
-    "timestamp": "2026-01-02T16:25:45"
-  },
-  {
-    "ticker": "AMMS",
-    "title": "REPORT OF OWNERSHIP OR ANY CHANGES IN SHARE OWNERSHIP OF PUBLIC COMPANIES",
-    "url": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_KSEI/LK-02012026-6519-00.pdf-0.pdf",
-    "filename": "lk-02012026-6519-00.pdf-0.pdf",
-    "timestamp": "2026-01-02T16:16:30"
-  },
-  {
-    "ticker": "WGSH",
-    "title": "REPORT OF OWNERSHIP OR ANY CHANGES IN SHARE OWNERSHIP OF PUBLIC COMPANIES",
-    "url": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_KSEI/LK-02012026-3429-00.pdf-0.pdf",
-    "filename": "lk-02012026-3429-00.pdf-0.pdf",
-    "timestamp": "2026-01-02T15:59:04"
-  },
-  {
-    "ticker": "AMMS",
-    "title": "REPORT OF OWNERSHIP OR ANY CHANGES IN SHARE OWNERSHIP OF PUBLIC COMPANIES",
-    "url": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_KSEI/LK-02012026-8634-00.pdf-0.pdf",
-    "filename": "lk-02012026-8634-00.pdf-0.pdf",
-    "timestamp": "2026-01-02T15:56:15"
-  },
-  {
-    "ticker": "VKTR",
-    "title": "REPORT OF OWNERSHIP OR ANY CHANGES IN SHARE OWNERSHIP OF PUBLIC COMPANIES",
-    "url": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_KSEI/LK-02012026-3867-00.pdf-0.pdf",
-    "filename": "lk-02012026-3867-00.pdf-0.pdf",
-    "timestamp": "2026-01-02T15:39:37"
-  },
-  {
-    "ticker": "LPGI",
-    "title": "REPORT OF OWNERSHIP OR ANY CHANGES IN SHARE OWNERSHIP OF PUBLIC COMPANIES",
-    "url": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_KSEI/LK-02012026-3589-00.pdf-0.pdf",
-    "filename": "lk-02012026-3589-00.pdf-0.pdf",
-    "timestamp": "2026-01-02T14:28:11"
+    "url": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_KSEI/LK-05012026-4393-00.pdf-0.pdf",
+    "filename": "lk-05012026-4393-00.pdf-0.pdf",
+    "timestamp": "2026-01-05T11:13:50"
   }
 ]
