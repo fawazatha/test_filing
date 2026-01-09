@@ -334,7 +334,7 @@ class BaseParser(ABC):
 
         parsed_results: List[Dict[str, Any]] = []
         pdf_mapping = self.build_pdf_mapping()
-        print(f'\nraw pdf_mapping output: {pdf_mapping}\n')
+        # print(f'\nraw pdf_mapping output: {pdf_mapping}\n')
 
         pdf_files = [f for f in os.listdir(self.pdf_folder) if f.lower().endswith(".pdf")]
 
@@ -350,37 +350,44 @@ class BaseParser(ABC):
             try:
                 result = self.parse_single_pdf(filepath, filename, pdf_mapping)
                 # Skip from new parser if shares unchanged
-                if not result:
+                if result is None:
                     continue 
+                
+                items = []
+                if isinstance(result, (list, tuple)): 
+                    items = [record for record in result if record is not None]
+                else: 
+                    items = [result]
 
-                if result and self.validate_parsed_data(result):
-                    parsed_results.append(result)
-                    logger.info(f"Successfully parsed {filename}")
+                for item in items:
+                    if self.validate_parsed_data(item):
+                        parsed_results.append(item)
+                        logger.info(f"Successfully parsed {filename}")
                     
-                else:
-                    if not (isinstance(result, dict) and result.get("skip_filing")):
-                        self._parser_warn(
-                            code="validation_failed",
-                            filename=filename,
-                            reasons=[
-                                {
-                                    "scope": "parser",
-                                    "code": "validation_failed",
-                                    "message": "Parsed result failed validate_parsed_data check.",
-                                    "details": {
-                                        "filename": filename,
-                                        "result_type": type(result).__name__,
-                                    },
-                                }
-                            ],
-                            needs_review=True,
-                        )
-            except Exception as e:
-                logger.error(f"Error processing {filename}: {e}")
+                    else:
+                        if not (isinstance(item, dict) and item.get("skip_filing")):
+                            self._parser_warn(
+                                code="validation_failed",
+                                filename=filename,
+                                reasons=[
+                                    {
+                                        "scope": "parser",
+                                        "code": "validation_failed",
+                                        "message": "Parsed result failed validate_parsed_data check.",
+                                        "details": {
+                                            "filename": filename,
+                                            "result_type": type(item).__name__,
+                                        },
+                                    }
+                                ],
+                                needs_review=True,
+                            )
+            except Exception as error:
+                logger.error(f"Error processing {filename}: {error}", exc_info=True)
                 self._parser_warn(
                     code="parse_exception",
                     filename=filename,
-                    ctx={"announcement": ann_ctx, "message": str(e)},
+                    ctx={"announcement": ann_ctx, "message": str(error)},
                     needs_review=True,
                 )
 

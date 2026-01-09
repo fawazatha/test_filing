@@ -7,15 +7,16 @@ logger = logging.getLogger(__name__)
 # Canonical whitelist (exactly 9)
 TAGS_WHITELIST = {
     #"bullish", "bearish", 
-    "takeover", "investment", "divestment",
-    "free-float-requirement", "MESOP", "inheritance", "share-transfer",
+    "takeover", "investment", "divestment", "placement", "capital-restructuring"
+    "free-float-compliance", "MESOP", "inheritance", "share-transfer", "repurchase-agreement",
+    "inheritance",
 }
 
 # Keyword banks for side-signals (parser may pass text here)
 _KW_BUY = [
     "beli", "pembelian", "buy", "akumulasi", "investasi", "acquisition",
     "penambahan", "increase", "buyback", "buy back", "investment",
-    "peningkatan"
+    "peningkatan", "akuisisi"
 ]
 _KW_SELL = [
     "jual", "penjualan", "sell", "divestasi", "divestment", "pengurangan",
@@ -28,8 +29,9 @@ _KW_TRANSFER = [
 _KW_INHERIT = ["waris", "inheritance", "hibah", "grant", "bequest"]
 _KW_MESOP = ["mesop", "msop", "esop", "program opsi saham", "employee stock option"]
 _KW_FREEFLOAT = ["free float", "free-float", "freefloat", "pemenuhan porsi publik"]
-_KW_RESTRUCTURING = ["restrukturisasi", "restructuring", "reorganisasi"]
-_KW_REPURCHASE = ['repo', 'penempatan saham revo', 'transaksi repurchase']
+_KW_RESTRUCTURING = ["restrukturisasi", "restructuring", "reorganisasi", "penyelesaian penurunan modal"]
+_KW_REPURCHASE = ['repo', 'transaksi repurchase', 'transaksi repo']
+_KW_PLACEMENT = ['penempatan saham revo', 'penempatan']
 
 
 def _crosses_50(before_pp: Optional[float], after_pp: Optional[float]) -> bool:
@@ -127,14 +129,15 @@ class TransactionClassifier:
         purpose = (purpose or '').lower()
 
         detect_tag = {
-            "MESOP": _any_kw(purpose, _KW_MESOP),
-            "free_float_requirement": _any_kw(purpose, _KW_FREEFLOAT),
+            "mesop": _any_kw(purpose, _KW_MESOP),
+            "free_float_compliance": _any_kw(purpose, _KW_FREEFLOAT),
             "inheritance": _any_kw(purpose, _KW_INHERIT),
             "share-transfer": _any_kw(purpose, _KW_TRANSFER),
             'capital-restructuring': _any_kw(purpose, _KW_RESTRUCTURING),
             'investment': _any_kw(purpose, _KW_BUY),
             'divestment': _any_kw(purpose, _KW_SELL),
             'repurchase-agreement': _any_kw(purpose, _KW_REPURCHASE),
+            'placement': _any_kw(purpose, _KW_PLACEMENT)
         }
         
         tags = set()

@@ -120,6 +120,33 @@ class IDXParser(BaseParser):
             logger.error(f"load company_map error: {e}")
             return {}
 
+    def _populate_new_data(self, data: dict[str, any], source_pdf: str, timestamp_str: str) -> list[str]:
+        try:
+            # Build tags
+            purpose = data.get('purpose')
+            shares_percentage_before = data.get('shares_percentage_before')
+            shares_percentage_after = data.get('shares_percentage_after')
+            transaction_type = data.get('transaction_type')
+
+            tags = TransactionClassifier.detect_tags_for_new_document(
+                purpose, shares_percentage_before, shares_percentage_after, transaction_type
+            ) 
+
+            # Build holder type
+            holder_type = NameCleaner.classify_holder_type(data.get('holder_name'))
+
+            # Update the payload parser
+            data.update({'tags': tags})
+            data.update({'holder_type': holder_type})
+            data.update({'source': source_pdf})    
+            data.update({'timestamp': timestamp_str})
+            
+            return tags
+        
+        except Exception as error: 
+            logger.error(f"construct new tags: {error}")
+            return [] 
+
     # Entry point
     def parse_single_pdf(
         self,
@@ -155,41 +182,36 @@ class IDXParser(BaseParser):
             return None
 
         pdf_file = pdf_mapping.get(filename)
+        print(f'\nraw pdf_file: {pdf_file}\n')
         source_pdf_url = pdf_file.get('main_link', '')
-        print(f'\nraw pdf mapping: {pdf_file}')
-        print(f'\nfilename: {filename}')
-        print(f'\npdf url to if condition: {source_pdf_url}\n')
 
         if 'From_KSEI' in source_pdf_url:
             try:
                 timestamp = pdf_file.get('date', '')
                 timestamp_object = datetime.fromisoformat(timestamp)
-                timestamp_str = timestamp_object.strftime('%Y-%m-%d')
+                timestamp_str = timestamp_object.strftime('%Y-%m-%d %H:%M:%S')
 
-                data = parser_new_document(f'downloads/idx-format/{filename}')
+                data_others, data_no_others = parser_new_document(f'downloads/idx-format/{filename}')
+                if not data_others and not data_no_others: 
+                    logger.warning(f"Skipping {filename}: parser_new_document returned None (likely no share change).")
+                    return None
+                
+                out = []
 
-                # Build tags
-                purpose = data.get('purpose')
-                shares_percentage_before = data.get('shares_percentage_before')
-                shares_percentage_after = data.get('shares_percentage_after')
-                transaction_type = data.get('transaction_type')
+                if data_no_others is not None:
+                    self._populate_new_data(data_no_others, source_pdf_url, timestamp_str)
+                    data_no_others["split_variant"] = "primary"
+                    out.append(data_no_others)
 
-                tags = TransactionClassifier.detect_tags_for_new_document(
-                    purpose, shares_percentage_before, shares_percentage_after, transaction_type
-                )
+                if data_others is not None:
+                    self._populate_new_data(data_others, source_pdf_url, timestamp_str)
+                    data_others["split_variant"] = "others"
+                    out.append(data_others)
 
-                # Build holder type
-                holder_type = NameCleaner.classify_holder_type(data.get('holder_name'))
+                return out or None
 
-                # Update the payload parser
-                data.update({'tags': tags})
-                data.update({'holder_type': holder_type})
-                data.update({'source': source_pdf_url})    
-                data.update({'timestamp': timestamp_str})            
-                return data 
-
-            except Exception as e:
-                logger.error(f"extract_fields error {filename}: {e}", exc_info=True)
+            except Exception as error:
+                logger.error(f"extract_fields error {filename}: {error}", exc_info=True)
                 # Fatal: structural parse error
                 self._parser_fail(
                     code="parse_exception",
@@ -198,7 +220,7 @@ class IDXParser(BaseParser):
                         {
                             "scope": "parser",
                             "code": "parse_exception",
-                            "message": f"Error while extracting fields from IDX NEW FORMAT PDF: {e}",
+                            "message": f"Error while extracting fields from IDX NEW FORMAT PDF: {error}",
                             "details": {"announcement": self._current_alert_context},
                         }
                     ],

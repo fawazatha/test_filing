@@ -467,8 +467,6 @@ def step_email_alerts(
     cc_not_inserted: Optional[str] = None,
     bcc_inserted: Optional[str] = None,
     bcc_not_inserted: Optional[str] = None,
-    title_inserted: str = "IDX Alerts",
-    title_not_inserted: str = "IDX Alerts",
     aws_region: Optional[str] = None,
     attach_budget_bytes: int = 7_500_000,
 ) -> None:
@@ -516,6 +514,7 @@ def step_email_alerts(
         aws_region=aws_region,
     )
     LOG.info("[EMAIL] result: %s", res)
+    
 
 def step_zip_artifacts(
     *,
