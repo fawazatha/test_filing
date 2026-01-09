@@ -514,7 +514,7 @@ def step_email_alerts(
         aws_region=aws_region,
     )
     LOG.info("[EMAIL] result: %s", res)
-    
+
 
 def step_zip_artifacts(
     *,
@@ -930,8 +930,6 @@ def main():
             cc_not_inserted=args.email_cc_not_inserted,
             bcc_inserted=args.email_bcc_inserted,
             bcc_not_inserted=args.email_bcc_not_inserted,
-            title_inserted=args.email_title_inserted,
-            title_not_inserted=args.email_title_not_inserted,
             aws_region=args.email_region,
             attach_budget_bytes=args.email_attach_budget,
         )
