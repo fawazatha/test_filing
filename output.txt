@@ -12,17 +12,17 @@ Sesuai dengan Pasal Pasal 3 Ayat 3 Peraturan Otoritas Jasa Keuangan Nomor POJK P
 Kepemilikan Saham Perusahaan Terbuka dan Aktivitas Menjaminkan Saham Perusahaan Terbuka, melaporkan bahwa saya telah memiliki saham 
 Perusahaan Terbuka dengan rincian sebagai berikut: 
  
-05 Januari 2026
+06 Januari 2026
 Yth. Kepala Eksekutif Pengawas Pasar Modal,  
 Keuangan Derivatif dan Bursa  
 Karbon Otoritas Jasa Keuangan di  
 Jakarta
 Nama (sesuai SID)
-: ANDRI HUTAMA PUTRA
+: BAMBANG SUSILO
 Anggota Direksi/Dewan Komisaris
 : Ya
 Jabatan
-: Dewan Komisaris
+: Direksi
 Alamat Identitas
 : Tidak ditampilkan
 Nomor Telepon
@@ -34,15 +34,15 @@ Alamat e-mail
 Nama Perusahaan Tbk
 : CYBR - ITSEC ASIA Tbk, PT
 Jumlah Saham Sebelum Transaksi
-: 19.352.100,00 Unit
+: 23.400.200,00 Unit
 Hak Suara Sebelum Transaksi
-: 0,291%
+: 0,352%
 Jumlah Saham Setelah Transaksi
-: 17.852.100,00 Unit
+: 22.900.200,00 Unit
 Hak Suara Setelah Transaksi
-: 0,268%
+: 0,344%
 Nomor
-: LK/05012026/0006/1
+: LK/06012026/0017/1
 Lampiran
 : -
 Perihal
@@ -79,178 +79,40 @@ Langsung
 -
 -
 -
-200.000,00
-Saham 
-Biasa
-1.710,00
-29-
-Des-
-2025
-Investasi 
-Lainnya
-Penjualan
-Tidak
-Langsung
--
--
--
-200.000,00
-Saham 
-Biasa
-1.500,00
-29-
-Des-
-2025
-Investasi 
-Lainnya
-Penjualan
-Tidak
-Langsung
--
--
--
-100.000,00
-Saham 
-Biasa
-1.525,00
-29-
-Des-
-2025
-Investasi 
-Lainnya
-Penjualan
-Tidak
-Langsung
--
--
--
-100.000,00
-Saham 
-Biasa
-1.640,00
-29-
-Des-
-2025
-Investasi 
-Lainnya
-Penjualan
-Tidak
-Langsung
--
--
--
-200.000,00
-Saham 
-Biasa
-1.650,00
-29-
-Des-
-2025
-Investasi 
-Lainnya
-Penjualan
-Tidak
-Langsung
--
--
--
-100.000,00
-Saham 
-Biasa
-1.660,00
-29-
-Des-
-2025
-Investasi 
-Lainnya
-Penjualan
-Tidak
-Langsung
--
--
--
-100.000,00
-Saham 
-Biasa
-1.505,00
-29-
-Des-
-2025
-Investasi 
-Lainnya
-Penjualan
-Tidak
-Langsung
--
--
--
-100.000,00
-Saham 
-Biasa
-1.680,00
-29-
-Des-
-2025
-Investasi 
-Lainnya
-Penjualan
-Tidak
-Langsung
--
--
--
-100.000,00
-Saham 
-Biasa
-1.695,00
-29-
-Des-
-2025
-Investasi 
-Lainnya
-Penjualan
-Tidak
-Langsung
--
--
--
-100.000,00
-Saham 
-Biasa
-1.700,00
-29-
-Des-
-2025
-Investasi 
-Lainnya
-Penjualan
-Tidak
-Langsung
--
--
--
-100.000,00
-Saham 
-Biasa
-1.730,00
-29-
-Des-
-2025
-Investasi 
-Lainnya
-Penjualan
-Tidak
-Langsung
--
--
--
 100.000,00
 Saham 
 Biasa
 1.875,00
-30-
-Des-
-2025
+02-Jan-
+2026
+Investasi 
+Lainnya
+Penjualan
+Tidak
+Langsung
+-
+-
+-
+100.000,00
+Saham 
+Biasa
+1.870,00
+02-Jan-
+2026
+Investasi 
+Lainnya
+Penjualan
+Tidak
+Langsung
+-
+-
+-
+300.000,00
+Saham 
+Biasa
+1.875,00
+05-Jan-
+2026
 Investasi 
 Lainnya
 Pemberi Kuasa dan Penerima Kuasa bertanggung jawab penuh terhadap seluruh akibat hukum yang timbul dan menjamin kebenaran atas 
@@ -261,7 +123,7 @@ Jika ya, apakah akan mempertahankan pengendalian?
 : Tidak
 Nama pemegang saham yang memberikan kuasa untuk melaporkan, jika 
 laporan kepemilikan saham dikuasakan
-: ANDRI HUTAMA PUTRA
+: BAMBANG SUSILO
 Informasi mengenai rincian anggota kelompok yang terorganisasi, jika 
 merupakan laporan kepemilikan saham oleh kelompok yang terorganisasi
 : -
@@ -279,17 +141,17 @@ According to Article Article 3 Paragraph 3 of OJK Regulation POJK 4/2024 concern
 Ownership of Public Companies and the Pledging of Public Company Shares, I hereby report that I own shares of a Public Company with the 
 following details: 
  
-05 Januari 2026
+06 Januari 2026
 To: Chief Executive of Capital Market, Derivatives Finance,  
 and Carbon Exchange Supervision  
 Financial Services Authority (OJK)  
 Jakarta
 Name (SID)
-: ANDRI HUTAMA PUTRA
+: BAMBANG SUSILO
 Board of Director/Board of Commisioner
 : Yes
 Position
-: Board of Commissioners
+: Board of Directors
 Address
 : Hide
 Telephone Number
@@ -301,15 +163,15 @@ E-mail
 Issuer
 : CYBR - ITSEC ASIA Tbk, PT
 Number of shares owned before the transaction*
-: 19.352.100,00 Unit
+: 23.400.200,00 Unit
 Voting rights before the transaction
-: 0,291%
+: 0,352%
 Number of shares owned after the transaction*
-: 17.852.100,00 Unit
+: 22.900.200,00 Unit
 Voting rights after the transaction
-: 0,268%
+: 0,344%
 Number
-: LK/05012026/0006/1
+: LK/06012026/0017/1
 Attachments
 : -
 Subject
@@ -346,188 +208,53 @@ Ownership
 -
 -
 -
-200.000,00
-Common 
-Shares
-1.710,00
-29-Des-
-2025
-Investasi 
-Lainnya
-Sales
-No
-Direct 
-Ownership
--
--
--
-200.000,00
-Common 
-Shares
-1.500,00
-29-Des-
-2025
-Investasi 
-Lainnya
-Sales
-No
-Direct 
-Ownership
--
--
--
-100.000,00
-Common 
-Shares
-1.525,00
-29-Des-
-2025
-Investasi 
-Lainnya
-Sales
-No
-Direct 
-Ownership
--
--
--
-100.000,00
-Common 
-Shares
-1.640,00
-29-Des-
-2025
-Investasi 
-Lainnya
-Sales
-No
-Direct 
-Ownership
--
--
--
-200.000,00
-Common 
-Shares
-1.650,00
-29-Des-
-2025
-Investasi 
-Lainnya
-Sales
-No
-Direct 
-Ownership
--
--
--
-100.000,00
-Common 
-Shares
-1.660,00
-29-Des-
-2025
-Investasi 
-Lainnya
-Sales
-No
-Direct 
-Ownership
--
--
--
-100.000,00
-Common 
-Shares
-1.505,00
-29-Des-
-2025
-Investasi 
-Lainnya
-Sales
-No
-Direct 
-Ownership
--
--
--
-100.000,00
-Common 
-Shares
-1.680,00
-29-Des-
-2025
-Investasi 
-Lainnya
-Sales
-No
-Direct 
-Ownership
--
--
--
-100.000,00
-Common 
-Shares
-1.695,00
-29-Des-
-2025
-Investasi 
-Lainnya
-Sales
-No
-Direct 
-Ownership
--
--
--
-100.000,00
-Common 
-Shares
-1.700,00
-29-Des-
-2025
-Investasi 
-Lainnya
-Sales
-No
-Direct 
-Ownership
--
--
--
-100.000,00
-Common 
-Shares
-1.730,00
-29-Des-
-2025
-Investasi 
-Lainnya
-Sales
-No
-Direct 
-Ownership
--
--
--
 100.000,00
 Common 
 Shares
 1.875,00
-30-Des-
-2025
+02-Jan-
+2026
 Investasi 
 Lainnya
-Controlling Shareholder
-: No
+Sales
+No
+Direct 
+Ownership
+-
+-
+-
+100.000,00
+Common 
+Shares
+1.870,00
+02-Jan-
+2026
+Investasi 
+Lainnya
+Sales
+No
+Direct 
+Ownership
+-
+-
+-
+300.000,00
+Common 
+Shares
+1.875,00
+05-Jan-
+2026
+Investasi 
+Lainnya
 The Authorizer and Authorized Recipient are fully responsible for all legal consequences that arise and guarantee the truth of all data, 
 information, information and/or documents reported.
+Controlling Shareholder
+: No
 If yes, do you intend to retain control?
 : No
 Name of the shareholder who has granted authorization to submit the share 
 ownership report through a proxy
-: ANDRI HUTAMA PUTRA
+: BAMBANG SUSILO
 Detailed members of the organized group, if the share ownership report is 
 submitted by an organized group
 : -

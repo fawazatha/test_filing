@@ -30,6 +30,126 @@
     "split_variant": "primary"
   },
   {
+    "holding_before": 314135000,
+    "holding_after": 305845000,
+    "share_percentage_before": 9.169,
+    "share_percentage_after": 8.927,
+    "share_percentage_transaction": 0.242,
+    "symbol": "YOII.JK",
+    "company_name": "PT Asuransi Digital Bersama Tbk",
+    "holder_name": "Dana Pensiun Bank Pembangunan Daerah Jateng",
+    "price_transaction": [
+      {
+        "type": "sell",
+        "amount_transacted": 8290000,
+        "price": 120,
+        "date": "2026-01-05"
+      }
+    ],
+    "purpose": "investasi",
+    "price": 120.0,
+    "transaction_value": 994800000,
+    "transaction_type": "sell",
+    "amount_transaction": 8290000,
+    "source": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_KSEI/LK-06012026-1826-00.pdf-0.pdf",
+    "tags": [
+      "investment"
+    ],
+    "holder_type": "institution",
+    "timestamp": "2026-01-06 08:34:49",
+    "split_variant": "primary"
+  },
+  {
+    "holding_before": 682207800,
+    "holding_after": 602207800,
+    "share_percentage_before": 41.0,
+    "share_percentage_after": 36.2,
+    "share_percentage_transaction": 4.8,
+    "symbol": "KRYA.JK",
+    "company_name": "PT Bangun Karya Perkasa Jaya Tbk",
+    "holder_name": "Green City Sg Pte Ltd",
+    "price_transaction": [
+      {
+        "type": "sell",
+        "amount_transacted": 80000000,
+        "price": 150,
+        "date": "2025-12-31"
+      }
+    ],
+    "purpose": "Investasi",
+    "price": 150.0,
+    "transaction_value": 12000000000,
+    "transaction_type": "sell",
+    "amount_transaction": 80000000,
+    "source": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_KSEI/LK-06012026-4436-00.pdf-0.pdf",
+    "tags": [
+      "investment"
+    ],
+    "holder_type": "institution",
+    "timestamp": "2026-01-06 15:50:56",
+    "split_variant": "primary"
+  },
+  {
+    "holding_before": 126051060,
+    "holding_after": 126601460,
+    "share_percentage_before": 1.21,
+    "share_percentage_after": 1.22,
+    "share_percentage_transaction": 0.01,
+    "symbol": "ULTJ.JK",
+    "company_name": "PT Ultrajaya Milk Industry & Trading Company Tbk",
+    "holder_name": "Suhendra Prawira Widjaja",
+    "price_transaction": [
+      {
+        "type": "buy",
+        "amount_transacted": 550400,
+        "price": 1440,
+        "date": "2025-12-30"
+      }
+    ],
+    "purpose": "Bisnis",
+    "price": 1440.0,
+    "transaction_value": 792576000,
+    "transaction_type": "buy",
+    "amount_transaction": 550400,
+    "source": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_KSEI/LK-06012026-6030-00.pdf-0.pdf",
+    "tags": [
+      "investment"
+    ],
+    "holder_type": "insider",
+    "timestamp": "2026-01-06 10:34:18",
+    "split_variant": "primary"
+  },
+  {
+    "holding_before": 13406640470,
+    "holding_after": 13406647670,
+    "share_percentage_before": 40.22,
+    "share_percentage_after": 40.22,
+    "share_percentage_transaction": 0.0,
+    "symbol": "BYAN.JK",
+    "company_name": "Bayan Resources Tbk",
+    "holder_name": "Null",
+    "price_transaction": [
+      {
+        "type": "buy",
+        "amount_transacted": 7200,
+        "price": 16197,
+        "date": "2026-01-02"
+      }
+    ],
+    "purpose": "Investasi",
+    "price": 16197.0,
+    "transaction_value": 116618400,
+    "transaction_type": "buy",
+    "amount_transaction": 7200,
+    "source": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_KSEI/LK-06012026-3680-00.pdf-0.pdf",
+    "tags": [
+      "investment"
+    ],
+    "holder_type": "insider",
+    "timestamp": "2026-01-06 14:49:40",
+    "split_variant": "primary"
+  },
+  {
     "holding_before": 989500000,
     "holding_after": 982110000,
     "share_percentage_before": 63.33,
@@ -64,6 +184,130 @@
     "holder_type": "insider",
     "timestamp": "2026-01-05 11:21:53",
     "split_variant": "primary"
+  },
+  {
+    "holding_before": 682207800,
+    "holding_after": 602207800,
+    "share_percentage_before": 41.0,
+    "share_percentage_after": 36.2,
+    "share_percentage_transaction": 4.8,
+    "symbol": "KRYA.JK",
+    "company_name": "PT Bangun Karya Perkasa Jaya Tbk",
+    "holder_name": "Green City Sg Pte Ltd",
+    "price_transaction": [
+      {
+        "type": "sell",
+        "amount_transacted": 80000000,
+        "price": 150,
+        "date": "2025-12-31"
+      }
+    ],
+    "purpose": "Investasi",
+    "price": 150.0,
+    "transaction_value": 12000000000,
+    "transaction_type": "sell",
+    "amount_transaction": 80000000,
+    "source": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_KSEI/LK-06012026-3121-00.pdf-0.pdf",
+    "tags": [
+      "investment"
+    ],
+    "holder_type": "institution",
+    "timestamp": "2026-01-06 15:47:34",
+    "split_variant": "primary"
+  },
+  {
+    "holding_before": 201523622,
+    "holding_after": 201744022,
+    "share_percentage_before": 3.028,
+    "share_percentage_after": 3.032,
+    "share_percentage_transaction": 0.004,
+    "symbol": "CYBR.JK",
+    "company_name": "PT ITSEC Asia Tbk.",
+    "holder_name": "Patrick Rudolf Dannacher",
+    "price_transaction": [
+      {
+        "type": "buy",
+        "amount_transacted": 83400,
+        "price": 1845,
+        "date": "2026-01-05"
+      },
+      {
+        "type": "buy",
+        "amount_transacted": 137000,
+        "price": 1830,
+        "date": "2026-01-05"
+      }
+    ],
+    "purpose": "Investasi",
+    "price": 1835.676,
+    "transaction_value": 404583000,
+    "transaction_type": "buy",
+    "amount_transaction": 220400,
+    "source": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_KSEI/LK-06012026-5073-00.pdf-0.pdf",
+    "tags": [
+      "investment"
+    ],
+    "holder_type": "insider",
+    "timestamp": "2026-01-06 16:41:01",
+    "split_variant": "primary"
+  },
+  {
+    "holding_before": 12595186100,
+    "holding_after": 12595586100,
+    "share_percentage_before": 49.99,
+    "share_percentage_after": 50.0,
+    "share_percentage_transaction": 0.01,
+    "symbol": "MDIY.JK",
+    "company_name": "PT Daya Intiguna Yasa Tbk",
+    "holder_name": "Tan Yu Yeh",
+    "price_transaction": [
+      {
+        "type": "buy",
+        "amount_transacted": 400000,
+        "price": 1000,
+        "date": "2025-12-30"
+      }
+    ],
+    "purpose": "Untuk Investasi",
+    "price": 1000.0,
+    "transaction_value": 400000000,
+    "transaction_type": "buy",
+    "amount_transaction": 400000,
+    "source": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_KSEI/LK-06012026-7302-00.pdf-0.pdf",
+    "tags": [
+      "investment"
+    ],
+    "holder_type": "insider",
+    "timestamp": "2026-01-06 18:00:00",
+    "split_variant": "primary"
+  },
+  {
+    "holding_before": 243700,
+    "holding_after": 304300,
+    "share_percentage_before": 0.0,
+    "share_percentage_after": 0.0,
+    "share_percentage_transaction": 0.0,
+    "symbol": "BNGA.JK",
+    "company_name": "PT Bank CIMB Niaga Tbk",
+    "holder_name": "Henky Sulistyo",
+    "price_transaction": [
+      {
+        "type": "others",
+        "amount_transacted": 60600,
+        "price": 1770,
+        "date": "2026-01-02"
+      }
+    ],
+    "purpose": "Pelaksanaan program MRT/Implementation of the MRT Program",
+    "price": 1770.0,
+    "transaction_value": 107262000,
+    "transaction_type": "others",
+    "amount_transaction": 60600,
+    "source": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_KSEI/LK-06012026-4572-00.pdf-0.pdf",
+    "tags": [],
+    "holder_type": "insider",
+    "timestamp": "2026-01-06 18:57:32",
+    "split_variant": "others"
   },
   {
     "holding_before": 36877700,
@@ -198,6 +442,36 @@
     "split_variant": "primary"
   },
   {
+    "holding_before": 5527219300,
+    "holding_after": 5527919300,
+    "share_percentage_before": 53.16,
+    "share_percentage_after": 53.16,
+    "share_percentage_transaction": 0.0,
+    "symbol": "ULTJ.JK",
+    "company_name": "PT Ultrajaya Milk Industry & Trading Company Tbk",
+    "holder_name": "Sabana Prawira Widjaja",
+    "price_transaction": [
+      {
+        "type": "buy",
+        "amount_transacted": 700000,
+        "price": 1440,
+        "date": "2025-12-30"
+      }
+    ],
+    "purpose": "Bisnis",
+    "price": 1440.0,
+    "transaction_value": 1008000000,
+    "transaction_type": "buy",
+    "amount_transaction": 700000,
+    "source": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_KSEI/LK-06012026-9220-00.pdf-0.pdf",
+    "tags": [
+      "investment"
+    ],
+    "holder_type": "insider",
+    "timestamp": "2026-01-06 10:25:57",
+    "split_variant": "primary"
+  },
+  {
     "holding_before": 2099200,
     "holding_after": 2149200,
     "share_percentage_before": 0.17,
@@ -234,6 +508,36 @@
     "split_variant": "primary"
   },
   {
+    "holding_before": 0,
+    "holding_after": 2546300,
+    "share_percentage_before": 0.0,
+    "share_percentage_after": 0.062,
+    "share_percentage_transaction": 0.062,
+    "symbol": "MINE.JK",
+    "company_name": "PT Sinar Terang Mandiri Tbk",
+    "holder_name": "Ade Irawan",
+    "price_transaction": [
+      {
+        "type": "buy",
+        "amount_transacted": 2546300,
+        "price": 450,
+        "date": "2026-01-02"
+      }
+    ],
+    "purpose": "Investasi",
+    "price": 450.0,
+    "transaction_value": 1145835000,
+    "transaction_type": "buy",
+    "amount_transaction": 2546300,
+    "source": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_KSEI/LK-06012026-4821-00.pdf-0.pdf",
+    "tags": [
+      "investment"
+    ],
+    "holder_type": "insider",
+    "timestamp": "2026-01-06 15:19:37",
+    "split_variant": "primary"
+  },
+  {
     "holding_before": 287146518,
     "holding_after": 287246518,
     "share_percentage_before": 47.858,
@@ -261,6 +565,36 @@
     ],
     "holder_type": "insider",
     "timestamp": "2026-01-05 17:48:55",
+    "split_variant": "primary"
+  },
+  {
+    "holding_before": 80888,
+    "holding_after": 82888,
+    "share_percentage_before": 0.237,
+    "share_percentage_after": 0.243,
+    "share_percentage_transaction": 0.006,
+    "symbol": "TOTL.JK",
+    "company_name": "Total Bangun Persada Tbk",
+    "holder_name": "Saleh",
+    "price_transaction": [
+      {
+        "type": "buy",
+        "amount_transacted": 200000,
+        "price": 1005,
+        "date": "2026-01-02"
+      }
+    ],
+    "purpose": "pribadi",
+    "price": 1005.0,
+    "transaction_value": 201000000,
+    "transaction_type": "buy",
+    "amount_transaction": 2000,
+    "source": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_KSEI/LK-06012026-3407-00.pdf-0.pdf",
+    "tags": [
+      "investment"
+    ],
+    "holder_type": "insider",
+    "timestamp": "2026-01-06 13:29:46",
     "split_variant": "primary"
   },
   {
@@ -432,6 +766,54 @@
     "split_variant": "primary"
   },
   {
+    "holding_before": 464159613,
+    "holding_after": 464309613,
+    "share_percentage_before": 56.52,
+    "share_percentage_after": 56.54,
+    "share_percentage_transaction": 0.02,
+    "symbol": "SAFE.JK",
+    "company_name": "Steady Safe Tbk",
+    "holder_name": "Infiniti Wahana",
+    "price_transaction": [
+      {
+        "type": "buy",
+        "amount_transacted": 42700,
+        "price": 396,
+        "date": "2026-01-05"
+      },
+      {
+        "type": "buy",
+        "amount_transacted": 63600,
+        "price": 400,
+        "date": "2026-01-05"
+      },
+      {
+        "type": "buy",
+        "amount_transacted": 43400,
+        "price": 398,
+        "date": "2026-01-05"
+      },
+      {
+        "type": "buy",
+        "amount_transacted": 300,
+        "price": 394,
+        "date": "2026-01-05"
+      }
+    ],
+    "purpose": "Pembelian",
+    "price": 398.271,
+    "transaction_value": 59740600,
+    "transaction_type": "buy",
+    "amount_transaction": 150000,
+    "source": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_KSEI/LK-06012026-5840-00.pdf-0.pdf",
+    "tags": [
+      "investment"
+    ],
+    "holder_type": "insider",
+    "timestamp": "2026-01-06 13:33:39",
+    "split_variant": "primary"
+  },
+  {
     "holding_before": 5764371329,
     "holding_after": 6299185199,
     "share_percentage_before": 83.67,
@@ -489,6 +871,112 @@
     ],
     "holder_type": "insider",
     "timestamp": "2026-01-05 11:13:50",
+    "split_variant": "primary"
+  },
+  {
+    "holding_before": 1154201,
+    "holding_after": 1250201,
+    "share_percentage_before": 0.0,
+    "share_percentage_after": 0.0,
+    "share_percentage_transaction": 0.0,
+    "symbol": "BNGA.JK",
+    "company_name": "PT Bank CIMB Niaga Tbk",
+    "holder_name": "John Simon",
+    "price_transaction": [
+      {
+        "type": "others",
+        "amount_transacted": 96000,
+        "price": 1770,
+        "date": "2026-01-02"
+      }
+    ],
+    "purpose": "Pelaksanaan program MRT/Implementation of the MRT Program",
+    "price": 1770.0,
+    "transaction_value": 169920000,
+    "transaction_type": "others",
+    "amount_transaction": 96000,
+    "source": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_KSEI/LK-06012026-5287-00.pdf-0.pdf",
+    "tags": [],
+    "holder_type": "insider",
+    "timestamp": "2026-01-06 19:07:34",
+    "split_variant": "others"
+  },
+  {
+    "holding_before": 0,
+    "holding_after": 1082000,
+    "share_percentage_before": 0.0,
+    "share_percentage_after": 0.026,
+    "share_percentage_transaction": 0.026,
+    "symbol": "MINE.JK",
+    "company_name": "PT Sinar Terang Mandiri Tbk",
+    "holder_name": "Ivo Wangarry",
+    "price_transaction": [
+      {
+        "type": "buy",
+        "amount_transacted": 1082000,
+        "price": 465,
+        "date": "2025-12-24"
+      }
+    ],
+    "purpose": "Investasi",
+    "price": 465.0,
+    "transaction_value": 503130000,
+    "transaction_type": "buy",
+    "amount_transaction": 1082000,
+    "source": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_KSEI/LK-06012026-3921-00.pdf-0.pdf",
+    "tags": [
+      "investment"
+    ],
+    "holder_type": "insider",
+    "timestamp": "2026-01-06 15:55:45",
+    "split_variant": "primary"
+  },
+  {
+    "holding_before": 459575000,
+    "holding_after": 499575000,
+    "share_percentage_before": 60.79,
+    "share_percentage_after": 66.08,
+    "share_percentage_transaction": 5.29,
+    "symbol": "JECC.JK",
+    "company_name": "Jembo Cable Company Tbk",
+    "holder_name": "Null",
+    "price_transaction": [
+      {
+        "type": "buy",
+        "amount_transacted": 49050000,
+        "price": 600,
+        "date": "2025-12-19"
+      },
+      {
+        "type": "buy",
+        "amount_transacted": 49050000,
+        "price": 600,
+        "date": "2025-12-19"
+      },
+      {
+        "type": "buy",
+        "amount_transacted": 49050000,
+        "price": 600,
+        "date": "2025-12-19"
+      },
+      {
+        "type": "buy",
+        "amount_transacted": 49050000,
+        "price": 600,
+        "date": "2025-12-19"
+      }
+    ],
+    "purpose": "INVE",
+    "price": 600.0,
+    "transaction_value": 117720000000,
+    "transaction_type": "buy",
+    "amount_transaction": 40000000,
+    "source": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_KSEI/LK-06012026-2247-00.pdf-0.pdf",
+    "tags": [
+      "investment"
+    ],
+    "holder_type": "insider",
+    "timestamp": "2026-01-06 09:16:05",
     "split_variant": "primary"
   },
   {
@@ -747,6 +1235,134 @@
     ],
     "holder_type": "insider",
     "timestamp": "2026-01-05 14:34:28",
+    "split_variant": "primary"
+  },
+  {
+    "holding_before": 974201,
+    "holding_after": 1053301,
+    "share_percentage_before": 0.0,
+    "share_percentage_after": 0.0,
+    "share_percentage_transaction": 0.0,
+    "symbol": "BNGA.JK",
+    "company_name": "PT Bank CIMB Niaga Tbk",
+    "holder_name": "Rusly Johannes",
+    "price_transaction": [
+      {
+        "type": "others",
+        "amount_transacted": 79100,
+        "price": 1770,
+        "date": "2026-01-02"
+      }
+    ],
+    "purpose": "Pelaksanaan program MRT/Implementation of the MRT Program",
+    "price": 1770.0,
+    "transaction_value": 140007000,
+    "transaction_type": "others",
+    "amount_transaction": 79100,
+    "source": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_KSEI/LK-06012026-3780-00.pdf-0.pdf",
+    "tags": [],
+    "holder_type": "insider",
+    "timestamp": "2026-01-06 18:44:51",
+    "split_variant": "others"
+  },
+  {
+    "holding_before": 1082000,
+    "holding_after": 3628300,
+    "share_percentage_before": 0.026,
+    "share_percentage_after": 0.089,
+    "share_percentage_transaction": 0.063,
+    "symbol": "MINE.JK",
+    "company_name": "PT Sinar Terang Mandiri Tbk",
+    "holder_name": "Ivo Wangarry",
+    "price_transaction": [
+      {
+        "type": "buy",
+        "amount_transacted": 2546300,
+        "price": 450,
+        "date": "2026-01-02"
+      }
+    ],
+    "purpose": "Investasi",
+    "price": 450.0,
+    "transaction_value": 1145835000,
+    "transaction_type": "buy",
+    "amount_transaction": 2546300,
+    "source": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_KSEI/LK-06012026-7805-00.pdf-0.pdf",
+    "tags": [
+      "investment"
+    ],
+    "holder_type": "insider",
+    "timestamp": "2026-01-06 23:59:52",
+    "split_variant": "primary"
+  },
+  {
+    "holding_before": 1826901,
+    "holding_after": 2017501,
+    "share_percentage_before": 0.01,
+    "share_percentage_after": 0.01,
+    "share_percentage_transaction": 0.0,
+    "symbol": "BNGA.JK",
+    "company_name": "PT Bank CIMB Niaga Tbk",
+    "holder_name": "Lani Darmawan",
+    "price_transaction": [
+      {
+        "type": "others",
+        "amount_transacted": 190600,
+        "price": 1770,
+        "date": "2026-01-02"
+      }
+    ],
+    "purpose": "Pelaksanaan program MRT/ Implementation of the MRT Program",
+    "price": 1770.0,
+    "transaction_value": 337362000,
+    "transaction_type": "others",
+    "amount_transaction": 190600,
+    "source": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_KSEI/LK-06012026-6455-00.pdf-0.pdf",
+    "tags": [],
+    "holder_type": "insider",
+    "timestamp": "2026-01-06 18:08:21",
+    "split_variant": "others"
+  },
+  {
+    "holding_before": 23400200,
+    "holding_after": 22900200,
+    "share_percentage_before": 0.352,
+    "share_percentage_after": 0.344,
+    "share_percentage_transaction": 0.008,
+    "symbol": "CYBR.JK",
+    "company_name": "PT ITSEC Asia Tbk.",
+    "holder_name": "Bambang Susilo",
+    "price_transaction": [
+      {
+        "type": "sell",
+        "amount_transacted": 100000,
+        "price": 1875,
+        "date": "2026-01-02"
+      },
+      {
+        "type": "sell",
+        "amount_transacted": 100000,
+        "price": 1870,
+        "date": "2026-01-02"
+      },
+      {
+        "type": "sell",
+        "amount_transacted": 300000,
+        "price": 1875,
+        "date": "2026-01-05"
+      }
+    ],
+    "purpose": "Investasi Lainnya",
+    "price": 1874.0,
+    "transaction_value": 937000000,
+    "transaction_type": "sell",
+    "amount_transaction": 500000,
+    "source": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_KSEI/LK-06012026-3092-00.pdf-0.pdf",
+    "tags": [
+      "investment"
+    ],
+    "holder_type": "insider",
+    "timestamp": "2026-01-06 19:23:34",
     "split_variant": "primary"
   }
 ]

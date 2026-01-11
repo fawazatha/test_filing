@@ -1,0 +1,838 @@
+[
+  {
+    "price_transaction": [
+      {
+        "date": "2026-01-02",
+        "type": "buy",
+        "price": 16197.0,
+        "amount_transacted": 7200
+      }
+    ],
+    "source": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_KSEI/LK-06012026-3680-00.pdf-0.pdf",
+    "share_percentage_after": 40.22,
+    "symbol": "BYAN.JK",
+    "share_percentage_before": 40.22,
+    "body": "Null bought 7,200 shares of Bayan Resources Tbk. This increases their holdings from 13,406,640,470 to 13,406,647,670 shares. The stated purpose of the transaction was investment.",
+    "sector": "energy",
+    "holding_before": 13406640470,
+    "transaction_type": "buy",
+    "purpose_of_transaction": "Investment",
+    "holding_after": 13406647670,
+    "timestamp": "2026-01-06T14:49:40",
+    "tags": [
+      "investment"
+    ],
+    "price": 16197.0,
+    "amount_transaction": 7200,
+    "holder_name": "Null",
+    "company_name": "Bayan Resources Tbk",
+    "sub_sector": "oil-gas-coal",
+    "holder_type": "insider",
+    "transaction_value": 116618400.0,
+    "title": "Null buys shares of Bayan Resources Tbk",
+    "share_percentage_transaction": 0.0,
+    "type": "buy",
+    "amount": 7200,
+    "value": 116618400.0,
+    "audit_flags": {
+      "announcement": {
+        "id": "lk-06012026-3680-00.pdf-0",
+        "title": "REPORT OF OWNERSHIP OR ANY CHANGES IN SHARE OWNERSHIP OF PUBLIC COMPANIES",
+        "url": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_KSEI/LK-06012026-3680-00.pdf-0.pdf",
+        "pdf_url": null,
+        "source_type": "idx"
+      },
+      "document_median_price": 16197.0,
+      "market_reference": {
+        "ref_price": 17225.0,
+        "ref_type": "close",
+        "asof_date": "2026-01-09",
+        "n_days": 1,
+        "freshness_days": 2
+      },
+      "total_shares_model": 33333268199.900547,
+      "delta_pp_model": 0.0,
+      "pp_after_model": 40.22,
+      "percent_discrepancy": false,
+      "discrepancy_pp": 0.0,
+      "needs_review": false,
+      "reasons": []
+    },
+    "percent_discrepancy": false,
+    "needs_review": false,
+    "market_reference": {
+      "ref_price": 17225.0,
+      "ref_type": "close",
+      "asof_date": "2026-01-09",
+      "n_days": 1,
+      "freshness_days": 2
+    },
+    "document_median_price": 16197.0,
+    "source_is_manual": false,
+    "date_for_query": "2026-01-06"
+  },
+  {
+    "price_transaction": [
+      {
+        "date": "2025-12-30",
+        "type": "buy",
+        "price": 1000.0,
+        "amount_transacted": 400000
+      }
+    ],
+    "source": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_KSEI/LK-06012026-7302-00.pdf-0.pdf",
+    "share_percentage_after": 50.0,
+    "symbol": "MDIY.JK",
+    "share_percentage_before": 49.99,
+    "body": "Tan Yu Yeh bought 400,000 shares of PT Daya Intiguna Yasa Tbk. This increases their holdings from 12,595,186,100 to 12,595,586,100 shares. The stated purpose of the transaction was for investment.",
+    "sector": "consumer-cyclicals",
+    "holding_before": 12595186100,
+    "transaction_type": "buy",
+    "purpose_of_transaction": "For Investment",
+    "holding_after": 12595586100,
+    "timestamp": "2026-01-06T18:00:00",
+    "tags": [
+      "investment"
+    ],
+    "price": 1000.0,
+    "amount_transaction": 400000,
+    "holder_name": "Tan Yu Yeh",
+    "company_name": "PT Daya Intiguna Yasa Tbk",
+    "sub_sector": "retailing",
+    "holder_type": "insider",
+    "transaction_value": 400000000.0,
+    "title": "Tan Yu Yeh buys shares of PT Daya Intiguna Yasa Tbk",
+    "share_percentage_transaction": 0.01,
+    "type": "buy",
+    "amount": 400000,
+    "value": 400000000.0,
+    "audit_flags": {
+      "announcement": {
+        "id": "lk-06012026-7302-00.pdf-0",
+        "title": "REPORT OF OWNERSHIP OR ANY CHANGES IN SHARE OWNERSHIP OF PUBLIC COMPANIES",
+        "url": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_KSEI/LK-06012026-7302-00.pdf-0.pdf",
+        "pdf_url": null,
+        "source_type": "idx"
+      },
+      "document_median_price": 1000.0,
+      "market_reference": {
+        "ref_price": 1010.0,
+        "ref_type": "close",
+        "asof_date": "2026-01-09",
+        "n_days": 1,
+        "freshness_days": 2
+      },
+      "total_shares_model": 25195411282.25645,
+      "delta_pp_model": 0.001,
+      "pp_after_model": 49.991,
+      "percent_discrepancy": false,
+      "discrepancy_pp": 0.009000000000000341,
+      "needs_review": false,
+      "reasons": []
+    },
+    "percent_discrepancy": false,
+    "needs_review": false,
+    "market_reference": {
+      "ref_price": 1010.0,
+      "ref_type": "close",
+      "asof_date": "2026-01-09",
+      "n_days": 1,
+      "freshness_days": 2
+    },
+    "document_median_price": 1000.0,
+    "source_is_manual": false,
+    "date_for_query": "2026-01-06"
+  },
+  {
+    "price_transaction": [
+      {
+        "date": "2026-01-02",
+        "type": "others",
+        "price": 1770.0,
+        "amount_transacted": 60600
+      }
+    ],
+    "source": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_KSEI/LK-06012026-4572-00.pdf-0.pdf",
+    "share_percentage_after": 0.0,
+    "symbol": "BNGA.JK",
+    "share_percentage_before": 0.0,
+    "body": "Henky Sulistyo executed a transaction for 60,600 shares of PT Bank CIMB Niaga Tbk. This increases their holdings from 243,700 to 304,300 shares. The stated purpose of the transaction was implementation of the mrt program/implementation of the mrt program.",
+    "sector": "financials",
+    "holding_before": 243700,
+    "transaction_type": "others",
+    "purpose_of_transaction": "Implementation of the MRT program/Implementation of the MRT Program",
+    "holding_after": 304300,
+    "timestamp": "2026-01-06T18:57:32",
+    "tags": [],
+    "price": 1770.0,
+    "amount_transaction": 60600,
+    "holder_name": "Henky Sulistyo",
+    "company_name": "PT Bank CIMB Niaga Tbk",
+    "sub_sector": "banks",
+    "holder_type": "insider",
+    "transaction_value": 107262000.0,
+    "title": "Henky Sulistyo Others transaction of PT Bank CIMB Niaga Tbk",
+    "share_percentage_transaction": 0.0,
+    "type": "others",
+    "amount": 60600,
+    "value": 107262000.0,
+    "audit_flags": {
+      "needs_manual_uid": true,
+      "reason": "others detected",
+      "announcement": {
+        "id": "lk-06012026-4572-00.pdf-0",
+        "title": "REPORT OF OWNERSHIP OR ANY CHANGES IN SHARE OWNERSHIP OF PUBLIC COMPANIES",
+        "url": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_KSEI/LK-06012026-4572-00.pdf-0.pdf",
+        "pdf_url": null,
+        "source_type": "idx"
+      },
+      "document_median_price": 1770.0,
+      "market_reference": {
+        "ref_price": 1805.0,
+        "ref_type": "close",
+        "asof_date": "2026-01-09",
+        "n_days": 1,
+        "freshness_days": 2
+      },
+      "total_shares_model": null,
+      "delta_pp_model": null,
+      "pp_after_model": null,
+      "percent_discrepancy": false,
+      "discrepancy_pp": null,
+      "needs_review": false,
+      "reasons": []
+    },
+    "percent_discrepancy": false,
+    "needs_review": false,
+    "market_reference": {
+      "ref_price": 1805.0,
+      "ref_type": "close",
+      "asof_date": "2026-01-09",
+      "n_days": 1,
+      "freshness_days": 2
+    },
+    "document_median_price": 1770.0,
+    "source_is_manual": false,
+    "date_for_query": "2026-01-06"
+  },
+  {
+    "price_transaction": [
+      {
+        "date": "2026-01-02",
+        "type": "others",
+        "price": 1770.0,
+        "amount_transacted": 96000
+      }
+    ],
+    "source": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_KSEI/LK-06012026-5287-00.pdf-0.pdf",
+    "share_percentage_after": 0.0,
+    "symbol": "BNGA.JK",
+    "share_percentage_before": 0.0,
+    "body": "John Simon executed a transaction for 96,000 shares of PT Bank CIMB Niaga Tbk. This increases their holdings from 1,154,201 to 1,250,201 shares. The stated purpose of the transaction was implementation of the mrt program/implementation of the mrt program.",
+    "sector": "financials",
+    "holding_before": 1154201,
+    "transaction_type": "others",
+    "purpose_of_transaction": "Implementation of the MRT program/Implementation of the MRT Program",
+    "holding_after": 1250201,
+    "timestamp": "2026-01-06T19:07:34",
+    "tags": [],
+    "price": 1770.0,
+    "amount_transaction": 96000,
+    "holder_name": "John Simon",
+    "company_name": "PT Bank CIMB Niaga Tbk",
+    "sub_sector": "banks",
+    "holder_type": "insider",
+    "transaction_value": 169920000.0,
+    "title": "John Simon Others transaction of PT Bank CIMB Niaga Tbk",
+    "share_percentage_transaction": 0.0,
+    "type": "others",
+    "amount": 96000,
+    "value": 169920000.0,
+    "audit_flags": {
+      "needs_manual_uid": true,
+      "reason": "others detected",
+      "announcement": {
+        "id": "lk-06012026-5287-00.pdf-0",
+        "title": "REPORT OF OWNERSHIP OR ANY CHANGES IN SHARE OWNERSHIP OF PUBLIC COMPANIES",
+        "url": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_KSEI/LK-06012026-5287-00.pdf-0.pdf",
+        "pdf_url": null,
+        "source_type": "idx"
+      },
+      "document_median_price": 1770.0,
+      "market_reference": {
+        "ref_price": 1805.0,
+        "ref_type": "close",
+        "asof_date": "2026-01-09",
+        "n_days": 1,
+        "freshness_days": 2
+      },
+      "total_shares_model": null,
+      "delta_pp_model": null,
+      "pp_after_model": null,
+      "percent_discrepancy": false,
+      "discrepancy_pp": null,
+      "needs_review": false,
+      "reasons": []
+    },
+    "percent_discrepancy": false,
+    "needs_review": false,
+    "market_reference": {
+      "ref_price": 1805.0,
+      "ref_type": "close",
+      "asof_date": "2026-01-09",
+      "n_days": 1,
+      "freshness_days": 2
+    },
+    "document_median_price": 1770.0,
+    "source_is_manual": false,
+    "date_for_query": "2026-01-06"
+  },
+  {
+    "price_transaction": [
+      {
+        "date": "2025-12-19",
+        "type": "buy",
+        "price": 600.0,
+        "amount_transacted": 49050000
+      },
+      {
+        "date": "2025-12-19",
+        "type": "buy",
+        "price": 600.0,
+        "amount_transacted": 49050000
+      },
+      {
+        "date": "2025-12-19",
+        "type": "buy",
+        "price": 600.0,
+        "amount_transacted": 49050000
+      },
+      {
+        "date": "2025-12-19",
+        "type": "buy",
+        "price": 600.0,
+        "amount_transacted": 49050000
+      }
+    ],
+    "source": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_KSEI/LK-06012026-2247-00.pdf-0.pdf",
+    "share_percentage_after": 66.08,
+    "symbol": "JECC.JK",
+    "share_percentage_before": 60.79,
+    "body": "Null bought 40,000,000 shares of Jembo Cable Company Tbk. This increases their holdings from 459,575,000 to 499,575,000 shares. The stated purpose of the transaction was invest.",
+    "sector": "industrials",
+    "holding_before": 459575000,
+    "transaction_type": "buy",
+    "purpose_of_transaction": "INVEST",
+    "holding_after": 499575000,
+    "timestamp": "2026-01-06T09:16:05",
+    "tags": [
+      "investment"
+    ],
+    "price": 600.0,
+    "amount_transaction": 40000000,
+    "holder_name": "Null",
+    "company_name": "Jembo Cable Company Tbk",
+    "sub_sector": "industrial-goods",
+    "holder_type": "insider",
+    "transaction_value": 117720000000.0,
+    "title": "Null buys shares of Jembo Cable Company Tbk",
+    "share_percentage_transaction": 5.29,
+    "type": "buy",
+    "amount": 40000000,
+    "value": 117720000000.0,
+    "audit_flags": {
+      "announcement": {
+        "id": "lk-06012026-2247-00.pdf-0",
+        "title": "REPORT OF OWNERSHIP OR ANY CHANGES IN SHARE OWNERSHIP OF PUBLIC COMPANIES",
+        "url": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_KSEI/LK-06012026-2247-00.pdf-0.pdf",
+        "pdf_url": null,
+        "source_type": "idx"
+      },
+      "document_median_price": 600.0,
+      "market_reference": {
+        "ref_price": 1170.0,
+        "ref_type": "close",
+        "asof_date": "2026-01-09",
+        "n_days": 1,
+        "freshness_days": 2
+      },
+      "total_shares_model": 756004277.0192466,
+      "delta_pp_model": 25.952,
+      "pp_after_model": 86.742,
+      "percent_discrepancy": true,
+      "discrepancy_pp": 20.662000000000006,
+      "suspicious_price_level": true,
+      "needs_review": true,
+      "reasons": [
+        {
+          "scope": "tx",
+          "code": "price_deviation_vs_market",
+          "message": "Price deviates from market-ref by ratio 0.513",
+          "details": {
+            "price": 600.0,
+            "market_ref": {
+              "ref_price": 1170.0,
+              "ref_type": "close",
+              "asof_date": "2026-01-09",
+              "n_days": 1,
+              "freshness_days": 2
+            },
+            "ratio": 0.5128205128205128
+          }
+        },
+        {
+          "scope": "tx",
+          "code": "price_deviation_vs_market",
+          "message": "Price deviates from market-ref by ratio 0.513",
+          "details": {
+            "price": 600.0,
+            "market_ref": {
+              "ref_price": 1170.0,
+              "ref_type": "close",
+              "asof_date": "2026-01-09",
+              "n_days": 1,
+              "freshness_days": 2
+            },
+            "ratio": 0.5128205128205128
+          }
+        },
+        {
+          "scope": "tx",
+          "code": "price_deviation_vs_market",
+          "message": "Price deviates from market-ref by ratio 0.513",
+          "details": {
+            "price": 600.0,
+            "market_ref": {
+              "ref_price": 1170.0,
+              "ref_type": "close",
+              "asof_date": "2026-01-09",
+              "n_days": 1,
+              "freshness_days": 2
+            },
+            "ratio": 0.5128205128205128
+          }
+        },
+        {
+          "scope": "tx",
+          "code": "price_deviation_vs_market",
+          "message": "Price deviates from market-ref by ratio 0.513",
+          "details": {
+            "price": 600.0,
+            "market_ref": {
+              "ref_price": 1170.0,
+              "ref_type": "close",
+              "asof_date": "2026-01-09",
+              "n_days": 1,
+              "freshness_days": 2
+            },
+            "ratio": 0.5128205128205128
+          }
+        },
+        {
+          "scope": "row",
+          "code": "percent_discrepancy",
+          "message": "Model pp_after deviates from PDF by 20.66200 pp",
+          "details": {
+            "total_shares_model": 756004277.0192466,
+            "delta_pp_model": 25.952,
+            "pp_after_model": 86.742,
+            "percent_discrepancy": true,
+            "discrepancy_pp": 20.662000000000006
+          }
+        }
+      ]
+    },
+    "suspicious_price_level": true,
+    "percent_discrepancy": true,
+    "needs_review": true,
+    "reasons": [
+      {
+        "scope": "tx",
+        "code": "price_deviation_vs_market",
+        "message": "Price deviates from market-ref by ratio 0.513",
+        "details": {
+          "price": 600.0,
+          "market_ref": {
+            "ref_price": 1170.0,
+            "ref_type": "close",
+            "asof_date": "2026-01-09",
+            "n_days": 1,
+            "freshness_days": 2
+          },
+          "ratio": 0.5128205128205128
+        }
+      },
+      {
+        "scope": "tx",
+        "code": "price_deviation_vs_market",
+        "message": "Price deviates from market-ref by ratio 0.513",
+        "details": {
+          "price": 600.0,
+          "market_ref": {
+            "ref_price": 1170.0,
+            "ref_type": "close",
+            "asof_date": "2026-01-09",
+            "n_days": 1,
+            "freshness_days": 2
+          },
+          "ratio": 0.5128205128205128
+        }
+      },
+      {
+        "scope": "tx",
+        "code": "price_deviation_vs_market",
+        "message": "Price deviates from market-ref by ratio 0.513",
+        "details": {
+          "price": 600.0,
+          "market_ref": {
+            "ref_price": 1170.0,
+            "ref_type": "close",
+            "asof_date": "2026-01-09",
+            "n_days": 1,
+            "freshness_days": 2
+          },
+          "ratio": 0.5128205128205128
+        }
+      },
+      {
+        "scope": "tx",
+        "code": "price_deviation_vs_market",
+        "message": "Price deviates from market-ref by ratio 0.513",
+        "details": {
+          "price": 600.0,
+          "market_ref": {
+            "ref_price": 1170.0,
+            "ref_type": "close",
+            "asof_date": "2026-01-09",
+            "n_days": 1,
+            "freshness_days": 2
+          },
+          "ratio": 0.5128205128205128
+        }
+      },
+      {
+        "scope": "row",
+        "code": "percent_discrepancy",
+        "message": "Model pp_after deviates from PDF by 20.66200 pp",
+        "details": {
+          "total_shares_model": 756004277.0192466,
+          "delta_pp_model": 25.952,
+          "pp_after_model": 86.742,
+          "percent_discrepancy": true,
+          "discrepancy_pp": 20.662000000000006
+        }
+      }
+    ],
+    "market_reference": {
+      "ref_price": 1170.0,
+      "ref_type": "close",
+      "asof_date": "2026-01-09",
+      "n_days": 1,
+      "freshness_days": 2
+    },
+    "document_median_price": 600.0,
+    "skip_reason": "percent_discrepancy",
+    "source_is_manual": false,
+    "date_for_query": "2026-01-06"
+  },
+  {
+    "price_transaction": [
+      {
+        "date": "2026-01-02",
+        "type": "others",
+        "price": 1770.0,
+        "amount_transacted": 79100
+      }
+    ],
+    "source": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_KSEI/LK-06012026-3780-00.pdf-0.pdf",
+    "share_percentage_after": 0.0,
+    "symbol": "BNGA.JK",
+    "share_percentage_before": 0.0,
+    "body": "Rusly Johannes executed a transaction for 79,100 shares of PT Bank CIMB Niaga Tbk. This increases their holdings from 974,201 to 1,053,301 shares. The stated purpose of the transaction was implementation of the mrt program/implementation of the mrt program.",
+    "sector": "financials",
+    "holding_before": 974201,
+    "transaction_type": "others",
+    "purpose_of_transaction": "Implementation of the MRT program/Implementation of the MRT Program",
+    "holding_after": 1053301,
+    "timestamp": "2026-01-06T18:44:51",
+    "tags": [],
+    "price": 1770.0,
+    "amount_transaction": 79100,
+    "holder_name": "Rusly Johannes",
+    "company_name": "PT Bank CIMB Niaga Tbk",
+    "sub_sector": "banks",
+    "holder_type": "insider",
+    "transaction_value": 140007000.0,
+    "title": "Rusly Johannes Others transaction of PT Bank CIMB Niaga Tbk",
+    "share_percentage_transaction": 0.0,
+    "type": "others",
+    "amount": 79100,
+    "value": 140007000.0,
+    "audit_flags": {
+      "needs_manual_uid": true,
+      "reason": "others detected",
+      "announcement": {
+        "id": "lk-06012026-3780-00.pdf-0",
+        "title": "REPORT OF OWNERSHIP OR ANY CHANGES IN SHARE OWNERSHIP OF PUBLIC COMPANIES",
+        "url": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_KSEI/LK-06012026-3780-00.pdf-0.pdf",
+        "pdf_url": null,
+        "source_type": "idx"
+      },
+      "document_median_price": 1770.0,
+      "market_reference": {
+        "ref_price": 1805.0,
+        "ref_type": "close",
+        "asof_date": "2026-01-09",
+        "n_days": 1,
+        "freshness_days": 2
+      },
+      "total_shares_model": null,
+      "delta_pp_model": null,
+      "pp_after_model": null,
+      "percent_discrepancy": false,
+      "discrepancy_pp": null,
+      "needs_review": false,
+      "reasons": []
+    },
+    "percent_discrepancy": false,
+    "needs_review": false,
+    "market_reference": {
+      "ref_price": 1805.0,
+      "ref_type": "close",
+      "asof_date": "2026-01-09",
+      "n_days": 1,
+      "freshness_days": 2
+    },
+    "document_median_price": 1770.0,
+    "source_is_manual": false,
+    "date_for_query": "2026-01-06"
+  },
+  {
+    "price_transaction": [
+      {
+        "date": "2026-01-02",
+        "type": "buy",
+        "price": 450.0,
+        "amount_transacted": 2546300
+      }
+    ],
+    "source": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_KSEI/LK-06012026-7805-00.pdf-0.pdf",
+    "share_percentage_after": 0.089,
+    "symbol": "MINE.JK",
+    "share_percentage_before": 0.026,
+    "body": "Ivo Wangarry bought 2,546,300 shares of PT Sinar Terang Mandiri Tbk. This increases their holdings from 1,082,000 to 3,628,300 shares. The stated purpose of the transaction was investment.",
+    "sector": "basic-materials",
+    "holding_before": 1082000,
+    "transaction_type": "buy",
+    "purpose_of_transaction": "Investment",
+    "holding_after": 3628300,
+    "timestamp": "2026-01-06T23:59:52",
+    "tags": [
+      "investment"
+    ],
+    "price": 450.0,
+    "amount_transaction": 2546300,
+    "holder_name": "Ivo Wangarry",
+    "company_name": "PT Sinar Terang Mandiri Tbk",
+    "sub_sector": "basic-materials",
+    "holder_type": "insider",
+    "transaction_value": 1145835000.0,
+    "title": "Ivo Wangarry buys shares of PT Sinar Terang Mandiri Tbk",
+    "share_percentage_transaction": 0.063,
+    "type": "buy",
+    "amount": 2546300,
+    "value": 1145835000.0,
+    "audit_flags": {
+      "announcement": {
+        "id": "lk-06012026-7805-00.pdf-0",
+        "title": "REPORT OF OWNERSHIP OR ANY CHANGES IN SHARE OWNERSHIP OF PUBLIC COMPANIES",
+        "url": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_KSEI/LK-06012026-7805-00.pdf-0.pdf",
+        "pdf_url": null,
+        "source_type": "idx"
+      },
+      "document_median_price": 450.0,
+      "market_reference": {
+        "ref_price": 482.0,
+        "ref_type": "close",
+        "asof_date": "2026-01-09",
+        "n_days": 1,
+        "freshness_days": 2
+      },
+      "total_shares_model": 4161538461.5384617,
+      "delta_pp_model": 0.061,
+      "pp_after_model": 0.087,
+      "percent_discrepancy": false,
+      "discrepancy_pp": 0.0020000000000000018,
+      "needs_review": false,
+      "reasons": []
+    },
+    "percent_discrepancy": false,
+    "needs_review": false,
+    "market_reference": {
+      "ref_price": 482.0,
+      "ref_type": "close",
+      "asof_date": "2026-01-09",
+      "n_days": 1,
+      "freshness_days": 2
+    },
+    "document_median_price": 450.0,
+    "source_is_manual": false,
+    "date_for_query": "2026-01-06"
+  },
+  {
+    "price_transaction": [
+      {
+        "date": "2026-01-02",
+        "type": "others",
+        "price": 1770.0,
+        "amount_transacted": 190600
+      }
+    ],
+    "source": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_KSEI/LK-06012026-6455-00.pdf-0.pdf",
+    "share_percentage_after": 0.01,
+    "symbol": "BNGA.JK",
+    "share_percentage_before": 0.01,
+    "body": "Lani Darmawan executed a transaction for 190,600 shares of PT Bank CIMB Niaga Tbk. This increases their holdings from 1,826,901 to 2,017,501 shares. The stated purpose of the transaction was implementation of the mrt program/ implementation of the mrt program.",
+    "sector": "financials",
+    "holding_before": 1826901,
+    "transaction_type": "others",
+    "purpose_of_transaction": "Implementation of the MRT program/ Implementation of the MRT Program",
+    "holding_after": 2017501,
+    "timestamp": "2026-01-06T18:08:21",
+    "tags": [],
+    "price": 1770.0,
+    "amount_transaction": 190600,
+    "holder_name": "Lani Darmawan",
+    "company_name": "PT Bank CIMB Niaga Tbk",
+    "sub_sector": "banks",
+    "holder_type": "insider",
+    "transaction_value": 337362000.0,
+    "title": "Lani Darmawan Others transaction of PT Bank CIMB Niaga Tbk",
+    "share_percentage_transaction": 0.0,
+    "type": "others",
+    "amount": 190600,
+    "value": 337362000.0,
+    "audit_flags": {
+      "needs_manual_uid": true,
+      "reason": "others detected",
+      "announcement": {
+        "id": "lk-06012026-6455-00.pdf-0",
+        "title": "REPORT OF OWNERSHIP OR ANY CHANGES IN SHARE OWNERSHIP OF PUBLIC COMPANIES",
+        "url": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_KSEI/LK-06012026-6455-00.pdf-0.pdf",
+        "pdf_url": null,
+        "source_type": "idx"
+      },
+      "document_median_price": 1770.0,
+      "market_reference": {
+        "ref_price": 1805.0,
+        "ref_type": "close",
+        "asof_date": "2026-01-09",
+        "n_days": 1,
+        "freshness_days": 2
+      },
+      "total_shares_model": 18269010000.0,
+      "delta_pp_model": 0.0,
+      "pp_after_model": 0.01,
+      "percent_discrepancy": false,
+      "discrepancy_pp": 0.0,
+      "needs_review": false,
+      "reasons": []
+    },
+    "percent_discrepancy": false,
+    "needs_review": false,
+    "market_reference": {
+      "ref_price": 1805.0,
+      "ref_type": "close",
+      "asof_date": "2026-01-09",
+      "n_days": 1,
+      "freshness_days": 2
+    },
+    "document_median_price": 1770.0,
+    "source_is_manual": false,
+    "date_for_query": "2026-01-06"
+  },
+  {
+    "price_transaction": [
+      {
+        "date": "2026-01-02",
+        "type": "sell",
+        "price": 1875.0,
+        "amount_transacted": 100000
+      },
+      {
+        "date": "2026-01-02",
+        "type": "sell",
+        "price": 1870.0,
+        "amount_transacted": 100000
+      },
+      {
+        "date": "2026-01-05",
+        "type": "sell",
+        "price": 1875.0,
+        "amount_transacted": 300000
+      }
+    ],
+    "source": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_KSEI/LK-06012026-3092-00.pdf-0.pdf",
+    "share_percentage_after": 0.344,
+    "symbol": "CYBR.JK",
+    "share_percentage_before": 0.352,
+    "body": "Bambang Susilo sold 500,000 shares of PT ITSEC Asia Tbk.. This decreases their holdings from 23,400,200 to 22,900,200 shares. The stated purpose of the transaction was other investments.",
+    "sector": "technology",
+    "holding_before": 23400200,
+    "transaction_type": "sell",
+    "purpose_of_transaction": "Other Investments",
+    "holding_after": 22900200,
+    "timestamp": "2026-01-06T19:23:34",
+    "tags": [
+      "investment"
+    ],
+    "price": 1874.0,
+    "amount_transaction": 500000,
+    "holder_name": "Bambang Susilo",
+    "company_name": "PT ITSEC Asia Tbk.",
+    "sub_sector": "software-it-services",
+    "holder_type": "insider",
+    "transaction_value": 937000000.0,
+    "title": "Bambang Susilo sells shares of PT ITSEC Asia Tbk.",
+    "share_percentage_transaction": 0.008,
+    "type": "sell",
+    "amount": 500000,
+    "value": 937000000.0,
+    "audit_flags": {
+      "announcement": {
+        "id": "lk-06012026-3092-00.pdf-0",
+        "title": "REPORT OF OWNERSHIP OR ANY CHANGES IN SHARE OWNERSHIP OF PUBLIC COMPANIES",
+        "url": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_KSEI/LK-06012026-3092-00.pdf-0.pdf",
+        "pdf_url": null,
+        "source_type": "idx"
+      },
+      "document_median_price": 1875.0,
+      "market_reference": {
+        "ref_price": 1730.0,
+        "ref_type": "close",
+        "asof_date": "2026-01-09",
+        "n_days": 1,
+        "freshness_days": 2
+      },
+      "total_shares_model": 6647784090.909092,
+      "delta_pp_model": -0.008,
+      "pp_after_model": 0.344,
+      "percent_discrepancy": false,
+      "discrepancy_pp": 0.0,
+      "needs_review": false,
+      "reasons": []
+    },
+    "percent_discrepancy": false,
+    "needs_review": false,
+    "market_reference": {
+      "ref_price": 1730.0,
+      "ref_type": "close",
+      "asof_date": "2026-01-09",
+      "n_days": 1,
+      "freshness_days": 2
+    },
+    "document_median_price": 1875.0,
+    "source_is_manual": false,
+    "date_for_query": "2026-01-06"
+  }
+]
