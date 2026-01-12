@@ -8,21 +8,21 @@ Saya yang bertanda tangan di bawah ini :
  
  
  
-Sesuai dengan Pasal Pasal 3 Ayat 3 Peraturan Otoritas Jasa Keuangan Nomor POJK POJK 4/2024 tentang Laporan Kepemilikan atau Perubahan 
+Sesuai dengan Pasal Pasal 2 Ayat 2 Peraturan Otoritas Jasa Keuangan Nomor POJK POJK 4/2024 tentang Laporan Kepemilikan atau Perubahan 
 Kepemilikan Saham Perusahaan Terbuka dan Aktivitas Menjaminkan Saham Perusahaan Terbuka, melaporkan bahwa saya telah memiliki saham 
 Perusahaan Terbuka dengan rincian sebagai berikut: 
  
-06 Januari 2026
+12 Januari 2026
 Yth. Kepala Eksekutif Pengawas Pasar Modal,  
 Keuangan Derivatif dan Bursa  
 Karbon Otoritas Jasa Keuangan di  
 Jakarta
 Nama (sesuai SID)
-: BAMBANG SUSILO
+: DANA PENSIUN BANK PEMBANGUNAN DAERAH JATENG
 Anggota Direksi/Dewan Komisaris
-: Ya
+: Tidak
 Jabatan
-: Direksi
+:
 Alamat Identitas
 : Tidak ditampilkan
 Nomor Telepon
@@ -32,17 +32,17 @@ Kewarganegaraan
 Alamat e-mail
 : Tidak ditampilkan
 Nama Perusahaan Tbk
-: CYBR - ITSEC ASIA Tbk, PT
+: YOII - ASURANSI DIGITAL BERSAMA Tbk, PT
 Jumlah Saham Sebelum Transaksi
-: 23.400.200,00 Unit
+: 291.968.700,00 Unit
 Hak Suara Sebelum Transaksi
-: 0,352%
+: 8,5222%
 Jumlah Saham Setelah Transaksi
-: 22.900.200,00 Unit
+: 291.468.700,00 Unit
 Hak Suara Setelah Transaksi
-: 0,344%
+: 8,5076%
 Nomor
-: LK/06012026/0017/1
+: LK/12012026/0001/1
 Lampiran
 : -
 Perihal
@@ -79,51 +79,22 @@ Langsung
 -
 -
 -
-100.000,00
+500.000,00
 Saham 
 Biasa
-1.875,00
-02-Jan-
+112,00
+09-Jan-
 2026
-Investasi 
-Lainnya
-Penjualan
-Tidak
-Langsung
--
--
--
-100.000,00
-Saham 
-Biasa
-1.870,00
-02-Jan-
-2026
-Investasi 
-Lainnya
-Penjualan
-Tidak
-Langsung
--
--
--
-300.000,00
-Saham 
-Biasa
-1.875,00
-05-Jan-
-2026
-Investasi 
-Lainnya
-Pemberi Kuasa dan Penerima Kuasa bertanggung jawab penuh terhadap seluruh akibat hukum yang timbul dan menjamin kebenaran atas 
-seluruh data, informasi, keterangan dan/atau dokumen yang dilaporkan.
+Investasi
+Saya bertanggung jawab penuh terhadap seluruh akibat hukum yang timbul dan menjamin kebenaran atas seluruh data, informasi, keterangan 
+dan/atau dokumen yang dilaporkan.
 Keterangan Pengendali
 : Tidak
 Jika ya, apakah akan mempertahankan pengendalian?
 : Tidak
 Nama pemegang saham yang memberikan kuasa untuk melaporkan, jika 
 laporan kepemilikan saham dikuasakan
-: BAMBANG SUSILO
+: -
 Informasi mengenai rincian anggota kelompok yang terorganisasi, jika 
 merupakan laporan kepemilikan saham oleh kelompok yang terorganisasi
 : -
@@ -137,21 +108,21 @@ I, the undersigned:
  
  
  
-According to Article Article 3 Paragraph 3 of OJK Regulation POJK 4/2024 concerning the Reporting on Share Ownership or Changes in Share 
+According to Article Article 2 Paragraph 2 of OJK Regulation POJK 4/2024 concerning the Reporting on Share Ownership or Changes in Share 
 Ownership of Public Companies and the Pledging of Public Company Shares, I hereby report that I own shares of a Public Company with the 
 following details: 
  
-06 Januari 2026
+12 Januari 2026
 To: Chief Executive of Capital Market, Derivatives Finance,  
 and Carbon Exchange Supervision  
 Financial Services Authority (OJK)  
 Jakarta
 Name (SID)
-: BAMBANG SUSILO
+: DANA PENSIUN BANK PEMBANGUNAN DAERAH JATENG
 Board of Director/Board of Commisioner
-: Yes
+: No
 Position
-: Board of Directors
+:
 Address
 : Hide
 Telephone Number
@@ -161,17 +132,17 @@ Citizenship
 E-mail
 : Hide
 Issuer
-: CYBR - ITSEC ASIA Tbk, PT
+: YOII - ASURANSI DIGITAL BERSAMA Tbk, PT
 Number of shares owned before the transaction*
-: 23.400.200,00 Unit
+: 291.968.700,00 Unit
 Voting rights before the transaction
-: 0,352%
+: 8,5222%
 Number of shares owned after the transaction*
-: 22.900.200,00 Unit
+: 291.468.700,00 Unit
 Voting rights after the transaction
-: 0,344%
+: 8,5076%
 Number
-: LK/06012026/0017/1
+: LK/12012026/0001/1
 Attachments
 : -
 Subject
@@ -208,53 +179,22 @@ Ownership
 -
 -
 -
-100.000,00
+500.000,00
 Common 
 Shares
-1.875,00
-02-Jan-
+112,00
+09-Jan-
 2026
-Investasi 
-Lainnya
-Sales
-No
-Direct 
-Ownership
--
--
--
-100.000,00
-Common 
-Shares
-1.870,00
-02-Jan-
-2026
-Investasi 
-Lainnya
-Sales
-No
-Direct 
-Ownership
--
--
--
-300.000,00
-Common 
-Shares
-1.875,00
-05-Jan-
-2026
-Investasi 
-Lainnya
-The Authorizer and Authorized Recipient are fully responsible for all legal consequences that arise and guarantee the truth of all data, 
-information, information and/or documents reported.
+Investasi
+I am fully responsible for all legal consequences arising therefrom and guarantee the truthfulness of all data, information, and/or documents 
+reported.
 Controlling Shareholder
 : No
 If yes, do you intend to retain control?
 : No
 Name of the shareholder who has granted authorization to submit the share 
 ownership report through a proxy
-: BAMBANG SUSILO
+: -
 Detailed members of the organized group, if the share ownership report is 
 submitted by an organized group
 : -
