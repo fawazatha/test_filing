@@ -1,10 +1,15 @@
 from supabase import create_client, Client 
 from dotenv import load_dotenv
 from datetime import datetime 
+from pathlib import Path
+
+from downloader.client import init_http, get_pdf_bytes_minimal, seed_and_retry_minimal
+from src.common.files import ensure_dir, safe_filename_from_url
 
 import os
 import json 
-
+import fitz
+import requests
 
 load_dotenv(override=True)
 SUPABASE_URL = os.getenv('SUPABASE_URL')
@@ -65,6 +70,27 @@ def create_composite_key_third_fallback(record: dict) -> set:
     )
 
 
+def create_composite_key_fourth_fallback(record: dict) -> set: 
+    return ( 
+        record.get('source'),
+        #record.get('symbol'),
+        # record.get('holder_name'),
+        record.get('holding_before'),
+        record.get('holding_after'),
+        record.get('share_percentage_before'),
+        record.get('share_percentage_after'),
+    )
+
+
+def create_composite_key_fifth_fallback(record: dict) -> set: 
+    return ( 
+        record.get('source'),
+        record.get('title'),
+        record.get('share_percentage_before'),
+        record.get('share_percentage_after'),
+    )
+
+
 def get_supabase_client() -> Client:
     try: 
         supabase_client = create_client(SUPABASE_URL, SUPABASE_KEY)
@@ -112,21 +138,33 @@ def match_data_filing(idx_filing: list[dict], idx_filing_v2: list[dict]) -> list
         primary_lookup = {}
         fallback_lookup = {}
         third_fallback_lookup = {}
+        fourth_fallback_lookup = {}
+        fifth_fallback_lookup = {}
 
         old_record_id_map = {} 
+        uid_to_old_ids = {}
 
         for filing in idx_filing: 
             primary_key = create_composite_key(filing)
             second_key = create_composite_key_second_fallback(filing)
             third_key = create_composite_key_third_fallback(filing)
+            third_key = create_composite_key_third_fallback(filing)
+            fourth_key = create_composite_key_fourth_fallback(filing)
+            fifth_key = create_composite_key_fifth_fallback(filing)
             
             # Store the actual record and its ID for tracking
             primary_lookup[primary_key] = filing
             fallback_lookup[second_key] = filing
             third_fallback_lookup[third_key] = filing
+            fourth_fallback_lookup[fourth_key] = filing
+            fifth_fallback_lookup[fifth_key] = filing
 
             # Map ID to record for the final separation step
             old_record_id_map[filing['id']] = filing
+
+            uid = filing.get('uid')
+            if uid: 
+                uid_to_old_ids.setdefault(uid, []).append(filing['uid'])
 
         matched_old_ids = set()
 
@@ -135,6 +173,8 @@ def match_data_filing(idx_filing: list[dict], idx_filing_v2: list[dict]) -> list
             primary_key = create_composite_key(filing_v2)
             second_key = create_composite_key_second_fallback(filing_v2)
             third_key = create_composite_key_third_fallback(filing_v2)
+            fourth_key = create_composite_key_fourth_fallback(filing_v2)
+            fifth_key = create_composite_key_fifth_fallback(filing_v2)
 
             matched_record = None
 
@@ -149,13 +189,105 @@ def match_data_filing(idx_filing: list[dict], idx_filing_v2: list[dict]) -> list
             elif third_key in third_fallback_lookup:
                 matched_record = third_fallback_lookup[third_key]
 
+            elif fourth_key in fourth_fallback_lookup:
+                matched_record = fourth_fallback_lookup[fourth_key]
+            
+            elif fifth_key in fifth_fallback_lookup:
+                matched_record = fifth_fallback_lookup[fifth_key]
+
             if matched_record:
                 matching_filings_v2.append(filing_v2)
                 matched_old_ids.add(matched_record['id'])
 
                 match_map[matched_record['id']] = filing_v2
 
+                uid = matched_record.get('UID')
+                if uid:
+                    for old_id in uid_to_old_ids.get(uid, []):
+                        matched_old_ids.add(old_id)
+                        match_map.setdefault(old_id, filing_v2)
+
         # Separate Old Filings based on ID
+        for old_id, filing in old_record_id_map.items():
+            if old_id in matched_old_ids:
+                matching_filings.append(filing)
+            else:
+                not_matching_filings.append(filing)
+
+        print(f'Total matching filings: {len(matching_filings)}')
+        print(f'Total not matching filings: {len(not_matching_filings)}')
+
+        return matching_filings, matching_filings_v2, not_matching_filings, match_map
+
+    except Exception as error:
+        print(f"Error matching data filing: {error}")
+        raise
+
+def match_data_filing(idx_filing: list[dict], idx_filing_v2: list[dict]) -> list[dict]:
+    matching_filings = []
+    matching_filings_v2 = []
+    not_matching_filings = []
+    match_map = {}
+
+    try:
+        primary_lookup = {}
+        fallback_lookup = {}
+        third_fallback_lookup = {}
+        fourth_fallback_lookup = {}
+
+        old_record_id_map = {}
+        uid_to_old_ids = {}
+
+        for filing in idx_filing:
+            primary_key = create_composite_key(filing)
+            second_key = create_composite_key_second_fallback(filing)
+            third_key = create_composite_key_third_fallback(filing)
+            fourth_key = create_composite_key_fourth_fallback(filing)
+
+            primary_lookup[primary_key] = filing
+            fallback_lookup[second_key] = filing
+            third_fallback_lookup[third_key] = filing
+            fourth_fallback_lookup[fourth_key] = filing
+
+            old_record_id_map[filing['id']] = filing
+
+            uid = filing.get('UID')
+            if uid:
+                uid_to_old_ids.setdefault(uid, []).append(filing['id'])
+
+        matched_old_ids = set()
+
+        for filing_v2 in idx_filing_v2:
+            primary_key = create_composite_key(filing_v2)
+            second_key = create_composite_key_second_fallback(filing_v2)
+            third_key = create_composite_key_third_fallback(filing_v2)
+            fourth_key = create_composite_key_fourth_fallback(filing_v2)
+
+            matched_record = None
+
+            if primary_key in primary_lookup:
+                matched_record = primary_lookup[primary_key]
+            elif second_key in fallback_lookup:
+                matched_record = fallback_lookup[second_key]
+            elif third_key in third_fallback_lookup:
+                matched_record = third_fallback_lookup[third_key]
+            elif fourth_key in fourth_fallback_lookup:
+                matched_record = fourth_fallback_lookup[fourth_key]
+
+            if matched_record:
+                matching_filings_v2.append(filing_v2)
+
+                # Always mark the directly matched record
+                matched_old_ids.add(matched_record['id'])
+                match_map[matched_record['id']] = filing_v2
+
+                # Also mark all old records with the same UID
+                uid = matched_record.get('UID')
+                if uid:
+                    for old_id in uid_to_old_ids.get(uid, []):
+                        matched_old_ids.add(old_id)
+                        match_map.setdefault(old_id, filing_v2)
+
         for old_id, filing in old_record_id_map.items():
             if old_id in matched_old_ids:
                 matching_filings.append(filing)
@@ -224,21 +356,80 @@ def update_from_filing_v2(
         raise 
 
 
-if __name__ == '__main__':
-    supabase_client = get_supabase_client()
-    filing = get_idx_filing_data(supabase_client, 'idx_filings')
-    check_length_old_filing(filing)
+def detect_idx_format(source: str) -> bool:
+    res = requests.get(source)
+    res.raise_for_status()
 
-    filing_v2 = get_idx_filing_data(supabase_client, 'idx_filings_v2', False)
-    matching_filings_old, matching_filings_v2, not_matching_filings, match_map = match_data_filing(filing, filing_v2)
-    updated_matching_old = update_old_to_new_format(matching_filings_old)
-    filing_updated_from_v2 = update_from_filing_v2(match_map, updated_matching_old)
+    # doc = fitz.open(source) 
+    # texts = doc[0].get_text()
+    # print(texts)
+
+
+def download_pdf_url(url: str, out_dir: str = "doc_transaction_update", retries: int = 3) -> Path | None:
+    if not url:
+        return None
+
+    init_http(insecure=True, silence_warnings=True, load_env=True)
+    out_dir_path = ensure_dir(out_dir)
+    filename = safe_filename_from_url(url)
+    out_path = out_dir_path / filename
+
+    if out_path.exists():
+        return out_path
+
+    try:
+        out_path.write_bytes(get_pdf_bytes_minimal(url, timeout=60))
+        return out_path
+    except Exception:
+        pass
+
+    for _ in range(max(0, retries - 1)):
+        try:
+            out_path.write_bytes(seed_and_retry_minimal(url, timeout=60))
+            return out_path
+        except Exception:
+            continue
+
+    return None
+
+
+def download_pdfs_from_json(json_path: str, out_dir: str = "doc_transaction_update") -> None:
+    with open(json_path, "r", encoding="utf-8") as f:
+        data_records = json.load(f)
+
+    for data in data_records:
+        url = data.get("source")
+        if not url:
+            continue
+        download_pdf_url(url, out_dir=out_dir)
+
+
+
+
+if __name__ == '__main__':
+    # supabase_client = get_supabase_client()
+    # filing = get_idx_filing_data(supabase_client, 'idx_filings')
+    # check_length_old_filing(filing)
+
+    # filing_v2 = get_idx_filing_data(supabase_client, 'idx_filings_v2', False)
+    # matching_filings_old, matching_filings_v2, not_matching_filings, match_map = ( 
+    #     match_data_filing(filing, filing_v2)
+    # )
+    # updated_matching_old = update_old_to_new_format(matching_filings_old)
+    # filing_updated_from_v2 = update_from_filing_v2(match_map, updated_matching_old)
 
     # inspect_duplicates(filing, filing_v2)
 
-    write_to_json(match_map, 'matched_map.json')
-    write_to_json(filing_updated_from_v2, 'idx_filing_updated_from_v2_2025.json')
-    write_to_json(matching_filings_old, 'matched_idx_filings_old_2025.json')
-    write_to_json(matching_filings_v2, 'matched_idx_filings_v2_2025.json')
-    write_to_json(not_matching_filings, 'not_matched_idx_filings_old_2025.json')
-    write_to_json(updated_matching_old, 'updated_matched_idx_filing_old_2025.json')
+    # write_to_json(match_map, 'test_price_transaction/matched_map.json')
+    # write_to_json(filing_updated_from_v2, 'test_price_transaction/idx_filing_updated_from_v2_2025.json')
+    # write_to_json(matching_filings_old, 'test_price_transaction/matched_idx_filings_old_2025.json')
+    # write_to_json(matching_filings_v2, 'test_price_transaction/matched_idx_filings_v2_2025.json')
+    # write_to_json(not_matching_filings, 'test_price_transaction/not_matched_idx_filings_old_recent_2025.json')
+    # write_to_json(updated_matching_old, 'test_price_transaction/updated_matched_idx_filing_old_2025.json')
+
+    # test_source = 'https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_EREP/202507/4e0de956e5_c10ba09db9.pdf'
+    # detect_idx_format(test_source)
+
+    download_pdfs_from_json('test_price_transaction/not_matched_idx_filings_old_recent_2025.json')
+
+    # uv run -m src.scripts.price_transaction_normalizer.update_price_transaction

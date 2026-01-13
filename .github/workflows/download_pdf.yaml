@@ -1,0 +1,67 @@
+name: Update Price Transaction Matches
+
+on:
+  workflow_dispatch:
+    inputs:
+      commit_results:
+        description: "Commit updated JSON outputs to repo"
+        type: boolean
+        default: false
+      python_version:
+        description: "Python version"
+        required: false
+        default: "3.11"
+
+permissions:
+  contents: write
+
+jobs:
+  run-update:
+    runs-on: ubuntu-latest
+    env:
+      SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+      SUPABASE_KEY: ${{ secrets.SUPABASE_KEY }}
+      HTTP_PROXY:  ${{ secrets.PROXY }}
+      HTTPS_PROXY: ${{ secrets.PROXY }}
+      NO_PROXY: "localhost,127.0.0.1,supabase.co,.supabase.co,amazonaws.com,.amazonaws.com,generativelanguage.googleapis.com,.googleapis.com,translate.google.com,.google.com,openai.com,.openai.com,groq.com,.groq.com"
+      PYTHONPATH: .:src
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install uv (Python package manager)
+        uses: astral-sh/setup-uv@v2
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ inputs.python_version }}
+
+      - name: Install dependencies
+        run: uv sync
+
+      - name: Run update_price_transaction
+        run: |
+          uv run -m src.scripts.price_transaction_normalizer.update_price_transaction
+
+      # - name: Upload artifacts
+      #   uses: actions/upload-artifact@v4
+      #   with:
+      #     name: price-transaction-match-${{ github.run_number }}
+      #     path: |
+      #       test_price_transaction/*.json
+      #     if-no-files-found: warn
+
+      - name: Commit results
+        if: ${{ inputs.commit_results }}
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git add test_price_transaction/*.json
+          if git diff --staged --quiet; then
+            echo "No changes to commit."
+          else
+            git commit -m "Update price transaction matches"
+            git push
+          fi
