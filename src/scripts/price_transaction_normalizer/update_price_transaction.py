@@ -430,7 +430,7 @@ if __name__ == '__main__':
     # test_source = 'https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_EREP/202507/4e0de956e5_c10ba09db9.pdf'
     # detect_idx_format(test_source)
 
-    others_output = 'downloads\idx-format'
+    others_output = 'downloads/idx-format'
     others_input = 'output_others.json'
     input = 'test_price_transaction/not_matched_idx_filings_old_recent_2025.json'
     download_pdfs_from_json(json_path=others_input, out_dir=others_output)
