@@ -18,13 +18,6 @@ permissions:
 jobs:
   run-update:
     runs-on: ubuntu-latest
-    env:
-      SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
-      SUPABASE_KEY: ${{ secrets.SUPABASE_KEY }}
-      HTTP_PROXY:  ${{ secrets.PROXY }}
-      HTTPS_PROXY: ${{ secrets.PROXY }}
-      NO_PROXY: "localhost,127.0.0.1,supabase.co,.supabase.co,amazonaws.com,.amazonaws.com,generativelanguage.googleapis.com,.googleapis.com,translate.google.com,.google.com,openai.com,.openai.com,groq.com,.groq.com"
-      PYTHONPATH: .:src
 
     steps:
       - name: Checkout
@@ -42,6 +35,13 @@ jobs:
         run: uv sync
 
       - name: Run update_price_transaction
+        env:
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_KEY: ${{ secrets.SUPABASE_KEY }}
+          HTTP_PROXY:  ${{ secrets.PROXY }}
+          HTTPS_PROXY: ${{ secrets.PROXY }}
+          NO_PROXY: "localhost,127.0.0.1,supabase.co,.supabase.co,amazonaws.com,.amazonaws.com,generativelanguage.googleapis.com,.googleapis.com,translate.google.com,.google.com,openai.com,.openai.com,groq.com,.groq.com"
+          PYTHONPATH: .:src
         run: |
           uv run -m src.scripts.price_transaction_normalizer.update_price_transaction
 
