@@ -398,8 +398,8 @@ def download_pdfs_from_json(json_path: str, out_dir: str = "doc_transaction_upda
         data_records = json.load(f)
 
     print(f'total to process: {len(data_records)}')
-    for index, data in enumerate(data_records):
-        url = data.get("source")
+    for index, url in enumerate(data_records):
+        # url = data.get("source")
         if not url:
             continue
         print(f'processing: {index} {url}')
