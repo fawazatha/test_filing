@@ -3,7 +3,7 @@ from dotenv import load_dotenv
 from datetime import datetime 
 from pathlib import Path
 
-from downloader.client import init_http, get_pdf_bytes_minimal, seed_and_retry_minimal
+from src.downloader.client import init_http, get_pdf_bytes_minimal, seed_and_retry_minimal
 from src.common.files import ensure_dir, safe_filename_from_url
 
 import os
@@ -100,7 +100,7 @@ def get_supabase_client() -> Client:
         raise
 
 
-def get_idx_filing_data(supabase_client: Client, table_name: str, is_filing_old: bool = True):
+def get_idx_filing_data(supabase_client: Client, table_name: str, year_minimum: int = 2025, is_filing_old: bool = True):
     try: 
         response = (
             supabase_client. 
@@ -113,7 +113,7 @@ def get_idx_filing_data(supabase_client: Client, table_name: str, is_filing_old:
         if response.data: 
             for record in response.data:
                 timestamp_object = datetime.fromisoformat(record.get('timestamp'))
-                if timestamp_object.year >= 2025:
+                if timestamp_object.year >= year_minimum:
                     if is_filing_old:
                         if isinstance(record.get('price_transaction'), dict):
                             # print(f'Converting price_transaction from dict to list for record ID: {record.get("id")}')
@@ -406,8 +406,6 @@ def download_pdfs_from_json(json_path: str, out_dir: str = "doc_transaction_upda
         download_pdf_url(url, out_dir=out_dir)
 
 
-
-
 if __name__ == '__main__':
     # supabase_client = get_supabase_client()
     # filing = get_idx_filing_data(supabase_client, 'idx_filings')
@@ -432,6 +430,11 @@ if __name__ == '__main__':
     # test_source = 'https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_EREP/202507/4e0de956e5_c10ba09db9.pdf'
     # detect_idx_format(test_source)
 
-    download_pdfs_from_json('test_price_transaction/not_matched_idx_filings_old_recent_2025.json')
+    others_output = 'downloads\idx-format'
+    others_input = 'output_others.json'
+    input = 'test_price_transaction/not_matched_idx_filings_old_recent_2025.json'
+    download_pdfs_from_json(json_path=others_input, out_dir=others_output)
+
+    
 
     # uv run -m src.scripts.price_transaction_normalizer.update_price_transaction

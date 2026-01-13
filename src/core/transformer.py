@@ -361,9 +361,13 @@ def _generate_title_and_body(
     elif tx_type == "award":
         action_verb = "was awarded"
         title = f"{holder_name} was awarded shares of {company_name}"
+    elif tx_type == "others": 
+        action_verb = "executed a transaction for"
+        title = f"Change in {holder_name}'s position in {company_name}"
     elif tx_type == "inheritance":
         action_verb = "inherited"
         title = f"{holder_name} inherits shares of {company_name}"
+    
     else:
         action_verb = "executed a transaction for"
         title = f"{holder_name} {action_title} transaction of {company_name}"
