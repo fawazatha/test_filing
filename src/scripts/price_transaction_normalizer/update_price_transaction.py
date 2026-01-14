@@ -398,8 +398,8 @@ def download_pdfs_from_json(json_path: str, out_dir: str = "doc_transaction_upda
         data_records = json.load(f)
 
     print(f'total to process: {len(data_records)}')
-    for index, url in enumerate(data_records):
-        # url = data.get("source")
+    for index, data in enumerate(data_records):
+        url = data.get("source")
         if not url:
             continue
         print(f'processing: {index} {url}')
@@ -433,7 +433,7 @@ if __name__ == '__main__':
     others_output = 'downloads/idx-format'
     others_input = 'output_others.json'
     input = 'test_price_transaction/not_matched_idx_filings_old_recent_2025.json'
-    download_pdfs_from_json(json_path=others_input, out_dir=others_output)
+    download_pdfs_from_json(json_path=input, out_dir=others_output)
 
     
 
