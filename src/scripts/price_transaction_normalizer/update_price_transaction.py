@@ -31,13 +31,13 @@ def truncate_to_minute(timestamp_str):
     return dt.replace(second=0, microsecond=0)
 
 
-def check_length_old_filing(filing_payload: list[dict[str, any]]): 
+def check_length_old_filing(tag:str, filing_payload: list[dict[str, any]]): 
     count = 0
     for filing in filing_payload:
         price_transaction = filing.get('price_transaction', []) 
         if isinstance(price_transaction, dict): 
             count += 1 
-    print(f'Total filings with price_transaction as dict: {count}')
+    print(f'Total {tag} with price_transaction as dict: {count}')
     
 
 def create_composite_key(record: dict) -> set: 
@@ -128,102 +128,102 @@ def get_idx_filing_data(supabase_client: Client, table_name: str, year_minimum: 
         raise
 
 
-def match_data_filing(idx_filing: list[dict], idx_filing_v2: list[dict]) -> list[dict]: 
-    matching_filings = []
-    matching_filings_v2 = []
-    not_matching_filings = []
-    match_map = {}
+# def match_data_filing_v1(idx_filing: list[dict], idx_filing_v2: list[dict]) -> list[dict]: 
+#     matching_filings = []
+#     matching_filings_v2 = []
+#     not_matching_filings = []
+#     match_map = {}
 
-    try: 
-        primary_lookup = {}
-        fallback_lookup = {}
-        third_fallback_lookup = {}
-        fourth_fallback_lookup = {}
-        fifth_fallback_lookup = {}
+#     try: 
+#         primary_lookup = {}
+#         fallback_lookup = {}
+#         third_fallback_lookup = {}
+#         fourth_fallback_lookup = {}
+#         fifth_fallback_lookup = {}
 
-        old_record_id_map = {} 
-        uid_to_old_ids = {}
+#         old_record_id_map = {} 
+#         uid_to_old_ids = {}
 
-        for filing in idx_filing: 
-            primary_key = create_composite_key(filing)
-            second_key = create_composite_key_second_fallback(filing)
-            third_key = create_composite_key_third_fallback(filing)
-            third_key = create_composite_key_third_fallback(filing)
-            fourth_key = create_composite_key_fourth_fallback(filing)
-            fifth_key = create_composite_key_fifth_fallback(filing)
+#         for filing in idx_filing: 
+#             primary_key = create_composite_key(filing)
+#             second_key = create_composite_key_second_fallback(filing)
+#             third_key = create_composite_key_third_fallback(filing)
+#             third_key = create_composite_key_third_fallback(filing)
+#             fourth_key = create_composite_key_fourth_fallback(filing)
+#             fifth_key = create_composite_key_fifth_fallback(filing)
             
-            # Store the actual record and its ID for tracking
-            primary_lookup[primary_key] = filing
-            fallback_lookup[second_key] = filing
-            third_fallback_lookup[third_key] = filing
-            fourth_fallback_lookup[fourth_key] = filing
-            fifth_fallback_lookup[fifth_key] = filing
+#             # Store the actual record and its ID for tracking
+#             primary_lookup[primary_key] = filing
+#             fallback_lookup[second_key] = filing
+#             third_fallback_lookup[third_key] = filing
+#             fourth_fallback_lookup[fourth_key] = filing
+#             fifth_fallback_lookup[fifth_key] = filing
 
-            # Map ID to record for the final separation step
-            old_record_id_map[filing['id']] = filing
+#             # Map ID to record for the final separation step
+#             old_record_id_map[filing['id']] = filing
 
-            uid = filing.get('uid')
-            if uid: 
-                uid_to_old_ids.setdefault(uid, []).append(filing['uid'])
+#             uid = filing.get('uid')
+#             if uid: 
+#                 uid_to_old_ids.setdefault(uid, []).append(filing['uid'])
 
-        matched_old_ids = set()
+#         matched_old_ids = set()
 
-        # Iterate V2 and check Primary -> then Fallback
-        for filing_v2 in idx_filing_v2: 
-            primary_key = create_composite_key(filing_v2)
-            second_key = create_composite_key_second_fallback(filing_v2)
-            third_key = create_composite_key_third_fallback(filing_v2)
-            fourth_key = create_composite_key_fourth_fallback(filing_v2)
-            fifth_key = create_composite_key_fifth_fallback(filing_v2)
+#         # Iterate V2 and check Primary -> then Fallback
+#         for filing_v2 in idx_filing_v2: 
+#             primary_key = create_composite_key(filing_v2)
+#             second_key = create_composite_key_second_fallback(filing_v2)
+#             third_key = create_composite_key_third_fallback(filing_v2)
+#             fourth_key = create_composite_key_fourth_fallback(filing_v2)
+#             fifth_key = create_composite_key_fifth_fallback(filing_v2)
 
-            matched_record = None
+#             matched_record = None
 
-            # Primary Key
-            if primary_key in primary_lookup:
-                matched_record = primary_lookup[primary_key]
+#             # Primary Key
+#             if primary_key in primary_lookup:
+#                 matched_record = primary_lookup[primary_key]
             
-            # Fallback Key (only if primary failed)
-            elif second_key in fallback_lookup:
-                matched_record = fallback_lookup[second_key]
+#             # Fallback Key (only if primary failed)
+#             elif second_key in fallback_lookup:
+#                 matched_record = fallback_lookup[second_key]
             
-            elif third_key in third_fallback_lookup:
-                matched_record = third_fallback_lookup[third_key]
+#             elif third_key in third_fallback_lookup:
+#                 matched_record = third_fallback_lookup[third_key]
 
-            elif fourth_key in fourth_fallback_lookup:
-                matched_record = fourth_fallback_lookup[fourth_key]
+#             elif fourth_key in fourth_fallback_lookup:
+#                 matched_record = fourth_fallback_lookup[fourth_key]
             
-            elif fifth_key in fifth_fallback_lookup:
-                matched_record = fifth_fallback_lookup[fifth_key]
+#             elif fifth_key in fifth_fallback_lookup:
+#                 matched_record = fifth_fallback_lookup[fifth_key]
 
-            if matched_record:
-                matching_filings_v2.append(filing_v2)
-                matched_old_ids.add(matched_record['id'])
+#             if matched_record:
+#                 matching_filings_v2.append(filing_v2)
+#                 matched_old_ids.add(matched_record['id'])
 
-                match_map[matched_record['id']] = filing_v2
+#                 match_map[matched_record['id']] = filing_v2
 
-                uid = matched_record.get('UID')
-                if uid:
-                    for old_id in uid_to_old_ids.get(uid, []):
-                        matched_old_ids.add(old_id)
-                        match_map.setdefault(old_id, filing_v2)
+#                 uid = matched_record.get('UID')
+#                 if uid:
+#                     for old_id in uid_to_old_ids.get(uid, []):
+#                         matched_old_ids.add(old_id)
+#                         match_map.setdefault(old_id, filing_v2)
 
-        # Separate Old Filings based on ID
-        for old_id, filing in old_record_id_map.items():
-            if old_id in matched_old_ids:
-                matching_filings.append(filing)
-            else:
-                not_matching_filings.append(filing)
+#         # Separate Old Filings based on ID
+#         for old_id, filing in old_record_id_map.items():
+#             if old_id in matched_old_ids:
+#                 matching_filings.append(filing)
+#             else:
+#                 not_matching_filings.append(filing)
 
-        print(f'Total matching filings: {len(matching_filings)}')
-        print(f'Total not matching filings: {len(not_matching_filings)}')
+#         print(f'Total matching filings: {len(matching_filings)}')
+#         print(f'Total not matching filings: {len(not_matching_filings)}')
 
-        return matching_filings, matching_filings_v2, not_matching_filings, match_map
+#         return matching_filings, matching_filings_v2, not_matching_filings, match_map
 
-    except Exception as error:
-        print(f"Error matching data filing: {error}")
-        raise
+#     except Exception as error:
+#         print(f"Error matching data filing: {error}")
+#         raise
 
-def match_data_filing(idx_filing: list[dict], idx_filing_v2: list[dict]) -> list[dict]:
+def match_data_filing_v2(idx_filing: list[dict], idx_filing_v2: list[dict]) -> list[dict]:
     matching_filings = []
     matching_filings_v2 = []
     not_matching_filings = []
@@ -234,6 +234,7 @@ def match_data_filing(idx_filing: list[dict], idx_filing_v2: list[dict]) -> list
         fallback_lookup = {}
         third_fallback_lookup = {}
         fourth_fallback_lookup = {}
+        fifth_fallback_lookup = {}
 
         old_record_id_map = {}
         uid_to_old_ids = {}
@@ -243,11 +244,13 @@ def match_data_filing(idx_filing: list[dict], idx_filing_v2: list[dict]) -> list
             second_key = create_composite_key_second_fallback(filing)
             third_key = create_composite_key_third_fallback(filing)
             fourth_key = create_composite_key_fourth_fallback(filing)
+            # fifth_key = create_composite_key_fifth_fallback(filing)
 
             primary_lookup[primary_key] = filing
             fallback_lookup[second_key] = filing
             third_fallback_lookup[third_key] = filing
             fourth_fallback_lookup[fourth_key] = filing
+            # fifth_fallback_lookup[fifth_key] = filing
 
             old_record_id_map[filing['id']] = filing
 
@@ -262,6 +265,7 @@ def match_data_filing(idx_filing: list[dict], idx_filing_v2: list[dict]) -> list
             second_key = create_composite_key_second_fallback(filing_v2)
             third_key = create_composite_key_third_fallback(filing_v2)
             fourth_key = create_composite_key_fourth_fallback(filing_v2)
+            # fifth_key = create_composite_key_fifth_fallback(filing_v2)
 
             matched_record = None
 
@@ -273,6 +277,8 @@ def match_data_filing(idx_filing: list[dict], idx_filing_v2: list[dict]) -> list
                 matched_record = third_fallback_lookup[third_key]
             elif fourth_key in fourth_fallback_lookup:
                 matched_record = fourth_fallback_lookup[fourth_key]
+            # elif fifth_key in fifth_fallback_lookup:
+            #     matched_record = fifth_fallback_lookup[fifth_key]
 
             if matched_record:
                 matching_filings_v2.append(filing_v2)
@@ -408,12 +414,20 @@ def download_pdfs_from_json(json_path: str, out_dir: str = "doc_transaction_upda
 
 if __name__ == '__main__':
     # supabase_client = get_supabase_client()
+    
     # filing = get_idx_filing_data(supabase_client, 'idx_filings')
-    # check_length_old_filing(filing)
+    # check_length_old_filing('filing', filing)
 
-    # filing_v2 = get_idx_filing_data(supabase_client, 'idx_filings_v2', False)
+    # filing_v2 = get_idx_filing_data(
+    #     supabase_client,
+    #     "idx_filings_v2",
+    #     year_minimum=2025,
+    #     is_filing_old=False,
+    # )
+    # check_length_old_filing('filing_v2', filing_v2)
+    
     # matching_filings_old, matching_filings_v2, not_matching_filings, match_map = ( 
-    #     match_data_filing(filing, filing_v2)
+    #     match_data_filing_v2(filing, filing_v2)
     # )
     # updated_matching_old = update_old_to_new_format(matching_filings_old)
     # filing_updated_from_v2 = update_from_filing_v2(match_map, updated_matching_old)
@@ -430,7 +444,7 @@ if __name__ == '__main__':
     # test_source = 'https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_EREP/202507/4e0de956e5_c10ba09db9.pdf'
     # detect_idx_format(test_source)
 
-    others_output = 'downloads/idx-format'
+    others_output = 'downloads/doc_transaction'
     others_input = 'output_others.json'
     input = 'test_price_transaction/not_matched_idx_filings_old_recent_2025.json'
     download_pdfs_from_json(json_path=input, out_dir=others_output)
