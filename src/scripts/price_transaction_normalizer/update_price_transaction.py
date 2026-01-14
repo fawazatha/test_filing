@@ -360,7 +360,7 @@ def update_from_filing_v2(
         raise 
 
 
-def detect_idx_format(base_dir: str) -> bool:
+def detect_idx_format(base_dir: str) -> tuple:
     documents = os.listdir(base_dir)
     print(f'length document to check: {len(documents)}')
 
@@ -559,25 +559,44 @@ def upsert_price_transactions(
         print(f"Upserted {min(start + batch_size, total)}/{total}")
 
 
-if __name__ == '__main__':
-    # supabase_client = get_supabase_client()
+def run_main(base_dir: str):
+    supabase_client = get_supabase_client()
     
-    # filing = get_idx_filing_data(supabase_client, 'idx_filings', is_save=True)
-    # check_length_old_filing('filing', filing)
+    filing = get_idx_filing_data(supabase_client, 'idx_filings', is_save=True)
+    check_length_old_filing('filing', filing)
 
-    # filing_v2 = get_idx_filing_data(
-    #     supabase_client,
-    #     "idx_filings_v2",
-    #     year_minimum=2025,
-    #     is_filing_old=False,
-    # )
-    # check_length_old_filing('filing_v2', filing_v2)
+    filing_v2 = get_idx_filing_data(
+        supabase_client,
+        "idx_filings_v2",
+        year_minimum=2025,
+        is_filing_old=False,
+    )
+    check_length_old_filing('filing_v2', filing_v2)
     
-    # matching_filings_old, matching_filings_v2, not_matching_filings, match_map = ( 
-    #     match_data_filing_v2(filing, filing_v2)
-    # )
-    # updated_matching_old = update_old_to_new_format(matching_filings_old)
-    # filing_updated_from_v2 = update_from_filing_v2(match_map, updated_matching_old)
+    matching_filings_old, matching_filings_v2, not_matching_filings, match_map = ( 
+        match_data_filing_v2(filing, filing_v2)
+    )
+    updated_matching_old = update_old_to_new_format(matching_filings_old)
+    filing_updated_from_v2 = update_from_filing_v2(match_map, updated_matching_old)
+
+    print("\nmatching_filings_old:", len(matching_filings_old))
+    print("matching_filings_v2:", len(matching_filings_v2))
+    print("not_matching_filings:", len(not_matching_filings))
+    print(f"match_map: {len(match_map)}\n")
+
+
+    write_to_json(match_map, f'{base_dir}/matched_map.json')
+    write_to_json(filing_updated_from_v2, f'{base_dir}/idx_filing_updated_from_v2_2025.json')
+    write_to_json(matching_filings_old, f'{base_dir}/matched_idx_filings_old_2025.json')
+    write_to_json(matching_filings_v2, f'{base_dir}/matched_idx_filings_v2_2025.json')
+    write_to_json(not_matching_filings, f'{base_dir}/not_matched_idx_filings_old_recent_2025.json')
+    write_to_json(updated_matching_old, f'{base_dir}/updated_matched_idx_filing_old_2025.json')
+
+
+if __name__ == '__main__':
+    new_base_dir = 'test_new_price_transaction'
+    base_dir = 'test_price_transaction'
+    # run_main(new_base_dir)
 
     # old_snapshot = copy.deepcopy(matching_filings_old)
     # result_validation = validate_price_transaction_update(
@@ -601,28 +620,21 @@ if __name__ == '__main__':
     # )
 
 
-    # print("\nmatching_filings_old:", len(matching_filings_old))
-    # print("matching_filings_v2:", len(matching_filings_v2))
-    # print("not_matching_filings:", len(not_matching_filings))
-    # print(f"match_map: {len(match_map)}\n")
-
     # inspect_duplicates(filing, filing_v2)
 
-    # write_to_json(match_map, 'test_price_transaction/matched_map.json')
-    # write_to_json(filing_updated_from_v2, 'test_price_transaction/idx_filing_updated_from_v2_2025.json')
-    # write_to_json(matching_filings_old, 'test_price_transaction/matched_idx_filings_old_2025.json')
-    # write_to_json(matching_filings_v2, 'test_price_transaction/matched_idx_filings_v2_2025.json')
-    # write_to_json(not_matching_filings, 'test_price_transaction/not_matched_idx_filings_old_recent_2025.json')
-    # write_to_json(updated_matching_old, 'test_price_transaction/updated_matched_idx_filing_old_2025.json')
+   
     # write_to_json(fixed_filing_updated_from_v2, 'test_price_transaction/fixed_idx_filing_updated_from_v2.json')
     # write_to_json(filing_updated_from_v2, 'test_price_transaction/unknown_idx_filing_updated_from_v2.json')
 
 
-    others_output = 'downloads/doc_mismatch'
+    # others_output = 'downloads/doc_mismatch'
     # others_input = 'output_others.json'
     # input = 'test_price_transaction/not_matched_idx_filings_old_recent_2025.json'
-    mismatch_input = 'test_price_transaction/idx_filing_mismatches.json'
-    download_pdfs_from_json(json_path=mismatch_input, out_dir=others_output)
+    # mismatch_input = 'test_price_transaction/idx_filing_mismatches.json'
+
+    not_matched_new = 'test_new_price_transaction/not_matched_idx_filings_old_recent_2025.json'
+    not_matched_new_doc_path = 'downloads/doc_not_match'
+    download_pdfs_from_json(json_path=not_matched_new, out_dir=not_matched_new_doc_path)
 
     # Detect idx format in non matched
     # documents_path = 'downloads/doc_transaction'
