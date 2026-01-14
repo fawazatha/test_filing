@@ -1,4 +1,4 @@
-name: Update Price Transaction Matches
+name: Download pdf for transaction
 
 on:
   workflow_dispatch:
