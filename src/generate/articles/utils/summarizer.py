@@ -132,7 +132,7 @@ class Summarizer:
                     - If prices exist, show one representative price like "IDR 490 per share".
                     - If holdings_before/after exist, show the transition and delta if clear.
                     
-                    Return with the following structure JSON SummarizeResult.
+                    Return with the following structure JSON SummarizeResult and written in english.
                     {format_instructions}
                     """
                 )
