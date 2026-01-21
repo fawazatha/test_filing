@@ -2,47 +2,973 @@
   {
     "price_transaction": [
       {
-        "date": "2025-12-17",
-        "type": "sell",
-        "price": 580.0,
-        "amount_transacted": 500
+        "date": "2025-12-16",
+        "type": "buy",
+        "price": 142.0,
+        "amount_transacted": 2162984400
       }
     ],
-    "holder_name": "Henry Liem",
-    "company_name": "Argha Karya Prima Ind. Tbk",
-    "holder_type": "insider",
-    "purpose_of_transaction": "Sell \u200b\u200bshares",
-    "title": "Henry Liem sells shares of Argha Karya Prima Ind. Tbk",
-    "source": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_KSEI/LK-18122025-4309-00.pdf-0.pdf",
-    "share_percentage_transaction": 0.0,
-    "symbol": "AKPI.JK",
-    "sub_sector": "basic-materials",
+    "transaction_value": 307143784800.0,
+    "holder_type": "institution",
+    "symbol": "BKSL.JK",
+    "sub_sector": "properties-real-estate",
+    "holding_before": 6655276554,
+    "purpose_of_transaction": "Reverse Repo",
+    "company_name": "Sentul City Tbk",
+    "holding_after": 8818260954,
+    "sector": "properties-real-estate",
+    "transaction_type": "buy",
+    "amount_transaction": 2162984400,
+    "share_percentage_transaction": 1.29,
+    "share_percentage_after": 5.26,
+    "title": "Samuel Sekuritas Indonesia buys shares of Sentul City Tbk",
+    "price": 142.0,
+    "body": "Samuel Sekuritas Indonesia bought 2,162,984,400 shares of Sentul City Tbk. This increases their holdings from 6,655,276,554 to 8,818,260,954 shares. The stated purpose of the transaction was reverse repo.",
+    "holder_name": "Samuel Sekuritas Indonesia",
+    "share_percentage_before": 3.97,
+    "source": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_KSEI/LK-17122025-2955-00.pdf-0.pdf",
     "tags": [
-      "divestment"
+      "repurchase-agreement"
     ],
-    "share_percentage_after": 2.561,
-    "amount_transaction": 500,
-    "holding_after": 15681059,
-    "body": "Henry Liem sold 500 shares of Argha Karya Prima Ind. Tbk. This decreases their holdings from 15,681,559 to 15,681,059 shares. The stated purpose of the transaction was sell \u200b\u200bshares.",
-    "price": 580.0,
-    "holding_before": 15681559,
-    "share_percentage_before": 2.561,
-    "transaction_value": 290000.0,
-    "sector": "basic-materials",
-    "timestamp": "2025-12-18T10:02:06",
-    "transaction_type": "sell",
-    "type": "sell",
-    "amount": 500,
-    "value": 290000.0,
+    "timestamp": "2025-12-17T15:23:30",
+    "type": "buy",
+    "amount": 2162984400,
+    "value": 307143784800.0,
     "audit_flags": {
       "announcement": {
-        "id": "lk-18122025-4309-00.pdf-0",
+        "id": "lk-17122025-2955-00.pdf-0",
         "title": "REPORT OF OWNERSHIP OR ANY CHANGES IN SHARE OWNERSHIP OF PUBLIC COMPANIES",
-        "url": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_KSEI/LK-18122025-4309-00.pdf-0.pdf",
+        "url": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_KSEI/LK-17122025-2955-00.pdf-0.pdf",
         "pdf_url": null,
         "source_type": "idx"
       },
-      "document_median_price": 580.0,
+      "document_median_price": 142.0,
+      "market_reference": {
+        "ref_price": 153.0,
+        "ref_type": "close",
+        "asof_date": "2026-01-20",
+        "n_days": 1,
+        "freshness_days": 1
+      },
+      "total_shares_model": 167639207909.31992,
+      "delta_pp_model": 1.29,
+      "pp_after_model": 5.26,
+      "percent_discrepancy": false,
+      "discrepancy_pp": 0.0,
+      "needs_review": false,
+      "reasons": []
+    },
+    "percent_discrepancy": false,
+    "needs_review": false,
+    "market_reference": {
+      "ref_price": 153.0,
+      "ref_type": "close",
+      "asof_date": "2026-01-20",
+      "n_days": 1,
+      "freshness_days": 1
+    },
+    "document_median_price": 142.0,
+    "source_is_manual": false,
+    "date_for_query": "2025-12-17"
+  },
+  {
+    "price_transaction": [
+      {
+        "date": "2025-12-17",
+        "type": "others",
+        "price": 1100.0,
+        "amount_transacted": 12738987714
+      }
+    ],
+    "transaction_value": 14012886485400.0,
+    "holder_type": "institution",
+    "symbol": "MDIY.JK",
+    "sub_sector": "retailing",
+    "holding_before": 12738987714,
+    "purpose_of_transaction": "To restructure share ownership",
+    "company_name": "PT Daya Intiguna Yasa Tbk",
+    "holding_after": 0,
+    "sector": "consumer-cyclicals",
+    "transaction_type": "others",
+    "amount_transaction": 12738987714,
+    "share_percentage_transaction": 50.57,
+    "share_percentage_after": 0.0,
+    "title": "Change in Azara Alpina Sdn Bhd's position in PT Daya Intiguna Yasa Tbk",
+    "price": 1100.0,
+    "body": "Azara Alpina Sdn Bhd executed a transaction for 12,738,987,714 shares of PT Daya Intiguna Yasa Tbk. This decreases their holdings from 12,738,987,714 to 0 shares. The stated purpose of the transaction was to restructure share ownership.",
+    "holder_name": "Azara Alpina Sdn Bhd",
+    "share_percentage_before": 50.57,
+    "source": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_KSEI/LK-17122025-2402-00.pdf-0.pdf",
+    "tags": [
+      "capital-restructuring"
+    ],
+    "timestamp": "2025-12-17T16:59:08",
+    "type": "others",
+    "amount": 12738987714,
+    "value": 14012886485400.0,
+    "audit_flags": {
+      "needs_manual_uid": true,
+      "reason": "others detected",
+      "announcement": {
+        "id": "lk-17122025-2402-00.pdf-0",
+        "title": "REPORT OF OWNERSHIP OR ANY CHANGES IN SHARE OWNERSHIP OF PUBLIC COMPANIES",
+        "url": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_KSEI/LK-17122025-2402-00.pdf-0.pdf",
+        "pdf_url": null,
+        "source_type": "idx"
+      },
+      "document_median_price": 1100.0,
+      "market_reference": {
+        "ref_price": 990.0,
+        "ref_type": "close",
+        "asof_date": "2026-01-20",
+        "n_days": 1,
+        "freshness_days": 1
+      },
+      "total_shares_model": 25190800304.528374,
+      "delta_pp_model": 0.0,
+      "pp_after_model": 50.57,
+      "percent_discrepancy": true,
+      "discrepancy_pp": 50.57,
+      "needs_review": true,
+      "reasons": [
+        {
+          "scope": "row",
+          "code": "percent_discrepancy",
+          "message": "Model pp_after deviates from PDF by 50.57000 pp",
+          "details": {
+            "total_shares_model": 25190800304.528374,
+            "delta_pp_model": 0.0,
+            "pp_after_model": 50.57,
+            "percent_discrepancy": true,
+            "discrepancy_pp": 50.57
+          }
+        }
+      ]
+    },
+    "percent_discrepancy": true,
+    "needs_review": true,
+    "reasons": [
+      {
+        "scope": "row",
+        "code": "percent_discrepancy",
+        "message": "Model pp_after deviates from PDF by 50.57000 pp",
+        "details": {
+          "total_shares_model": 25190800304.528374,
+          "delta_pp_model": 0.0,
+          "pp_after_model": 50.57,
+          "percent_discrepancy": true,
+          "discrepancy_pp": 50.57
+        }
+      }
+    ],
+    "market_reference": {
+      "ref_price": 990.0,
+      "ref_type": "close",
+      "asof_date": "2026-01-20",
+      "n_days": 1,
+      "freshness_days": 1
+    },
+    "document_median_price": 1100.0,
+    "skip_reason": "percent_discrepancy",
+    "source_is_manual": false,
+    "date_for_query": "2025-12-17"
+  },
+  {
+    "price_transaction": [
+      {
+        "date": "2025-12-11",
+        "type": "buy",
+        "price": 151.0,
+        "amount_transacted": 25000
+      }
+    ],
+    "transaction_value": 3775000.0,
+    "holder_type": "insider",
+    "symbol": "HGII.JK",
+    "sub_sector": "utilities",
+    "holding_before": 13275000,
+    "purpose_of_transaction": "Investment",
+    "company_name": "PT Hero Global Investment Tbk",
+    "holding_after": 13300000,
+    "sector": "infrastructures",
+    "transaction_type": "buy",
+    "amount_transaction": 25000,
+    "share_percentage_transaction": 0.0,
+    "share_percentage_after": 0.2,
+    "title": "Robin Sunyoto buys shares of PT Hero Global Investment Tbk",
+    "price": 151.0,
+    "body": "Robin Sunyoto bought 25,000 shares of PT Hero Global Investment Tbk. This increases their holdings from 13,275,000 to 13,300,000 shares. The stated purpose of the transaction was investment.",
+    "holder_name": "Robin Sunyoto",
+    "share_percentage_before": 0.2,
+    "source": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_KSEI/LK-17122025-0839-00.pdf-0.pdf",
+    "tags": [
+      "investment"
+    ],
+    "timestamp": "2025-12-17T15:41:03",
+    "type": "buy",
+    "amount": 25000,
+    "value": 3775000.0,
+    "audit_flags": {
+      "announcement": {
+        "id": "lk-17122025-0839-00.pdf-0",
+        "title": "REPORT OF OWNERSHIP OR ANY CHANGES IN SHARE OWNERSHIP OF PUBLIC COMPANIES",
+        "url": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_KSEI/LK-17122025-0839-00.pdf-0.pdf",
+        "pdf_url": null,
+        "source_type": "idx"
+      },
+      "document_median_price": 151.0,
+      "market_reference": {
+        "ref_price": 179.0,
+        "ref_type": "close",
+        "asof_date": "2026-01-20",
+        "n_days": 1,
+        "freshness_days": 1
+      },
+      "total_shares_model": 6637500000.0,
+      "delta_pp_model": 0.0,
+      "pp_after_model": 0.2,
+      "percent_discrepancy": false,
+      "discrepancy_pp": 0.0,
+      "needs_review": false,
+      "reasons": []
+    },
+    "percent_discrepancy": false,
+    "needs_review": false,
+    "market_reference": {
+      "ref_price": 179.0,
+      "ref_type": "close",
+      "asof_date": "2026-01-20",
+      "n_days": 1,
+      "freshness_days": 1
+    },
+    "document_median_price": 151.0,
+    "source_is_manual": false,
+    "date_for_query": "2025-12-17"
+  },
+  {
+    "price_transaction": [
+      {
+        "date": "2025-12-17",
+        "type": "others",
+        "price": 1100.0,
+        "amount_transacted": 666081444
+      }
+    ],
+    "transaction_value": 732689588400.0,
+    "holder_type": "insider",
+    "symbol": "MDIY.JK",
+    "sub_sector": "retailing",
+    "holding_before": 756588756,
+    "purpose_of_transaction": "To restructure share ownership",
+    "company_name": "PT Daya Intiguna Yasa Tbk",
+    "holding_after": 1422670200,
+    "sector": "consumer-cyclicals",
+    "transaction_type": "others",
+    "amount_transaction": 666081444,
+    "share_percentage_transaction": 2.65,
+    "share_percentage_after": 5.65,
+    "title": "Change in Tan Yu Wei's position in PT Daya Intiguna Yasa Tbk",
+    "price": 1100.0,
+    "body": "Tan Yu Wei executed a transaction for 666,081,444 shares of PT Daya Intiguna Yasa Tbk. This increases their holdings from 756,588,756 to 1,422,670,200 shares. The stated purpose of the transaction was to restructure share ownership.",
+    "holder_name": "Tan Yu Wei",
+    "share_percentage_before": 3.0,
+    "source": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_KSEI/LK-17122025-3612-00.pdf-0.pdf",
+    "tags": [
+      "capital-restructuring"
+    ],
+    "timestamp": "2025-12-17T17:09:12",
+    "type": "others",
+    "amount": 666081444,
+    "value": 732689588400.0,
+    "audit_flags": {
+      "needs_manual_uid": true,
+      "reason": "others detected",
+      "announcement": {
+        "id": "lk-17122025-3612-00.pdf-0",
+        "title": "REPORT OF OWNERSHIP OR ANY CHANGES IN SHARE OWNERSHIP OF PUBLIC COMPANIES",
+        "url": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_KSEI/LK-17122025-3612-00.pdf-0.pdf",
+        "pdf_url": null,
+        "source_type": "idx"
+      },
+      "document_median_price": 1100.0,
+      "market_reference": {
+        "ref_price": 990.0,
+        "ref_type": "close",
+        "asof_date": "2026-01-20",
+        "n_days": 1,
+        "freshness_days": 1
+      },
+      "total_shares_model": 25219625200.0,
+      "delta_pp_model": 0.0,
+      "pp_after_model": 3.0,
+      "percent_discrepancy": true,
+      "discrepancy_pp": 2.6500000000000004,
+      "needs_review": true,
+      "reasons": [
+        {
+          "scope": "row",
+          "code": "percent_discrepancy",
+          "message": "Model pp_after deviates from PDF by 2.65000 pp",
+          "details": {
+            "total_shares_model": 25219625200.0,
+            "delta_pp_model": 0.0,
+            "pp_after_model": 3.0,
+            "percent_discrepancy": true,
+            "discrepancy_pp": 2.6500000000000004
+          }
+        }
+      ]
+    },
+    "percent_discrepancy": true,
+    "needs_review": true,
+    "reasons": [
+      {
+        "scope": "row",
+        "code": "percent_discrepancy",
+        "message": "Model pp_after deviates from PDF by 2.65000 pp",
+        "details": {
+          "total_shares_model": 25219625200.0,
+          "delta_pp_model": 0.0,
+          "pp_after_model": 3.0,
+          "percent_discrepancy": true,
+          "discrepancy_pp": 2.6500000000000004
+        }
+      }
+    ],
+    "market_reference": {
+      "ref_price": 990.0,
+      "ref_type": "close",
+      "asof_date": "2026-01-20",
+      "n_days": 1,
+      "freshness_days": 1
+    },
+    "document_median_price": 1100.0,
+    "skip_reason": "percent_discrepancy",
+    "source_is_manual": false,
+    "date_for_query": "2025-12-17"
+  },
+  {
+    "price_transaction": [
+      {
+        "date": "2025-12-15",
+        "type": "buy",
+        "price": 2400.0,
+        "amount_transacted": 66500000
+      }
+    ],
+    "transaction_value": 159600000000.0,
+    "holder_type": "institution",
+    "symbol": "SILO.JK",
+    "sub_sector": "healthcare-equipment-providers",
+    "holding_before": 8251973832,
+    "purpose_of_transaction": "Investment",
+    "company_name": "PT Siloam International Hospitals Tbk",
+    "holding_after": 8318473832,
+    "sector": "healthcare",
+    "transaction_type": "buy",
+    "amount_transaction": 66500000,
+    "share_percentage_transaction": 0.51,
+    "share_percentage_after": 63.97,
+    "title": "Sight Investment Company Pte Limited buys shares of PT Siloam International Hospitals Tbk",
+    "price": 2400.0,
+    "body": "Sight Investment Company Pte Limited bought 66,500,000 shares of PT Siloam International Hospitals Tbk. This increases their holdings from 8,251,973,832 to 8,318,473,832 shares. The stated purpose of the transaction was investment.",
+    "holder_name": "Sight Investment Company Pte Limited",
+    "share_percentage_before": 63.46,
+    "source": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_KSEI/LK-17122025-0144-00.pdf-0.pdf",
+    "tags": [
+      "investment"
+    ],
+    "timestamp": "2025-12-17T12:36:49",
+    "type": "buy",
+    "amount": 66500000,
+    "value": 159600000000.0,
+    "audit_flags": {
+      "announcement": {
+        "id": "lk-17122025-0144-00.pdf-0",
+        "title": "REPORT OF OWNERSHIP OR ANY CHANGES IN SHARE OWNERSHIP OF PUBLIC COMPANIES",
+        "url": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_KSEI/LK-17122025-0144-00.pdf-0.pdf",
+        "pdf_url": null,
+        "source_type": "idx"
+      },
+      "document_median_price": 2400.0,
+      "market_reference": {
+        "ref_price": 2510.0,
+        "ref_type": "close",
+        "asof_date": "2026-01-20",
+        "n_days": 1,
+        "freshness_days": 1
+      },
+      "total_shares_model": 13003425515.285217,
+      "delta_pp_model": 0.511,
+      "pp_after_model": 63.971,
+      "percent_discrepancy": false,
+      "discrepancy_pp": 0.0009999999999976694,
+      "needs_review": false,
+      "reasons": []
+    },
+    "percent_discrepancy": false,
+    "needs_review": false,
+    "market_reference": {
+      "ref_price": 2510.0,
+      "ref_type": "close",
+      "asof_date": "2026-01-20",
+      "n_days": 1,
+      "freshness_days": 1
+    },
+    "document_median_price": 2400.0,
+    "source_is_manual": false,
+    "date_for_query": "2025-12-17"
+  },
+  {
+    "price_transaction": [
+      {
+        "date": "2025-12-17",
+        "type": "others",
+        "price": 1100.0,
+        "amount_transacted": 5201816184
+      }
+    ],
+    "transaction_value": 5721997802400.0,
+    "holder_type": "institution",
+    "symbol": "MDIY.JK",
+    "sub_sector": "retailing",
+    "holding_before": 3695743216,
+    "purpose_of_transaction": "To restructure share ownership",
+    "company_name": "PT Daya Intiguna Yasa Tbk",
+    "holding_after": 8897559400,
+    "sector": "consumer-cyclicals",
+    "transaction_type": "others",
+    "amount_transaction": 5201816184,
+    "share_percentage_transaction": 20.65,
+    "share_percentage_after": 35.32,
+    "title": "Change in Mdih (Singapore) Pte. Ltd.'s position in PT Daya Intiguna Yasa Tbk",
+    "price": 1100.0,
+    "body": "Mdih (Singapore) Pte. Ltd. executed a transaction for 5,201,816,184 shares of PT Daya Intiguna Yasa Tbk. This increases their holdings from 3,695,743,216 to 8,897,559,400 shares. The stated purpose of the transaction was to restructure share ownership.",
+    "holder_name": "Mdih (Singapore) Pte. Ltd.",
+    "share_percentage_before": 14.67,
+    "source": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_KSEI/LK-17122025-2400-00.pdf-0.pdf",
+    "tags": [
+      "capital-restructuring"
+    ],
+    "timestamp": "2025-12-17T17:04:07",
+    "type": "others",
+    "amount": 5201816184,
+    "value": 5721997802400.0,
+    "audit_flags": {
+      "needs_manual_uid": true,
+      "reason": "others detected",
+      "announcement": {
+        "id": "lk-17122025-2400-00.pdf-0",
+        "title": "REPORT OF OWNERSHIP OR ANY CHANGES IN SHARE OWNERSHIP OF PUBLIC COMPANIES",
+        "url": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_KSEI/LK-17122025-2400-00.pdf-0.pdf",
+        "pdf_url": null,
+        "source_type": "idx"
+      },
+      "document_median_price": 1100.0,
+      "market_reference": {
+        "ref_price": 990.0,
+        "ref_type": "close",
+        "asof_date": "2026-01-20",
+        "n_days": 1,
+        "freshness_days": 1
+      },
+      "total_shares_model": 25192523626.448536,
+      "delta_pp_model": 0.0,
+      "pp_after_model": 14.67,
+      "percent_discrepancy": true,
+      "discrepancy_pp": 20.65,
+      "needs_review": true,
+      "reasons": [
+        {
+          "scope": "row",
+          "code": "percent_discrepancy",
+          "message": "Model pp_after deviates from PDF by 20.65000 pp",
+          "details": {
+            "total_shares_model": 25192523626.448536,
+            "delta_pp_model": 0.0,
+            "pp_after_model": 14.67,
+            "percent_discrepancy": true,
+            "discrepancy_pp": 20.65
+          }
+        }
+      ]
+    },
+    "percent_discrepancy": true,
+    "needs_review": true,
+    "reasons": [
+      {
+        "scope": "row",
+        "code": "percent_discrepancy",
+        "message": "Model pp_after deviates from PDF by 20.65000 pp",
+        "details": {
+          "total_shares_model": 25192523626.448536,
+          "delta_pp_model": 0.0,
+          "pp_after_model": 14.67,
+          "percent_discrepancy": true,
+          "discrepancy_pp": 20.65
+        }
+      }
+    ],
+    "market_reference": {
+      "ref_price": 990.0,
+      "ref_type": "close",
+      "asof_date": "2026-01-20",
+      "n_days": 1,
+      "freshness_days": 1
+    },
+    "document_median_price": 1100.0,
+    "skip_reason": "percent_discrepancy",
+    "source_is_manual": false,
+    "date_for_query": "2025-12-17"
+  },
+  {
+    "price_transaction": [
+      {
+        "date": "2025-12-17",
+        "type": "others",
+        "price": 1100.0,
+        "amount_transacted": 4022972466
+      }
+    ],
+    "transaction_value": 4425269712600.0,
+    "holder_type": "institution",
+    "symbol": "MDIY.JK",
+    "sub_sector": "retailing",
+    "holding_before": 1811234734,
+    "purpose_of_transaction": "To restructure share ownership",
+    "company_name": "PT Daya Intiguna Yasa Tbk",
+    "holding_after": 5834207200,
+    "sector": "consumer-cyclicals",
+    "transaction_type": "others",
+    "amount_transaction": 4022972466,
+    "share_percentage_transaction": 15.97,
+    "share_percentage_after": 23.16,
+    "title": "Change in Suncoast Financial Investments Ltd's position in PT Daya Intiguna Yasa Tbk",
+    "price": 1100.0,
+    "body": "Suncoast Financial Investments Ltd executed a transaction for 4,022,972,466 shares of PT Daya Intiguna Yasa Tbk. This increases their holdings from 1,811,234,734 to 5,834,207,200 shares. The stated purpose of the transaction was to restructure share ownership.",
+    "holder_name": "Suncoast Financial Investments Ltd",
+    "share_percentage_before": 7.19,
+    "source": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_KSEI/LK-17122025-2800-00.pdf-0.pdf",
+    "tags": [
+      "capital-restructuring"
+    ],
+    "timestamp": "2025-12-17T17:06:33",
+    "type": "others",
+    "amount": 4022972466,
+    "value": 4425269712600.0,
+    "audit_flags": {
+      "needs_manual_uid": true,
+      "reason": "others detected",
+      "announcement": {
+        "id": "lk-17122025-2800-00.pdf-0",
+        "title": "REPORT OF OWNERSHIP OR ANY CHANGES IN SHARE OWNERSHIP OF PUBLIC COMPANIES",
+        "url": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_KSEI/LK-17122025-2800-00.pdf-0.pdf",
+        "pdf_url": null,
+        "source_type": "idx"
+      },
+      "document_median_price": 1100.0,
+      "market_reference": {
+        "ref_price": 990.0,
+        "ref_type": "close",
+        "asof_date": "2026-01-20",
+        "n_days": 1,
+        "freshness_days": 1
+      },
+      "total_shares_model": 25191025507.64951,
+      "delta_pp_model": 0.0,
+      "pp_after_model": 7.19,
+      "percent_discrepancy": true,
+      "discrepancy_pp": 15.969999999999999,
+      "needs_review": true,
+      "reasons": [
+        {
+          "scope": "row",
+          "code": "percent_discrepancy",
+          "message": "Model pp_after deviates from PDF by 15.97000 pp",
+          "details": {
+            "total_shares_model": 25191025507.64951,
+            "delta_pp_model": 0.0,
+            "pp_after_model": 7.19,
+            "percent_discrepancy": true,
+            "discrepancy_pp": 15.969999999999999
+          }
+        }
+      ]
+    },
+    "percent_discrepancy": true,
+    "needs_review": true,
+    "reasons": [
+      {
+        "scope": "row",
+        "code": "percent_discrepancy",
+        "message": "Model pp_after deviates from PDF by 15.97000 pp",
+        "details": {
+          "total_shares_model": 25191025507.64951,
+          "delta_pp_model": 0.0,
+          "pp_after_model": 7.19,
+          "percent_discrepancy": true,
+          "discrepancy_pp": 15.969999999999999
+        }
+      }
+    ],
+    "market_reference": {
+      "ref_price": 990.0,
+      "ref_type": "close",
+      "asof_date": "2026-01-20",
+      "n_days": 1,
+      "freshness_days": 1
+    },
+    "document_median_price": 1100.0,
+    "skip_reason": "percent_discrepancy",
+    "source_is_manual": false,
+    "date_for_query": "2025-12-17"
+  },
+  {
+    "price_transaction": [
+      {
+        "date": "2025-12-12",
+        "type": "buy",
+        "price": 105.0,
+        "amount_transacted": 627000000
+      }
+    ],
+    "transaction_value": 65835000000.0,
+    "holder_type": "insider",
+    "symbol": "FITT.JK",
+    "sub_sector": "consumer-services",
+    "holding_before": 0,
+    "purpose_of_transaction": "Acquisition",
+    "company_name": "PT Hotel Fitra International Tbk",
+    "holding_after": 627000000,
+    "sector": "consumer-cyclicals",
+    "transaction_type": "buy",
+    "amount_transaction": 627000000,
+    "share_percentage_transaction": 48.07,
+    "share_percentage_after": 48.07,
+    "title": "Null buys shares of PT Hotel Fitra International Tbk",
+    "price": 105.0,
+    "body": "Null bought 627,000,000 shares of PT Hotel Fitra International Tbk. This increases their holdings from 0 to 627,000,000 shares. The stated purpose of the transaction was acquisition.",
+    "holder_name": "Null",
+    "share_percentage_before": 0.0,
+    "source": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_KSEI/LK-17122025-1167-00.pdf-0.pdf",
+    "tags": [
+      "share-transfer"
+    ],
+    "timestamp": "2025-12-17T16:27:54",
+    "type": "buy",
+    "amount": 627000000,
+    "value": 65835000000.0,
+    "audit_flags": {
+      "announcement": {
+        "id": "lk-17122025-1167-00.pdf-0",
+        "title": "REPORT OF OWNERSHIP OR ANY CHANGES IN SHARE OWNERSHIP OF PUBLIC COMPANIES",
+        "url": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_KSEI/LK-17122025-1167-00.pdf-0.pdf",
+        "pdf_url": null,
+        "source_type": "idx"
+      },
+      "document_median_price": 105.0,
+      "market_reference": {
+        "ref_price": 505.0,
+        "ref_type": "close",
+        "asof_date": "2026-01-20",
+        "n_days": 1,
+        "freshness_days": 1
+      },
+      "total_shares_model": 1304347826.0869565,
+      "delta_pp_model": 48.07,
+      "pp_after_model": 48.07,
+      "percent_discrepancy": false,
+      "discrepancy_pp": 0.0,
+      "suspicious_price_level": true,
+      "needs_review": true,
+      "reasons": [
+        {
+          "scope": "tx",
+          "code": "price_deviation_vs_market",
+          "message": "Price deviates from market-ref by ratio 0.208",
+          "details": {
+            "price": 105.0,
+            "market_ref": {
+              "ref_price": 505.0,
+              "ref_type": "close",
+              "asof_date": "2026-01-20",
+              "n_days": 1,
+              "freshness_days": 1
+            },
+            "ratio": 0.2079207920792079
+          }
+        }
+      ]
+    },
+    "suspicious_price_level": true,
+    "percent_discrepancy": false,
+    "needs_review": true,
+    "reasons": [
+      {
+        "scope": "tx",
+        "code": "price_deviation_vs_market",
+        "message": "Price deviates from market-ref by ratio 0.208",
+        "details": {
+          "price": 105.0,
+          "market_ref": {
+            "ref_price": 505.0,
+            "ref_type": "close",
+            "asof_date": "2026-01-20",
+            "n_days": 1,
+            "freshness_days": 1
+          },
+          "ratio": 0.2079207920792079
+        }
+      }
+    ],
+    "market_reference": {
+      "ref_price": 505.0,
+      "ref_type": "close",
+      "asof_date": "2026-01-20",
+      "n_days": 1,
+      "freshness_days": 1
+    },
+    "document_median_price": 105.0,
+    "skip_reason": "suspicious_price_level",
+    "source_is_manual": false,
+    "date_for_query": "2025-12-17"
+  },
+  {
+    "price_transaction": [
+      {
+        "date": "2025-12-17",
+        "type": "others",
+        "price": 1100.0,
+        "amount_transacted": 1659816438
+      },
+      {
+        "date": "2025-12-17",
+        "type": "others",
+        "price": 1100.0,
+        "amount_transacted": 18156660
+      },
+      {
+        "date": "2025-12-17",
+        "type": "others",
+        "price": 1100.0,
+        "amount_transacted": 5201816184
+      },
+      {
+        "date": "2025-12-17",
+        "type": "others",
+        "price": 1100.0,
+        "amount_transacted": 12738987714
+      }
+    ],
+    "transaction_value": 21580654695600.0,
+    "holder_type": "insider",
+    "symbol": "MDIY.JK",
+    "sub_sector": "retailing",
+    "holding_before": 18431922732,
+    "purpose_of_transaction": "To restructure share ownership",
+    "company_name": "PT Daya Intiguna Yasa Tbk",
+    "holding_after": 12572724300,
+    "sector": "consumer-cyclicals",
+    "transaction_type": "others",
+    "amount_transaction": 5859198432,
+    "share_percentage_transaction": 23.26,
+    "share_percentage_after": 49.91,
+    "title": "Change in Tan Yu Yeh's position in PT Daya Intiguna Yasa Tbk",
+    "price": 1100.0,
+    "body": "Tan Yu Yeh executed a transaction for 5,859,198,432 shares of PT Daya Intiguna Yasa Tbk. This decreases their holdings from 18,431,922,732 to 12,572,724,300 shares. The stated purpose of the transaction was to restructure share ownership.",
+    "holder_name": "Tan Yu Yeh",
+    "share_percentage_before": 73.17,
+    "source": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_KSEI/LK-17122025-5647-00.pdf-0.pdf",
+    "tags": [],
+    "timestamp": "2025-12-17T17:02:23",
+    "type": "others",
+    "amount": 5859198432,
+    "value": 21580654695600.0,
+    "audit_flags": {
+      "needs_manual_uid": true,
+      "reason": "others detected",
+      "announcement": {
+        "id": "lk-17122025-5647-00.pdf-0",
+        "title": "REPORT OF OWNERSHIP OR ANY CHANGES IN SHARE OWNERSHIP OF PUBLIC COMPANIES",
+        "url": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_KSEI/LK-17122025-5647-00.pdf-0.pdf",
+        "pdf_url": null,
+        "source_type": "idx"
+      },
+      "document_median_price": 1100.0,
+      "market_reference": {
+        "ref_price": 990.0,
+        "ref_type": "close",
+        "asof_date": "2026-01-20",
+        "n_days": 1,
+        "freshness_days": 1
+      },
+      "total_shares_model": 25190546305.863056,
+      "delta_pp_model": 0.0,
+      "pp_after_model": 73.17,
+      "percent_discrepancy": true,
+      "discrepancy_pp": 23.260000000000005,
+      "needs_review": true,
+      "reasons": [
+        {
+          "scope": "row",
+          "code": "percent_discrepancy",
+          "message": "Model pp_after deviates from PDF by 23.26000 pp",
+          "details": {
+            "total_shares_model": 25190546305.863056,
+            "delta_pp_model": 0.0,
+            "pp_after_model": 73.17,
+            "percent_discrepancy": true,
+            "discrepancy_pp": 23.260000000000005
+          }
+        }
+      ]
+    },
+    "percent_discrepancy": true,
+    "needs_review": true,
+    "reasons": [
+      {
+        "scope": "row",
+        "code": "percent_discrepancy",
+        "message": "Model pp_after deviates from PDF by 23.26000 pp",
+        "details": {
+          "total_shares_model": 25190546305.863056,
+          "delta_pp_model": 0.0,
+          "pp_after_model": 73.17,
+          "percent_discrepancy": true,
+          "discrepancy_pp": 23.260000000000005
+        }
+      }
+    ],
+    "market_reference": {
+      "ref_price": 990.0,
+      "ref_type": "close",
+      "asof_date": "2026-01-20",
+      "n_days": 1,
+      "freshness_days": 1
+    },
+    "document_median_price": 1100.0,
+    "skip_reason": "percent_discrepancy",
+    "source_is_manual": false,
+    "date_for_query": "2025-12-17"
+  },
+  {
+    "price_transaction": [
+      {
+        "date": "2025-12-17",
+        "type": "others",
+        "price": 1100.0,
+        "amount_transacted": 33640266
+      }
+    ],
+    "transaction_value": 37004292600.0,
+    "holder_type": "insider",
+    "symbol": "MDIY.JK",
+    "sub_sector": "retailing",
+    "holding_before": 183324134,
+    "purpose_of_transaction": "To restructure share ownership",
+    "company_name": "PT Daya Intiguna Yasa Tbk",
+    "holding_after": 216964400,
+    "sector": "consumer-cyclicals",
+    "transaction_type": "others",
+    "amount_transaction": 33640266,
+    "share_percentage_transaction": 0.13,
+    "share_percentage_after": 0.86,
+    "title": "Change in Ong Chu Jin Adrian's position in PT Daya Intiguna Yasa Tbk",
+    "price": 1100.0,
+    "body": "Ong Chu Jin Adrian executed a transaction for 33,640,266 shares of PT Daya Intiguna Yasa Tbk. This increases their holdings from 183,324,134 to 216,964,400 shares. The stated purpose of the transaction was to restructure share ownership.",
+    "holder_name": "Ong Chu Jin Adrian",
+    "share_percentage_before": 0.73,
+    "source": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_KSEI/LK-17122025-0860-00.pdf-0.pdf",
+    "tags": [
+      "capital-restructuring"
+    ],
+    "timestamp": "2025-12-17T17:10:49",
+    "type": "others",
+    "amount": 33640266,
+    "value": 37004292600.0,
+    "audit_flags": {
+      "needs_manual_uid": true,
+      "reason": "others detected",
+      "announcement": {
+        "id": "lk-17122025-0860-00.pdf-0",
+        "title": "REPORT OF OWNERSHIP OR ANY CHANGES IN SHARE OWNERSHIP OF PUBLIC COMPANIES",
+        "url": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_KSEI/LK-17122025-0860-00.pdf-0.pdf",
+        "pdf_url": null,
+        "source_type": "idx"
+      },
+      "document_median_price": 1100.0,
+      "market_reference": {
+        "ref_price": 990.0,
+        "ref_type": "close",
+        "asof_date": "2026-01-20",
+        "n_days": 1,
+        "freshness_days": 1
+      },
+      "total_shares_model": 25112895068.49315,
+      "delta_pp_model": 0.0,
+      "pp_after_model": 0.73,
+      "percent_discrepancy": false,
+      "discrepancy_pp": 0.13,
+      "needs_review": false,
+      "reasons": []
+    },
+    "percent_discrepancy": false,
+    "needs_review": false,
+    "market_reference": {
+      "ref_price": 990.0,
+      "ref_type": "close",
+      "asof_date": "2026-01-20",
+      "n_days": 1,
+      "freshness_days": 1
+    },
+    "document_median_price": 1100.0,
+    "source_is_manual": false,
+    "date_for_query": "2025-12-17"
+  },
+  {
+    "price_transaction": [
+      {
+        "date": "2025-12-16",
+        "type": "sell",
+        "price": 565.0,
+        "amount_transacted": 101700
+      }
+    ],
+    "transaction_value": 57460500.0,
+    "holder_type": "insider",
+    "symbol": "AKPI.JK",
+    "sub_sector": "basic-materials",
+    "holding_before": 15783259,
+    "purpose_of_transaction": "Sell \u200b\u200bshares",
+    "company_name": "Argha Karya Prima Ind. Tbk",
+    "holding_after": 15681559,
+    "sector": "basic-materials",
+    "transaction_type": "sell",
+    "amount_transaction": 101700,
+    "share_percentage_transaction": 0.017,
+    "share_percentage_after": 2.561,
+    "title": "Henry Liem sells shares of Argha Karya Prima Ind. Tbk",
+    "price": 565.0,
+    "body": "Henry Liem sold 101,700 shares of Argha Karya Prima Ind. Tbk. This decreases their holdings from 15,783,259 to 15,681,559 shares. The stated purpose of the transaction was sell \u200b\u200bshares.",
+    "holder_name": "Henry Liem",
+    "share_percentage_before": 2.578,
+    "source": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_KSEI/LK-17122025-1938-00.pdf-0.pdf",
+    "tags": [
+      "divestment"
+    ],
+    "timestamp": "2025-12-17T09:53:58",
+    "type": "sell",
+    "amount": 101700,
+    "value": 57460500.0,
+    "audit_flags": {
+      "announcement": {
+        "id": "lk-17122025-1938-00.pdf-0",
+        "title": "REPORT OF OWNERSHIP OR ANY CHANGES IN SHARE OWNERSHIP OF PUBLIC COMPANIES",
+        "url": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_KSEI/LK-17122025-1938-00.pdf-0.pdf",
+        "pdf_url": null,
+        "source_type": "idx"
+      },
+      "document_median_price": 565.0,
       "market_reference": {
         "ref_price": 565.0,
         "ref_type": "close",
@@ -50,11 +976,11 @@
         "n_days": 1,
         "freshness_days": 1
       },
-      "total_shares_model": 612321710.269426,
-      "delta_pp_model": -0.001,
-      "pp_after_model": 2.56,
+      "total_shares_model": 612228820.7913111,
+      "delta_pp_model": -0.017,
+      "pp_after_model": 2.561,
       "percent_discrepancy": false,
-      "discrepancy_pp": 0.0009999999999998899,
+      "discrepancy_pp": 0.0,
       "needs_review": false,
       "reasons": []
     },
@@ -67,122 +993,213 @@
       "n_days": 1,
       "freshness_days": 1
     },
-    "document_median_price": 580.0,
+    "document_median_price": 565.0,
     "source_is_manual": false,
-    "date_for_query": "2025-12-18"
+    "date_for_query": "2025-12-17"
   },
   {
     "price_transaction": [
       {
-        "date": "2025-11-04",
+        "date": "2025-12-15",
         "type": "sell",
-        "price": 54.0,
-        "amount_transacted": 757100
+        "price": 3050.0,
+        "amount_transacted": 110000000
       },
       {
-        "date": "2025-11-20",
-        "type": "buy",
-        "price": 50.0,
-        "amount_transacted": 35200000
-      },
-      {
-        "date": "2025-12-02",
+        "date": "2025-12-16",
         "type": "sell",
-        "price": 53.0,
-        "amount_transacted": 1000000
-      },
-      {
-        "date": "2025-12-04",
-        "type": "sell",
-        "price": 53.0,
-        "amount_transacted": 2000000
-      },
-      {
-        "date": "2025-12-09",
-        "type": "sell",
-        "price": 54.0,
-        "amount_transacted": 1000000
-      },
-      {
-        "date": "2025-12-09",
-        "type": "sell",
-        "price": 55.0,
-        "amount_transacted": 1000000
-      },
-      {
-        "date": "2025-12-09",
-        "type": "sell",
-        "price": 56.0,
-        "amount_transacted": 1000000
-      },
-      {
-        "date": "2025-12-10",
-        "type": "sell",
-        "price": 54.0,
-        "amount_transacted": 449500
+        "price": 2900.0,
+        "amount_transacted": 70000000
       }
     ],
-    "holder_name": "Garret Suryowijoyo Kartono",
-    "company_name": "PT Maxindo Karya Anugerah Tbk",
+    "transaction_value": 538500000000.0,
     "holder_type": "insider",
-    "purpose_of_transaction": "investment",
-    "title": "Garret Suryowijoyo Kartono buys shares of PT Maxindo Karya Anugerah Tbk",
-    "source": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_KSEI/LK-18122025-5053-00.pdf-0.pdf",
-    "share_percentage_transaction": 0.29,
-    "symbol": "MAXI.JK",
-    "sub_sector": "food-beverage",
+    "symbol": "IMPC.JK",
+    "sub_sector": "industrial-goods",
+    "holding_before": 21195395000,
+    "purpose_of_transaction": "Investment Realization and Increasing Free Float",
+    "company_name": "PT Impack Pratama Industri Tbk",
+    "holding_after": 21015395000,
+    "sector": "industrials",
+    "transaction_type": "sell",
+    "amount_transaction": 180000000,
+    "share_percentage_transaction": 0.33,
+    "share_percentage_after": 38.27,
+    "title": "Harimas Tunggal Perkasa sells shares of PT Impack Pratama Industri Tbk",
+    "price": 2991.667,
+    "body": "Harimas Tunggal Perkasa sold 180,000,000 shares of PT Impack Pratama Industri Tbk. This decreases their holdings from 21,195,395,000 to 21,015,395,000 shares. The stated purpose of the transaction was investment realization and increasing free float.",
+    "holder_name": "Harimas Tunggal Perkasa",
+    "share_percentage_before": 38.6,
+    "source": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_KSEI/LK-17122025-6944-00.pdf-0.pdf",
     "tags": [
       "investment"
     ],
-    "share_percentage_after": 0.29,
-    "amount_transaction": 27993400,
-    "holding_after": 27993400,
-    "body": "Garret Suryowijoyo Kartono bought 27,993,400 shares of PT Maxindo Karya Anugerah Tbk. This increases their holdings from 0 to 27,993,400 shares. The stated purpose of the transaction was investment.",
-    "price": 48.97,
-    "holding_before": 0,
-    "share_percentage_before": 0.0,
-    "transaction_value": 1370843600.0,
-    "sector": "consumer-non-cyclicals",
-    "timestamp": "2025-12-18T11:28:08",
-    "transaction_type": "buy",
-    "type": "buy",
-    "amount": 27993400,
-    "value": 1370843600.0,
+    "timestamp": "2025-12-17T12:05:31",
+    "type": "sell",
+    "amount": 180000000,
+    "value": 538500000000.0,
     "audit_flags": {
       "announcement": {
-        "id": "lk-18122025-5053-00.pdf-0",
+        "id": "lk-17122025-6944-00.pdf-0",
         "title": "REPORT OF OWNERSHIP OR ANY CHANGES IN SHARE OWNERSHIP OF PUBLIC COMPANIES",
-        "url": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_KSEI/LK-18122025-5053-00.pdf-0.pdf",
+        "url": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_KSEI/LK-17122025-6944-00.pdf-0.pdf",
         "pdf_url": null,
         "source_type": "idx"
       },
-      "document_median_price": 54.0,
+      "document_median_price": 2975.0,
       "market_reference": {
-        "ref_price": 54.0,
+        "ref_price": 3490.0,
         "ref_type": "close",
         "asof_date": "2026-01-20",
         "n_days": 1,
         "freshness_days": 1
       },
-      "total_shares_model": 9652896551.724138,
-      "delta_pp_model": 0.29,
-      "pp_after_model": 0.29,
+      "total_shares_model": 54910349740.93264,
+      "delta_pp_model": -0.328,
+      "pp_after_model": 38.272,
       "percent_discrepancy": false,
-      "discrepancy_pp": 0.0,
+      "discrepancy_pp": 0.001999999999995339,
       "needs_review": false,
       "reasons": []
     },
     "percent_discrepancy": false,
     "needs_review": false,
     "market_reference": {
-      "ref_price": 54.0,
+      "ref_price": 3490.0,
       "ref_type": "close",
       "asof_date": "2026-01-20",
       "n_days": 1,
       "freshness_days": 1
     },
-    "document_median_price": 54.0,
+    "document_median_price": 2975.0,
     "source_is_manual": false,
-    "date_for_query": "2025-12-18"
+    "date_for_query": "2025-12-17"
+  },
+  {
+    "price_transaction": [
+      {
+        "date": "2025-11-28",
+        "type": "sell",
+        "price": 106.0,
+        "amount_transacted": 29338000
+      },
+      {
+        "date": "2025-11-28",
+        "type": "buy",
+        "price": 109.0,
+        "amount_transacted": 28345100
+      }
+    ],
+    "transaction_value": 20212100.0,
+    "holder_type": "insider",
+    "symbol": "HALO.JK",
+    "sub_sector": "healthcare-equipment-providers",
+    "holding_before": 258162000,
+    "purpose_of_transaction": "Increase in the number of shares",
+    "company_name": "PT Haloni Jane Tbk",
+    "holding_after": 298162000,
+    "sector": "healthcare",
+    "transaction_type": "sell",
+    "amount_transaction": 40000000,
+    "share_percentage_transaction": 0.65,
+    "share_percentage_after": 5.08,
+    "title": "Promosi Desa Digital sells shares of PT Haloni Jane Tbk",
+    "price": 20.357,
+    "body": "Promosi Desa Digital sold 40,000,000 shares of PT Haloni Jane Tbk. This increases their holdings from 258,162,000 to 298,162,000 shares. The stated purpose of the transaction was increase in the number of shares.",
+    "holder_name": "Promosi Desa Digital",
+    "share_percentage_before": 4.43,
+    "source": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_KSEI/LK-17122025-7717-00.pdf-0.pdf",
+    "tags": [
+      "investment"
+    ],
+    "timestamp": "2025-12-17T15:24:36",
+    "type": "sell",
+    "amount": 40000000,
+    "value": 20212100.0,
+    "audit_flags": {
+      "announcement": {
+        "id": "lk-17122025-7717-00.pdf-0",
+        "title": "REPORT OF OWNERSHIP OR ANY CHANGES IN SHARE OWNERSHIP OF PUBLIC COMPANIES",
+        "url": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_KSEI/LK-17122025-7717-00.pdf-0.pdf",
+        "pdf_url": null,
+        "source_type": "idx"
+      },
+      "document_median_price": 107.5,
+      "market_reference": {
+        "ref_price": 96.0,
+        "ref_type": "close",
+        "asof_date": "2026-01-20",
+        "n_days": 1,
+        "freshness_days": 1
+      },
+      "total_shares_model": 5827584650.112867,
+      "delta_pp_model": -0.018,
+      "pp_after_model": 4.412,
+      "percent_discrepancy": true,
+      "discrepancy_pp": 0.6680000000000001,
+      "mismatch_transaction_type": true,
+      "needs_review": true,
+      "reasons": [
+        {
+          "scope": "row",
+          "code": "mismatch_transaction_type",
+          "message": "Transaction type inconsistent with holdings delta (inconsistent_sell: after(298162000.0) > before(258162000.0))",
+          "details": {
+            "holding_before": 258162000,
+            "holding_after": 298162000,
+            "transaction_type": "sell"
+          }
+        },
+        {
+          "scope": "row",
+          "code": "percent_discrepancy",
+          "message": "Model pp_after deviates from PDF by 0.66800 pp",
+          "details": {
+            "total_shares_model": 5827584650.112867,
+            "delta_pp_model": -0.018,
+            "pp_after_model": 4.412,
+            "percent_discrepancy": true,
+            "discrepancy_pp": 0.6680000000000001
+          }
+        }
+      ]
+    },
+    "percent_discrepancy": true,
+    "needs_review": true,
+    "reasons": [
+      {
+        "scope": "row",
+        "code": "mismatch_transaction_type",
+        "message": "Transaction type inconsistent with holdings delta (inconsistent_sell: after(298162000.0) > before(258162000.0))",
+        "details": {
+          "holding_before": 258162000,
+          "holding_after": 298162000,
+          "transaction_type": "sell"
+        }
+      },
+      {
+        "scope": "row",
+        "code": "percent_discrepancy",
+        "message": "Model pp_after deviates from PDF by 0.66800 pp",
+        "details": {
+          "total_shares_model": 5827584650.112867,
+          "delta_pp_model": -0.018,
+          "pp_after_model": 4.412,
+          "percent_discrepancy": true,
+          "discrepancy_pp": 0.6680000000000001
+        }
+      }
+    ],
+    "market_reference": {
+      "ref_price": 96.0,
+      "ref_type": "close",
+      "asof_date": "2026-01-20",
+      "n_days": 1,
+      "freshness_days": 1
+    },
+    "document_median_price": 107.5,
+    "skip_reason": "percent_discrepancy",
+    "source_is_manual": false,
+    "date_for_query": "2025-12-17"
   }
 ]
