@@ -8,7 +8,7 @@ import pathlib
 import re
 
 # If your class lives in src/services/upload/uploader.py, import from there:
-from services.upload.supabase import SupabaseUploader  
+from src.services.upload.supabase import SupabaseUploader  
 
 from .io_utils import get_logger
 
