@@ -617,6 +617,38 @@ def step_upload_supabase(
         raise SystemExit(4)
 
 
+# def step_generate_articles(
+#     *,
+#     filings_json: Path,
+#     articles_out: Path,
+#     company_map_path: str,
+#     latest_prices_path: str,
+#     use_llm: bool,
+#     provider: Optional[str],
+#     model_name: Optional[str],
+#     prefer_symbol: bool,
+# ) -> int:
+#     data = _load_json_silent(filings_json)
+#     if not isinstance(data, list):
+#         if isinstance(data, dict) and "rows" in data and isinstance(data["rows"], list):
+#             data = data["rows"]
+#         else:
+#             LOG.error("[ARTICLES] %s must be a JSON array or {'rows': [...]}, got %s", filings_json, type(data).__name__)
+#             return 0
+
+#     articles = run_articles_from_filings(
+#         data,
+#         company_map_path=company_map_path,
+#         latest_prices_path=latest_prices_path,
+#         use_llm=use_llm,
+#         model_name=model_name,
+#         provider=provider,
+#         prefer_symbol=prefer_symbol,
+#     )
+#     _write_jsonl(articles_out, articles)
+#     LOG.info("[ARTICLES] wrote %d articles -> %s", len(articles), articles_out)
+#     return len(articles)
+
 
 def step_generate_articles(
     *,
@@ -637,15 +669,33 @@ def step_generate_articles(
             LOG.error("[ARTICLES] %s must be a JSON array or {'rows': [...]}, got %s", filings_json, type(data).__name__)
             return 0
 
-    articles = run_articles_from_filings(
-        data,
-        company_map_path=company_map_path,
-        latest_prices_path=latest_prices_path,
-        use_llm=use_llm,
-        model_name=model_name,
-        provider=provider,
-        prefer_symbol=prefer_symbol,
+    proxy_keys = (
+        "HTTP_PROXY", "HTTPS_PROXY", "http_proxy", "https_proxy",
+        "ALL_PROXY", "all_proxy", "PROXY", "GRPC_PROXY_EXP", "grpc_proxy",
     )
+    proxy_snapshot = {k: os.environ[k] for k in proxy_keys if k in os.environ} if use_llm else {}
+
+    if use_llm:
+        # LLM gRPC clients can fail when forced through HTTP proxies.
+        for k in proxy_keys:
+            os.environ.pop(k, None)
+
+    try:
+        articles = run_articles_from_filings(
+            data,
+            company_map_path=company_map_path,
+            latest_prices_path=latest_prices_path,
+            use_llm=use_llm,
+            model_name=model_name,
+            provider=provider,
+            prefer_symbol=prefer_symbol,
+        )
+    finally:
+        if use_llm:
+            for k in proxy_keys:
+                os.environ.pop(k, None)
+            os.environ.update(proxy_snapshot)
+
     _write_jsonl(articles_out, articles)
     LOG.info("[ARTICLES] wrote %d articles -> %s", len(articles), articles_out)
     return len(articles)

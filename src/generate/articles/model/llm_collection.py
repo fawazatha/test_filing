@@ -22,8 +22,8 @@ class LLMCollection:
             cls._instance = super(LLMCollection, cls).__new__(cls)
             
             # unset proxy for LLM initialization
-            old_http_proxy = os.environ.pop('HTTP_PROXY', None)
-            old_https_proxy = os.environ.pop('HTTPS_PROXY', None)
+            # os.environ.pop('HTTP_PROXY', None)
+            # os.environ.pop('HTTPS_PROXY', None)
 
             model_providers = {
                 "gemini-2.5-flash": "google_genai",
