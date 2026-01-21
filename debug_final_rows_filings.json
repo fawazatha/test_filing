@@ -11,7 +11,7 @@
     "holder_name": "Henry Liem",
     "company_name": "Argha Karya Prima Ind. Tbk",
     "holder_type": "insider",
-    "purpose_of_transaction": "Sell ​​shares",
+    "purpose_of_transaction": "Sell \u200b\u200bshares",
     "title": "Henry Liem sells shares of Argha Karya Prima Ind. Tbk",
     "source": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_KSEI/LK-18122025-4309-00.pdf-0.pdf",
     "share_percentage_transaction": 0.0,
@@ -23,7 +23,7 @@
     "share_percentage_after": 2.561,
     "amount_transaction": 500,
     "holding_after": 15681059,
-    "body": "Henry Liem sold 500 shares of Argha Karya Prima Ind. Tbk. This decreases their holdings from 15,681,559 to 15,681,059 shares. The stated purpose of the transaction was sell ​​shares.",
+    "body": "Henry Liem sold 500 shares of Argha Karya Prima Ind. Tbk. This decreases their holdings from 15,681,559 to 15,681,059 shares. The stated purpose of the transaction was sell \u200b\u200bshares.",
     "price": 580.0,
     "holding_before": 15681559,
     "share_percentage_before": 2.561,
@@ -67,7 +67,9 @@
       "n_days": 1,
       "freshness_days": 1
     },
-    "document_median_price": 580.0
+    "document_median_price": 580.0,
+    "source_is_manual": false,
+    "date_for_query": "2025-12-18"
   },
   {
     "price_transaction": [
@@ -179,6 +181,8 @@
       "n_days": 1,
       "freshness_days": 1
     },
-    "document_median_price": 54.0
+    "document_median_price": 54.0,
+    "source_is_manual": false,
+    "date_for_query": "2025-12-18"
   }
 ]

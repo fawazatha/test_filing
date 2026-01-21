@@ -1,16 +1,30 @@
 [
   {
-    "date": "2026-01-12T07:59:34",
+    "date": "2025-12-18T11:28:08",
     "title": "REPORT OF OWNERSHIP OR ANY CHANGES IN SHARE OWNERSHIP OF PUBLIC COMPANIES",
     "title_slug": "report-of-ownership-or-any-changes-in-share-ownership-of-public-companies",
-    "company_name": "YOII",
-    "main_link": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_KSEI/LK-12012026-2327-00.pdf-0.pdf",
-    "filename": "lk-12012026-2327-00.pdf-0.pdf",
+    "company_name": "MAXI",
+    "main_link": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_KSEI/LK-18122025-5053-00.pdf-0.pdf",
+    "filename": "lk-18122025-5053-00.pdf-0.pdf",
     "attachments": [],
     "attachment_count": 0,
     "category": "Ownership Report",
-    "description": "Ownership report for YOII",
-    "link": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_KSEI/LK-12012026-2327-00.pdf-0.pdf",
-    "scraped_at": "2026-01-12T08:39:50+07:00"
+    "description": "Ownership report for MAXI",
+    "link": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_KSEI/LK-18122025-5053-00.pdf-0.pdf",
+    "scraped_at": "2026-01-21T09:20:35+07:00"
+  },
+  {
+    "date": "2025-12-18T10:02:06",
+    "title": "REPORT OF OWNERSHIP OR ANY CHANGES IN SHARE OWNERSHIP OF PUBLIC COMPANIES",
+    "title_slug": "report-of-ownership-or-any-changes-in-share-ownership-of-public-companies",
+    "company_name": "AKPI",
+    "main_link": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_KSEI/LK-18122025-4309-00.pdf-0.pdf",
+    "filename": "lk-18122025-4309-00.pdf-0.pdf",
+    "attachments": [],
+    "attachment_count": 0,
+    "category": "Ownership Report",
+    "description": "Ownership report for AKPI",
+    "link": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_KSEI/LK-18122025-4309-00.pdf-0.pdf",
+    "scraped_at": "2026-01-21T09:20:35+07:00"
   }
 ]

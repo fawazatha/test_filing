@@ -1,9 +1,16 @@
 [
   {
-    "ticker": "YOII",
+    "ticker": "MAXI",
     "title": "REPORT OF OWNERSHIP OR ANY CHANGES IN SHARE OWNERSHIP OF PUBLIC COMPANIES",
-    "url": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_KSEI/LK-12012026-2327-00.pdf-0.pdf",
-    "filename": "lk-12012026-2327-00.pdf-0.pdf",
-    "timestamp": "2026-01-12T07:59:34"
+    "url": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_KSEI/LK-18122025-5053-00.pdf-0.pdf",
+    "filename": "lk-18122025-5053-00.pdf-0.pdf",
+    "timestamp": "2025-12-18T11:28:08"
+  },
+  {
+    "ticker": "AKPI",
+    "title": "REPORT OF OWNERSHIP OR ANY CHANGES IN SHARE OWNERSHIP OF PUBLIC COMPANIES",
+    "url": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_KSEI/LK-18122025-4309-00.pdf-0.pdf",
+    "filename": "lk-18122025-4309-00.pdf-0.pdf",
+    "timestamp": "2025-12-18T10:02:06"
   }
 ]

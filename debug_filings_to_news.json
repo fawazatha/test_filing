@@ -1,0 +1,40 @@
+[
+  {
+    "body": "Henry Liem sold 500 shares of Argha Karya Prima Ind. Tbk (AKPI.JK) at a price of IDR 580 per share. This transaction reduces his total holdings from 15,681,559 shares to 15,681,059 shares. The purpose of the transaction was to sell shares.",
+    "score": null,
+    "dimension": null,
+    "tickers": [
+      "AKPI.JK"
+    ],
+    "title": "Henry Liem Sell Shares of Argha Karya Prima Ind. Tbk",
+    "source": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_KSEI/LK-18122025-4309-00.pdf-0.pdf",
+    "sector": "basic-materials",
+    "sub_sector": [
+      "basic-materials"
+    ],
+    "votes": null,
+    "tags": [
+      "Insider Trading"
+    ],
+    "timestamp": "2025-12-18T10:02:06Z"
+  },
+  {
+    "body": "Garret Suryowijoyo Kartono acquired 27,993,400 shares of PT Maxindo Karya Anugerah Tbk for investment purposes. This transaction increases his holdings from 0 to 27,993,400 shares. The most recent purchase was on November 20, 2025, at IDR 50.0 per share.",
+    "score": null,
+    "dimension": null,
+    "tickers": [
+      "MAXI.JK"
+    ],
+    "title": "Garret Suryowijoyo Kartono Buys Shares of PT Maxindo Karya Anugerah Tbk",
+    "source": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_KSEI/LK-18122025-5053-00.pdf-0.pdf",
+    "sector": "consumer-non-cyclicals",
+    "sub_sector": [
+      "food-beverage"
+    ],
+    "votes": null,
+    "tags": [
+      "Insider Trading"
+    ],
+    "timestamp": "2025-12-18T11:28:08Z"
+  }
+]

@@ -1,32 +1,104 @@
 [
   {
-    "holding_before": 291968700,
-    "holding_after": 291468700,
-    "share_percentage_before": 8.522,
-    "share_percentage_after": 8.508,
-    "share_percentage_transaction": 0.014,
-    "symbol": "YOII.JK",
-    "company_name": "PT Asuransi Digital Bersama Tbk",
-    "holder_name": "Dana Pensiun Bank Pembangunan Daerah Jateng",
+    "holding_before": 15681559,
+    "holding_after": 15681059,
+    "share_percentage_before": 2.561,
+    "share_percentage_after": 2.561,
+    "share_percentage_transaction": 0.0,
+    "symbol": "AKPI.JK",
+    "company_name": "Argha Karya Prima Ind. Tbk",
+    "holder_name": "Henry Liem",
     "price_transaction": [
       {
         "type": "sell",
-        "amount_transacted": 500000,
-        "price": 112,
-        "date": "2026-01-09"
+        "amount_transacted": 500,
+        "price": 580,
+        "date": "2025-12-17"
       }
     ],
-    "purpose": "Investasi",
-    "price": 112.0,
-    "transaction_value": 56000000,
+    "purpose": "Jual saham",
+    "price": 580.0,
+    "transaction_value": 290000,
     "transaction_type": "sell",
-    "amount_transaction": 500000,
-    "source": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_KSEI/LK-12012026-2327-00.pdf-0.pdf",
+    "amount_transaction": 500,
+    "source": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_KSEI/LK-18122025-4309-00.pdf-0.pdf",
+    "tags": [
+      "divestment"
+    ],
+    "holder_type": "insider",
+    "timestamp": "2025-12-18 10:02:06",
+    "split_variant": "primary"
+  },
+  {
+    "holding_before": 0,
+    "holding_after": 27993400,
+    "share_percentage_before": 0.0,
+    "share_percentage_after": 0.29,
+    "share_percentage_transaction": 0.29,
+    "symbol": "MAXI.JK",
+    "company_name": "PT Maxindo Karya Anugerah Tbk",
+    "holder_name": "Garret Suryowijoyo Kartono",
+    "price_transaction": [
+      {
+        "type": "sell",
+        "amount_transacted": 757100,
+        "price": 54,
+        "date": "2025-11-04"
+      },
+      {
+        "type": "buy",
+        "amount_transacted": 35200000,
+        "price": 50,
+        "date": "2025-11-20"
+      },
+      {
+        "type": "sell",
+        "amount_transacted": 1000000,
+        "price": 53,
+        "date": "2025-12-02"
+      },
+      {
+        "type": "sell",
+        "amount_transacted": 2000000,
+        "price": 53,
+        "date": "2025-12-04"
+      },
+      {
+        "type": "sell",
+        "amount_transacted": 1000000,
+        "price": 54,
+        "date": "2025-12-09"
+      },
+      {
+        "type": "sell",
+        "amount_transacted": 1000000,
+        "price": 55,
+        "date": "2025-12-09"
+      },
+      {
+        "type": "sell",
+        "amount_transacted": 1000000,
+        "price": 56,
+        "date": "2025-12-09"
+      },
+      {
+        "type": "sell",
+        "amount_transacted": 449500,
+        "price": 54,
+        "date": "2025-12-10"
+      }
+    ],
+    "purpose": "investasi",
+    "price": 48.97,
+    "transaction_value": 1370843600,
+    "transaction_type": "buy",
+    "amount_transaction": 27993400,
+    "source": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_KSEI/LK-18122025-5053-00.pdf-0.pdf",
     "tags": [
       "investment"
     ],
-    "holder_type": "institution",
-    "timestamp": "2026-01-12 07:59:34",
+    "holder_type": "insider",
+    "timestamp": "2025-12-18 11:28:08",
     "split_variant": "primary"
   }
 ]
