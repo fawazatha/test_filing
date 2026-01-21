@@ -1,254 +1,6 @@
 [
   {
-    "timestamp": "2026-01-21T02:27:02Z",
-    "category": "inserted",
-    "stage": "filings",
-    "code": "percent_discrepancy",
-    "message": "Reported shareholding percentages are inconsistent with the reported holdings.",
-    "reasons": [
-      {
-        "scope": "row",
-        "code": "percent_discrepancy",
-        "message": "Model pp_after deviates from PDF by 50.57000 pp",
-        "details": {
-          "total_shares_model": 25190800304.528374,
-          "delta_pp_model": 0.0,
-          "pp_after_model": 50.57,
-          "percent_discrepancy": true,
-          "discrepancy_pp": 50.57
-        }
-      },
-      {
-        "scope": "system",
-        "code": "percent_discrepancy",
-        "message": "Reported shareholding percentages are inconsistent with the reported holdings.",
-        "details": {
-          "symbol": "MDIY.JK",
-          "holder_name": "Azara Alpina Sdn Bhd",
-          "type": "others",
-          "amount": 12738987714,
-          "price": 1100.0,
-          "value": 14012886485400.0,
-          "share_percentage_before": 50.57,
-          "share_percentage_after": 0.0,
-          "share_percentage_transaction": 50.57,
-          "holding_before": 12738987714,
-          "holding_after": 0,
-          "skip_reason": "percent_discrepancy"
-        }
-      }
-    ],
-    "context": {
-      "doc": {
-        "filename": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_KSEI/LK-17122025-2402-00.pdf-0.pdf",
-        "url": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_KSEI/LK-17122025-2402-00.pdf-0.pdf",
-        "title": "REPORT OF OWNERSHIP OR ANY CHANGES IN SHARE OWNERSHIP OF PUBLIC COMPANIES"
-      },
-      "announcement": {
-        "id": "lk-17122025-2402-00.pdf-0",
-        "title": "REPORT OF OWNERSHIP OR ANY CHANGES IN SHARE OWNERSHIP OF PUBLIC COMPANIES",
-        "url": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_KSEI/LK-17122025-2402-00.pdf-0.pdf",
-        "pdf_url": null,
-        "source_type": "idx"
-      }
-    },
-    "severity": "hard",
-    "needs_review": true,
-    "symbol": "MDIY.JK",
-    "holder_name": "Azara Alpina Sdn Bhd",
-    "type": "others",
-    "amount": 12738987714,
-    "price": 1100.0,
-    "value": 14012886485400.0
-  },
-  {
-    "timestamp": "2026-01-21T02:27:02Z",
-    "category": "inserted",
-    "stage": "filings",
-    "code": "percent_discrepancy",
-    "message": "Reported shareholding percentages are inconsistent with the reported holdings.",
-    "reasons": [
-      {
-        "scope": "row",
-        "code": "percent_discrepancy",
-        "message": "Model pp_after deviates from PDF by 2.65000 pp",
-        "details": {
-          "total_shares_model": 25219625200.0,
-          "delta_pp_model": 0.0,
-          "pp_after_model": 3.0,
-          "percent_discrepancy": true,
-          "discrepancy_pp": 2.6500000000000004
-        }
-      },
-      {
-        "scope": "system",
-        "code": "percent_discrepancy",
-        "message": "Reported shareholding percentages are inconsistent with the reported holdings.",
-        "details": {
-          "symbol": "MDIY.JK",
-          "holder_name": "Tan Yu Wei",
-          "type": "others",
-          "amount": 666081444,
-          "price": 1100.0,
-          "value": 732689588400.0,
-          "share_percentage_before": 3.0,
-          "share_percentage_after": 5.65,
-          "share_percentage_transaction": 2.65,
-          "holding_before": 756588756,
-          "holding_after": 1422670200,
-          "skip_reason": "percent_discrepancy"
-        }
-      }
-    ],
-    "context": {
-      "doc": {
-        "filename": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_KSEI/LK-17122025-3612-00.pdf-0.pdf",
-        "url": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_KSEI/LK-17122025-3612-00.pdf-0.pdf",
-        "title": "REPORT OF OWNERSHIP OR ANY CHANGES IN SHARE OWNERSHIP OF PUBLIC COMPANIES"
-      },
-      "announcement": {
-        "id": "lk-17122025-3612-00.pdf-0",
-        "title": "REPORT OF OWNERSHIP OR ANY CHANGES IN SHARE OWNERSHIP OF PUBLIC COMPANIES",
-        "url": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_KSEI/LK-17122025-3612-00.pdf-0.pdf",
-        "pdf_url": null,
-        "source_type": "idx"
-      }
-    },
-    "severity": "hard",
-    "needs_review": true,
-    "symbol": "MDIY.JK",
-    "holder_name": "Tan Yu Wei",
-    "type": "others",
-    "amount": 666081444,
-    "price": 1100.0,
-    "value": 732689588400.0
-  },
-  {
-    "timestamp": "2026-01-21T02:27:02Z",
-    "category": "inserted",
-    "stage": "filings",
-    "code": "percent_discrepancy",
-    "message": "Reported shareholding percentages are inconsistent with the reported holdings.",
-    "reasons": [
-      {
-        "scope": "row",
-        "code": "percent_discrepancy",
-        "message": "Model pp_after deviates from PDF by 20.65000 pp",
-        "details": {
-          "total_shares_model": 25192523626.448536,
-          "delta_pp_model": 0.0,
-          "pp_after_model": 14.67,
-          "percent_discrepancy": true,
-          "discrepancy_pp": 20.65
-        }
-      },
-      {
-        "scope": "system",
-        "code": "percent_discrepancy",
-        "message": "Reported shareholding percentages are inconsistent with the reported holdings.",
-        "details": {
-          "symbol": "MDIY.JK",
-          "holder_name": "Mdih (Singapore) Pte. Ltd.",
-          "type": "others",
-          "amount": 5201816184,
-          "price": 1100.0,
-          "value": 5721997802400.0,
-          "share_percentage_before": 14.67,
-          "share_percentage_after": 35.32,
-          "share_percentage_transaction": 20.65,
-          "holding_before": 3695743216,
-          "holding_after": 8897559400,
-          "skip_reason": "percent_discrepancy"
-        }
-      }
-    ],
-    "context": {
-      "doc": {
-        "filename": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_KSEI/LK-17122025-2400-00.pdf-0.pdf",
-        "url": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_KSEI/LK-17122025-2400-00.pdf-0.pdf",
-        "title": "REPORT OF OWNERSHIP OR ANY CHANGES IN SHARE OWNERSHIP OF PUBLIC COMPANIES"
-      },
-      "announcement": {
-        "id": "lk-17122025-2400-00.pdf-0",
-        "title": "REPORT OF OWNERSHIP OR ANY CHANGES IN SHARE OWNERSHIP OF PUBLIC COMPANIES",
-        "url": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_KSEI/LK-17122025-2400-00.pdf-0.pdf",
-        "pdf_url": null,
-        "source_type": "idx"
-      }
-    },
-    "severity": "hard",
-    "needs_review": true,
-    "symbol": "MDIY.JK",
-    "holder_name": "Mdih (Singapore) Pte. Ltd.",
-    "type": "others",
-    "amount": 5201816184,
-    "price": 1100.0,
-    "value": 5721997802400.0
-  },
-  {
-    "timestamp": "2026-01-21T02:27:02Z",
-    "category": "inserted",
-    "stage": "filings",
-    "code": "percent_discrepancy",
-    "message": "Reported shareholding percentages are inconsistent with the reported holdings.",
-    "reasons": [
-      {
-        "scope": "row",
-        "code": "percent_discrepancy",
-        "message": "Model pp_after deviates from PDF by 15.97000 pp",
-        "details": {
-          "total_shares_model": 25191025507.64951,
-          "delta_pp_model": 0.0,
-          "pp_after_model": 7.19,
-          "percent_discrepancy": true,
-          "discrepancy_pp": 15.969999999999999
-        }
-      },
-      {
-        "scope": "system",
-        "code": "percent_discrepancy",
-        "message": "Reported shareholding percentages are inconsistent with the reported holdings.",
-        "details": {
-          "symbol": "MDIY.JK",
-          "holder_name": "Suncoast Financial Investments Ltd",
-          "type": "others",
-          "amount": 4022972466,
-          "price": 1100.0,
-          "value": 4425269712600.0,
-          "share_percentage_before": 7.19,
-          "share_percentage_after": 23.16,
-          "share_percentage_transaction": 15.97,
-          "holding_before": 1811234734,
-          "holding_after": 5834207200,
-          "skip_reason": "percent_discrepancy"
-        }
-      }
-    ],
-    "context": {
-      "doc": {
-        "filename": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_KSEI/LK-17122025-2800-00.pdf-0.pdf",
-        "url": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_KSEI/LK-17122025-2800-00.pdf-0.pdf",
-        "title": "REPORT OF OWNERSHIP OR ANY CHANGES IN SHARE OWNERSHIP OF PUBLIC COMPANIES"
-      },
-      "announcement": {
-        "id": "lk-17122025-2800-00.pdf-0",
-        "title": "REPORT OF OWNERSHIP OR ANY CHANGES IN SHARE OWNERSHIP OF PUBLIC COMPANIES",
-        "url": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_KSEI/LK-17122025-2800-00.pdf-0.pdf",
-        "pdf_url": null,
-        "source_type": "idx"
-      }
-    },
-    "severity": "hard",
-    "needs_review": true,
-    "symbol": "MDIY.JK",
-    "holder_name": "Suncoast Financial Investments Ltd",
-    "type": "others",
-    "amount": 4022972466,
-    "price": 1100.0,
-    "value": 4425269712600.0
-  },
-  {
-    "timestamp": "2026-01-21T02:27:02Z",
+    "timestamp": "2026-01-21T03:06:40Z",
     "category": "inserted",
     "stage": "filings",
     "code": "price_deviation_vs_market",
@@ -257,17 +9,17 @@
       {
         "scope": "tx",
         "code": "price_deviation_vs_market",
-        "message": "Price deviates from market-ref by ratio 0.208",
+        "message": "Price deviates from market-ref by ratio 0.371",
         "details": {
-          "price": 105.0,
+          "price": 750.0,
           "market_ref": {
-            "ref_price": 505.0,
+            "ref_price": 2020.0,
             "ref_type": "close",
             "asof_date": "2026-01-20",
             "n_days": 1,
             "freshness_days": 1
           },
-          "ratio": 0.2079207920792079
+          "ratio": 0.3712871287128713
         }
       },
       {
@@ -275,46 +27,376 @@
         "code": "price_deviation_vs_market",
         "message": "Transaction price deviates significantly from the market reference price.",
         "details": {
-          "symbol": "FITT.JK",
-          "holder_name": "Null",
+          "symbol": "ARCI.JK",
+          "holder_name": "Abed Nego",
           "type": "buy",
-          "amount": 627000000,
-          "price": 105.0,
-          "value": 65835000000.0,
+          "amount": 25200000,
+          "price": 750.0,
+          "value": 18900000000.0,
           "share_percentage_before": 0.0,
-          "share_percentage_after": 48.07,
-          "share_percentage_transaction": 48.07,
+          "share_percentage_after": 0.1,
+          "share_percentage_transaction": 0.1,
           "holding_before": 0,
-          "holding_after": 627000000,
+          "holding_after": 25200000,
           "skip_reason": "suspicious_price_level"
         }
       }
     ],
     "context": {
       "doc": {
-        "filename": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_KSEI/LK-17122025-1167-00.pdf-0.pdf",
-        "url": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_KSEI/LK-17122025-1167-00.pdf-0.pdf",
+        "filename": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_KSEI/LK-12122025-8970-00.pdf-0.pdf",
+        "url": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_KSEI/LK-12122025-8970-00.pdf-0.pdf",
         "title": "REPORT OF OWNERSHIP OR ANY CHANGES IN SHARE OWNERSHIP OF PUBLIC COMPANIES"
       },
       "announcement": {
-        "id": "lk-17122025-1167-00.pdf-0",
+        "id": "lk-12122025-8970-00.pdf-0",
         "title": "REPORT OF OWNERSHIP OR ANY CHANGES IN SHARE OWNERSHIP OF PUBLIC COMPANIES",
-        "url": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_KSEI/LK-17122025-1167-00.pdf-0.pdf",
+        "url": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_KSEI/LK-12122025-8970-00.pdf-0.pdf",
         "pdf_url": null,
         "source_type": "idx"
       }
     },
     "severity": "warning",
     "needs_review": true,
-    "symbol": "FITT.JK",
-    "holder_name": "Null",
+    "symbol": "ARCI.JK",
+    "holder_name": "Abed Nego",
     "type": "buy",
-    "amount": 627000000,
-    "price": 105.0,
-    "value": 65835000000.0
+    "amount": 25200000,
+    "price": 750.0,
+    "value": 18900000000.0
   },
   {
-    "timestamp": "2026-01-21T02:27:02Z",
+    "timestamp": "2026-01-21T03:06:40Z",
+    "category": "inserted",
+    "stage": "filings",
+    "code": "price_deviation_vs_market",
+    "message": "Transaction price deviates significantly from the market reference price.",
+    "reasons": [
+      {
+        "scope": "tx",
+        "code": "price_deviation_vs_market",
+        "message": "Price deviates from market-ref by ratio 0.371",
+        "details": {
+          "price": 750.0,
+          "market_ref": {
+            "ref_price": 2020.0,
+            "ref_type": "close",
+            "asof_date": "2026-01-20",
+            "n_days": 1,
+            "freshness_days": 1
+          },
+          "ratio": 0.3712871287128713
+        }
+      },
+      {
+        "scope": "system",
+        "code": "price_deviation_vs_market",
+        "message": "Transaction price deviates significantly from the market reference price.",
+        "details": {
+          "symbol": "ARCI.JK",
+          "holder_name": "Rudy Suhendra",
+          "type": "buy",
+          "amount": 27000000,
+          "price": 750.0,
+          "value": 20250000000.0,
+          "share_percentage_before": 0.0,
+          "share_percentage_after": 0.107,
+          "share_percentage_transaction": 0.107,
+          "holding_before": 0,
+          "holding_after": 27000000,
+          "skip_reason": "suspicious_price_level"
+        }
+      }
+    ],
+    "context": {
+      "doc": {
+        "filename": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_KSEI/LK-12122025-4851-00.pdf-0.pdf",
+        "url": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_KSEI/LK-12122025-4851-00.pdf-0.pdf",
+        "title": "REPORT OF OWNERSHIP OR ANY CHANGES IN SHARE OWNERSHIP OF PUBLIC COMPANIES"
+      },
+      "announcement": {
+        "id": "lk-12122025-4851-00.pdf-0",
+        "title": "REPORT OF OWNERSHIP OR ANY CHANGES IN SHARE OWNERSHIP OF PUBLIC COMPANIES",
+        "url": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_KSEI/LK-12122025-4851-00.pdf-0.pdf",
+        "pdf_url": null,
+        "source_type": "idx"
+      }
+    },
+    "severity": "warning",
+    "needs_review": true,
+    "symbol": "ARCI.JK",
+    "holder_name": "Rudy Suhendra",
+    "type": "buy",
+    "amount": 27000000,
+    "price": 750.0,
+    "value": 20250000000.0
+  },
+  {
+    "timestamp": "2026-01-21T03:06:40Z",
+    "category": "inserted",
+    "stage": "filings",
+    "code": "price_deviation_vs_market",
+    "message": "Transaction price deviates significantly from the market reference price.",
+    "reasons": [
+      {
+        "scope": "tx",
+        "code": "price_deviation_vs_market",
+        "message": "Price deviates from market-ref by ratio 0.371",
+        "details": {
+          "price": 750.0,
+          "market_ref": {
+            "ref_price": 2020.0,
+            "ref_type": "close",
+            "asof_date": "2026-01-20",
+            "n_days": 1,
+            "freshness_days": 1
+          },
+          "ratio": 0.3712871287128713
+        }
+      },
+      {
+        "scope": "system",
+        "code": "price_deviation_vs_market",
+        "message": "Transaction price deviates significantly from the market reference price.",
+        "details": {
+          "symbol": "ARCI.JK",
+          "holder_name": "Kenneth Ronald Kennedy Crichton",
+          "type": "buy",
+          "amount": 5000000,
+          "price": 750.0,
+          "value": 3750000000.0,
+          "share_percentage_before": 0.0,
+          "share_percentage_after": 0.02,
+          "share_percentage_transaction": 0.02,
+          "holding_before": 0,
+          "holding_after": 5000000,
+          "skip_reason": "suspicious_price_level"
+        }
+      }
+    ],
+    "context": {
+      "doc": {
+        "filename": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_KSEI/LK-12122025-2871-00.pdf-0.pdf",
+        "url": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_KSEI/LK-12122025-2871-00.pdf-0.pdf",
+        "title": "REPORT OF OWNERSHIP OR ANY CHANGES IN SHARE OWNERSHIP OF PUBLIC COMPANIES"
+      },
+      "announcement": {
+        "id": "lk-12122025-2871-00.pdf-0",
+        "title": "REPORT OF OWNERSHIP OR ANY CHANGES IN SHARE OWNERSHIP OF PUBLIC COMPANIES",
+        "url": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_KSEI/LK-12122025-2871-00.pdf-0.pdf",
+        "pdf_url": null,
+        "source_type": "idx"
+      }
+    },
+    "severity": "warning",
+    "needs_review": true,
+    "symbol": "ARCI.JK",
+    "holder_name": "Kenneth Ronald Kennedy Crichton",
+    "type": "buy",
+    "amount": 5000000,
+    "price": 750.0,
+    "value": 3750000000.0
+  },
+  {
+    "timestamp": "2026-01-21T03:06:40Z",
+    "category": "inserted",
+    "stage": "filings",
+    "code": "price_deviation_vs_market",
+    "message": "Transaction price deviates significantly from the market reference price.",
+    "reasons": [
+      {
+        "scope": "tx",
+        "code": "price_deviation_vs_market",
+        "message": "Price deviates from market-ref by ratio 0.371",
+        "details": {
+          "price": 750.0,
+          "market_ref": {
+            "ref_price": 2020.0,
+            "ref_type": "close",
+            "asof_date": "2026-01-20",
+            "n_days": 1,
+            "freshness_days": 1
+          },
+          "ratio": 0.3712871287128713
+        }
+      },
+      {
+        "scope": "system",
+        "code": "price_deviation_vs_market",
+        "message": "Transaction price deviates significantly from the market reference price.",
+        "details": {
+          "symbol": "ARCI.JK",
+          "holder_name": "Rizki Indrakusuma",
+          "type": "buy",
+          "amount": 25200000,
+          "price": 750.0,
+          "value": 18900000000.0,
+          "share_percentage_before": 0.0,
+          "share_percentage_after": 0.1,
+          "share_percentage_transaction": 0.1,
+          "holding_before": 0,
+          "holding_after": 25200000,
+          "skip_reason": "suspicious_price_level"
+        }
+      }
+    ],
+    "context": {
+      "doc": {
+        "filename": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_KSEI/LK-12122025-0987-00.pdf-0.pdf",
+        "url": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_KSEI/LK-12122025-0987-00.pdf-0.pdf",
+        "title": "REPORT OF OWNERSHIP OR ANY CHANGES IN SHARE OWNERSHIP OF PUBLIC COMPANIES"
+      },
+      "announcement": {
+        "id": "lk-12122025-0987-00.pdf-0",
+        "title": "REPORT OF OWNERSHIP OR ANY CHANGES IN SHARE OWNERSHIP OF PUBLIC COMPANIES",
+        "url": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_KSEI/LK-12122025-0987-00.pdf-0.pdf",
+        "pdf_url": null,
+        "source_type": "idx"
+      }
+    },
+    "severity": "warning",
+    "needs_review": true,
+    "symbol": "ARCI.JK",
+    "holder_name": "Rizki Indrakusuma",
+    "type": "buy",
+    "amount": 25200000,
+    "price": 750.0,
+    "value": 18900000000.0
+  },
+  {
+    "timestamp": "2026-01-21T03:06:40Z",
+    "category": "inserted",
+    "stage": "filings",
+    "code": "price_deviation_vs_market",
+    "message": "Transaction price deviates significantly from the market reference price.",
+    "reasons": [
+      {
+        "scope": "tx",
+        "code": "price_deviation_vs_market",
+        "message": "Price deviates from market-ref by ratio 0.464",
+        "details": {
+          "price": 8000.0,
+          "market_ref": {
+            "ref_price": 17250.0,
+            "ref_type": "close",
+            "asof_date": "2026-01-20",
+            "n_days": 1,
+            "freshness_days": 1
+          },
+          "ratio": 0.463768115942029
+        }
+      },
+      {
+        "scope": "system",
+        "code": "price_deviation_vs_market",
+        "message": "Transaction price deviates significantly from the market reference price.",
+        "details": {
+          "symbol": "BYAN.JK",
+          "holder_name": "Null",
+          "type": "sell",
+          "amount": 1010000,
+          "price": 8000.0,
+          "value": 8080000000.0,
+          "share_percentage_before": 40.22,
+          "share_percentage_after": 40.22,
+          "share_percentage_transaction": 0.0,
+          "holding_before": 13407650470,
+          "holding_after": 13406640470,
+          "skip_reason": "suspicious_price_level"
+        }
+      }
+    ],
+    "context": {
+      "doc": {
+        "filename": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_KSEI/LK-12122025-0780-00.pdf-0.pdf",
+        "url": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_KSEI/LK-12122025-0780-00.pdf-0.pdf",
+        "title": "REPORT OF OWNERSHIP OR ANY CHANGES IN SHARE OWNERSHIP OF PUBLIC COMPANIES"
+      },
+      "announcement": {
+        "id": "lk-12122025-0780-00.pdf-0",
+        "title": "REPORT OF OWNERSHIP OR ANY CHANGES IN SHARE OWNERSHIP OF PUBLIC COMPANIES",
+        "url": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_KSEI/LK-12122025-0780-00.pdf-0.pdf",
+        "pdf_url": null,
+        "source_type": "idx"
+      }
+    },
+    "severity": "warning",
+    "needs_review": true,
+    "symbol": "BYAN.JK",
+    "holder_name": "Null",
+    "type": "sell",
+    "amount": 1010000,
+    "price": 8000.0,
+    "value": 8080000000.0
+  },
+  {
+    "timestamp": "2026-01-21T03:06:40Z",
+    "category": "inserted",
+    "stage": "filings",
+    "code": "price_deviation_vs_market",
+    "message": "Transaction price deviates significantly from the market reference price.",
+    "reasons": [
+      {
+        "scope": "tx",
+        "code": "price_deviation_vs_market",
+        "message": "Price deviates from market-ref by ratio 0.371",
+        "details": {
+          "price": 750.0,
+          "market_ref": {
+            "ref_price": 2020.0,
+            "ref_type": "close",
+            "asof_date": "2026-01-20",
+            "n_days": 1,
+            "freshness_days": 1
+          },
+          "ratio": 0.3712871287128713
+        }
+      },
+      {
+        "scope": "system",
+        "code": "price_deviation_vs_market",
+        "message": "Transaction price deviates significantly from the market reference price.",
+        "details": {
+          "symbol": "ARCI.JK",
+          "holder_name": "Hidayat Dwiputro Sulaksono",
+          "type": "buy",
+          "amount": 25200000,
+          "price": 750.0,
+          "value": 18900000000.0,
+          "share_percentage_before": 0.003,
+          "share_percentage_after": 0.103,
+          "share_percentage_transaction": 0.1,
+          "holding_before": 771900,
+          "holding_after": 25971900,
+          "skip_reason": "suspicious_price_level"
+        }
+      }
+    ],
+    "context": {
+      "doc": {
+        "filename": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_KSEI/LK-12122025-0590-00.pdf-0.pdf",
+        "url": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_KSEI/LK-12122025-0590-00.pdf-0.pdf",
+        "title": "REPORT OF OWNERSHIP OR ANY CHANGES IN SHARE OWNERSHIP OF PUBLIC COMPANIES"
+      },
+      "announcement": {
+        "id": "lk-12122025-0590-00.pdf-0",
+        "title": "REPORT OF OWNERSHIP OR ANY CHANGES IN SHARE OWNERSHIP OF PUBLIC COMPANIES",
+        "url": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_KSEI/LK-12122025-0590-00.pdf-0.pdf",
+        "pdf_url": null,
+        "source_type": "idx"
+      }
+    },
+    "severity": "warning",
+    "needs_review": true,
+    "symbol": "ARCI.JK",
+    "holder_name": "Hidayat Dwiputro Sulaksono",
+    "type": "buy",
+    "amount": 25200000,
+    "price": 750.0,
+    "value": 18900000000.0
+  },
+  {
+    "timestamp": "2026-01-21T03:06:40Z",
     "category": "inserted",
     "stage": "filings",
     "code": "percent_discrepancy",
@@ -323,13 +405,13 @@
       {
         "scope": "row",
         "code": "percent_discrepancy",
-        "message": "Model pp_after deviates from PDF by 23.26000 pp",
+        "message": "Model pp_after deviates from PDF by 0.98000 pp",
         "details": {
-          "total_shares_model": 25190546305.863056,
+          "total_shares_model": 16665421400.92396,
           "delta_pp_model": 0.0,
-          "pp_after_model": 73.17,
+          "pp_after_model": 8.009,
           "percent_discrepancy": true,
-          "discrepancy_pp": 23.260000000000005
+          "discrepancy_pp": 0.9800000000000004
         }
       },
       {
@@ -337,106 +419,178 @@
         "code": "percent_discrepancy",
         "message": "Reported shareholding percentages are inconsistent with the reported holdings.",
         "details": {
-          "symbol": "MDIY.JK",
-          "holder_name": "Tan Yu Yeh",
+          "symbol": "MAHA.JK",
+          "holder_name": "Yenny Hamidah Koean",
           "type": "others",
-          "amount": 5859198432,
-          "price": 1100.0,
-          "value": 21580654695600.0,
-          "share_percentage_before": 73.17,
-          "share_percentage_after": 49.91,
-          "share_percentage_transaction": 23.26,
-          "holding_before": 18431922732,
-          "holding_after": 12572724300,
+          "amount": 163439100,
+          "price": 160.0,
+          "value": 26150256000.0,
+          "share_percentage_before": 8.009,
+          "share_percentage_after": 8.989,
+          "share_percentage_transaction": 0.98,
+          "holding_before": 1334733600,
+          "holding_after": 1498172700,
           "skip_reason": "percent_discrepancy"
         }
       }
     ],
     "context": {
       "doc": {
-        "filename": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_KSEI/LK-17122025-5647-00.pdf-0.pdf",
-        "url": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_KSEI/LK-17122025-5647-00.pdf-0.pdf",
+        "filename": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_KSEI/LK-12122025-6094-00.pdf-0.pdf",
+        "url": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_KSEI/LK-12122025-6094-00.pdf-0.pdf",
         "title": "REPORT OF OWNERSHIP OR ANY CHANGES IN SHARE OWNERSHIP OF PUBLIC COMPANIES"
       },
       "announcement": {
-        "id": "lk-17122025-5647-00.pdf-0",
+        "id": "lk-12122025-6094-00.pdf-0",
         "title": "REPORT OF OWNERSHIP OR ANY CHANGES IN SHARE OWNERSHIP OF PUBLIC COMPANIES",
-        "url": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_KSEI/LK-17122025-5647-00.pdf-0.pdf",
+        "url": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_KSEI/LK-12122025-6094-00.pdf-0.pdf",
         "pdf_url": null,
         "source_type": "idx"
       }
     },
     "severity": "hard",
     "needs_review": true,
-    "symbol": "MDIY.JK",
-    "holder_name": "Tan Yu Yeh",
+    "symbol": "MAHA.JK",
+    "holder_name": "Yenny Hamidah Koean",
     "type": "others",
-    "amount": 5859198432,
-    "price": 1100.0,
-    "value": 21580654695600.0
+    "amount": 163439100,
+    "price": 160.0,
+    "value": 26150256000.0
   },
   {
-    "timestamp": "2026-01-21T02:27:02Z",
+    "timestamp": "2026-01-21T03:06:40Z",
     "category": "inserted",
     "stage": "filings",
-    "code": "mismatch_transaction_type",
-    "message": "Parsed transaction type is inconsistent with the reported before/after values or document indicators.",
+    "code": "price_deviation_vs_market",
+    "message": "Transaction price deviates significantly from the market reference price.",
     "reasons": [
       {
-        "scope": "row",
-        "code": "mismatch_transaction_type",
-        "message": "Transaction type inconsistent with holdings delta (inconsistent_sell: after(298162000.0) > before(258162000.0))",
+        "scope": "tx",
+        "code": "price_deviation_vs_market",
+        "message": "Price deviates from market-ref by ratio 0.371",
         "details": {
-          "holding_before": 258162000,
-          "holding_after": 298162000,
-          "transaction_type": "sell"
+          "price": 750.0,
+          "market_ref": {
+            "ref_price": 2020.0,
+            "ref_type": "close",
+            "asof_date": "2026-01-20",
+            "n_days": 1,
+            "freshness_days": 1
+          },
+          "ratio": 0.3712871287128713
         }
       },
       {
         "scope": "system",
-        "code": "mismatch_transaction_type",
-        "message": "Parsed transaction type is inconsistent with the reported before/after values or document indicators.",
+        "code": "price_deviation_vs_market",
+        "message": "Transaction price deviates significantly from the market reference price.",
         "details": {
-          "symbol": "HALO.JK",
-          "holder_name": "Promosi Desa Digital",
-          "type": "sell",
-          "amount": 40000000,
-          "price": 20.357,
-          "value": 20212100.0,
-          "share_percentage_before": 4.43,
-          "share_percentage_after": 5.08,
-          "share_percentage_transaction": 0.65,
-          "holding_before": 258162000,
-          "holding_after": 298162000,
-          "skip_reason": "percent_discrepancy"
+          "symbol": "ARCI.JK",
+          "holder_name": "Christian Emanuel David Sompie",
+          "type": "buy",
+          "amount": 20000000,
+          "price": 750.0,
+          "value": 15000000000.0,
+          "share_percentage_before": 0.0,
+          "share_percentage_after": 0.079,
+          "share_percentage_transaction": 0.079,
+          "holding_before": 0,
+          "holding_after": 20000000,
+          "skip_reason": "suspicious_price_level"
         }
       }
     ],
     "context": {
       "doc": {
-        "filename": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_KSEI/LK-17122025-7717-00.pdf-0.pdf",
-        "url": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_KSEI/LK-17122025-7717-00.pdf-0.pdf",
+        "filename": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_KSEI/LK-12122025-4289-00.pdf-0.pdf",
+        "url": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_KSEI/LK-12122025-4289-00.pdf-0.pdf",
         "title": "REPORT OF OWNERSHIP OR ANY CHANGES IN SHARE OWNERSHIP OF PUBLIC COMPANIES"
       },
       "announcement": {
-        "id": "lk-17122025-7717-00.pdf-0",
+        "id": "lk-12122025-4289-00.pdf-0",
         "title": "REPORT OF OWNERSHIP OR ANY CHANGES IN SHARE OWNERSHIP OF PUBLIC COMPANIES",
-        "url": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_KSEI/LK-17122025-7717-00.pdf-0.pdf",
+        "url": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_KSEI/LK-12122025-4289-00.pdf-0.pdf",
         "pdf_url": null,
         "source_type": "idx"
       }
     },
-    "severity": "hard",
+    "severity": "warning",
     "needs_review": true,
-    "symbol": "HALO.JK",
-    "holder_name": "Promosi Desa Digital",
-    "type": "sell",
-    "amount": 40000000,
-    "price": 20.357,
-    "value": 20212100.0
+    "symbol": "ARCI.JK",
+    "holder_name": "Christian Emanuel David Sompie",
+    "type": "buy",
+    "amount": 20000000,
+    "price": 750.0,
+    "value": 15000000000.0
   },
   {
-    "timestamp": "2026-01-21T02:27:02Z",
+    "timestamp": "2026-01-21T03:06:40Z",
+    "category": "inserted",
+    "stage": "filings",
+    "code": "price_deviation_vs_market",
+    "message": "Transaction price deviates significantly from the market reference price.",
+    "reasons": [
+      {
+        "scope": "tx",
+        "code": "price_deviation_vs_market",
+        "message": "Price deviates from market-ref by ratio 0.364",
+        "details": {
+          "price": 500.0,
+          "market_ref": {
+            "ref_price": 1375.0,
+            "ref_type": "close",
+            "asof_date": "2026-01-20",
+            "n_days": 1,
+            "freshness_days": 1
+          },
+          "ratio": 0.36363636363636365
+        }
+      },
+      {
+        "scope": "system",
+        "code": "price_deviation_vs_market",
+        "message": "Transaction price deviates significantly from the market reference price.",
+        "details": {
+          "symbol": "NSSS.JK",
+          "holder_name": "Samuel Tumbuh Bersama",
+          "type": "buy",
+          "amount": 525000000,
+          "price": 500.0,
+          "value": 262500000000.0,
+          "share_percentage_before": 36.95,
+          "share_percentage_after": 39.16,
+          "share_percentage_transaction": 2.21,
+          "holding_before": 8794995300,
+          "holding_after": 9319995300,
+          "skip_reason": "suspicious_price_level"
+        }
+      }
+    ],
+    "context": {
+      "doc": {
+        "filename": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_KSEI/LK-12122025-2910-00.pdf-0.pdf",
+        "url": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_KSEI/LK-12122025-2910-00.pdf-0.pdf",
+        "title": "REPORT OF OWNERSHIP OR ANY CHANGES IN SHARE OWNERSHIP OF PUBLIC COMPANIES"
+      },
+      "announcement": {
+        "id": "lk-12122025-2910-00.pdf-0",
+        "title": "REPORT OF OWNERSHIP OR ANY CHANGES IN SHARE OWNERSHIP OF PUBLIC COMPANIES",
+        "url": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_KSEI/LK-12122025-2910-00.pdf-0.pdf",
+        "pdf_url": null,
+        "source_type": "idx"
+      }
+    },
+    "severity": "warning",
+    "needs_review": true,
+    "symbol": "NSSS.JK",
+    "holder_name": "Samuel Tumbuh Bersama",
+    "type": "buy",
+    "amount": 525000000,
+    "price": 500.0,
+    "value": 262500000000.0
+  },
+  {
+    "timestamp": "2026-01-21T03:06:40Z",
     "category": "inserted",
     "stage": "filings",
     "code": "percent_discrepancy",
@@ -445,13 +599,13 @@
       {
         "scope": "row",
         "code": "percent_discrepancy",
-        "message": "Model pp_after deviates from PDF by 0.66800 pp",
+        "message": "Model pp_after deviates from PDF by 0.34900 pp",
         "details": {
-          "total_shares_model": 5827584650.112867,
-          "delta_pp_model": -0.018,
-          "pp_after_model": 4.412,
+          "total_shares_model": 2841274581.3685813,
+          "delta_pp_model": -0.352,
+          "pp_after_model": 26.581,
           "percent_discrepancy": true,
-          "discrepancy_pp": 0.6680000000000001
+          "discrepancy_pp": 0.3490000000000002
         }
       },
       {
@@ -459,42 +613,42 @@
         "code": "percent_discrepancy",
         "message": "Reported shareholding percentages are inconsistent with the reported holdings.",
         "details": {
-          "symbol": "HALO.JK",
-          "holder_name": "Promosi Desa Digital",
+          "symbol": "KETR.JK",
+          "holder_name": "Gema Lintas Benua",
           "type": "sell",
-          "amount": 40000000,
-          "price": 20.357,
-          "value": 20212100.0,
-          "share_percentage_before": 4.43,
-          "share_percentage_after": 5.08,
-          "share_percentage_transaction": 0.65,
-          "holding_before": 258162000,
-          "holding_after": 298162000,
+          "amount": 100000,
+          "price": 901.171,
+          "value": 9011708500.0,
+          "share_percentage_before": 26.933,
+          "share_percentage_after": 26.93,
+          "share_percentage_transaction": 0.003,
+          "holding_before": 765240483,
+          "holding_after": 765140483,
           "skip_reason": "percent_discrepancy"
         }
       }
     ],
     "context": {
       "doc": {
-        "filename": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_KSEI/LK-17122025-7717-00.pdf-0.pdf",
-        "url": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_KSEI/LK-17122025-7717-00.pdf-0.pdf",
+        "filename": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_KSEI/LK-12122025-5260-00.pdf-0.pdf",
+        "url": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_KSEI/LK-12122025-5260-00.pdf-0.pdf",
         "title": "REPORT OF OWNERSHIP OR ANY CHANGES IN SHARE OWNERSHIP OF PUBLIC COMPANIES"
       },
       "announcement": {
-        "id": "lk-17122025-7717-00.pdf-0",
+        "id": "lk-12122025-5260-00.pdf-0",
         "title": "REPORT OF OWNERSHIP OR ANY CHANGES IN SHARE OWNERSHIP OF PUBLIC COMPANIES",
-        "url": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_KSEI/LK-17122025-7717-00.pdf-0.pdf",
+        "url": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_KSEI/LK-12122025-5260-00.pdf-0.pdf",
         "pdf_url": null,
         "source_type": "idx"
       }
     },
     "severity": "hard",
     "needs_review": true,
-    "symbol": "HALO.JK",
-    "holder_name": "Promosi Desa Digital",
+    "symbol": "KETR.JK",
+    "holder_name": "Gema Lintas Benua",
     "type": "sell",
-    "amount": 40000000,
-    "price": 20.357,
-    "value": 20212100.0
+    "amount": 100000,
+    "price": 901.171,
+    "value": 9011708500.0
   }
 ]

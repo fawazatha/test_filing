@@ -1,6 +1,6 @@
 [
   {
-    "timestamp": "2026-01-21T02:25:48Z",
+    "timestamp": "2026-01-21T03:06:22Z",
     "category": "not_inserted",
     "stage": "downloader",
     "code": "non_idx_document",
@@ -12,16 +12,16 @@
         "message": "Non-IDX document detected, parsing is skipped.",
         "details": {
           "classification": "NON-IDX",
-          "similarity_idx": 75.0,
-          "similarity_non_idx": 100.0
+          "similarity_idx": 49.18032786885246,
+          "similarity_non_idx": 81.08108108108108
         }
       }
     ],
     "context": {
       "doc": {
-        "filename": "3d90185207_414b3c6997.pdf",
-        "url": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_EREP/202512/3d90185207_414b3c6997.pdf",
-        "title": "Report on Changes in Share Ownership of PT Cilacap Samudera Fishing Industry Tbk (ASHA)"
+        "filename": "3ab6e2e986_ce412188e8.pdf",
+        "url": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_EREP/202512/3ab6e2e986_ce412188e8.pdf",
+        "title": "The increase in share ownership by the Company's subsidiary, PT Digitalisasi Perangkat Indonesia (DPI), in PT Bursa Akselerasi Indonesia (BAI)."
       },
       "announcement": null
     },
@@ -29,7 +29,7 @@
     "needs_review": true
   },
   {
-    "timestamp": "2026-01-21T02:26:49Z",
+    "timestamp": "2026-01-21T03:06:27Z",
     "category": "not_inserted",
     "stage": "downloader",
     "code": "non_idx_document",
@@ -41,16 +41,16 @@
         "message": "Non-IDX document detected, parsing is skipped.",
         "details": {
           "classification": "NON-IDX",
-          "similarity_idx": 51.851851851851855,
-          "similarity_non_idx": 81.08108108108108
+          "similarity_idx": 89.7196261682243,
+          "similarity_non_idx": 100.0
         }
       }
     ],
     "context": {
       "doc": {
-        "filename": "5b63e287f9_57d0e36767.pdf",
-        "url": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_EREP/202512/5b63e287f9_57d0e36767.pdf",
-        "title": "Approval of the Change in the Share Ownership Composition of PT Bank Pembangunan Daerah Sulawesi Tenggara Resulting in the Addition of a New Controlling Shareholder (PSP)."
+        "filename": "73fdcfe934_d5c5059c0b.pdf",
+        "url": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_EREP/202512/73fdcfe934_d5c5059c0b.pdf",
+        "title": "Correction to the Report of Ownership or Changes in Share Ownership of a Public Company (CORRECTION)"
       },
       "announcement": null
     },
