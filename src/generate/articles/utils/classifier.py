@@ -190,13 +190,11 @@ class Classifier:
         #         log.warning(f"Classifier LLM init failed; fallback to heuristics. {e}")
         #         self.use_llm = False
 
-
     # Tag inference
     def infer_tags(self, facts: Dict[str, Any], text_hint: Optional[str]) -> List[str]:
         tx = (facts.get("transaction_type") or "").lower()
         tags = ["Insider Trading"]
         return tags
-
 
     # Sentiment inference
     def infer_sentiment(self, facts: Dict[str, Any], text_hint: Optional[str]) -> str:
