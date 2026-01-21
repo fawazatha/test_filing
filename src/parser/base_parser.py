@@ -4,13 +4,13 @@ from abc import ABC, abstractmethod
 from typing import List, Dict, Any, Optional
 import pdfplumber
 
-from services.alert.schema import build_alert
+from src.services.alert.schema import build_alert
 from src.parser.utils.company_resolver import (
     load_symbol_to_name_from_file,
     build_reverse_map,
 )
 
-from config import (
+from src.config import (
     ALERTS_OUTPUT_DIR,
     ALERTS_INSERTED_FILENAME,
     ALERTS_NOT_INSERTED_FILENAME,

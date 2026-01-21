@@ -221,7 +221,7 @@ def extract_price_transaction(text: str) -> tuple[dict[str, any] | None, dict[st
         while index < len(lines):
             line = lines[index]
             
-            # If we hit a footer line, stop everything.
+            # If hit a footer line, stop everything
             if any(line.startswith(k) for k in footer_keywords):
                 break
             
@@ -236,7 +236,7 @@ def extract_price_transaction(text: str) -> tuple[dict[str, any] | None, dict[st
             
             if line in transaction_keywords:
                 # A real transaction must be followed by "Tidak", "Ya", or "Langsung" 
-                # before hitting a footer.
+                # before hitting a footer
                 is_real_start = False
                 # Look ahead 10 lines
                 for i in range(1, 10): 
@@ -248,8 +248,7 @@ def extract_price_transaction(text: str) -> tuple[dict[str, any] | None, dict[st
                     if any(val.startswith(fk) for fk in footer_keywords):
                         break 
                 
-                # If it's not a real start (e.g., it's just the word "Penjualan" in the purpose),
-                # skip this block and let the 'else' handle it or the previous purpose loop consume it.
+                # If it's not a real start (e.g., it's just the word "Penjualan" in the purpose)
                 if not is_real_start:
                     index += 1
                     continue
@@ -274,7 +273,7 @@ def extract_price_transaction(text: str) -> tuple[dict[str, any] | None, dict[st
                 if index < len(lines) and lines[index] == "Langsung": 
                     index += 1
 
-                # Find Amount (Anchor to "Saham" with large window)
+                # Find Amount 
                 scan_limit = min(index + 100, len(lines))
                 saham_found = False
 
@@ -291,19 +290,18 @@ def extract_price_transaction(text: str) -> tuple[dict[str, any] | None, dict[st
                     continue
 
                 amount = lines[index] if index < len(lines) else None
-                index += 1  # Now at "Saham"
+                index += 1  
 
                 if index < len(lines) and lines[index] == "Saham": 
                     index += 1
                 
                 # Find Price
-                # The item immediately before the date is the Price.
                 date_start_index = -1
                 scan_limit_date = min(index + 10, len(lines))
                 
                 for k in range(index, scan_limit_date):
                     val = lines[k]
-                    # Regex to find Date start: 1 or 2 digits followed by hyphen (e.g., "01-", "24-")
+                    # Regex to find Date start
                     if re.match(r'^\d{1,2}\s?-$', val): 
                         date_start_index = k
                         break
@@ -334,7 +332,7 @@ def extract_price_transaction(text: str) -> tuple[dict[str, any] | None, dict[st
                 
                 date = ' '.join(date_parts)
 
-                # Find Purpose (always exactly one line after date)
+                # Find Purpose
                 purpose_parts = []
                 while index < len(lines):
                     curr = lines[index]
@@ -347,11 +345,12 @@ def extract_price_transaction(text: str) -> tuple[dict[str, any] | None, dict[st
                     if curr == "Jenis" and index + 1 < len(lines) and lines[index + 1] == "Transaksi":
                         break
 
-                    # Check if NEXT line is start of new transaction (look ahead)
+                    # Check if next line is start of new transaction 
                     if index + 1 < len(lines) and lines[index + 1] in transaction_keywords:
                         # Verify next line is real transaction start
                         is_next_real_start = False
-                        for i in range(2, 12):  # Look from index+2 onwards
+                        # Look from index+2 onwards
+                        for i in range(2, 12):  
                             if index + i >= len(lines): break
                             val = lines[index + i]
                             if val in ["Tidak", "Ya", "Langsung"]:
@@ -372,7 +371,7 @@ def extract_price_transaction(text: str) -> tuple[dict[str, any] | None, dict[st
 
                 purpose = ' '.join(purpose_parts)
 
-                print(f"DEBUG: transaction_type='{transaction_type}', amount={amount}, price={price}, date={date}")
+                LOGGER.info(f"DEBUG: transaction_type='{transaction_type}', amount={amount}, price={price}, date={date}")
 
                 # Build Object
                 type_mapped = map_transaction_type(transaction_type)
@@ -394,14 +393,14 @@ def extract_price_transaction(text: str) -> tuple[dict[str, any] | None, dict[st
         if not transactions:
             return None
 
-        print(f'\nraw transaction: {transactions}\n')
+        LOGGER.info(f'\nraw transaction: {transactions}\n')
         
         result_others, result_no_others = split_price_transaction(transactions)
         
         return result_others, result_no_others 
     
     except Exception as error:
-        print(f'extract price transaction error: {error}')
+        LOGGER.error(f'Error extract_price_transaction: {error}')
         return None
 
 
@@ -411,7 +410,8 @@ def pop_purpose(transactions: list[dict[str, any]]):
             transaction.pop('purpose', None)
 
     except Exception as error:
-        raise 
+        LOGGER.error(f'Error pop_purpose: {error}')
+        return []
 
 
 def split_price_transaction(transactions: list[dict[str, any]]) -> tuple[dict[str, any] | None, dict[str, any]]:
@@ -424,7 +424,6 @@ def split_price_transaction(transactions: list[dict[str, any]]) -> tuple[dict[st
 
         for transaction in transactions: 
             type = transaction.get('type')
-            # purpose = transaction.get('purpose')
 
             if type == 'others':
                 result_others_list.append(transaction)
@@ -448,7 +447,8 @@ def split_price_transaction(transactions: list[dict[str, any]]) -> tuple[dict[st
         return result_others_dict if result_others_dict else None, result_no_others_dict if result_no_others_dict else None
 
     except Exception as error:
-        raise 
+        LOGGER.error(f'Error split_price_transaction: {error}')
+        return {}, {} 
 
 
 def compute_transactions(price_transactions: list[dict[str, any]]) -> dict[str, any]:
@@ -544,9 +544,9 @@ def run_compute_transaction(extracted_datas: dict[str, any], filename: str):
         extracted_datas.update({'source': filename}) 
     
     except Exception as error:
-        print(f'Error: {error}')
-        return None
-
+        LOGGER.error(f'Error run_compute_transaction: {error}')
+        return {}
+    
 
 def detect_transaction_tables(pdf_path: str) -> dict:
     doc = fitz.open(pdf_path)
@@ -569,16 +569,8 @@ def detect_transaction_tables(pdf_path: str) -> dict:
     }
 
 
-def parser_new_document(filename: str) -> tuple[dict[str, any], dict[str, any]]: 
+def parser_new_document(filename: str): 
     doc = fitz.open(filename)
-    full_texts = ''
-    for page in doc:
-        text = page.get_text()
-        full_texts += text 
-    
-    with open("output.txt", "w", encoding="utf-8") as f:
-        f.write(full_texts)
-    
 
     extracted_data = {}
 
@@ -600,9 +592,10 @@ def parser_new_document(filename: str) -> tuple[dict[str, any], dict[str, any]]:
 
         if share_before is not None and share_after is not None:
             if share_before == share_after:
-                print(f"Skipping {filename}: Shares unchanged.")
+                LOGGER.info(f"Skipping {filename}: Shares unchanged.")
                 return None
-    print(f'\nextracted_data_shares: {extracted_data}\n')
+            
+    LOGGER.info(f'extracted_data_shares: {extracted_data}\n')
 
     company_lookup = open_json('data/company/company_map.json')
 
@@ -618,6 +611,7 @@ def parser_new_document(filename: str) -> tuple[dict[str, any], dict[str, any]]:
     holder_name = extract_holder_name(text)
 
     symbol = extract_symbol_and_company_name(text)
+    
     # Cross verify symbol with company lookup
     if company_lookup and symbol: 
         company_name_lookup = company_lookup.get(symbol.get('symbol'))
@@ -627,53 +621,30 @@ def parser_new_document(filename: str) -> tuple[dict[str, any], dict[str, any]]:
     extracted_data.update(symbol)
     extracted_data.update(holder_name)
 
-    print(f'\nextracted_data holder and symbol: {extracted_data}\n')
+    LOGGER.info(f'\nextracted_data holder and symbol: {extracted_data}\n')
 
     # Extract price transaction
     detected_pages = detect_transaction_tables(filename)
     pages_index = detected_pages.get('pages')
-    print(f'\n raw pages index: {pages_index}')
 
-    full_text_lines = []    
+    full_text_lines = []
     for page_index in range(pages_index[0], pages_index[-1] + 1):
             page = doc[page_index]
             full_text_lines.append(page.get_text())
             
     combined_text = "\n".join(full_text_lines)
-    # print(f'\nraw combines text: {combined_text}')
-    # with open("output.txt", "w", encoding="utf-8") as f:
-    #     f.write(full_texts)
-    # end
 
     if "price_transaction" not in extracted_data:
         price_data_others, price_data_no_others = extract_price_transaction(combined_text)
-        print(f'raw price others: {price_data_others}\n')
-        print(f'\nraw price no others: {price_data_no_others}\n')
-
+       
         if price_data_others is not None:
             extracted_data_others = copy.deepcopy(extracted_data)
             extracted_data_others.update(price_data_others)
-            # print(f'\n raw others {extracted_data_others}')
+            
 
         if price_data_no_others is not None:
             extracted_data.update(price_data_no_others) 
-            # print(f'\n raw data no others {extracted_data}')
 
-    #     if price_data:
-    #         extracted_data.update(price_data)
-    #         print(f"Found price transaction on page {page_index + 1}\n")
-    
-    # # Compute top level transaction type, transaction value, price
-    # transaction_computed = compute_transactions(extracted_data.get('price_transaction'))
-    # extracted_data.update({'price': transaction_computed.get('price')})
-    # extracted_data.update({'transaction_value': transaction_computed.get('transaction_value')})
-    # extracted_data.update({'transaction_type': transaction_computed.get('transaction_type')})
-    
-    # # Calculate amount transaction
-    # amount_transaction = abs(extracted_data.get('holding_before') - extracted_data.get('holding_after'))
-    # extracted_data.update({'amount_transaction': amount_transaction})
-
-    # extracted_data.update({'source': filename})
     if price_data_no_others is not None:
         run_compute_transaction(extracted_data, filename)
     if price_data_others is not None:
