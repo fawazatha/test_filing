@@ -9,8 +9,6 @@ from pydantic import BaseModel, Field
 from src.common.log import get_logger
 from src.generate.articles.model.llm_collection import LLMCollection
 
-
-import os
 import time 
 
 
@@ -96,13 +94,11 @@ def _facts_to_bullets(filings_data: Dict[str, Any]) -> str:
 
 
 class Summarizer:
-    def __init__(self, use_llm: bool = False, provider: Optional[str] = None) -> None:
+    def __init__(self, use_llm: bool = False) -> None:
         # keep signature compat
         self.use_llm = use_llm
-        self.provider = (provider or os.getenv("LLM_PROVIDER") or "").strip().lower()
         self.llm_collection = LLMCollection()
         
-
     def create_prompt(self) -> ChatPromptTemplate: 
         return ChatPromptTemplate.from_messages(
             [
@@ -147,35 +143,33 @@ class Summarizer:
         if not self.use_llm:
             return _compose_rule_based(facts)
 
-        if self.provider == "gemini" and self._gem_client is not None:
+        filings_payload = _facts_to_bullets(facts)
 
-            filings_payload = _facts_to_bullets(facts)
+        parser = JsonOutputParser(pydantic_object=SummaryResult)
 
-            parser = JsonOutputParser(pydantic_object=SummaryResult)
+        for llm in self.llm_collection.get_llms(): 
+            try:
+                chain = self.create_prompt() | llm | parser
 
-            for llm in self.llm_collection.get_llms(): 
-                try:
-                    chain = self.create_prompt() | llm | parser
+                response = chain.invoke(
+                    {
+                        "filings": filings_payload,
+                        "format_instructions": parser.get_format_instructions(),
+                    }
+                )
 
-                    response = chain.invoke(
-                        {
-                            "filings": filings_payload,
-                            "format_instructions": parser.get_format_instructions(),
-                        }
-                    )
+                if not response.get("title") or not response.get("body"):
+                    LOGGER.info("[ERROR] LLM returned incomplete summary_result")
+                    continue
+                
+                time.sleep(10)
 
-                    if not response.get("title") or not response.get("body"):
-                        LOGGER.info("[ERROR] LLM returned incomplete summary_result")
-                        continue
-                    
-                    time.sleep(10)
-                    
-                    LOGGER.info(f'raw response: {response}')
-                    return response.get("title"), response.get("body")
+                LOGGER.info(f'raw response: {response}')
+                return response.get("title"), response.get("body")
 
-                except Exception as error: 
-                    LOGGER.error(f'Error during LLM response: {error}, use next model') 
-                    continue 
+            except Exception as error: 
+                LOGGER.error(f'Error during LLM response: {error}, use next model') 
+                continue 
 
         return _compose_rule_based(facts)
 

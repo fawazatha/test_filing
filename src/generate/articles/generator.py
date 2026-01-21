@@ -259,13 +259,13 @@ class ArticleGenerator:
         company_map_path: str = "data/company/company_map.json",
         latest_prices_path: str = "data/company/company_map.json",
         use_llm: bool = False,
-        groq_model: str = "llama-3.3-70b-versatile",
+        groq_model: Optional[str] = "llama-3.3-70b-versatile",
         prefer_symbol: bool = True,
         provider: Optional[str] = None,
         downloads_meta_path: str = "data/downloaded_pdfs.json",
     ):
         self.company = CompanyCache(company_map_path, latest_prices_path)
-        self.summarizer = Summarizer(use_llm=use_llm, provider=provider)
+        self.summarizer = Summarizer(use_llm=use_llm)
         self.classifier = Classifier(use_llm=use_llm, model_name=groq_model, provider=provider)
         self.prefer_symbol = prefer_symbol
         # filename -> url index
@@ -384,8 +384,8 @@ class ArticleGenerator:
 
         log.info('generating title body')
         title, body = self.summarizer.summarize_from_facts(filing)
-        print(f'title: {title}')
-        print(f'\nbody: {body}')
+        # print(f'title: {title}')
+        # print(f'\nbody: {body}')
         # title, body = _to_narrative_if_keyfacts(title, body, facts)
 
         # if not body.lstrip().lower().startswith("according to the published announcement"):
@@ -396,7 +396,7 @@ class ArticleGenerator:
 
         tags = self.classifier.infer_tags(filing, text_hint=None)
         sentiment = self.classifier.infer_sentiment(filing, text_hint=None)
-        print(f'\ntags: {tags}, sentiment: {sentiment}')
+        # print(f'\ntags: {tags}, sentiment: {sentiment}')
 
         # tags = 'test'
         # sentiment = 'test'
