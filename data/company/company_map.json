@@ -1,4 +1,32 @@
 {
+  "CLPI.JK": {
+    "company_name": "Colorpak Indonesia Tbk",
+    "sector": "Basic Materials",
+    "sub_sector": "Basic Materials",
+    "last_close_price": 1565.0,
+    "latest_close_date": "2026-01-20"
+  },
+  "CMPP.JK": {
+    "company_name": "PT AirAsia Indonesia Tbk",
+    "sector": "Transportation & Logistic",
+    "sub_sector": "Transportation",
+    "last_close_price": 103.0,
+    "latest_close_date": "2026-01-20"
+  },
+  "COAL.JK": {
+    "company_name": "PT Black Diamond Resources Tbk",
+    "sector": "Energy",
+    "sub_sector": "Oil, Gas & Coal",
+    "last_close_price": 90.0,
+    "latest_close_date": "2026-01-20"
+  },
+  "COIN.JK": {
+    "company_name": "PT Indokripto Koin Semesta Tbk",
+    "sector": "Financials",
+    "sub_sector": "Holding & Investment Companies",
+    "last_close_price": 2970.0,
+    "latest_close_date": "2026-01-20"
+  },
   "JKON.JK": {
     "company_name": "Jaya Konstruksi Manggala Pratama Tbk",
     "sector": "Infrastructures",
@@ -69,6 +97,13 @@
     "last_close_price": 815.0,
     "latest_close_date": "2026-01-20"
   },
+  "COWL.JK": {
+    "company_name": "Cowell Development Tbk",
+    "sector": "Properties & Real Estate",
+    "sub_sector": "Properties & Real Estate",
+    "last_close_price": 50.0,
+    "latest_close_date": "2026-01-20"
+  },
   "RIMO.JK": {
     "company_name": "PT Rimo International Lestari Tbk",
     "sector": "Properties & Real Estate",
@@ -109,13 +144,6 @@
     "sector": "Properties & Real Estate",
     "sub_sector": "Properties & Real Estate",
     "last_close_price": 48.0,
-    "latest_close_date": "2026-01-20"
-  },
-  "SCMA.JK": {
-    "company_name": "Surya Citra Media Tbk",
-    "sector": "Consumer Cyclicals",
-    "sub_sector": "Media & Entertainment",
-    "last_close_price": 322.0,
     "latest_close_date": "2026-01-20"
   },
   "SCPI.JK": {
@@ -160,11 +188,11 @@
     "last_close_price": 19200.0,
     "latest_close_date": "2026-01-20"
   },
-  "SIPD.JK": {
-    "company_name": "PT Sreeya Sewu Indonesia Tbk",
+  "CPIN.JK": {
+    "company_name": "Charoen Pokphand Indonesia Tbk",
     "sector": "Consumer Non-cyclicals",
     "sub_sector": "Food & Beverage",
-    "last_close_price": 1600.0,
+    "last_close_price": 4420.0,
     "latest_close_date": "2026-01-20"
   },
   "SKLT.JK": {
@@ -193,20 +221,6 @@
     "sector": "Basic Materials",
     "sub_sector": "Basic Materials",
     "last_close_price": 122.0,
-    "latest_close_date": "2026-01-20"
-  },
-  "SMGR.JK": {
-    "company_name": "Semen Indonesia (Persero) Tbk",
-    "sector": "Basic Materials",
-    "sub_sector": "Basic Materials",
-    "last_close_price": 2640.0,
-    "latest_close_date": "2026-01-20"
-  },
-  "SMKL.JK": {
-    "company_name": "PT Satyamitra Kemas Lestari Tbk",
-    "sector": "Basic Materials",
-    "sub_sector": "Basic Materials",
-    "last_close_price": 184.0,
     "latest_close_date": "2026-01-20"
   },
   "SMMA.JK": {
@@ -328,13 +342,6 @@
     "last_close_price": 81.0,
     "latest_close_date": "2026-01-20"
   },
-  "TBIG.JK": {
-    "company_name": "PT Tower Bersama Infrastructure Tbk",
-    "sector": "Infrastructures",
-    "sub_sector": "Telecommunication",
-    "last_close_price": 2230.0,
-    "latest_close_date": "2026-01-20"
-  },
   "TCID.JK": {
     "company_name": "Mandom Indonesia Tbk",
     "sector": "Consumer Non-cyclicals",
@@ -356,13 +363,6 @@
     "last_close_price": 9.0,
     "latest_close_date": "2026-01-20"
   },
-  "TFAS.JK": {
-    "company_name": "PT Telefast Indonesia Tbk",
-    "sector": "Technology",
-    "sub_sector": "Software & IT Services",
-    "last_close_price": 276.0,
-    "latest_close_date": "2026-01-20"
-  },
   "TGKA.JK": {
     "company_name": "Tigaraksa Satria Tbk",
     "sector": "Consumer Non-cyclicals",
@@ -382,13 +382,6 @@
     "sector": "Basic Materials",
     "sub_sector": "Basic Materials",
     "last_close_price": 3620.0,
-    "latest_close_date": "2026-01-20"
-  },
-  "TLDN.JK": {
-    "company_name": "PT Teladan Prima Agro Tbk",
-    "sector": "Consumer Non-cyclicals",
-    "sub_sector": "Food & Beverage",
-    "last_close_price": 680.0,
     "latest_close_date": "2026-01-20"
   },
   "TLKM.JK": {
@@ -440,11 +433,18 @@
     "last_close_price": 1065.0,
     "latest_close_date": "2026-01-20"
   },
-  "TPIA.JK": {
-    "company_name": "PT Chandra Asri Pacific Tbk",
-    "sector": "Basic Materials",
-    "sub_sector": "Basic Materials",
-    "last_close_price": 7000.0,
+  "CSMI.JK": {
+    "company_name": "PT Cipta Selera Murni Tbk.",
+    "sector": "Consumer Cyclicals",
+    "sub_sector": "Consumer Services",
+    "last_close_price": 186.0,
+    "latest_close_date": "2026-01-20"
+  },
+  "CTTH.JK": {
+    "company_name": "Citatah Tbk",
+    "sector": "Industrials",
+    "sub_sector": "Industrial Goods",
+    "last_close_price": 115.0,
     "latest_close_date": "2026-01-20"
   },
   "TPMA.JK": {
@@ -531,11 +531,340 @@
     "last_close_price": 9675.0,
     "latest_close_date": "2026-01-20"
   },
+  "DADA.JK": {
+    "company_name": "PT Diamond Citra Propertindo Tbk.",
+    "sector": "Properties & Real Estate",
+    "sub_sector": "Properties & Real Estate",
+    "last_close_price": 50.0,
+    "latest_close_date": "2026-01-20"
+  },
+  "DAYA.JK": {
+    "company_name": "PT Duta Intidaya Tbk.",
+    "sector": "Consumer Non-cyclicals",
+    "sub_sector": "Food & Staples Retailing",
+    "last_close_price": 1270.0,
+    "latest_close_date": "2026-01-20"
+  },
+  "DEAL.JK": {
+    "company_name": "PT Dewata Freightinternational Tbk",
+    "sector": "Transportation & Logistic",
+    "sub_sector": "Logistics & Deliveries",
+    "last_close_price": 6.0,
+    "latest_close_date": "2026-01-20"
+  },
+  "DEFI.JK": {
+    "company_name": "Danasupra Erapacific Tbk",
+    "sector": "Financials",
+    "sub_sector": "Financing Service",
+    "last_close_price": 270.0,
+    "latest_close_date": "2026-01-20"
+  },
+  "DFAM.JK": {
+    "company_name": "PT Dafam Property Indonesia Tbk",
+    "sector": "Consumer Cyclicals",
+    "sub_sector": "Consumer Services",
+    "last_close_price": 114.0,
+    "latest_close_date": "2026-01-20"
+  },
+  "DGWG.JK": {
+    "company_name": "PT Delta Giri Wacana Tbk",
+    "sector": "Basic Materials",
+    "sub_sector": "Basic Materials",
+    "last_close_price": 374.0,
+    "latest_close_date": "2026-01-20"
+  },
+  "DMND.JK": {
+    "company_name": "PT Diamond Food Indonesia Tbk",
+    "sector": "Consumer Non-cyclicals",
+    "sub_sector": "Food & Staples Retailing",
+    "last_close_price": 790.0,
+    "latest_close_date": "2026-01-20"
+  },
+  "DNET.JK": {
+    "company_name": "PT Indoritel Makmur Internasional Tbk",
+    "sector": "Financials",
+    "sub_sector": "Holding & Investment Companies",
+    "last_close_price": 9050.0,
+    "latest_close_date": "2026-01-20"
+  },
+  "EAST.JK": {
+    "company_name": "PT Eastparc Hotel Tbk",
+    "sector": "Consumer Cyclicals",
+    "sub_sector": "Consumer Services",
+    "last_close_price": 96.0,
+    "latest_close_date": "2026-01-20"
+  },
+  "ELPI.JK": {
+    "company_name": "PT Pelayaran Nasional Ekalya Purnamasari Tbk",
+    "sector": "Transportation & Logistic",
+    "sub_sector": "Logistics & Deliveries",
+    "last_close_price": 860.0,
+    "latest_close_date": "2026-01-20"
+  },
+  "EMDE.JK": {
+    "company_name": "Megapolitan Developments Tbk",
+    "sector": "Properties & Real Estate",
+    "sub_sector": "Properties & Real Estate",
+    "last_close_price": 101.0,
+    "latest_close_date": "2026-01-20"
+  },
+  "ENZO.JK": {
+    "company_name": "PT Morenzo Abadi Perkasa Tbk",
+    "sector": "Consumer Non-cyclicals",
+    "sub_sector": "Food & Beverage",
+    "last_close_price": 86.0,
+    "latest_close_date": "2026-01-20"
+  },
+  "ESIP.JK": {
+    "company_name": "PT Sinergi Inti Plastindo Tbk",
+    "sector": "Basic Materials",
+    "sub_sector": "Basic Materials",
+    "last_close_price": 84.0,
+    "latest_close_date": "2026-01-20"
+  },
+  "ETWA.JK": {
+    "company_name": "Eterindo Wahanatama Tbk",
+    "sector": "Basic Materials",
+    "sub_sector": "Basic Materials",
+    "last_close_price": 70.0,
+    "latest_close_date": "2026-01-20"
+  },
+  "FIMP.JK": {
+    "company_name": "PT Fimperkasa Utama Tbk",
+    "sector": "Infrastructures",
+    "sub_sector": "Heavy Constructions & Civil Engineering",
+    "last_close_price": 69.0,
+    "latest_close_date": "2026-01-20"
+  },
+  "FPNI.JK": {
+    "company_name": "PT Lotte Chemical Titan Tbk",
+    "sector": "Basic Materials",
+    "sub_sector": "Basic Materials",
+    "last_close_price": 810.0,
+    "latest_close_date": "2026-01-20"
+  },
+  "FUJI.JK": {
+    "company_name": "PT Fuji Finance Indonesia Tbk",
+    "sector": "Financials",
+    "sub_sector": "Financing Service",
+    "last_close_price": 695.0,
+    "latest_close_date": "2026-01-20"
+  },
+  "FUTR.JK": {
+    "company_name": "PT Futura Energi Global Tbk",
+    "sector": "Consumer Cyclicals",
+    "sub_sector": "Media & Entertainment",
+    "last_close_price": 620.0,
+    "latest_close_date": "2026-01-20"
+  },
+  "GAMA.JK": {
+    "company_name": "Aksara Global Development Tbk",
+    "sector": "Properties & Real Estate",
+    "sub_sector": "Properties & Real Estate",
+    "last_close_price": 18.0,
+    "latest_close_date": "2026-01-20"
+  },
+  "GDYR.JK": {
+    "company_name": "Goodyear Indonesia Tbk",
+    "sector": "Consumer Cyclicals",
+    "sub_sector": "Automobiles & Components",
+    "last_close_price": 1105.0,
+    "latest_close_date": "2026-01-20"
+  },
   "UNIQ.JK": {
     "company_name": "PT Ulima Nitra Tbk",
     "sector": "Energy",
     "sub_sector": "Oil, Gas & Coal",
     "last_close_price": 308.0,
+    "latest_close_date": "2026-01-20"
+  },
+  "GGRP.JK": {
+    "company_name": "PT Gunung Raja Paksi Tbk",
+    "sector": "Basic Materials",
+    "sub_sector": "Basic Materials",
+    "last_close_price": 338.0,
+    "latest_close_date": "2026-01-20"
+  },
+  "GMTD.JK": {
+    "company_name": "Gowa Makassar Tourism Development Tbk",
+    "sector": "Properties & Real Estate",
+    "sub_sector": "Properties & Real Estate",
+    "last_close_price": 2410.0,
+    "latest_close_date": "2026-01-20"
+  },
+  "GPSO.JK": {
+    "company_name": "PT Geoprima Solusi Tbk",
+    "sector": "Industrials",
+    "sub_sector": "Industrial Goods",
+    "last_close_price": 605.0,
+    "latest_close_date": "2026-01-20"
+  },
+  "GRPH.JK": {
+    "company_name": "PT Griptha Putra Persada Tbk",
+    "sector": "Consumer Cyclicals",
+    "sub_sector": "Consumer Services",
+    "last_close_price": 67.0,
+    "latest_close_date": "2026-01-20"
+  },
+  "GWSA.JK": {
+    "company_name": "PT Greenwood Sejahtera Tbk",
+    "sector": "Consumer Cyclicals",
+    "sub_sector": "Consumer Services",
+    "last_close_price": 240.0,
+    "latest_close_date": "2026-01-20"
+  },
+  "HATM.JK": {
+    "company_name": "PT Habco Trans Maritima Tbk",
+    "sector": "Transportation & Logistic",
+    "sub_sector": "Logistics & Deliveries",
+    "last_close_price": 360.0,
+    "latest_close_date": "2026-01-20"
+  },
+  "HGII.JK": {
+    "company_name": "PT Hero Global Investment Tbk",
+    "sector": "Infrastructures",
+    "sub_sector": "Utilities",
+    "last_close_price": 179.0,
+    "latest_close_date": "2026-01-20"
+  },
+  "HUMI.JK": {
+    "company_name": "PT Humpuss Maritim Internasional Tbk",
+    "sector": "Energy",
+    "sub_sector": "Oil, Gas & Coal",
+    "last_close_price": 356.0,
+    "latest_close_date": "2026-01-20"
+  },
+  "IDPR.JK": {
+    "company_name": "PT Indonesia Pondasi Raya Tbk",
+    "sector": "Infrastructures",
+    "sub_sector": "Heavy Constructions & Civil Engineering",
+    "last_close_price": 288.0,
+    "latest_close_date": "2026-01-20"
+  },
+  "IFII.JK": {
+    "company_name": "PT Indonesia Fibreboard Industry Tbk",
+    "sector": "Basic Materials",
+    "sub_sector": "Basic Materials",
+    "last_close_price": 290.0,
+    "latest_close_date": "2026-01-20"
+  },
+  "IKBI.JK": {
+    "company_name": "Sumi Indo Kabel Tbk",
+    "sector": "Industrials",
+    "sub_sector": "Industrial Goods",
+    "last_close_price": 530.0,
+    "latest_close_date": "2026-01-20"
+  },
+  "INAF.JK": {
+    "company_name": "Indofarma Tbk",
+    "sector": "Healthcare",
+    "sub_sector": "Pharmaceuticals & Health Care Research",
+    "last_close_price": 126.0,
+    "latest_close_date": "2026-01-20"
+  },
+  "INDO.JK": {
+    "company_name": "PT Royalindo Investa Wijaya Tbk",
+    "sector": "Properties & Real Estate",
+    "sub_sector": "Properties & Real Estate",
+    "last_close_price": 430.0,
+    "latest_close_date": "2026-01-20"
+  },
+  "INKP.JK": {
+    "company_name": "Indah Kiat Pulp & Paper Tbk",
+    "sector": "Basic Materials",
+    "sub_sector": "Basic Materials",
+    "last_close_price": 10100.0,
+    "latest_close_date": "2026-01-20"
+  },
+  "IRSX.JK": {
+    "company_name": "PT Folago Global Nusantara Tbk",
+    "sector": "Technology",
+    "sub_sector": "Software & IT Services",
+    "last_close_price": 735.0,
+    "latest_close_date": "2026-01-20"
+  },
+  "JARR.JK": {
+    "company_name": "PT Jhonlin Agro Raya Tbk",
+    "sector": "Consumer Non-cyclicals",
+    "sub_sector": "Food & Beverage",
+    "last_close_price": 3090.0,
+    "latest_close_date": "2026-01-20"
+  },
+  "KBLV.JK": {
+    "company_name": "First Media Tbk",
+    "sector": "Infrastructures",
+    "sub_sector": "Telecommunication",
+    "last_close_price": 184.0,
+    "latest_close_date": "2026-01-20"
+  },
+  "KOCI.JK": {
+    "company_name": "PT Kokoh Exa Nusantara",
+    "sector": "Properties & Real Estate",
+    "sub_sector": "Properties & Real Estate",
+    "last_close_price": 260.0,
+    "latest_close_date": "2026-01-20"
+  },
+  "KOPI.JK": {
+    "company_name": "PT Mitra Energi Persada Tbk",
+    "sector": "Energy",
+    "sub_sector": "Oil, Gas & Coal",
+    "last_close_price": 298.0,
+    "latest_close_date": "2026-01-20"
+  },
+  "LABA.JK": {
+    "company_name": "PT Green Power Group Tbk",
+    "sector": "Industrials",
+    "sub_sector": "Industrial Goods",
+    "last_close_price": 174.0,
+    "latest_close_date": "2026-01-20"
+  },
+  "LABS.JK": {
+    "company_name": "PT UBC Medical Indonesia Tbk",
+    "sector": "Healthcare",
+    "sub_sector": "Healthcare Equipment & Providers",
+    "last_close_price": 138.0,
+    "latest_close_date": "2026-01-20"
+  },
+  "LEAD.JK": {
+    "company_name": "PT Logindo Samudramakmur Tbk",
+    "sector": "Energy",
+    "sub_sector": "Oil, Gas & Coal",
+    "last_close_price": 228.0,
+    "latest_close_date": "2026-01-20"
+  },
+  "LFLO.JK": {
+    "company_name": "PT Imago Mulia Persada Tbk",
+    "sector": "Consumer Cyclicals",
+    "sub_sector": "Household Goods",
+    "last_close_price": 655.0,
+    "latest_close_date": "2026-01-20"
+  },
+  "LINK.JK": {
+    "company_name": "PT Link Net Tbk",
+    "sector": "Infrastructures",
+    "sub_sector": "Telecommunication",
+    "last_close_price": 3410.0,
+    "latest_close_date": "2026-01-20"
+  },
+  "LION.JK": {
+    "company_name": "Lion Metal Works Tbk",
+    "sector": "Industrials",
+    "sub_sector": "Industrial Services",
+    "last_close_price": 438.0,
+    "latest_close_date": "2026-01-20"
+  },
+  "LOPI.JK": {
+    "company_name": "PT Logisticsplus International Tbk",
+    "sector": "Transportation & Logistic",
+    "sub_sector": "Logistics & Deliveries",
+    "last_close_price": 159.0,
+    "latest_close_date": "2026-01-20"
+  },
+  "LPKR.JK": {
+    "company_name": "Lippo Karawaci Tbk",
+    "sector": "Properties & Real Estate",
+    "sub_sector": "Properties & Real Estate",
+    "last_close_price": 100.0,
     "latest_close_date": "2026-01-20"
   },
   "UNTD.JK": {
@@ -545,11 +874,137 @@
     "last_close_price": 101.0,
     "latest_close_date": "2026-01-20"
   },
+  "LPLI.JK": {
+    "company_name": "Star Pacific Tbk",
+    "sector": "Properties & Real Estate",
+    "sub_sector": "Properties & Real Estate",
+    "last_close_price": 382.0,
+    "latest_close_date": "2026-01-20"
+  },
+  "LPPS.JK": {
+    "company_name": "PT Lenox Pasifik Investama Tbk",
+    "sector": "Financials",
+    "sub_sector": "Holding & Investment Companies",
+    "last_close_price": 115.0,
+    "latest_close_date": "2026-01-20"
+  },
+  "LRNA.JK": {
+    "company_name": "PT Eka Sari Lorena Transport Tbk",
+    "sector": "Transportation & Logistic",
+    "sub_sector": "Transportation",
+    "last_close_price": 262.0,
+    "latest_close_date": "2026-01-20"
+  },
+  "MAHA.JK": {
+    "company_name": "PT Mandiri Herindo Adiperkasa Tbk",
+    "sector": "Energy",
+    "sub_sector": "Oil, Gas & Coal",
+    "last_close_price": 194.0,
+    "latest_close_date": "2026-01-20"
+  },
+  "MANG.JK": {
+    "company_name": "PT Manggung Polahraya Tbk",
+    "sector": "Infrastructures",
+    "sub_sector": "Heavy Constructions & Civil Engineering",
+    "last_close_price": 69.0,
+    "latest_close_date": "2026-01-20"
+  },
+  "MDIY.JK": {
+    "company_name": "PT Daya Intiguna Yasa Tbk",
+    "sector": "Consumer Cyclicals",
+    "sub_sector": "Retailing",
+    "last_close_price": 990.0,
+    "latest_close_date": "2026-01-20"
+  },
+  "MDKA.JK": {
+    "company_name": "PT Merdeka Copper Gold Tbk",
+    "sector": "Basic Materials",
+    "sub_sector": "Basic Materials",
+    "last_close_price": 3210.0,
+    "latest_close_date": "2026-01-20"
+  },
+  "MEDS.JK": {
+    "company_name": "PT Hetzer Medical Indonesia Tbk",
+    "sector": "Healthcare",
+    "sub_sector": "Healthcare Equipment & Providers",
+    "last_close_price": 85.0,
+    "latest_close_date": "2026-01-20"
+  },
+  "MGNA.JK": {
+    "company_name": "PT Magna Investama Mandiri Tbk",
+    "sector": "Financials",
+    "sub_sector": "Holding & Investment Companies",
+    "last_close_price": 298.0,
+    "latest_close_date": "2026-01-20"
+  },
+  "MGRO.JK": {
+    "company_name": "PT Mahkota Group Tbk",
+    "sector": "Consumer Non-cyclicals",
+    "sub_sector": "Food & Beverage",
+    "last_close_price": 730.0,
+    "latest_close_date": "2026-01-20"
+  },
+  "MLPL.JK": {
+    "company_name": "Multipolar Tbk",
+    "sector": "Consumer Non-cyclicals",
+    "sub_sector": "Food & Staples Retailing",
+    "last_close_price": 147.0,
+    "latest_close_date": "2026-01-20"
+  },
+  "MREI.JK": {
+    "company_name": "Maskapai Reasuransi Indonesia Tbk",
+    "sector": "Financials",
+    "sub_sector": "Insurance",
+    "last_close_price": 1210.0,
+    "latest_close_date": "2026-01-20"
+  },
+  "MSKY.JK": {
+    "company_name": "MNC Sky Vision Tbk",
+    "sector": "Consumer Cyclicals",
+    "sub_sector": "Media & Entertainment",
+    "last_close_price": 119.0,
+    "latest_close_date": "2026-01-20"
+  },
+  "MTEL.JK": {
+    "company_name": "PT Dayamitra Telekomunikasi Tbk",
+    "sector": "Infrastructures",
+    "sub_sector": "Telecommunication",
+    "last_close_price": 615.0,
+    "latest_close_date": "2026-01-20"
+  },
   "VISI.JK": {
     "company_name": "PT Satu Visi Putra Tbk",
     "sector": "Industrials",
     "sub_sector": "Industrial Services",
     "last_close_price": 462.0,
+    "latest_close_date": "2026-01-20"
+  },
+  "NAYZ.JK": {
+    "company_name": "PT Hassana Boga Sejahtera Tbk",
+    "sector": "Consumer Non-cyclicals",
+    "sub_sector": "Food & Beverage",
+    "last_close_price": 67.0,
+    "latest_close_date": "2026-01-20"
+  },
+  "NFCX.JK": {
+    "company_name": "PT NFC Indonesia Tbk",
+    "sector": "Technology",
+    "sub_sector": "Software & IT Services",
+    "last_close_price": 1410.0,
+    "latest_close_date": "2026-01-20"
+  },
+  "NICK.JK": {
+    "company_name": "PT Charnic Capital Tbk",
+    "sector": "Financials",
+    "sub_sector": "Holding & Investment Companies",
+    "last_close_price": 1290.0,
+    "latest_close_date": "2026-01-20"
+  },
+  "NSSS.JK": {
+    "company_name": "PT Nusantara Sawit Sejahtera Tbk",
+    "sector": "Consumer Non-cyclicals",
+    "sub_sector": "Food & Beverage",
+    "last_close_price": 1375.0,
     "latest_close_date": "2026-01-20"
   },
   "VIVA.JK": {
@@ -559,32 +1014,207 @@
     "last_close_price": 66.0,
     "latest_close_date": "2026-01-20"
   },
-  "VKTR.JK": {
-    "company_name": "PT VKTR Teknologi Mobilitas Tbk",
+  "NTBK.JK": {
+    "company_name": "PT Nusatama Berkah Tbk",
+    "sector": "Industrials",
+    "sub_sector": "Industrial Goods",
+    "last_close_price": 120.0,
+    "latest_close_date": "2026-01-20"
+  },
+  "OBAT.JK": {
+    "company_name": "PT Brigit Biofarmaka Teknologi Tbk",
+    "sector": "Healthcare",
+    "sub_sector": "Pharmaceuticals & Health Care Research",
+    "last_close_price": 390.0,
+    "latest_close_date": "2026-01-20"
+  },
+  "OBMD.JK": {
+    "company_name": "PT OBM Drilchem Tbk",
+    "sector": "Basic Materials",
+    "sub_sector": "Basic Materials",
+    "last_close_price": 294.0,
+    "latest_close_date": "2026-01-20"
+  },
+  "OLIV.JK": {
+    "company_name": "PT Oscar Mitra Sukses Sejahtera Tbk",
     "sector": "Consumer Cyclicals",
-    "sub_sector": "Automobiles & Components",
-    "last_close_price": 1200.0,
+    "sub_sector": "Household Goods",
+    "last_close_price": 78.0,
     "latest_close_date": "2026-01-20"
   },
-  "VRNA.JK": {
-    "company_name": "PT Mizuho Leasing Indonesia Tbk",
-    "sector": "Financials",
-    "sub_sector": "Financing Service",
-    "last_close_price": 90.0,
+  "OMED.JK": {
+    "company_name": "PT Jayamas Medica Industri Tbk",
+    "sector": "Healthcare",
+    "sub_sector": "Healthcare Equipment & Providers",
+    "last_close_price": 234.0,
     "latest_close_date": "2026-01-20"
   },
-  "WAPO.JK": {
-    "company_name": "Wahana Pronatural Tbk",
-    "sector": "Consumer Non-cyclicals",
-    "sub_sector": "Food & Beverage",
-    "last_close_price": 183.0,
+  "OPMS.JK": {
+    "company_name": "PT Optima Prima Metal Sinergi Tbk",
+    "sector": "Basic Materials",
+    "sub_sector": "Basic Materials",
+    "last_close_price": 190.0,
     "latest_close_date": "2026-01-20"
   },
-  "WEGE.JK": {
-    "company_name": "PT Wijaya Karya Bangunan Gedung Tbk",
+  "PACK.JK": {
+    "company_name": "PT Abadi Nusantara Hijau Investama Tbk",
+    "sector": "Basic Materials",
+    "sub_sector": "Basic Materials",
+    "last_close_price": 430.0,
+    "latest_close_date": "2026-01-20"
+  },
+  "PANI.JK": {
+    "company_name": "PT Pantai Indah Kapuk Dua Tbk.",
+    "sector": "Properties & Real Estate",
+    "sub_sector": "Properties & Real Estate",
+    "last_close_price": 12575.0,
+    "latest_close_date": "2026-01-20"
+  },
+  "POWR.JK": {
+    "company_name": "PT Cikarang Listrindo Tbk",
+    "sector": "Infrastructures",
+    "sub_sector": "Utilities",
+    "last_close_price": 710.0,
+    "latest_close_date": "2026-01-20"
+  },
+  "PPRI.JK": {
+    "company_name": "PT Paperocks Indonesia Tbk",
+    "sector": "Basic Materials",
+    "sub_sector": "Basic Materials",
+    "last_close_price": 332.0,
+    "latest_close_date": "2026-01-20"
+  },
+  "PRIM.JK": {
+    "company_name": "PT Royal Prima Tbk",
+    "sector": "Healthcare",
+    "sub_sector": "Healthcare Equipment & Providers",
+    "last_close_price": 87.0,
+    "latest_close_date": "2026-01-20"
+  },
+  "PSSI.JK": {
+    "company_name": "PT IMC Pelita Logistik Tbk",
+    "sector": "Energy",
+    "sub_sector": "Oil, Gas & Coal",
+    "last_close_price": 366.0,
+    "latest_close_date": "2026-01-20"
+  },
+  "PZZA.JK": {
+    "company_name": "PT Sarimelati Kencana Tbk",
+    "sector": "Consumer Cyclicals",
+    "sub_sector": "Consumer Services",
+    "last_close_price": 226.0,
+    "latest_close_date": "2026-01-20"
+  },
+  "RONY.JK": {
+    "company_name": "PT Aracord Nusantara Group Tbk",
     "sector": "Infrastructures",
     "sub_sector": "Heavy Constructions & Civil Engineering",
-    "last_close_price": 71.0,
+    "last_close_price": 4300.0,
+    "latest_close_date": "2026-01-20"
+  },
+  "SAMF.JK": {
+    "company_name": "PT Saraswanti Anugerah Makmur Tbk",
+    "sector": "Basic Materials",
+    "sub_sector": "Basic Materials",
+    "last_close_price": 332.0,
+    "latest_close_date": "2026-01-20"
+  },
+  "SCCO.JK": {
+    "company_name": "PT Supreme Cable Manufacturing & Commerce Tbk",
+    "sector": "Industrials",
+    "sub_sector": "Industrial Goods",
+    "last_close_price": 2450.0,
+    "latest_close_date": "2026-01-20"
+  },
+  "SEMA.JK": {
+    "company_name": "PT Semacom Integrated Tbk",
+    "sector": "Energy",
+    "sub_sector": "Alternative Energy",
+    "last_close_price": 131.0,
+    "latest_close_date": "2026-01-20"
+  },
+  "SGRO.JK": {
+    "company_name": "PT Sampoerna Agro Tbk",
+    "sector": "Consumer Non-cyclicals",
+    "sub_sector": "Food & Beverage",
+    "last_close_price": 7700.0,
+    "latest_close_date": "2026-01-20"
+  },
+  "SKBM.JK": {
+    "company_name": "Sekar Bumi Tbk",
+    "sector": "Consumer Non-cyclicals",
+    "sub_sector": "Food & Beverage",
+    "last_close_price": 610.0,
+    "latest_close_date": "2026-01-20"
+  },
+  "SLIS.JK": {
+    "company_name": "PT Gaya Abadi Sempurna Tbk",
+    "sector": "Consumer Cyclicals",
+    "sub_sector": "Retailing",
+    "last_close_price": 121.0,
+    "latest_close_date": "2026-01-20"
+  },
+  "SMSM.JK": {
+    "company_name": "Selamat Sempurna Tbk",
+    "sector": "Consumer Cyclicals",
+    "sub_sector": "Automobiles & Components",
+    "last_close_price": 1765.0,
+    "latest_close_date": "2026-01-20"
+  },
+  "SOSS.JK": {
+    "company_name": "PT Shield On Service Tbk",
+    "sector": "Industrials",
+    "sub_sector": "Industrial Services",
+    "last_close_price": 900.0,
+    "latest_close_date": "2026-01-20"
+  },
+  "TKIM.JK": {
+    "company_name": "Pabrik Kertas Tjiwi Kimia Tbk",
+    "sector": "Basic Materials",
+    "sub_sector": "Basic Materials",
+    "last_close_price": 8050.0,
+    "latest_close_date": "2026-01-20"
+  },
+  "TOTO.JK": {
+    "company_name": "Surya Toto Indonesia Tbk",
+    "sector": "Industrials",
+    "sub_sector": "Industrial Goods",
+    "last_close_price": 274.0,
+    "latest_close_date": "2026-01-20"
+  },
+  "TRIS.JK": {
+    "company_name": "Trisula International Tbk",
+    "sector": "Consumer Cyclicals",
+    "sub_sector": "Apparel & Luxury Goods",
+    "last_close_price": 244.0,
+    "latest_close_date": "2026-01-20"
+  },
+  "URBN.JK": {
+    "company_name": "PT Urban Jakarta Propertindo Tbk",
+    "sector": "Properties & Real Estate",
+    "sub_sector": "Properties & Real Estate",
+    "last_close_price": 216.0,
+    "latest_close_date": "2026-01-20"
+  },
+  "VERN.JK": {
+    "company_name": "PT Verona Indah Pictures Tbk",
+    "sector": "Consumer Cyclicals",
+    "sub_sector": "Media & Entertainment",
+    "last_close_price": 131.0,
+    "latest_close_date": "2026-01-20"
+  },
+  "VICI.JK": {
+    "company_name": "PT Victoria Care Indonesia Tbk",
+    "sector": "Consumer Non-cyclicals",
+    "sub_sector": "Nondurable Household Products",
+    "last_close_price": 745.0,
+    "latest_close_date": "2026-01-20"
+  },
+  "WIFI.JK": {
+    "company_name": "PT Solusi Sinergi Digital Tbk",
+    "sector": "Technology",
+    "sub_sector": "Software & IT Services",
+    "last_close_price": 3100.0,
     "latest_close_date": "2026-01-20"
   },
   "WEHA.JK": {
@@ -594,11 +1224,627 @@
     "last_close_price": 149.0,
     "latest_close_date": "2026-01-20"
   },
+  "TPIA.JK": {
+    "company_name": "PT Chandra Asri Pacific Tbk",
+    "sector": "Basic Materials",
+    "sub_sector": "Basic Materials",
+    "last_close_price": 7000.0,
+    "latest_close_date": "2026-01-20"
+  },
+  "TLDN.JK": {
+    "company_name": "PT Teladan Prima Agro Tbk",
+    "sector": "Consumer Non-cyclicals",
+    "sub_sector": "Food & Beverage",
+    "last_close_price": 680.0,
+    "latest_close_date": "2026-01-20"
+  },
+  "TFAS.JK": {
+    "company_name": "PT Telefast Indonesia Tbk",
+    "sector": "Technology",
+    "sub_sector": "Software & IT Services",
+    "last_close_price": 276.0,
+    "latest_close_date": "2026-01-20"
+  },
+  "TBIG.JK": {
+    "company_name": "PT Tower Bersama Infrastructure Tbk",
+    "sector": "Infrastructures",
+    "sub_sector": "Telecommunication",
+    "last_close_price": 2230.0,
+    "latest_close_date": "2026-01-20"
+  },
+  "SMKL.JK": {
+    "company_name": "PT Satyamitra Kemas Lestari Tbk",
+    "sector": "Basic Materials",
+    "sub_sector": "Basic Materials",
+    "last_close_price": 184.0,
+    "latest_close_date": "2026-01-20"
+  },
+  "SMGR.JK": {
+    "company_name": "Semen Indonesia (Persero) Tbk",
+    "sector": "Basic Materials",
+    "sub_sector": "Basic Materials",
+    "last_close_price": 2640.0,
+    "latest_close_date": "2026-01-20"
+  },
+  "SIPD.JK": {
+    "company_name": "PT Sreeya Sewu Indonesia Tbk",
+    "sector": "Consumer Non-cyclicals",
+    "sub_sector": "Food & Beverage",
+    "last_close_price": 1600.0,
+    "latest_close_date": "2026-01-20"
+  },
+  "SCMA.JK": {
+    "company_name": "Surya Citra Media Tbk",
+    "sector": "Consumer Cyclicals",
+    "sub_sector": "Media & Entertainment",
+    "last_close_price": 322.0,
+    "latest_close_date": "2026-01-20"
+  },
+  "VKTR.JK": {
+    "company_name": "PT VKTR Teknologi Mobilitas Tbk",
+    "sector": "Consumer Cyclicals",
+    "sub_sector": "Automobiles & Components",
+    "last_close_price": 1200.0,
+    "latest_close_date": "2026-01-20"
+  },
+  "PSAB.JK": {
+    "company_name": "J Resources Asia Pasifik Tbk",
+    "sector": "Basic Materials",
+    "sub_sector": "Basic Materials",
+    "last_close_price": 655.0,
+    "latest_close_date": "2026-01-20"
+  },
+  "PRAY.JK": {
+    "company_name": "PT Famon Awal Bros Sedaya Tbk",
+    "sector": "Healthcare",
+    "sub_sector": "Healthcare Equipment & Providers",
+    "last_close_price": 855.0,
+    "latest_close_date": "2026-01-20"
+  },
+  "POLA.JK": {
+    "company_name": "PT Pool Advista Finance Tbk",
+    "sector": "Financials",
+    "sub_sector": "Financing Service",
+    "last_close_price": 92.0,
+    "latest_close_date": "2026-01-20"
+  },
+  "PNBN.JK": {
+    "company_name": "Bank Pan Indonesia Tbk",
+    "sector": "Financials",
+    "sub_sector": "Banks",
+    "last_close_price": 1115.0,
+    "latest_close_date": "2026-01-20"
+  },
+  "PJHB.JK": {
+    "company_name": "PT Pelayaran Jaya Hidup Baru Tbk",
+    "sector": "Transportation & Logistic",
+    "sub_sector": "Logistics & Deliveries",
+    "last_close_price": 342.0,
+    "latest_close_date": "2026-01-20"
+  },
+  "PGLI.JK": {
+    "company_name": "Pembangunan Graha Lestari Indah Tbk",
+    "sector": "Consumer Cyclicals",
+    "sub_sector": "Consumer Services",
+    "last_close_price": 282.0,
+    "latest_close_date": "2026-01-20"
+  },
+  "PGJO.JK": {
+    "company_name": "PT Bahtera Bumi Raya Tbk",
+    "sector": "Technology",
+    "sub_sector": "Software & IT Services",
+    "last_close_price": 990.0,
+    "latest_close_date": "2026-01-20"
+  },
+  "PDES.JK": {
+    "company_name": "Destinasi Tirta Nusantara Tbk",
+    "sector": "Consumer Cyclicals",
+    "sub_sector": "Consumer Services",
+    "last_close_price": 565.0,
+    "latest_close_date": "2026-01-20"
+  },
+  "PBSA.JK": {
+    "company_name": "PT Paramita Bangun Sarana Tbk",
+    "sector": "Infrastructures",
+    "sub_sector": "Heavy Constructions & Civil Engineering",
+    "last_close_price": 2450.0,
+    "latest_close_date": "2026-01-20"
+  },
+  "PART.JK": {
+    "company_name": "PT Cipta Perdana Lancar Tbk",
+    "sector": "Consumer Cyclicals",
+    "sub_sector": "Automobiles & Components",
+    "last_close_price": 113.0,
+    "latest_close_date": "2026-01-20"
+  },
+  "PANR.JK": {
+    "company_name": "Panorama Sentrawisata Tbk",
+    "sector": "Consumer Cyclicals",
+    "sub_sector": "Consumer Services",
+    "last_close_price": 630.0,
+    "latest_close_date": "2026-01-20"
+  },
+  "PADA.JK": {
+    "company_name": "PT Personel Alih Daya Tbk",
+    "sector": "Industrials",
+    "sub_sector": "Industrial Services",
+    "last_close_price": 306.0,
+    "latest_close_date": "2026-01-20"
+  },
+  "OASA.JK": {
+    "company_name": "PT Maharaksa Biru Energi Tbk",
+    "sector": "Infrastructures",
+    "sub_sector": "Telecommunication",
+    "last_close_price": 486.0,
+    "latest_close_date": "2026-01-20"
+  },
+  "NRCA.JK": {
+    "company_name": "PT Nusa Raya Cipta Tbk",
+    "sector": "Infrastructures",
+    "sub_sector": "Heavy Constructions & Civil Engineering",
+    "last_close_price": 1275.0,
+    "latest_close_date": "2026-01-20"
+  },
+  "NOBU.JK": {
+    "company_name": "PT Bank Nationalnobu Tbk",
+    "sector": "Financials",
+    "sub_sector": "Banks",
+    "last_close_price": 545.0,
+    "latest_close_date": "2026-01-20"
+  },
+  "NINE.JK": {
+    "company_name": "PT Techno9 Indonesia Tbk",
+    "sector": "Technology",
+    "sub_sector": "Technology Hardware & Equipment",
+    "last_close_price": 260.0,
+    "latest_close_date": "2026-01-20"
+  },
+  "NELY.JK": {
+    "company_name": "Pelayaran Nelly Dwi Putri Tbk",
+    "sector": "Transportation & Logistic",
+    "sub_sector": "Logistics & Deliveries",
+    "last_close_price": 458.0,
+    "latest_close_date": "2026-01-20"
+  },
+  "NATO.JK": {
+    "company_name": "PT Surya Permata Andalan Tbk",
+    "sector": "Consumer Cyclicals",
+    "sub_sector": "Consumer Services",
+    "last_close_price": 775.0,
+    "latest_close_date": "2026-01-20"
+  },
+  "NANO.JK": {
+    "company_name": "PT Nanotech Indonesia Global Tbk",
+    "sector": "Consumer Non-cyclicals",
+    "sub_sector": "Nondurable Household Products",
+    "last_close_price": 63.0,
+    "latest_close_date": "2026-01-20"
+  },
+  "NAIK.JK": {
+    "company_name": "PT Adiwarna Anugerah Abadi Tbk",
+    "sector": "Industrials",
+    "sub_sector": "Industrial Services",
+    "last_close_price": 134.0,
+    "latest_close_date": "2026-01-20"
+  },
+  "MYOR.JK": {
+    "company_name": "Mayora Indah Tbk",
+    "sector": "Consumer Non-cyclicals",
+    "sub_sector": "Food & Beverage",
+    "last_close_price": 2150.0,
+    "latest_close_date": "2026-01-20"
+  },
+  "MTMH.JK": {
+    "company_name": "PT Murni Sadar Tbk",
+    "sector": "Healthcare",
+    "sub_sector": "Healthcare Equipment & Providers",
+    "last_close_price": 1190.0,
+    "latest_close_date": "2026-01-20"
+  },
+  "MTLA.JK": {
+    "company_name": "Metropolitan Land Tbk",
+    "sector": "Properties & Real Estate",
+    "sub_sector": "Properties & Real Estate",
+    "last_close_price": 645.0,
+    "latest_close_date": "2026-01-20"
+  },
+  "MSIN.JK": {
+    "company_name": "PT MNC Digital Entertainment Tbk",
+    "sector": "Consumer Cyclicals",
+    "sub_sector": "Media & Entertainment",
+    "last_close_price": 486.0,
+    "latest_close_date": "2026-01-20"
+  },
+  "MPXL.JK": {
+    "company_name": "PT MPX Logistics International Tbk",
+    "sector": "Transportation & Logistic",
+    "sub_sector": "Logistics & Deliveries",
+    "last_close_price": 183.0,
+    "latest_close_date": "2026-01-20"
+  },
+  "MPPA.JK": {
+    "company_name": "Matahari Putra Prima Tbk",
+    "sector": "Consumer Non-cyclicals",
+    "sub_sector": "Food & Staples Retailing",
+    "last_close_price": 61.0,
+    "latest_close_date": "2026-01-20"
+  },
+  "MPOW.JK": {
+    "company_name": "PT Megapower Makmur Tbk",
+    "sector": "Infrastructures",
+    "sub_sector": "Utilities",
+    "last_close_price": 134.0,
+    "latest_close_date": "2026-01-20"
+  },
+  "MPIX.JK": {
+    "company_name": "PT Mitra Pedagang Indonesia Tbk",
+    "sector": "Technology",
+    "sub_sector": "Software & IT Services",
+    "last_close_price": 76.0,
+    "latest_close_date": "2026-01-20"
+  },
+  "MORA.JK": {
+    "company_name": "PT Mora Telematika Indonesia Tbk",
+    "sector": "Infrastructures",
+    "sub_sector": "Telecommunication",
+    "last_close_price": 13925.0,
+    "latest_close_date": "2026-01-20"
+  },
+  "MMLP.JK": {
+    "company_name": "PT Mega Manunggal Property Tbk",
+    "sector": "Properties & Real Estate",
+    "sub_sector": "Properties & Real Estate",
+    "last_close_price": 565.0,
+    "latest_close_date": "2026-01-20"
+  },
+  "MINA.JK": {
+    "company_name": "PT Sanurhasta Mitra Tbk",
+    "sector": "Consumer Cyclicals",
+    "sub_sector": "Consumer Services",
+    "last_close_price": 630.0,
+    "latest_close_date": "2026-01-20"
+  },
+  "MICE.JK": {
+    "company_name": "Multi Indocitra Tbk",
+    "sector": "Consumer Cyclicals",
+    "sub_sector": "Household Goods",
+    "last_close_price": 575.0,
+    "latest_close_date": "2026-01-20"
+  },
+  "META.JK": {
+    "company_name": "Nusantara Infrastructure Tbk",
+    "sector": "Infrastructures",
+    "sub_sector": "Transportation Infrastructure",
+    "last_close_price": 238.0,
+    "latest_close_date": "2026-01-20"
+  },
+  "MEDC.JK": {
+    "company_name": "PT Medco Energi Internasional Tbk",
+    "sector": "Energy",
+    "sub_sector": "Oil, Gas & Coal",
+    "last_close_price": 1470.0,
+    "latest_close_date": "2026-01-20"
+  },
+  "MCOR.JK": {
+    "company_name": "PT Bank China Construction Bank Indonesia Tbk",
+    "sector": "Financials",
+    "sub_sector": "Banks",
+    "last_close_price": 78.0,
+    "latest_close_date": "2026-01-20"
+  },
+  "VRNA.JK": {
+    "company_name": "PT Mizuho Leasing Indonesia Tbk",
+    "sector": "Financials",
+    "sub_sector": "Financing Service",
+    "last_close_price": 90.0,
+    "latest_close_date": "2026-01-20"
+  },
+  "MCAS.JK": {
+    "company_name": "PT M Cash Integrasi Tbk",
+    "sector": "Technology",
+    "sub_sector": "Software & IT Services",
+    "last_close_price": 585.0,
+    "latest_close_date": "2026-01-20"
+  },
+  "MAYA.JK": {
+    "company_name": "PT Bank Mayapada Internasional Tbk",
+    "sector": "Financials",
+    "sub_sector": "Banks",
+    "last_close_price": 242.0,
+    "latest_close_date": "2026-01-20"
+  },
+  "MAXI.JK": {
+    "company_name": "PT Maxindo Karya Anugerah Tbk",
+    "sector": "Consumer Non-cyclicals",
+    "sub_sector": "Food & Beverage",
+    "last_close_price": 54.0,
+    "latest_close_date": "2026-01-20"
+  },
+  "MAPA.JK": {
+    "company_name": "PT MAP Aktif Adiperkasa Tbk",
+    "sector": "Consumer Cyclicals",
+    "sub_sector": "Retailing",
+    "last_close_price": 625.0,
+    "latest_close_date": "2026-01-20"
+  },
+  "LUCY.JK": {
+    "company_name": "PT Lima Dua Lima Tiga Tbk",
+    "sector": "Consumer Cyclicals",
+    "sub_sector": "Consumer Services",
+    "last_close_price": 835.0,
+    "latest_close_date": "2026-01-20"
+  },
+  "LPGI.JK": {
+    "company_name": "Lippo General Insurance Tbk",
+    "sector": "Financials",
+    "sub_sector": "Insurance",
+    "last_close_price": 695.0,
+    "latest_close_date": "2026-01-20"
+  },
+  "WAPO.JK": {
+    "company_name": "Wahana Pronatural Tbk",
+    "sector": "Consumer Non-cyclicals",
+    "sub_sector": "Food & Beverage",
+    "last_close_price": 183.0,
+    "latest_close_date": "2026-01-20"
+  },
+  "LAPD.JK": {
+    "company_name": "Leyand International Tbk",
+    "sector": "Infrastructures",
+    "sub_sector": "Utilities",
+    "last_close_price": 150.0,
+    "latest_close_date": "2026-01-20"
+  },
+  "KRYA.JK": {
+    "company_name": "PT Bangun Karya Perkasa Jaya Tbk",
+    "sector": "Infrastructures",
+    "sub_sector": "Heavy Constructions & Civil Engineering",
+    "last_close_price": 145.0,
+    "latest_close_date": "2026-01-20"
+  },
+  "KRAS.JK": {
+    "company_name": "Krakatau Steel (Persero) Tbk",
+    "sector": "Basic Materials",
+    "sub_sector": "Basic Materials",
+    "last_close_price": 356.0,
+    "latest_close_date": "2026-01-20"
+  },
+  "KPIG.JK": {
+    "company_name": "MNC Tourism Indonesia Tbk",
+    "sector": "Consumer Cyclicals",
+    "sub_sector": "Consumer Services",
+    "last_close_price": 284.0,
+    "latest_close_date": "2026-01-20"
+  },
+  "KOTA.JK": {
+    "company_name": "PT DMS Propertindo Tbk",
+    "sector": "Consumer Cyclicals",
+    "sub_sector": "Consumer Services",
+    "last_close_price": 68.0,
+    "latest_close_date": "2026-01-20"
+  },
+  "KONI.JK": {
+    "company_name": "Perdana Bangun Pusaka Tbk",
+    "sector": "Industrials",
+    "sub_sector": "Industrial Services",
+    "last_close_price": 2180.0,
+    "latest_close_date": "2026-01-20"
+  },
+  "KLBF.JK": {
+    "company_name": "Kalbe Farma Tbk",
+    "sector": "Healthcare",
+    "sub_sector": "Pharmaceuticals & Health Care Research",
+    "last_close_price": 1190.0,
+    "latest_close_date": "2026-01-20"
+  },
+  "KKES.JK": {
+    "company_name": "PT Kusuma Kemindo Sentosa Tbk",
+    "sector": "Basic Materials",
+    "sub_sector": "Basic Materials",
+    "last_close_price": 40.0,
+    "latest_close_date": "2026-01-20"
+  },
+  "JSPT.JK": {
+    "company_name": "Jakarta Setiabudi Internasional Tbk",
+    "sector": "Consumer Cyclicals",
+    "sub_sector": "Consumer Services",
+    "last_close_price": 3150.0,
+    "latest_close_date": "2026-01-20"
+  },
+  "ITMG.JK": {
+    "company_name": "Indo Tambangraya Megah Tbk",
+    "sector": "Energy",
+    "sub_sector": "Oil, Gas & Coal",
+    "last_close_price": 22400.0,
+    "latest_close_date": "2026-01-20"
+  },
+  "ISAT.JK": {
+    "company_name": "PT Indosat Tbk",
+    "sector": "Infrastructures",
+    "sub_sector": "Telecommunication",
+    "last_close_price": 2240.0,
+    "latest_close_date": "2026-01-20"
+  },
+  "INDY.JK": {
+    "company_name": "Indika Energy Tbk",
+    "sector": "Energy",
+    "sub_sector": "Oil, Gas & Coal",
+    "last_close_price": 3670.0,
+    "latest_close_date": "2026-01-20"
+  },
+  "INCI.JK": {
+    "company_name": "Intanwijaya Internasional Tbk",
+    "sector": "Basic Materials",
+    "sub_sector": "Basic Materials",
+    "last_close_price": 740.0,
+    "latest_close_date": "2026-01-20"
+  },
+  "INCF.JK": {
+    "company_name": "PT Indo Komoditi Korpora Tbk",
+    "sector": "Basic Materials",
+    "sub_sector": "Basic Materials",
+    "last_close_price": 73.0,
+    "latest_close_date": "2026-01-20"
+  },
+  "WEGE.JK": {
+    "company_name": "PT Wijaya Karya Bangunan Gedung Tbk",
+    "sector": "Infrastructures",
+    "sub_sector": "Heavy Constructions & Civil Engineering",
+    "last_close_price": 71.0,
+    "latest_close_date": "2026-01-20"
+  },
+  "INAI.JK": {
+    "company_name": "Indal Aluminium Industry Tbk",
+    "sector": "Basic Materials",
+    "sub_sector": "Basic Materials",
+    "last_close_price": 186.0,
+    "latest_close_date": "2026-01-20"
+  },
+  "IIKP.JK": {
+    "company_name": "Inti Agri Resources Tbk",
+    "sector": "Consumer Cyclicals",
+    "sub_sector": "Leisure Goods",
+    "last_close_price": 50.0,
+    "latest_close_date": "2026-01-20"
+  },
+  "IFSH.JK": {
+    "company_name": "PT Ifishdeco Tbk",
+    "sector": "Basic Materials",
+    "sub_sector": "Basic Materials",
+    "last_close_price": 2100.0,
+    "latest_close_date": "2026-01-20"
+  },
+  "IBFN.JK": {
+    "company_name": "PT Intan Baru Prana Tbk",
+    "sector": "Industrials",
+    "sub_sector": "Industrial Goods",
+    "last_close_price": 121.0,
+    "latest_close_date": "2026-01-20"
+  },
+  "IATA.JK": {
+    "company_name": "PT MNC Energy Investments Tbk",
+    "sector": "Energy",
+    "sub_sector": "Oil, Gas & Coal",
+    "last_close_price": 132.0,
+    "latest_close_date": "2026-01-20"
+  },
+  "HOTL.JK": {
+    "company_name": "Saraswati Griya Lestari Tbk",
+    "sector": "Consumer Cyclicals",
+    "sub_sector": "Consumer Services",
+    "last_close_price": 50.0,
+    "latest_close_date": "2026-01-20"
+  },
+  "HOME.JK": {
+    "company_name": "Hotel Mandarine Regency Tbk",
+    "sector": "Consumer Cyclicals",
+    "sub_sector": "Consumer Services",
+    "last_close_price": 50.0,
+    "latest_close_date": "2026-01-20"
+  },
+  "HOKI.JK": {
+    "company_name": "PT Buyung Poetra Sembada Tbk",
+    "sector": "Consumer Non-cyclicals",
+    "sub_sector": "Food & Beverage",
+    "last_close_price": 81.0,
+    "latest_close_date": "2026-01-20"
+  },
+  "HMSP.JK": {
+    "company_name": "HM Sampoerna Tbk",
+    "sector": "Consumer Non-cyclicals",
+    "sub_sector": "Tobacco",
+    "last_close_price": 775.0,
+    "latest_close_date": "2026-01-20"
+  },
+  "HKMU.JK": {
+    "company_name": "PT HK Metals Utama Tbk",
+    "sector": "Basic Materials",
+    "sub_sector": "Basic Materials",
+    "last_close_price": 50.0,
+    "latest_close_date": "2026-01-20"
+  },
   "WGSH.JK": {
     "company_name": "PT Wira Global Solusi Tbk",
     "sector": "Technology",
     "sub_sector": "Software & IT Services",
     "last_close_price": 302.0,
+    "latest_close_date": "2026-01-20"
+  },
+  "HITS.JK": {
+    "company_name": "Humpuss Intermoda Transportasi Tbk",
+    "sector": "Energy",
+    "sub_sector": "Oil, Gas & Coal",
+    "last_close_price": 116.0,
+    "latest_close_date": "2026-01-20"
+  },
+  "GOTO.JK": {
+    "company_name": "PT GoTo Gojek Tokopedia Tbk",
+    "sector": "Technology",
+    "sub_sector": "Software & IT Services",
+    "last_close_price": 66.0,
+    "latest_close_date": "2026-01-20"
+  },
+  "GOLL.JK": {
+    "company_name": "PT Golden Plantation Tbk",
+    "sector": "Consumer Non-cyclicals",
+    "sub_sector": "Food & Beverage",
+    "last_close_price": 50.0,
+    "latest_close_date": "2026-01-20"
+  },
+  "GMFI.JK": {
+    "company_name": "PT Garuda Maintenance Facility Aero Asia Tbk",
+    "sector": "Infrastructures",
+    "sub_sector": "Transportation Infrastructure",
+    "last_close_price": 74.0,
+    "latest_close_date": "2026-01-20"
+  },
+  "GLVA.JK": {
+    "company_name": "PT Galva Technologies Tbk",
+    "sector": "Technology",
+    "sub_sector": "Technology Hardware & Equipment",
+    "last_close_price": 414.0,
+    "latest_close_date": "2026-01-20"
+  },
+  "GLOB.JK": {
+    "company_name": "PT Globe Kita Terang Tbk",
+    "sector": "Consumer Cyclicals",
+    "sub_sector": "Retailing",
+    "last_close_price": 155.0,
+    "latest_close_date": "2026-01-20"
+  },
+  "GJTL.JK": {
+    "company_name": "Gajah Tunggal Tbk",
+    "sector": "Consumer Cyclicals",
+    "sub_sector": "Automobiles & Components",
+    "last_close_price": 1130.0,
+    "latest_close_date": "2026-01-20"
+  },
+  "GGRM.JK": {
+    "company_name": "Gudang Garam Tbk",
+    "sector": "Consumer Non-cyclicals",
+    "sub_sector": "Tobacco",
+    "last_close_price": 15750.0,
+    "latest_close_date": "2026-01-20"
+  },
+  "FWCT.JK": {
+    "company_name": "PT Wijaya Cahaya Timber Tbk",
+    "sector": "Basic Materials",
+    "sub_sector": "Basic Materials",
+    "last_close_price": 144.0,
+    "latest_close_date": "2026-01-20"
+  },
+  "FOOD.JK": {
+    "company_name": "PT Sentra Food Indonesia Tbk",
+    "sector": "Consumer Non-cyclicals",
+    "sub_sector": "Food & Beverage",
+    "last_close_price": 290.0,
+    "latest_close_date": "2026-01-20"
+  },
+  "FOLK.JK": {
+    "company_name": "PT Multi Garam Utama Tbk",
+    "sector": "Industrials",
+    "sub_sector": "Multi-sector Holdings",
+    "last_close_price": 985.0,
     "latest_close_date": "2026-01-20"
   },
   "WIIM.JK": {
@@ -608,11 +1854,130 @@
     "last_close_price": 1795.0,
     "latest_close_date": "2026-01-20"
   },
+  "FITT.JK": {
+    "company_name": "PT Hotel Fitra International Tbk",
+    "sector": "Consumer Cyclicals",
+    "sub_sector": "Consumer Services",
+    "last_close_price": 505.0,
+    "latest_close_date": "2026-01-20"
+  },
   "WIKA.JK": {
     "company_name": "PT Wijaya Karya (Persero) Tbk",
     "sector": "Infrastructures",
     "sub_sector": "Heavy Constructions & Civil Engineering",
     "last_close_price": 204.0,
+    "latest_close_date": "2026-01-20"
+  },
+  "FISH.JK": {
+    "company_name": "FKS Multi Agro Tbk",
+    "sector": "Consumer Non-cyclicals",
+    "sub_sector": "Food & Beverage",
+    "last_close_price": 1340.0,
+    "latest_close_date": "2026-01-20"
+  },
+  "FASW.JK": {
+    "company_name": "Fajar Surya Wisesa Tbk",
+    "sector": "Basic Materials",
+    "sub_sector": "Basic Materials",
+    "last_close_price": 5275.0,
+    "latest_close_date": "2026-01-20"
+  },
+  "EURO.JK": {
+    "company_name": "PT Estee Gold Feet Tbk",
+    "sector": "Consumer Non-cyclicals",
+    "sub_sector": "Nondurable Household Products",
+    "last_close_price": 715.0,
+    "latest_close_date": "2026-01-20"
+  },
+  "ESSA.JK": {
+    "company_name": "ESSA Industries Indonesia Tbk",
+    "sector": "Basic Materials",
+    "sub_sector": "Basic Materials",
+    "last_close_price": 665.0,
+    "latest_close_date": "2026-01-20"
+  },
+  "ERAA.JK": {
+    "company_name": "Erajaya Swasembada Tbk",
+    "sector": "Consumer Cyclicals",
+    "sub_sector": "Retailing",
+    "last_close_price": 404.0,
+    "latest_close_date": "2026-01-20"
+  },
+  "EPMT.JK": {
+    "company_name": "Enseval Putera Megatrading Tbk",
+    "sector": "Consumer Non-cyclicals",
+    "sub_sector": "Food & Staples Retailing",
+    "last_close_price": 2360.0,
+    "latest_close_date": "2026-01-20"
+  },
+  "ENVY.JK": {
+    "company_name": "PT Envy Technologies Indonesia Tbk",
+    "sector": "Technology",
+    "sub_sector": "Software & IT Services",
+    "last_close_price": 50.0,
+    "latest_close_date": "2026-01-20"
+  },
+  "ENRG.JK": {
+    "company_name": "Energi Mega Persada Tbk",
+    "sector": "Energy",
+    "sub_sector": "Oil, Gas & Coal",
+    "last_close_price": 1535.0,
+    "latest_close_date": "2026-01-20"
+  },
+  "EMAS.JK": {
+    "company_name": "PT Merdeka Gold Resources Tbk",
+    "sector": "Basic Materials",
+    "sub_sector": "Basic Materials",
+    "last_close_price": 6500.0,
+    "latest_close_date": "2026-01-20"
+  },
+  "ELIT.JK": {
+    "company_name": "PT Data Sinergitama Jaya Tbk",
+    "sector": "Technology",
+    "sub_sector": "Software & IT Services",
+    "last_close_price": 366.0,
+    "latest_close_date": "2026-01-20"
+  },
+  "DWGL.JK": {
+    "company_name": "PT Dwi Guna Laksana Tbk",
+    "sector": "Energy",
+    "sub_sector": "Oil, Gas & Coal",
+    "last_close_price": 326.0,
+    "latest_close_date": "2026-01-20"
+  },
+  "DUCK.JK": {
+    "company_name": "PT Jaya Bersama Indo Tbk",
+    "sector": "Consumer Cyclicals",
+    "sub_sector": "Consumer Services",
+    "last_close_price": 176.0,
+    "latest_close_date": "2026-01-20"
+  },
+  "DSNG.JK": {
+    "company_name": "PT Dharma Satya Nusantara Tbk",
+    "sector": "Consumer Non-cyclicals",
+    "sub_sector": "Food & Beverage",
+    "last_close_price": 1555.0,
+    "latest_close_date": "2026-01-20"
+  },
+  "DOSS.JK": {
+    "company_name": "PT Global Sukses Digital Tbk",
+    "sector": "Consumer Cyclicals",
+    "sub_sector": "Leisure Goods",
+    "last_close_price": 222.0,
+    "latest_close_date": "2026-01-20"
+  },
+  "DOOH.JK": {
+    "company_name": "PT Era Media Sejahtera Tbk",
+    "sector": "Consumer Cyclicals",
+    "sub_sector": "Media & Entertainment",
+    "last_close_price": 280.0,
+    "latest_close_date": "2026-01-20"
+  },
+  "DKHH.JK": {
+    "company_name": "PT Cipta Sarana Medika Tbk",
+    "sector": "Healthcare",
+    "sub_sector": "Healthcare Equipment & Providers",
+    "last_close_price": 100.0,
     "latest_close_date": "2026-01-20"
   },
   "WINR.JK": {
@@ -622,11 +1987,39 @@
     "last_close_price": 63.0,
     "latest_close_date": "2026-01-20"
   },
+  "DIGI.JK": {
+    "company_name": "PT Arkadia Digital Media Tbk",
+    "sector": "Consumer Cyclicals",
+    "sub_sector": "Media & Entertainment",
+    "last_close_price": 53.0,
+    "latest_close_date": "2026-01-20"
+  },
+  "DCII.JK": {
+    "company_name": "PT DCI Indonesia Tbk",
+    "sector": "Technology",
+    "sub_sector": "Software & IT Services",
+    "last_close_price": 221250.0,
+    "latest_close_date": "2026-01-20"
+  },
+  "CYBR.JK": {
+    "company_name": "PT ITSEC Asia Tbk.",
+    "sector": "Technology",
+    "sub_sector": "Software & IT Services",
+    "last_close_price": 1860.0,
+    "latest_close_date": "2026-01-20"
+  },
   "WIRG.JK": {
     "company_name": "PT Wir Asia Tbk",
     "sector": "Technology",
     "sub_sector": "Software & IT Services",
     "last_close_price": 108.0,
+    "latest_close_date": "2026-01-20"
+  },
+  "CSRA.JK": {
+    "company_name": "PT Cisadane Sawit Raya Tbk.",
+    "sector": "Consumer Non-cyclicals",
+    "sub_sector": "Food & Beverage",
+    "last_close_price": 920.0,
     "latest_close_date": "2026-01-20"
   },
   "WMUU.JK": {
@@ -636,11 +2029,18 @@
     "last_close_price": 70.0,
     "latest_close_date": "2026-01-20"
   },
-  "WOWS.JK": {
-    "company_name": "PT Ginting Jaya Energi Tbk",
-    "sector": "Energy",
-    "sub_sector": "Oil, Gas & Coal",
-    "last_close_price": 99.0,
+  "CSAP.JK": {
+    "company_name": "Catur Sentosa Adiprana Tbk",
+    "sector": "Consumer Cyclicals",
+    "sub_sector": "Retailing",
+    "last_close_price": 318.0,
+    "latest_close_date": "2026-01-20"
+  },
+  "CPRI.JK": {
+    "company_name": "PT Capri Nusa Satu Properti Tbk.",
+    "sector": "Properties & Real Estate",
+    "sub_sector": "Properties & Real Estate",
+    "last_close_price": 50.0,
     "latest_close_date": "2026-01-20"
   },
   "WSBP.JK": {
@@ -650,11 +2050,25 @@
     "last_close_price": 29.0,
     "latest_close_date": "2026-01-20"
   },
+  "CNTX.JK": {
+    "company_name": "PT Century Textile Industry Tbk",
+    "sector": "Consumer Cyclicals",
+    "sub_sector": "Apparel & Luxury Goods",
+    "last_close_price": 142.0,
+    "latest_close_date": "2026-01-20"
+  },
   "WSKT.JK": {
     "company_name": "PT Waskita Karya (Persero) Tbk",
     "sector": "Infrastructures",
     "sub_sector": "Heavy Constructions & Civil Engineering",
     "last_close_price": 202.0,
+    "latest_close_date": "2026-01-20"
+  },
+  "CMNP.JK": {
+    "company_name": "Citra Marga Nusaphala Persada Tbk",
+    "sector": "Infrastructures",
+    "sub_sector": "Transportation Infrastructure",
+    "last_close_price": 1625.0,
     "latest_close_date": "2026-01-20"
   },
   "WTON.JK": {
@@ -664,11 +2078,39 @@
     "last_close_price": 100.0,
     "latest_close_date": "2026-01-20"
   },
+  "CLAY.JK": {
+    "company_name": "PT Citra Putra Realty Tbk",
+    "sector": "Consumer Cyclicals",
+    "sub_sector": "Consumer Services",
+    "last_close_price": 2460.0,
+    "latest_close_date": "2026-01-20"
+  },
+  "CITY.JK": {
+    "company_name": "PT Natura City Developments Tbk.",
+    "sector": "Properties & Real Estate",
+    "sub_sector": "Properties & Real Estate",
+    "last_close_price": 316.0,
+    "latest_close_date": "2026-01-20"
+  },
+  "CHIP.JK": {
+    "company_name": "PT Pelita Teknologi Global Tbk",
+    "sector": "Technology",
+    "sub_sector": "Technology Hardware & Equipment",
+    "last_close_price": 1240.0,
+    "latest_close_date": "2026-01-20"
+  },
   "YELO.JK": {
     "company_name": "PT Yelooo Integra Datanet Tbk",
     "sector": "Consumer Cyclicals",
     "sub_sector": "Retailing",
     "last_close_price": 119.0,
+    "latest_close_date": "2026-01-20"
+  },
+  "CFIN.JK": {
+    "company_name": "Clipan Finance Indonesia Tbk",
+    "sector": "Financials",
+    "sub_sector": "Financing Service",
+    "last_close_price": 334.0,
     "latest_close_date": "2026-01-20"
   },
   "YOII.JK": {
@@ -678,6 +2120,20 @@
     "last_close_price": 108.0,
     "latest_close_date": "2026-01-20"
   },
+  "CBPE.JK": {
+    "company_name": "PT Citra Buana Prasida Tbk",
+    "sector": "Properties & Real Estate",
+    "sub_sector": "Properties & Real Estate",
+    "last_close_price": 308.0,
+    "latest_close_date": "2026-01-20"
+  },
+  "CBMF.JK": {
+    "company_name": "PT Cahaya Bintang Medan Tbk",
+    "sector": "Consumer Cyclicals",
+    "sub_sector": "Household Goods",
+    "last_close_price": 50.0,
+    "latest_close_date": "2026-01-20"
+  },
   "YPAS.JK": {
     "company_name": "Yanaprima Hastapersada Tbk",
     "sector": "Basic Materials",
@@ -685,11 +2141,11 @@
     "last_close_price": 650.0,
     "latest_close_date": "2026-01-20"
   },
-  "YULE.JK": {
-    "company_name": "Yulie Sekuritas Indonesia Tbk",
-    "sector": "Financials",
-    "sub_sector": "Investment Service",
-    "last_close_price": 3240.0,
+  "CBDK.JK": {
+    "company_name": "PT Bangun Kosambi Sukses Tbk",
+    "sector": "Properties & Real Estate",
+    "sub_sector": "Properties & Real Estate",
+    "last_close_price": 7975.0,
     "latest_close_date": "2026-01-20"
   },
   "YUPI.JK": {
@@ -706,6 +2162,27 @@
     "last_close_price": 515.0,
     "latest_close_date": "2026-01-20"
   },
+  "CASA.JK": {
+    "company_name": "PT Capital Financial Indonesia Tbk",
+    "sector": "Financials",
+    "sub_sector": "Holding & Investment Companies",
+    "last_close_price": 1600.0,
+    "latest_close_date": "2026-01-20"
+  },
+  "CAMP.JK": {
+    "company_name": "PT Campina Ice Cream Industry Tbk.",
+    "sector": "Consumer Non-cyclicals",
+    "sub_sector": "Food & Beverage",
+    "last_close_price": 214.0,
+    "latest_close_date": "2026-01-20"
+  },
+  "BUDI.JK": {
+    "company_name": "PT Budi Starch & Sweetener Tbk.",
+    "sector": "Consumer Non-cyclicals",
+    "sub_sector": "Food & Beverage",
+    "last_close_price": 224.0,
+    "latest_close_date": "2026-01-20"
+  },
   "ABBA.JK": {
     "company_name": "Mahaka Media Tbk",
     "sector": "Consumer Cyclicals",
@@ -720,6 +2197,20 @@
     "last_close_price": 3520.0,
     "latest_close_date": "2026-01-20"
   },
+  "BUAH.JK": {
+    "company_name": "PT Segar Kumala Indonesia Tbk",
+    "sector": "Consumer Non-cyclicals",
+    "sub_sector": "Food & Staples Retailing",
+    "last_close_price": 635.0,
+    "latest_close_date": "2026-01-20"
+  },
+  "BTPN.JK": {
+    "company_name": "PT Bank SMBC Indonesia Tbk",
+    "sector": "Financials",
+    "sub_sector": "Banks",
+    "last_close_price": 2120.0,
+    "latest_close_date": "2026-01-20"
+  },
   "ACST.JK": {
     "company_name": "PT Acset Indonusa Tbk.",
     "sector": "Infrastructures",
@@ -727,11 +2218,403 @@
     "last_close_price": 159.0,
     "latest_close_date": "2026-01-20"
   },
+  "BTON.JK": {
+    "company_name": "Betonjaya Manunggal Tbk",
+    "sector": "Basic Materials",
+    "sub_sector": "Basic Materials",
+    "last_close_price": 390.0,
+    "latest_close_date": "2026-01-20"
+  },
+  "BSWD.JK": {
+    "company_name": "Bank of India Indonesia Tbk",
+    "sector": "Financials",
+    "sub_sector": "Banks",
+    "last_close_price": 1045.0,
+    "latest_close_date": "2026-01-20"
+  },
+  "BOSS.JK": {
+    "company_name": "PT Borneo Olah Sarana Sukses Tbk.",
+    "sector": "Energy",
+    "sub_sector": "Oil, Gas & Coal",
+    "last_close_price": 50.0,
+    "latest_close_date": "2026-01-20"
+  },
+  "BOBA.JK": {
+    "company_name": "PT Formosa Ingredient Factory Tbk",
+    "sector": "Consumer Non-cyclicals",
+    "sub_sector": "Food & Beverage",
+    "last_close_price": 184.0,
+    "latest_close_date": "2026-01-20"
+  },
+  "BNGA.JK": {
+    "company_name": "PT Bank CIMB Niaga Tbk",
+    "sector": "Financials",
+    "sub_sector": "Banks",
+    "last_close_price": 1880.0,
+    "latest_close_date": "2026-01-20"
+  },
+  "BNBA.JK": {
+    "company_name": "Bank Bumi Arta Tbk",
+    "sector": "Financials",
+    "sub_sector": "Banks",
+    "last_close_price": 1200.0,
+    "latest_close_date": "2026-01-20"
+  },
+  "BMHS.JK": {
+    "company_name": "PT Bundamedik Tbk",
+    "sector": "Healthcare",
+    "sub_sector": "Healthcare Equipment & Providers",
+    "last_close_price": 204.0,
+    "latest_close_date": "2026-01-20"
+  },
+  "BJTM.JK": {
+    "company_name": "Bank Pembangunan Daerah Jawa Timur Tbk",
+    "sector": "Financials",
+    "sub_sector": "Banks",
+    "last_close_price": 570.0,
+    "latest_close_date": "2026-01-20"
+  },
+  "BJBR.JK": {
+    "company_name": "Bank Pembangunan Daerah Jawa Barat dan Banten Tbk",
+    "sector": "Financials",
+    "sub_sector": "Banks",
+    "last_close_price": 840.0,
+    "latest_close_date": "2026-01-20"
+  },
+  "BINO.JK": {
+    "company_name": "PT Perma Plasindo Tbk",
+    "sector": "Industrials",
+    "sub_sector": "Industrial Services",
+    "last_close_price": 136.0,
+    "latest_close_date": "2026-01-20"
+  },
+  "BIKA.JK": {
+    "company_name": "PT Binakarya Jaya Abadi Tbk.",
+    "sector": "Properties & Real Estate",
+    "sub_sector": "Properties & Real Estate",
+    "last_close_price": 55.0,
+    "latest_close_date": "2026-01-20"
+  },
+  "BEKS.JK": {
+    "company_name": "PT Bank Pembangunan Daerah Banten Tbk.",
+    "sector": "Financials",
+    "sub_sector": "Banks",
+    "last_close_price": 38.0,
+    "latest_close_date": "2026-01-20"
+  },
+  "BDMN.JK": {
+    "company_name": "PT Bank Danamon Indonesia Tbk",
+    "sector": "Financials",
+    "sub_sector": "Banks",
+    "last_close_price": 2550.0,
+    "latest_close_date": "2026-01-20"
+  },
+  "BCAP.JK": {
+    "company_name": "MNC Kapital Indonesia Tbk",
+    "sector": "Financials",
+    "sub_sector": "Holding & Investment Companies",
+    "last_close_price": 64.0,
+    "latest_close_date": "2026-01-20"
+  },
+  "BBYB.JK": {
+    "company_name": "PT Bank Neo Commerce Tbk.",
+    "sector": "Financials",
+    "sub_sector": "Banks",
+    "last_close_price": 488.0,
+    "latest_close_date": "2026-01-20"
+  },
+  "BBRM.JK": {
+    "company_name": "Pelayaran Nasional Bina Buana Raya Tbk",
+    "sector": "Energy",
+    "sub_sector": "Oil, Gas & Coal",
+    "last_close_price": 244.0,
+    "latest_close_date": "2026-01-20"
+  },
+  "BBMD.JK": {
+    "company_name": "PT Bank Mestika Dharma Tbk.",
+    "sector": "Financials",
+    "sub_sector": "Banks",
+    "last_close_price": 2090.0,
+    "latest_close_date": "2026-01-20"
+  },
+  "BBCA.JK": {
+    "company_name": "PT Bank Central Asia Tbk.",
+    "sector": "Financials",
+    "sub_sector": "Banks",
+    "last_close_price": 8000.0,
+    "latest_close_date": "2026-01-20"
+  },
+  "AGAR.JK": {
+    "company_name": "PT Asia Sejahtera Mina Tbk",
+    "sector": "Consumer Non-cyclicals",
+    "sub_sector": "Food & Beverage",
+    "last_close_price": 276.0,
+    "latest_close_date": "2026-01-20"
+  },
+  "BAYU.JK": {
+    "company_name": "Bayu Buana Tbk",
+    "sector": "Consumer Cyclicals",
+    "sub_sector": "Consumer Services",
+    "last_close_price": 1380.0,
+    "latest_close_date": "2026-01-20"
+  },
+  "AGRO.JK": {
+    "company_name": "PT Bank Raya Indonesia Tbk",
+    "sector": "Financials",
+    "sub_sector": "Banks",
+    "last_close_price": 244.0,
+    "latest_close_date": "2026-01-20"
+  },
+  "AISA.JK": {
+    "company_name": "PT FKS Food Sejahtera Tbk",
+    "sector": "Consumer Non-cyclicals",
+    "sub_sector": "Food & Beverage",
+    "last_close_price": 154.0,
+    "latest_close_date": "2026-01-20"
+  },
+  "BANK.JK": {
+    "company_name": "PT Bank Aladin Syariah Tbk",
+    "sector": "Financials",
+    "sub_sector": "Banks",
+    "last_close_price": 930.0,
+    "latest_close_date": "2026-01-20"
+  },
+  "AYLS.JK": {
+    "company_name": "PT Agro Yasa Lestari Tbk",
+    "sector": "Basic Materials",
+    "sub_sector": "Basic Materials",
+    "last_close_price": 278.0,
+    "latest_close_date": "2026-01-20"
+  },
+  "AXIO.JK": {
+    "company_name": "PT Tera Data Indonusa Tbk",
+    "sector": "Technology",
+    "sub_sector": "Technology Hardware & Equipment",
+    "last_close_price": 134.0,
+    "latest_close_date": "2026-01-20"
+  },
+  "AUTO.JK": {
+    "company_name": "Astra Otoparts Tbk",
+    "sector": "Consumer Cyclicals",
+    "sub_sector": "Automobiles & Components",
+    "last_close_price": 2750.0,
+    "latest_close_date": "2026-01-20"
+  },
+  "ATLA.JK": {
+    "company_name": "PT Atlantis Subsea Indonesia Tbk",
+    "sector": "Energy",
+    "sub_sector": "Oil, Gas & Coal",
+    "last_close_price": 68.0,
+    "latest_close_date": "2026-01-20"
+  },
+  "ASMI.JK": {
+    "company_name": "PT Asuransi Maximus Graha Persada Tbk.",
+    "sector": "Financials",
+    "sub_sector": "Insurance",
+    "last_close_price": 43.0,
+    "latest_close_date": "2026-01-20"
+  },
+  "AKSI.JK": {
+    "company_name": "PT Mineral Sumberdaya Mandiri Tbk",
+    "sector": "Transportation & Logistic",
+    "sub_sector": "Logistics & Deliveries",
+    "last_close_price": 470.0,
+    "latest_close_date": "2026-01-20"
+  },
+  "ASLI.JK": {
+    "company_name": "PT Asri Karya Lestari Tbk.",
+    "sector": "Infrastructures",
+    "sub_sector": "Heavy Constructions & Civil Engineering",
+    "last_close_price": 645.0,
+    "latest_close_date": "2026-01-20"
+  },
+  "ALKA.JK": {
+    "company_name": "Alakasa Industrindo Tbk",
+    "sector": "Basic Materials",
+    "sub_sector": "Basic Materials",
+    "last_close_price": 474.0,
+    "latest_close_date": "2026-01-20"
+  },
+  "ASDM.JK": {
+    "company_name": "Asuransi Dayin Mitra Tbk",
+    "sector": "Financials",
+    "sub_sector": "Insurance",
+    "last_close_price": 695.0,
+    "latest_close_date": "2026-01-20"
+  },
+  "ARTO.JK": {
+    "company_name": "PT Bank Jago Tbk.",
+    "sector": "Financials",
+    "sub_sector": "Banks",
+    "last_close_price": 1910.0,
+    "latest_close_date": "2026-01-20"
+  },
+  "ARMY.JK": {
+    "company_name": "PT Armidian Karyatama Tbk",
+    "sector": "Properties & Real Estate",
+    "sub_sector": "Properties & Real Estate",
+    "last_close_price": 50.0,
+    "latest_close_date": "2026-01-20"
+  },
+  "AREA.JK": {
+    "company_name": "PT Dunia Virtual Online Tbk",
+    "sector": "Technology",
+    "sub_sector": "Software & IT Services",
+    "last_close_price": 515.0,
+    "latest_close_date": "2026-01-20"
+  },
+  "AMFG.JK": {
+    "company_name": "Asahimas Flat Glass Tbk",
+    "sector": "Industrials",
+    "sub_sector": "Industrial Goods",
+    "last_close_price": 3610.0,
+    "latest_close_date": "2026-01-20"
+  },
+  "ARCI.JK": {
+    "company_name": "PT Archi Indonesia Tbk",
+    "sector": "Basic Materials",
+    "sub_sector": "Basic Materials",
+    "last_close_price": 2020.0,
+    "latest_close_date": "2026-01-20"
+  },
+  "APII.JK": {
+    "company_name": "PT Arita Prima Indonesia Tbk.",
+    "sector": "Industrials",
+    "sub_sector": "Industrial Goods",
+    "last_close_price": 208.0,
+    "latest_close_date": "2026-01-20"
+  },
+  "ANTM.JK": {
+    "company_name": "Aneka Tambang Tbk.",
+    "sector": "Basic Materials",
+    "sub_sector": "Basic Materials",
+    "last_close_price": 4120.0,
+    "latest_close_date": "2026-01-20"
+  },
+  "ALDO.JK": {
+    "company_name": "Alkindo Naratama Tbk",
+    "sector": "Basic Materials",
+    "sub_sector": "Basic Materials",
+    "last_close_price": 615.0,
+    "latest_close_date": "2026-01-20"
+  },
+  "AIMS.JK": {
+    "company_name": "PT Artha Mahiya Investama Tbk",
+    "sector": "Energy",
+    "sub_sector": "Oil, Gas & Coal",
+    "last_close_price": 525.0,
+    "latest_close_date": "2026-01-20"
+  },
+  "AGRS.JK": {
+    "company_name": "PT Bank IBK Indonesia Tbk.",
+    "sector": "Financials",
+    "sub_sector": "Banks",
+    "last_close_price": 83.0,
+    "latest_close_date": "2026-01-20"
+  },
+  "AMOR.JK": {
+    "company_name": "PT Ashmore Asset Management Indonesia Tbk.",
+    "sector": "Financials",
+    "sub_sector": "Investment Service",
+    "last_close_price": 390.0,
+    "latest_close_date": "2026-01-20"
+  },
+  "AEGS.JK": {
+    "company_name": "PT Anugerah Spareparts Sejahtera Tbk.",
+    "sector": "Consumer Cyclicals",
+    "sub_sector": "Automobiles & Components",
+    "last_close_price": 77.0,
+    "latest_close_date": "2026-01-20"
+  },
+  "ADHI.JK": {
+    "company_name": "PT Adhi Karya (Persero) Tbk.",
+    "sector": "Infrastructures",
+    "sub_sector": "Heavy Constructions & Civil Engineering",
+    "last_close_price": 258.0,
+    "latest_close_date": "2026-01-20"
+  },
+  "ADCP.JK": {
+    "company_name": "PT Adhi Commuter Properti Tbk",
+    "sector": "Properties & Real Estate",
+    "sub_sector": "Properties & Real Estate",
+    "last_close_price": 59.0,
+    "latest_close_date": "2026-01-20"
+  },
+  "ACRO.JK": {
+    "company_name": "PT Samcro Hyosung Adilestari Tbk.",
+    "sector": "Consumer Cyclicals",
+    "sub_sector": "Apparel & Luxury Goods",
+    "last_close_price": 102.0,
+    "latest_close_date": "2026-01-20"
+  },
+  "ACES.JK": {
+    "company_name": "PT Aspirasi Hidup Indonesia Tbk",
+    "sector": "Consumer Cyclicals",
+    "sub_sector": "Retailing",
+    "last_close_price": 418.0,
+    "latest_close_date": "2026-01-20"
+  },
+  "ABMM.JK": {
+    "company_name": "ABM Investama Tbk",
+    "sector": "Energy",
+    "sub_sector": "Oil, Gas & Coal",
+    "last_close_price": 3000.0,
+    "latest_close_date": "2026-01-20"
+  },
+  "ANDI.JK": {
+    "company_name": "PT Andira Agro Tbk",
+    "sector": "Consumer Non-cyclicals",
+    "sub_sector": "Food & Beverage",
+    "last_close_price": 37.0,
+    "latest_close_date": "2026-01-20"
+  },
+  "APEX.JK": {
+    "company_name": "Apexindo Pratama Duta Tbk",
+    "sector": "Energy",
+    "sub_sector": "Oil, Gas & Coal",
+    "last_close_price": 238.0,
+    "latest_close_date": "2026-01-20"
+  },
+  "AALI.JK": {
+    "company_name": "Astra Agro Lestari Tbk",
+    "sector": "Consumer Non-cyclicals",
+    "sub_sector": "Food & Beverage",
+    "last_close_price": 7650.0,
+    "latest_close_date": "2026-01-20"
+  },
+  "YULE.JK": {
+    "company_name": "Yulie Sekuritas Indonesia Tbk",
+    "sector": "Financials",
+    "sub_sector": "Investment Service",
+    "last_close_price": 3240.0,
+    "latest_close_date": "2026-01-20"
+  },
+  "WOWS.JK": {
+    "company_name": "PT Ginting Jaya Energi Tbk",
+    "sector": "Energy",
+    "sub_sector": "Oil, Gas & Coal",
+    "last_close_price": 99.0,
+    "latest_close_date": "2026-01-20"
+  },
   "ADES.JK": {
     "company_name": "Akasha Wira International Tbk  Tbk",
     "sector": "Consumer Non-cyclicals",
     "sub_sector": "Food & Beverage",
     "last_close_price": 15375.0,
+    "latest_close_date": "2026-01-20"
+  },
+  "ARGO.JK": {
+    "company_name": "Argo Pantes Tbk",
+    "sector": "Consumer Cyclicals",
+    "sub_sector": "Apparel & Luxury Goods",
+    "last_close_price": 1590.0,
+    "latest_close_date": "2026-01-20"
+  },
+  "ARII.JK": {
+    "company_name": "Atlas Resources Tbk",
+    "sector": "Energy",
+    "sub_sector": "Oil, Gas & Coal",
+    "last_close_price": 320.0,
     "latest_close_date": "2026-01-20"
   },
   "ADMG.JK": {
@@ -755,25 +2638,11 @@
     "last_close_price": 2240.0,
     "latest_close_date": "2026-01-20"
   },
-  "AGAR.JK": {
-    "company_name": "PT Asia Sejahtera Mina Tbk",
-    "sector": "Consumer Non-cyclicals",
-    "sub_sector": "Food & Beverage",
-    "last_close_price": 276.0,
-    "latest_close_date": "2026-01-20"
-  },
-  "AGRO.JK": {
-    "company_name": "PT Bank Raya Indonesia Tbk",
-    "sector": "Financials",
-    "sub_sector": "Banks",
-    "last_close_price": 244.0,
-    "latest_close_date": "2026-01-20"
-  },
-  "AISA.JK": {
-    "company_name": "PT FKS Food Sejahtera Tbk",
-    "sector": "Consumer Non-cyclicals",
-    "sub_sector": "Food & Beverage",
-    "last_close_price": 154.0,
+  "ARKA.JK": {
+    "company_name": "PT Arkha Jayanti Persada Tbk.",
+    "sector": "Industrials",
+    "sub_sector": "Industrial Goods",
+    "last_close_price": 43.0,
     "latest_close_date": "2026-01-20"
   },
   "AKKU.JK": {
@@ -790,25 +2659,11 @@
     "last_close_price": 1330.0,
     "latest_close_date": "2026-01-20"
   },
-  "AKSI.JK": {
-    "company_name": "PT Mineral Sumberdaya Mandiri Tbk",
-    "sector": "Transportation & Logistic",
-    "sub_sector": "Logistics & Deliveries",
-    "last_close_price": 470.0,
-    "latest_close_date": "2026-01-20"
-  },
   "ALII.JK": {
     "company_name": "PT Ancara Logistics Indonesia Tbk",
     "sector": "Energy",
     "sub_sector": "Oil, Gas & Coal",
     "last_close_price": 1010.0,
-    "latest_close_date": "2026-01-20"
-  },
-  "ALKA.JK": {
-    "company_name": "Alakasa Industrindo Tbk",
-    "sector": "Basic Materials",
-    "sub_sector": "Basic Materials",
-    "last_close_price": 474.0,
     "latest_close_date": "2026-01-20"
   },
   "ALMI.JK": {
@@ -839,25 +2694,11 @@
     "last_close_price": 278.0,
     "latest_close_date": "2026-01-20"
   },
-  "AMFG.JK": {
-    "company_name": "Asahimas Flat Glass Tbk",
-    "sector": "Industrials",
-    "sub_sector": "Industrial Goods",
-    "last_close_price": 3610.0,
-    "latest_close_date": "2026-01-20"
-  },
   "AMMS.JK": {
     "company_name": "PT Agung Menjangan Mas Tbk",
     "sector": "Consumer Non-cyclicals",
     "sub_sector": "Food & Beverage",
     "last_close_price": 580.0,
-    "latest_close_date": "2026-01-20"
-  },
-  "AMOR.JK": {
-    "company_name": "PT Ashmore Asset Management Indonesia Tbk.",
-    "sector": "Financials",
-    "sub_sector": "Investment Service",
-    "last_close_price": 390.0,
     "latest_close_date": "2026-01-20"
   },
   "AMRT.JK": {
@@ -867,25 +2708,11 @@
     "last_close_price": 1930.0,
     "latest_close_date": "2026-01-20"
   },
-  "ANDI.JK": {
-    "company_name": "PT Andira Agro Tbk",
-    "sector": "Consumer Non-cyclicals",
-    "sub_sector": "Food & Beverage",
-    "last_close_price": 37.0,
-    "latest_close_date": "2026-01-20"
-  },
   "ANJT.JK": {
     "company_name": "PT Austindo Nusantara Jaya Tbk.",
     "sector": "Consumer Non-cyclicals",
     "sub_sector": "Food & Beverage",
     "last_close_price": 1780.0,
-    "latest_close_date": "2026-01-20"
-  },
-  "APEX.JK": {
-    "company_name": "Apexindo Pratama Duta Tbk",
-    "sector": "Energy",
-    "sub_sector": "Oil, Gas & Coal",
-    "last_close_price": 238.0,
     "latest_close_date": "2026-01-20"
   },
   "APIC.JK": {
@@ -907,27 +2734,6 @@
     "sector": "Properties & Real Estate",
     "sub_sector": "Properties & Real Estate",
     "last_close_price": 174.0,
-    "latest_close_date": "2026-01-20"
-  },
-  "ARGO.JK": {
-    "company_name": "Argo Pantes Tbk",
-    "sector": "Consumer Cyclicals",
-    "sub_sector": "Apparel & Luxury Goods",
-    "last_close_price": 1590.0,
-    "latest_close_date": "2026-01-20"
-  },
-  "ARII.JK": {
-    "company_name": "Atlas Resources Tbk",
-    "sector": "Energy",
-    "sub_sector": "Oil, Gas & Coal",
-    "last_close_price": 320.0,
-    "latest_close_date": "2026-01-20"
-  },
-  "ARKA.JK": {
-    "company_name": "PT Arkha Jayanti Persada Tbk.",
-    "sector": "Industrials",
-    "sub_sector": "Industrial Goods",
-    "last_close_price": 43.0,
     "latest_close_date": "2026-01-20"
   },
   "ARNA.JK": {
@@ -965,20 +2771,6 @@
     "last_close_price": 7275.0,
     "latest_close_date": "2026-01-20"
   },
-  "ASJT.JK": {
-    "company_name": "Asuransi Jasa Tania Tbk",
-    "sector": "Financials",
-    "sub_sector": "Insurance",
-    "last_close_price": 200.0,
-    "latest_close_date": "2026-01-20"
-  },
-  "ASPR.JK": {
-    "company_name": "PT Asia Pramulia Tbk",
-    "sector": "Basic Materials",
-    "sub_sector": "Basic Materials",
-    "last_close_price": 153.0,
-    "latest_close_date": "2026-01-20"
-  },
   "ASRI.JK": {
     "company_name": "Alam Sutera Realty Tbk",
     "sector": "Properties & Real Estate",
@@ -1000,13 +2792,6 @@
     "last_close_price": 230.0,
     "latest_close_date": "2026-01-20"
   },
-  "AYAM.JK": {
-    "company_name": "PT Janu Putra Sejahtera Tbk.",
-    "sector": "Consumer Non-cyclicals",
-    "sub_sector": "Food & Beverage",
-    "last_close_price": 466.0,
-    "latest_close_date": "2026-01-20"
-  },
   "BABP.JK": {
     "company_name": "PT Bank MNC Internasional Tbk.",
     "sector": "Financials",
@@ -1014,38 +2799,10 @@
     "last_close_price": 65.0,
     "latest_close_date": "2026-01-20"
   },
-  "BABY.JK": {
-    "company_name": "PT Multitrend Indo Tbk.",
-    "sector": "Consumer Cyclicals",
-    "sub_sector": "Retailing",
-    "last_close_price": 352.0,
-    "latest_close_date": "2026-01-20"
-  },
-  "BACA.JK": {
-    "company_name": "PT Bank Capital Indonesia Tbk",
-    "sector": "Financials",
-    "sub_sector": "Banks",
-    "last_close_price": 208.0,
-    "latest_close_date": "2026-01-20"
-  },
-  "BALI.JK": {
-    "company_name": "PT Bali Towerindo Sentra Tbk.",
-    "sector": "Infrastructures",
-    "sub_sector": "Telecommunication",
-    "last_close_price": 1590.0,
-    "latest_close_date": "2026-01-20"
-  },
   "BATA.JK": {
     "company_name": "Sepatu Bata Tbk",
     "sector": "Consumer Cyclicals",
     "sub_sector": "Apparel & Luxury Goods",
-    "last_close_price": 90.0,
-    "latest_close_date": "2026-01-20"
-  },
-  "BBKP.JK": {
-    "company_name": "PT Bank KB Indonesia Tbk",
-    "sector": "Financials",
-    "sub_sector": "Banks",
     "last_close_price": 90.0,
     "latest_close_date": "2026-01-20"
   },
@@ -1063,39 +2820,11 @@
     "last_close_price": 3840.0,
     "latest_close_date": "2026-01-20"
   },
-  "BBSS.JK": {
-    "company_name": "PT Bumi Benowo Sukses Sejahtera Tbk",
-    "sector": "Properties & Real Estate",
-    "sub_sector": "Properties & Real Estate",
-    "last_close_price": 442.0,
-    "latest_close_date": "2026-01-20"
-  },
-  "BCIP.JK": {
-    "company_name": "Bumi Citra Permai Tbk",
-    "sector": "Properties & Real Estate",
-    "sub_sector": "Properties & Real Estate",
-    "last_close_price": 90.0,
-    "latest_close_date": "2026-01-20"
-  },
-  "BDKR.JK": {
-    "company_name": "PT Berdikari Pondasi Perkasa Tbk.",
-    "sector": "Infrastructures",
-    "sub_sector": "Heavy Constructions & Civil Engineering",
-    "last_close_price": 181.0,
-    "latest_close_date": "2026-01-20"
-  },
   "BEBS.JK": {
     "company_name": "PT Berkah Beton Sadaya Tbk",
     "sector": "Basic Materials",
     "sub_sector": "Basic Materials",
     "last_close_price": 5.0,
-    "latest_close_date": "2026-01-20"
-  },
-  "BEER.JK": {
-    "company_name": "PT Jobubu Jarum Minahasa Tbk",
-    "sector": "Consumer Non-cyclicals",
-    "sub_sector": "Food & Beverage",
-    "last_close_price": 204.0,
     "latest_close_date": "2026-01-20"
   },
   "BELI.JK": {
@@ -1112,25 +2841,11 @@
     "last_close_price": 148.0,
     "latest_close_date": "2026-01-20"
   },
-  "BESS.JK": {
-    "company_name": "PT Batulicin Nusantara Maritim Tbk.",
-    "sector": "Energy",
-    "sub_sector": "Oil, Gas & Coal",
-    "last_close_price": 1725.0,
-    "latest_close_date": "2026-01-20"
-  },
   "BGTG.JK": {
     "company_name": "PT Bank Ganesha Tbk.",
     "sector": "Financials",
     "sub_sector": "Banks",
     "last_close_price": 140.0,
-    "latest_close_date": "2026-01-20"
-  },
-  "BHAT.JK": {
-    "company_name": "PT Bhakti Multi Artha Tbk.",
-    "sector": "Financials",
-    "sub_sector": "Insurance",
-    "last_close_price": 1335.0,
     "latest_close_date": "2026-01-20"
   },
   "BIKE.JK": {
@@ -1154,39 +2869,11 @@
     "last_close_price": 4700.0,
     "latest_close_date": "2026-01-20"
   },
-  "BIPI.JK": {
-    "company_name": "PT Astrindo Nusantara Infrastruktur Tbk.",
-    "sector": "Energy",
-    "sub_sector": "Oil, Gas & Coal",
-    "last_close_price": 202.0,
-    "latest_close_date": "2026-01-20"
-  },
   "BIPP.JK": {
     "company_name": "Bhuwanatala Indah Permai Tbk",
     "sector": "Properties & Real Estate",
     "sub_sector": "Properties & Real Estate",
     "last_close_price": 84.0,
-    "latest_close_date": "2026-01-20"
-  },
-  "BIRD.JK": {
-    "company_name": "PT Blue Bird Tbk",
-    "sector": "Transportation & Logistic",
-    "sub_sector": "Transportation",
-    "last_close_price": 1745.0,
-    "latest_close_date": "2026-01-20"
-  },
-  "BISI.JK": {
-    "company_name": "BISI INTERNATIONAL Tbk",
-    "sector": "Consumer Non-cyclicals",
-    "sub_sector": "Food & Beverage",
-    "last_close_price": 890.0,
-    "latest_close_date": "2026-01-20"
-  },
-  "BKDP.JK": {
-    "company_name": "Bukit Darmo Property Tbk",
-    "sector": "Properties & Real Estate",
-    "sub_sector": "Properties & Real Estate",
-    "last_close_price": 68.0,
     "latest_close_date": "2026-01-20"
   },
   "BLES.JK": {
@@ -1210,13 +2897,6 @@
     "last_close_price": 55.0,
     "latest_close_date": "2026-01-20"
   },
-  "BMAS.JK": {
-    "company_name": "PT Bank Maspion Indonesia Tbk.",
-    "sector": "Financials",
-    "sub_sector": "Banks",
-    "last_close_price": 640.0,
-    "latest_close_date": "2026-01-20"
-  },
   "BMBL.JK": {
     "company_name": "PT Lavender Bina Cendikia Tbk",
     "sector": "Consumer Cyclicals",
@@ -1229,6 +2909,272 @@
     "sector": "Financials",
     "sub_sector": "Banks",
     "last_close_price": 5025.0,
+    "latest_close_date": "2026-01-20"
+  },
+  "BOLT.JK": {
+    "company_name": "PT Garuda Metalindo Tbk.",
+    "sector": "Consumer Cyclicals",
+    "sub_sector": "Automobiles & Components",
+    "last_close_price": 1045.0,
+    "latest_close_date": "2026-01-20"
+  },
+  "BPFI.JK": {
+    "company_name": "PT Woori Finance Indonesia Tbk",
+    "sector": "Financials",
+    "sub_sector": "Financing Service",
+    "last_close_price": 312.0,
+    "latest_close_date": "2026-01-20"
+  },
+  "BPII.JK": {
+    "company_name": "PT Batavia Prosperindo Internasional Tbk.",
+    "sector": "Financials",
+    "sub_sector": "Holding & Investment Companies",
+    "last_close_price": 500.0,
+    "latest_close_date": "2026-01-20"
+  },
+  "BPTR.JK": {
+    "company_name": "PT Batavia Prosperindo Trans Tbk.",
+    "sector": "Transportation & Logistic",
+    "sub_sector": "Transportation",
+    "last_close_price": 94.0,
+    "latest_close_date": "2026-01-20"
+  },
+  "BRMS.JK": {
+    "company_name": "Bumi Resources Minerals Tbk",
+    "sector": "Basic Materials",
+    "sub_sector": "Basic Materials",
+    "last_close_price": 1310.0,
+    "latest_close_date": "2026-01-20"
+  },
+  "BRPT.JK": {
+    "company_name": "Barito Pacific Tbk",
+    "sector": "Basic Materials",
+    "sub_sector": "Basic Materials",
+    "last_close_price": 2900.0,
+    "latest_close_date": "2026-01-20"
+  },
+  "BRRC.JK": {
+    "company_name": "PT Raja Roti Cemerlang Tbk",
+    "sector": "Consumer Non-cyclicals",
+    "sub_sector": "Food & Beverage",
+    "last_close_price": 139.0,
+    "latest_close_date": "2026-01-20"
+  },
+  "BSBK.JK": {
+    "company_name": "PT Wulandari Bangun Laksana Tbk",
+    "sector": "Properties & Real Estate",
+    "sub_sector": "Properties & Real Estate",
+    "last_close_price": 77.0,
+    "latest_close_date": "2026-01-20"
+  },
+  "BSML.JK": {
+    "company_name": "PT Bintang Samudera Mandiri Lines Tbk",
+    "sector": "Energy",
+    "sub_sector": "Oil, Gas & Coal",
+    "last_close_price": 280.0,
+    "latest_close_date": "2026-01-20"
+  },
+  "BTEL.JK": {
+    "company_name": "Bakrie Telecom Tbk",
+    "sector": "Infrastructures",
+    "sub_sector": "Telecommunication",
+    "last_close_price": 50.0,
+    "latest_close_date": "2026-01-20"
+  },
+  "BUKK.JK": {
+    "company_name": "Bukaka Teknik Utama Tbk",
+    "sector": "Infrastructures",
+    "sub_sector": "Heavy Constructions & Civil Engineering",
+    "last_close_price": 1555.0,
+    "latest_close_date": "2026-01-20"
+  },
+  "BUVA.JK": {
+    "company_name": "PT Bukit Uluwatu Villa Tbk",
+    "sector": "Consumer Cyclicals",
+    "sub_sector": "Consumer Services",
+    "last_close_price": 2130.0,
+    "latest_close_date": "2026-01-20"
+  },
+  "CANI.JK": {
+    "company_name": "PT Capitol Nusantara Indonesia Tbk.",
+    "sector": "Energy",
+    "sub_sector": "Oil, Gas & Coal",
+    "last_close_price": 292.0,
+    "latest_close_date": "2026-01-20"
+  },
+  "CARS.JK": {
+    "company_name": "PT Industri dan Perdagangan Bintraco Dharma Tbk",
+    "sector": "Consumer Cyclicals",
+    "sub_sector": "Retailing",
+    "last_close_price": 123.0,
+    "latest_close_date": "2026-01-20"
+  },
+  "CASH.JK": {
+    "company_name": "PT Cashlez Worldwide Indonesia Tbk.",
+    "sector": "Technology",
+    "sub_sector": "Software & IT Services",
+    "last_close_price": 127.0,
+    "latest_close_date": "2026-01-20"
+  },
+  "CDIA.JK": {
+    "company_name": "PT Chandra Daya Investasi Tbk",
+    "sector": "Infrastructures",
+    "sub_sector": "Utilities",
+    "last_close_price": 1555.0,
+    "latest_close_date": "2026-01-20"
+  },
+  "CGAS.JK": {
+    "company_name": "PT Citra Nusantara Gemilang Tbk.",
+    "sector": "Energy",
+    "sub_sector": "Oil, Gas & Coal",
+    "last_close_price": 190.0,
+    "latest_close_date": "2026-01-20"
+  },
+  "CHEK.JK": {
+    "company_name": "PT Diastika Biotekindo Tbk",
+    "sector": "Healthcare",
+    "sub_sector": "Healthcare Equipment & Providers",
+    "last_close_price": 152.0,
+    "latest_close_date": "2026-01-20"
+  },
+  "ASJT.JK": {
+    "company_name": "Asuransi Jasa Tania Tbk",
+    "sector": "Financials",
+    "sub_sector": "Insurance",
+    "last_close_price": 200.0,
+    "latest_close_date": "2026-01-20"
+  },
+  "ASPR.JK": {
+    "company_name": "PT Asia Pramulia Tbk",
+    "sector": "Basic Materials",
+    "sub_sector": "Basic Materials",
+    "last_close_price": 153.0,
+    "latest_close_date": "2026-01-20"
+  },
+  "CHEM.JK": {
+    "company_name": "PT Chemstar Indonesia Tbk",
+    "sector": "Basic Materials",
+    "sub_sector": "Basic Materials",
+    "last_close_price": 115.0,
+    "latest_close_date": "2026-01-20"
+  },
+  "CLEO.JK": {
+    "company_name": "PT Sariguna Primatirta Tbk",
+    "sector": "Consumer Non-cyclicals",
+    "sub_sector": "Food & Beverage",
+    "last_close_price": 464.0,
+    "latest_close_date": "2026-01-20"
+  },
+  "AYAM.JK": {
+    "company_name": "PT Janu Putra Sejahtera Tbk.",
+    "sector": "Consumer Non-cyclicals",
+    "sub_sector": "Food & Beverage",
+    "last_close_price": 466.0,
+    "latest_close_date": "2026-01-20"
+  },
+  "BABY.JK": {
+    "company_name": "PT Multitrend Indo Tbk.",
+    "sector": "Consumer Cyclicals",
+    "sub_sector": "Retailing",
+    "last_close_price": 352.0,
+    "latest_close_date": "2026-01-20"
+  },
+  "BACA.JK": {
+    "company_name": "PT Bank Capital Indonesia Tbk",
+    "sector": "Financials",
+    "sub_sector": "Banks",
+    "last_close_price": 208.0,
+    "latest_close_date": "2026-01-20"
+  },
+  "BALI.JK": {
+    "company_name": "PT Bali Towerindo Sentra Tbk.",
+    "sector": "Infrastructures",
+    "sub_sector": "Telecommunication",
+    "last_close_price": 1590.0,
+    "latest_close_date": "2026-01-20"
+  },
+  "BBKP.JK": {
+    "company_name": "PT Bank KB Indonesia Tbk",
+    "sector": "Financials",
+    "sub_sector": "Banks",
+    "last_close_price": 90.0,
+    "latest_close_date": "2026-01-20"
+  },
+  "BBSS.JK": {
+    "company_name": "PT Bumi Benowo Sukses Sejahtera Tbk",
+    "sector": "Properties & Real Estate",
+    "sub_sector": "Properties & Real Estate",
+    "last_close_price": 442.0,
+    "latest_close_date": "2026-01-20"
+  },
+  "BCIP.JK": {
+    "company_name": "Bumi Citra Permai Tbk",
+    "sector": "Properties & Real Estate",
+    "sub_sector": "Properties & Real Estate",
+    "last_close_price": 90.0,
+    "latest_close_date": "2026-01-20"
+  },
+  "BDKR.JK": {
+    "company_name": "PT Berdikari Pondasi Perkasa Tbk.",
+    "sector": "Infrastructures",
+    "sub_sector": "Heavy Constructions & Civil Engineering",
+    "last_close_price": 181.0,
+    "latest_close_date": "2026-01-20"
+  },
+  "BEER.JK": {
+    "company_name": "PT Jobubu Jarum Minahasa Tbk",
+    "sector": "Consumer Non-cyclicals",
+    "sub_sector": "Food & Beverage",
+    "last_close_price": 204.0,
+    "latest_close_date": "2026-01-20"
+  },
+  "BESS.JK": {
+    "company_name": "PT Batulicin Nusantara Maritim Tbk.",
+    "sector": "Energy",
+    "sub_sector": "Oil, Gas & Coal",
+    "last_close_price": 1725.0,
+    "latest_close_date": "2026-01-20"
+  },
+  "BHAT.JK": {
+    "company_name": "PT Bhakti Multi Artha Tbk.",
+    "sector": "Financials",
+    "sub_sector": "Insurance",
+    "last_close_price": 1335.0,
+    "latest_close_date": "2026-01-20"
+  },
+  "BIPI.JK": {
+    "company_name": "PT Astrindo Nusantara Infrastruktur Tbk.",
+    "sector": "Energy",
+    "sub_sector": "Oil, Gas & Coal",
+    "last_close_price": 202.0,
+    "latest_close_date": "2026-01-20"
+  },
+  "BIRD.JK": {
+    "company_name": "PT Blue Bird Tbk",
+    "sector": "Transportation & Logistic",
+    "sub_sector": "Transportation",
+    "last_close_price": 1745.0,
+    "latest_close_date": "2026-01-20"
+  },
+  "BISI.JK": {
+    "company_name": "BISI INTERNATIONAL Tbk",
+    "sector": "Consumer Non-cyclicals",
+    "sub_sector": "Food & Beverage",
+    "last_close_price": 890.0,
+    "latest_close_date": "2026-01-20"
+  },
+  "BKDP.JK": {
+    "company_name": "Bukit Darmo Property Tbk",
+    "sector": "Properties & Real Estate",
+    "sub_sector": "Properties & Real Estate",
+    "last_close_price": 68.0,
+    "latest_close_date": "2026-01-20"
+  },
+  "BMAS.JK": {
+    "company_name": "PT Bank Maspion Indonesia Tbk.",
+    "sector": "Financials",
+    "sub_sector": "Banks",
+    "last_close_price": 640.0,
     "latest_close_date": "2026-01-20"
   },
   "BMSR.JK": {
@@ -1266,67 +3212,11 @@
     "last_close_price": 1150.0,
     "latest_close_date": "2026-01-20"
   },
-  "BOLT.JK": {
-    "company_name": "PT Garuda Metalindo Tbk.",
-    "sector": "Consumer Cyclicals",
-    "sub_sector": "Automobiles & Components",
-    "last_close_price": 1045.0,
-    "latest_close_date": "2026-01-20"
-  },
-  "BPFI.JK": {
-    "company_name": "PT Woori Finance Indonesia Tbk",
-    "sector": "Financials",
-    "sub_sector": "Financing Service",
-    "last_close_price": 312.0,
-    "latest_close_date": "2026-01-20"
-  },
-  "BPII.JK": {
-    "company_name": "PT Batavia Prosperindo Internasional Tbk.",
-    "sector": "Financials",
-    "sub_sector": "Holding & Investment Companies",
-    "last_close_price": 500.0,
-    "latest_close_date": "2026-01-20"
-  },
-  "BPTR.JK": {
-    "company_name": "PT Batavia Prosperindo Trans Tbk.",
-    "sector": "Transportation & Logistic",
-    "sub_sector": "Transportation",
-    "last_close_price": 94.0,
-    "latest_close_date": "2026-01-20"
-  },
   "BRAM.JK": {
     "company_name": "Indo Kordsa Tbk",
     "sector": "Consumer Cyclicals",
     "sub_sector": "Automobiles & Components",
     "last_close_price": 4690.0,
-    "latest_close_date": "2026-01-20"
-  },
-  "BRMS.JK": {
-    "company_name": "Bumi Resources Minerals Tbk",
-    "sector": "Basic Materials",
-    "sub_sector": "Basic Materials",
-    "last_close_price": 1310.0,
-    "latest_close_date": "2026-01-20"
-  },
-  "BRPT.JK": {
-    "company_name": "Barito Pacific Tbk",
-    "sector": "Basic Materials",
-    "sub_sector": "Basic Materials",
-    "last_close_price": 2900.0,
-    "latest_close_date": "2026-01-20"
-  },
-  "BRRC.JK": {
-    "company_name": "PT Raja Roti Cemerlang Tbk",
-    "sector": "Consumer Non-cyclicals",
-    "sub_sector": "Food & Beverage",
-    "last_close_price": 139.0,
-    "latest_close_date": "2026-01-20"
-  },
-  "BSBK.JK": {
-    "company_name": "PT Wulandari Bangun Laksana Tbk",
-    "sector": "Properties & Real Estate",
-    "sub_sector": "Properties & Real Estate",
-    "last_close_price": 77.0,
     "latest_close_date": "2026-01-20"
   },
   "BSIM.JK": {
@@ -1336,32 +3226,11 @@
     "last_close_price": 1285.0,
     "latest_close_date": "2026-01-20"
   },
-  "BSML.JK": {
-    "company_name": "PT Bintang Samudera Mandiri Lines Tbk",
-    "sector": "Energy",
-    "sub_sector": "Oil, Gas & Coal",
-    "last_close_price": 280.0,
-    "latest_close_date": "2026-01-20"
-  },
-  "BTEL.JK": {
-    "company_name": "Bakrie Telecom Tbk",
-    "sector": "Infrastructures",
-    "sub_sector": "Telecommunication",
-    "last_close_price": 50.0,
-    "latest_close_date": "2026-01-20"
-  },
   "BUKA.JK": {
     "company_name": "PT Bukalapak.com Tbk",
     "sector": "Technology",
     "sub_sector": "Software & IT Services",
     "last_close_price": 158.0,
-    "latest_close_date": "2026-01-20"
-  },
-  "BUKK.JK": {
-    "company_name": "Bukaka Teknik Utama Tbk",
-    "sector": "Infrastructures",
-    "sub_sector": "Heavy Constructions & Civil Engineering",
-    "last_close_price": 1555.0,
     "latest_close_date": "2026-01-20"
   },
   "BULL.JK": {
@@ -1378,13 +3247,6 @@
     "last_close_price": 414.0,
     "latest_close_date": "2026-01-20"
   },
-  "BUVA.JK": {
-    "company_name": "PT Bukit Uluwatu Villa Tbk",
-    "sector": "Consumer Cyclicals",
-    "sub_sector": "Consumer Services",
-    "last_close_price": 2130.0,
-    "latest_close_date": "2026-01-20"
-  },
   "BWPT.JK": {
     "company_name": "Eagle High Plantations Tbk",
     "sector": "Consumer Non-cyclicals",
@@ -1397,27 +3259,6 @@
     "sector": "Industrials",
     "sub_sector": "Industrial Goods",
     "last_close_price": 199.0,
-    "latest_close_date": "2026-01-20"
-  },
-  "CANI.JK": {
-    "company_name": "PT Capitol Nusantara Indonesia Tbk.",
-    "sector": "Energy",
-    "sub_sector": "Oil, Gas & Coal",
-    "last_close_price": 292.0,
-    "latest_close_date": "2026-01-20"
-  },
-  "CARS.JK": {
-    "company_name": "PT Industri dan Perdagangan Bintraco Dharma Tbk",
-    "sector": "Consumer Cyclicals",
-    "sub_sector": "Retailing",
-    "last_close_price": 123.0,
-    "latest_close_date": "2026-01-20"
-  },
-  "CASH.JK": {
-    "company_name": "PT Cashlez Worldwide Indonesia Tbk.",
-    "sector": "Technology",
-    "sub_sector": "Software & IT Services",
-    "last_close_price": 127.0,
     "latest_close_date": "2026-01-20"
   },
   "CASS.JK": {
@@ -1441,39 +3282,11 @@
     "last_close_price": 350.0,
     "latest_close_date": "2026-01-20"
   },
-  "CDIA.JK": {
-    "company_name": "PT Chandra Daya Investasi Tbk",
-    "sector": "Infrastructures",
-    "sub_sector": "Utilities",
-    "last_close_price": 1555.0,
-    "latest_close_date": "2026-01-20"
-  },
   "CEKA.JK": {
     "company_name": "PT Wilmar Cahaya Indonesia Tbk.",
     "sector": "Consumer Non-cyclicals",
     "sub_sector": "Food & Beverage",
     "last_close_price": 2450.0,
-    "latest_close_date": "2026-01-20"
-  },
-  "CGAS.JK": {
-    "company_name": "PT Citra Nusantara Gemilang Tbk.",
-    "sector": "Energy",
-    "sub_sector": "Oil, Gas & Coal",
-    "last_close_price": 190.0,
-    "latest_close_date": "2026-01-20"
-  },
-  "CHEK.JK": {
-    "company_name": "PT Diastika Biotekindo Tbk",
-    "sector": "Healthcare",
-    "sub_sector": "Healthcare Equipment & Providers",
-    "last_close_price": 152.0,
-    "latest_close_date": "2026-01-20"
-  },
-  "CHEM.JK": {
-    "company_name": "PT Chemstar Indonesia Tbk",
-    "sector": "Basic Materials",
-    "sub_sector": "Basic Materials",
-    "last_close_price": 115.0,
     "latest_close_date": "2026-01-20"
   },
   "CITA.JK": {
@@ -1483,32 +3296,11 @@
     "last_close_price": 5050.0,
     "latest_close_date": "2026-01-20"
   },
-  "CLEO.JK": {
-    "company_name": "PT Sariguna Primatirta Tbk",
-    "sector": "Consumer Non-cyclicals",
-    "sub_sector": "Food & Beverage",
-    "last_close_price": 464.0,
-    "latest_close_date": "2026-01-20"
-  },
-  "CLPI.JK": {
-    "company_name": "Colorpak Indonesia Tbk",
-    "sector": "Basic Materials",
-    "sub_sector": "Basic Materials",
-    "last_close_price": 1565.0,
-    "latest_close_date": "2026-01-20"
-  },
   "CMNT.JK": {
     "company_name": "PT Cemindo Gemilang Tbk",
     "sector": "Basic Materials",
     "sub_sector": "Basic Materials",
     "last_close_price": 840.0,
-    "latest_close_date": "2026-01-20"
-  },
-  "CMPP.JK": {
-    "company_name": "PT AirAsia Indonesia Tbk",
-    "sector": "Transportation & Logistic",
-    "sub_sector": "Transportation",
-    "last_close_price": 103.0,
     "latest_close_date": "2026-01-20"
   },
   "CNKO.JK": {
@@ -1525,34 +3317,6 @@
     "last_close_price": 124.0,
     "latest_close_date": "2026-01-20"
   },
-  "COAL.JK": {
-    "company_name": "PT Black Diamond Resources Tbk",
-    "sector": "Energy",
-    "sub_sector": "Oil, Gas & Coal",
-    "last_close_price": 90.0,
-    "latest_close_date": "2026-01-20"
-  },
-  "COIN.JK": {
-    "company_name": "PT Indokripto Koin Semesta Tbk",
-    "sector": "Financials",
-    "sub_sector": "Holding & Investment Companies",
-    "last_close_price": 2970.0,
-    "latest_close_date": "2026-01-20"
-  },
-  "COWL.JK": {
-    "company_name": "Cowell Development Tbk",
-    "sector": "Properties & Real Estate",
-    "sub_sector": "Properties & Real Estate",
-    "last_close_price": 50.0,
-    "latest_close_date": "2026-01-20"
-  },
-  "CPIN.JK": {
-    "company_name": "Charoen Pokphand Indonesia Tbk",
-    "sector": "Consumer Non-cyclicals",
-    "sub_sector": "Food & Beverage",
-    "last_close_price": 4420.0,
-    "latest_close_date": "2026-01-20"
-  },
   "CRAB.JK": {
     "company_name": "PT Toba Surimi Industries Tbk",
     "sector": "Consumer Non-cyclicals",
@@ -1567,25 +3331,11 @@
     "last_close_price": 320.0,
     "latest_close_date": "2026-01-20"
   },
-  "CSMI.JK": {
-    "company_name": "PT Cipta Selera Murni Tbk.",
-    "sector": "Consumer Cyclicals",
-    "sub_sector": "Consumer Services",
-    "last_close_price": 186.0,
-    "latest_close_date": "2026-01-20"
-  },
   "CTRA.JK": {
     "company_name": "Ciputra Development Tbk",
     "sector": "Properties & Real Estate",
     "sub_sector": "Properties & Real Estate",
     "last_close_price": 920.0,
-    "latest_close_date": "2026-01-20"
-  },
-  "CTTH.JK": {
-    "company_name": "Citatah Tbk",
-    "sector": "Industrials",
-    "sub_sector": "Industrial Goods",
-    "last_close_price": 115.0,
     "latest_close_date": "2026-01-20"
   },
   "CUAN.JK": {
@@ -1602,53 +3352,11 @@
     "last_close_price": 3320.0,
     "latest_close_date": "2026-01-20"
   },
-  "DADA.JK": {
-    "company_name": "PT Diamond Citra Propertindo Tbk.",
-    "sector": "Properties & Real Estate",
-    "sub_sector": "Properties & Real Estate",
-    "last_close_price": 50.0,
-    "latest_close_date": "2026-01-20"
-  },
-  "DAYA.JK": {
-    "company_name": "PT Duta Intidaya Tbk.",
-    "sector": "Consumer Non-cyclicals",
-    "sub_sector": "Food & Staples Retailing",
-    "last_close_price": 1270.0,
-    "latest_close_date": "2026-01-20"
-  },
-  "DEAL.JK": {
-    "company_name": "PT Dewata Freightinternational Tbk",
-    "sector": "Transportation & Logistic",
-    "sub_sector": "Logistics & Deliveries",
-    "last_close_price": 6.0,
-    "latest_close_date": "2026-01-20"
-  },
-  "DEFI.JK": {
-    "company_name": "Danasupra Erapacific Tbk",
-    "sector": "Financials",
-    "sub_sector": "Financing Service",
-    "last_close_price": 270.0,
-    "latest_close_date": "2026-01-20"
-  },
   "DEPO.JK": {
     "company_name": "PT Caturkarda Depo Bangunan Tbk",
     "sector": "Consumer Cyclicals",
     "sub_sector": "Retailing",
     "last_close_price": 272.0,
-    "latest_close_date": "2026-01-20"
-  },
-  "DFAM.JK": {
-    "company_name": "PT Dafam Property Indonesia Tbk",
-    "sector": "Consumer Cyclicals",
-    "sub_sector": "Consumer Services",
-    "last_close_price": 114.0,
-    "latest_close_date": "2026-01-20"
-  },
-  "DGWG.JK": {
-    "company_name": "PT Delta Giri Wacana Tbk",
-    "sector": "Basic Materials",
-    "sub_sector": "Basic Materials",
-    "last_close_price": 374.0,
     "latest_close_date": "2026-01-20"
   },
   "DIVA.JK": {
@@ -1679,20 +3387,6 @@
     "last_close_price": 352.0,
     "latest_close_date": "2026-01-20"
   },
-  "DMND.JK": {
-    "company_name": "PT Diamond Food Indonesia Tbk",
-    "sector": "Consumer Non-cyclicals",
-    "sub_sector": "Food & Staples Retailing",
-    "last_close_price": 790.0,
-    "latest_close_date": "2026-01-20"
-  },
-  "DNET.JK": {
-    "company_name": "PT Indoritel Makmur Internasional Tbk",
-    "sector": "Financials",
-    "sub_sector": "Holding & Investment Companies",
-    "last_close_price": 9050.0,
-    "latest_close_date": "2026-01-20"
-  },
   "DPNS.JK": {
     "company_name": "Duta Pertiwi Nusantara Tbk",
     "sector": "Basic Materials",
@@ -1705,13 +3399,6 @@
     "sector": "Energy",
     "sub_sector": "Oil, Gas & Coal",
     "last_close_price": 102000.0,
-    "latest_close_date": "2026-01-20"
-  },
-  "EAST.JK": {
-    "company_name": "PT Eastparc Hotel Tbk",
-    "sector": "Consumer Cyclicals",
-    "sub_sector": "Consumer Services",
-    "last_close_price": 96.0,
     "latest_close_date": "2026-01-20"
   },
   "ECII.JK": {
@@ -1728,13 +3415,6 @@
     "last_close_price": 4510.0,
     "latest_close_date": "2026-01-20"
   },
-  "ELPI.JK": {
-    "company_name": "PT Pelayaran Nasional Ekalya Purnamasari Tbk",
-    "sector": "Transportation & Logistic",
-    "sub_sector": "Logistics & Deliveries",
-    "last_close_price": 860.0,
-    "latest_close_date": "2026-01-20"
-  },
   "ELSA.JK": {
     "company_name": "Elnusa Tbk",
     "sector": "Energy",
@@ -1749,25 +3429,11 @@
     "last_close_price": 79.0,
     "latest_close_date": "2026-01-20"
   },
-  "EMDE.JK": {
-    "company_name": "Megapolitan Developments Tbk",
-    "sector": "Properties & Real Estate",
-    "sub_sector": "Properties & Real Estate",
-    "last_close_price": 101.0,
-    "latest_close_date": "2026-01-20"
-  },
   "ENAK.JK": {
     "company_name": "PT Champ Resto Indonesia Tbk",
     "sector": "Consumer Cyclicals",
     "sub_sector": "Consumer Services",
     "last_close_price": 590.0,
-    "latest_close_date": "2026-01-20"
-  },
-  "ENZO.JK": {
-    "company_name": "PT Morenzo Abadi Perkasa Tbk",
-    "sector": "Consumer Non-cyclicals",
-    "sub_sector": "Food & Beverage",
-    "last_close_price": 86.0,
     "latest_close_date": "2026-01-20"
   },
   "EPAC.JK": {
@@ -1784,25 +3450,11 @@
     "last_close_price": 340.0,
     "latest_close_date": "2026-01-20"
   },
-  "ESIP.JK": {
-    "company_name": "PT Sinergi Inti Plastindo Tbk",
-    "sector": "Basic Materials",
-    "sub_sector": "Basic Materials",
-    "last_close_price": 84.0,
-    "latest_close_date": "2026-01-20"
-  },
   "ESTA.JK": {
     "company_name": "PT Esta Multi Usaha Tbk",
     "sector": "Consumer Cyclicals",
     "sub_sector": "Consumer Services",
     "last_close_price": 372.0,
-    "latest_close_date": "2026-01-20"
-  },
-  "ETWA.JK": {
-    "company_name": "Eterindo Wahanatama Tbk",
-    "sector": "Basic Materials",
-    "sub_sector": "Basic Materials",
-    "last_close_price": 70.0,
     "latest_close_date": "2026-01-20"
   },
   "EXCL.JK": {
@@ -1817,13 +3469,6 @@
     "sector": "Consumer Cyclicals",
     "sub_sector": "Consumer Services",
     "last_close_price": 620.0,
-    "latest_close_date": "2026-01-20"
-  },
-  "FIMP.JK": {
-    "company_name": "PT Fimperkasa Utama Tbk",
-    "sector": "Infrastructures",
-    "sub_sector": "Heavy Constructions & Civil Engineering",
-    "last_close_price": 69.0,
     "latest_close_date": "2026-01-20"
   },
   "FMII.JK": {
@@ -1847,34 +3492,6 @@
     "last_close_price": 1725.0,
     "latest_close_date": "2026-01-20"
   },
-  "FPNI.JK": {
-    "company_name": "PT Lotte Chemical Titan Tbk",
-    "sector": "Basic Materials",
-    "sub_sector": "Basic Materials",
-    "last_close_price": 810.0,
-    "latest_close_date": "2026-01-20"
-  },
-  "FUJI.JK": {
-    "company_name": "PT Fuji Finance Indonesia Tbk",
-    "sector": "Financials",
-    "sub_sector": "Financing Service",
-    "last_close_price": 695.0,
-    "latest_close_date": "2026-01-20"
-  },
-  "FUTR.JK": {
-    "company_name": "PT Futura Energi Global Tbk",
-    "sector": "Consumer Cyclicals",
-    "sub_sector": "Media & Entertainment",
-    "last_close_price": 620.0,
-    "latest_close_date": "2026-01-20"
-  },
-  "GAMA.JK": {
-    "company_name": "Aksara Global Development Tbk",
-    "sector": "Properties & Real Estate",
-    "sub_sector": "Properties & Real Estate",
-    "last_close_price": 18.0,
-    "latest_close_date": "2026-01-20"
-  },
   "GDST.JK": {
     "company_name": "Gunawan Dianjaya Steel Tbk",
     "sector": "Basic Materials",
@@ -1882,25 +3499,11 @@
     "last_close_price": 127.0,
     "latest_close_date": "2026-01-20"
   },
-  "GDYR.JK": {
-    "company_name": "Goodyear Indonesia Tbk",
-    "sector": "Consumer Cyclicals",
-    "sub_sector": "Automobiles & Components",
-    "last_close_price": 1105.0,
-    "latest_close_date": "2026-01-20"
-  },
   "GEMS.JK": {
     "company_name": "Golden Energy Mines Tbk",
     "sector": "Energy",
     "sub_sector": "Oil, Gas & Coal",
     "last_close_price": 8300.0,
-    "latest_close_date": "2026-01-20"
-  },
-  "GGRP.JK": {
-    "company_name": "PT Gunung Raja Paksi Tbk",
-    "sector": "Basic Materials",
-    "sub_sector": "Basic Materials",
-    "last_close_price": 338.0,
     "latest_close_date": "2026-01-20"
   },
   "GHON.JK": {
@@ -1917,13 +3520,6 @@
     "last_close_price": 94.0,
     "latest_close_date": "2026-01-20"
   },
-  "GMTD.JK": {
-    "company_name": "Gowa Makassar Tourism Development Tbk",
-    "sector": "Properties & Real Estate",
-    "sub_sector": "Properties & Real Estate",
-    "last_close_price": 2410.0,
-    "latest_close_date": "2026-01-20"
-  },
   "GOLD.JK": {
     "company_name": "PT Visi Telekomunikasi Infrastruktur Tbk",
     "sector": "Infrastructures",
@@ -1938,25 +3534,11 @@
     "last_close_price": 260.0,
     "latest_close_date": "2026-01-20"
   },
-  "GPSO.JK": {
-    "company_name": "PT Geoprima Solusi Tbk",
-    "sector": "Industrials",
-    "sub_sector": "Industrial Goods",
-    "last_close_price": 605.0,
-    "latest_close_date": "2026-01-20"
-  },
   "GRIA.JK": {
     "company_name": "PT Ingria Pratama Capitalindo Tbk",
     "sector": "Properties & Real Estate",
     "sub_sector": "Properties & Real Estate",
     "last_close_price": 128.0,
-    "latest_close_date": "2026-01-20"
-  },
-  "GRPH.JK": {
-    "company_name": "PT Griptha Putra Persada Tbk",
-    "sector": "Consumer Cyclicals",
-    "sub_sector": "Consumer Services",
-    "last_close_price": 67.0,
     "latest_close_date": "2026-01-20"
   },
   "GRPM.JK": {
@@ -2001,25 +3583,11 @@
     "last_close_price": 288.0,
     "latest_close_date": "2026-01-20"
   },
-  "GWSA.JK": {
-    "company_name": "PT Greenwood Sejahtera Tbk",
-    "sector": "Consumer Cyclicals",
-    "sub_sector": "Consumer Services",
-    "last_close_price": 240.0,
-    "latest_close_date": "2026-01-20"
-  },
   "HAIS.JK": {
     "company_name": "PT Hasnur Internasional Shipping Tbk",
     "sector": "Transportation & Logistic",
     "sub_sector": "Logistics & Deliveries",
     "last_close_price": 246.0,
-    "latest_close_date": "2026-01-20"
-  },
-  "HATM.JK": {
-    "company_name": "PT Habco Trans Maritima Tbk",
-    "sector": "Transportation & Logistic",
-    "sub_sector": "Logistics & Deliveries",
-    "last_close_price": 360.0,
     "latest_close_date": "2026-01-20"
   },
   "HDIT.JK": {
@@ -2048,13 +3616,6 @@
     "sector": "Consumer Non-cyclicals",
     "sub_sector": "Food & Staples Retailing",
     "last_close_price": 472.0,
-    "latest_close_date": "2026-01-20"
-  },
-  "HGII.JK": {
-    "company_name": "PT Hero Global Investment Tbk",
-    "sector": "Infrastructures",
-    "sub_sector": "Utilities",
-    "last_close_price": 179.0,
     "latest_close_date": "2026-01-20"
   },
   "HILL.JK": {
@@ -2092,13 +3653,6 @@
     "last_close_price": 1195.0,
     "latest_close_date": "2026-01-20"
   },
-  "HUMI.JK": {
-    "company_name": "PT Humpuss Maritim Internasional Tbk",
-    "sector": "Energy",
-    "sub_sector": "Oil, Gas & Coal",
-    "last_close_price": 356.0,
-    "latest_close_date": "2026-01-20"
-  },
   "HYGN.JK": {
     "company_name": "PT Ecocare Indo Pasifik Tbk",
     "sector": "Industrials",
@@ -2120,32 +3674,11 @@
     "last_close_price": 91.0,
     "latest_close_date": "2026-01-20"
   },
-  "IDPR.JK": {
-    "company_name": "PT Indonesia Pondasi Raya Tbk",
-    "sector": "Infrastructures",
-    "sub_sector": "Heavy Constructions & Civil Engineering",
-    "last_close_price": 288.0,
-    "latest_close_date": "2026-01-20"
-  },
-  "IFII.JK": {
-    "company_name": "PT Indonesia Fibreboard Industry Tbk",
-    "sector": "Basic Materials",
-    "sub_sector": "Basic Materials",
-    "last_close_price": 290.0,
-    "latest_close_date": "2026-01-20"
-  },
   "IKAI.JK": {
     "company_name": "Intikeramik Alamasri Industri Tbk",
     "sector": "Industrials",
     "sub_sector": "Industrial Goods",
     "last_close_price": 32.0,
-    "latest_close_date": "2026-01-20"
-  },
-  "IKBI.JK": {
-    "company_name": "Sumi Indo Kabel Tbk",
-    "sector": "Industrials",
-    "sub_sector": "Industrial Goods",
-    "last_close_price": 530.0,
     "latest_close_date": "2026-01-20"
   },
   "IKPM.JK": {
@@ -2169,25 +3702,11 @@
     "last_close_price": 3490.0,
     "latest_close_date": "2026-01-20"
   },
-  "INAF.JK": {
-    "company_name": "Indofarma Tbk",
-    "sector": "Healthcare",
-    "sub_sector": "Pharmaceuticals & Health Care Research",
-    "last_close_price": 126.0,
-    "latest_close_date": "2026-01-20"
-  },
   "INDF.JK": {
     "company_name": "Indofood Sukses Makmur Tbk",
     "sector": "Consumer Non-cyclicals",
     "sub_sector": "Food & Beverage",
     "last_close_price": 6700.0,
-    "latest_close_date": "2026-01-20"
-  },
-  "INDO.JK": {
-    "company_name": "PT Royalindo Investa Wijaya Tbk",
-    "sector": "Properties & Real Estate",
-    "sub_sector": "Properties & Real Estate",
-    "last_close_price": 430.0,
     "latest_close_date": "2026-01-20"
   },
   "INDR.JK": {
@@ -2202,13 +3721,6 @@
     "sector": "Consumer Cyclicals",
     "sub_sector": "Automobiles & Components",
     "last_close_price": 745.0,
-    "latest_close_date": "2026-01-20"
-  },
-  "INKP.JK": {
-    "company_name": "Indah Kiat Pulp & Paper Tbk",
-    "sector": "Basic Materials",
-    "sub_sector": "Basic Materials",
-    "last_close_price": 10100.0,
     "latest_close_date": "2026-01-20"
   },
   "INOV.JK": {
@@ -2281,13 +3793,6 @@
     "last_close_price": 434.0,
     "latest_close_date": "2026-01-20"
   },
-  "IRSX.JK": {
-    "company_name": "PT Folago Global Nusantara Tbk",
-    "sector": "Technology",
-    "sub_sector": "Software & IT Services",
-    "last_close_price": 735.0,
-    "latest_close_date": "2026-01-20"
-  },
   "ISAP.JK": {
     "company_name": "PT Isra Presisi Indonesia Tbk",
     "sector": "Consumer Cyclicals",
@@ -2300,13 +3805,6 @@
     "sector": "Energy",
     "sub_sector": "Oil, Gas & Coal",
     "last_close_price": 2350.0,
-    "latest_close_date": "2026-01-20"
-  },
-  "JARR.JK": {
-    "company_name": "PT Jhonlin Agro Raya Tbk",
-    "sector": "Consumer Non-cyclicals",
-    "sub_sector": "Food & Beverage",
-    "last_close_price": 3090.0,
     "latest_close_date": "2026-01-20"
   },
   "JAST.JK": {
@@ -2356,13 +3854,6 @@
     "sector": "Transportation & Logistic",
     "sub_sector": "Logistics & Deliveries",
     "last_close_price": 298.0,
-    "latest_close_date": "2026-01-20"
-  },
-  "POWR.JK": {
-    "company_name": "PT Cikarang Listrindo Tbk",
-    "sector": "Infrastructures",
-    "sub_sector": "Utilities",
-    "last_close_price": 710.0,
     "latest_close_date": "2026-01-20"
   },
   "POOL.JK": {
@@ -2470,13 +3961,6 @@
     "last_close_price": 500.0,
     "latest_close_date": "2026-01-20"
   },
-  "PANI.JK": {
-    "company_name": "PT Pantai Indah Kapuk Dua Tbk.",
-    "sector": "Properties & Real Estate",
-    "sub_sector": "Properties & Real Estate",
-    "last_close_price": 12575.0,
-    "latest_close_date": "2026-01-20"
-  },
   "PAMG.JK": {
     "company_name": "PT Bima Sakti Pertiwi Tbk",
     "sector": "Properties & Real Estate",
@@ -2489,27 +3973,6 @@
     "sector": "Financials",
     "sub_sector": "Holding & Investment Companies",
     "last_close_price": 420.0,
-    "latest_close_date": "2026-01-20"
-  },
-  "PACK.JK": {
-    "company_name": "PT Abadi Nusantara Hijau Investama Tbk",
-    "sector": "Basic Materials",
-    "sub_sector": "Basic Materials",
-    "last_close_price": 430.0,
-    "latest_close_date": "2026-01-20"
-  },
-  "OMED.JK": {
-    "company_name": "PT Jayamas Medica Industri Tbk",
-    "sector": "Healthcare",
-    "sub_sector": "Healthcare Equipment & Providers",
-    "last_close_price": 234.0,
-    "latest_close_date": "2026-01-20"
-  },
-  "OLIV.JK": {
-    "company_name": "PT Oscar Mitra Sukses Sejahtera Tbk",
-    "sector": "Consumer Cyclicals",
-    "sub_sector": "Household Goods",
-    "last_close_price": 78.0,
     "latest_close_date": "2026-01-20"
   },
   "OKAS.JK": {
@@ -2526,20 +3989,6 @@
     "last_close_price": 159.0,
     "latest_close_date": "2026-01-20"
   },
-  "OBMD.JK": {
-    "company_name": "PT OBM Drilchem Tbk",
-    "sector": "Basic Materials",
-    "sub_sector": "Basic Materials",
-    "last_close_price": 294.0,
-    "latest_close_date": "2026-01-20"
-  },
-  "OBAT.JK": {
-    "company_name": "PT Brigit Biofarmaka Teknologi Tbk",
-    "sector": "Healthcare",
-    "sub_sector": "Pharmaceuticals & Health Care Research",
-    "last_close_price": 390.0,
-    "latest_close_date": "2026-01-20"
-  },
   "NZIA.JK": {
     "company_name": "PT Nusantara Almazia, Tbk",
     "sector": "Properties & Real Estate",
@@ -2552,20 +4001,6 @@
     "sector": "Consumer Cyclicals",
     "sub_sector": "Consumer Services",
     "last_close_price": 50.0,
-    "latest_close_date": "2026-01-20"
-  },
-  "NTBK.JK": {
-    "company_name": "PT Nusatama Berkah Tbk",
-    "sector": "Industrials",
-    "sub_sector": "Industrial Goods",
-    "last_close_price": 120.0,
-    "latest_close_date": "2026-01-20"
-  },
-  "NSSS.JK": {
-    "company_name": "PT Nusantara Sawit Sejahtera Tbk",
-    "sector": "Consumer Non-cyclicals",
-    "sub_sector": "Food & Beverage",
-    "last_close_price": 1375.0,
     "latest_close_date": "2026-01-20"
   },
   "NISP.JK": {
@@ -2589,32 +4024,11 @@
     "last_close_price": 1415.0,
     "latest_close_date": "2026-01-20"
   },
-  "NICK.JK": {
-    "company_name": "PT Charnic Capital Tbk",
-    "sector": "Financials",
-    "sub_sector": "Holding & Investment Companies",
-    "last_close_price": 1290.0,
-    "latest_close_date": "2026-01-20"
-  },
-  "NFCX.JK": {
-    "company_name": "PT NFC Indonesia Tbk",
-    "sector": "Technology",
-    "sub_sector": "Software & IT Services",
-    "last_close_price": 1410.0,
-    "latest_close_date": "2026-01-20"
-  },
   "NETV.JK": {
     "company_name": "PT MDTV Media Technologies Tbk",
     "sector": "Consumer Cyclicals",
     "sub_sector": "Media & Entertainment",
     "last_close_price": 168.0,
-    "latest_close_date": "2026-01-20"
-  },
-  "NAYZ.JK": {
-    "company_name": "PT Hassana Boga Sejahtera Tbk",
-    "sector": "Consumer Non-cyclicals",
-    "sub_sector": "Food & Beverage",
-    "last_close_price": 67.0,
     "latest_close_date": "2026-01-20"
   },
   "NASI.JK": {
@@ -2666,13 +4080,6 @@
     "last_close_price": 81.0,
     "latest_close_date": "2026-01-20"
   },
-  "MTEL.JK": {
-    "company_name": "PT Dayamitra Telekomunikasi Tbk",
-    "sector": "Infrastructures",
-    "sub_sector": "Telecommunication",
-    "last_close_price": 615.0,
-    "latest_close_date": "2026-01-20"
-  },
   "MTDL.JK": {
     "company_name": "Metrodata Electronics Tbk",
     "sector": "Technology",
@@ -2687,25 +4094,11 @@
     "last_close_price": 1425.0,
     "latest_close_date": "2026-01-20"
   },
-  "MSKY.JK": {
-    "company_name": "MNC Sky Vision Tbk",
-    "sector": "Consumer Cyclicals",
-    "sub_sector": "Media & Entertainment",
-    "last_close_price": 119.0,
-    "latest_close_date": "2026-01-20"
-  },
   "MSJA.JK": {
     "company_name": "PT Multi Spunindo Jaya Tbk",
     "sector": "Consumer Non-cyclicals",
     "sub_sector": "Nondurable Household Products",
     "last_close_price": 348.0,
-    "latest_close_date": "2026-01-20"
-  },
-  "MREI.JK": {
-    "company_name": "Maskapai Reasuransi Indonesia Tbk",
-    "sector": "Financials",
-    "sub_sector": "Insurance",
-    "last_close_price": 1210.0,
     "latest_close_date": "2026-01-20"
   },
   "MRAT.JK": {
@@ -2757,13 +4150,6 @@
     "last_close_price": 64050.0,
     "latest_close_date": "2026-01-20"
   },
-  "MLPL.JK": {
-    "company_name": "Multipolar Tbk",
-    "sector": "Consumer Non-cyclicals",
-    "sub_sector": "Food & Staples Retailing",
-    "last_close_price": 147.0,
-    "latest_close_date": "2026-01-20"
-  },
   "MLIA.JK": {
     "company_name": "Mulia Industrindo Tbk",
     "sector": "Industrials",
@@ -2813,20 +4199,6 @@
     "last_close_price": 268.0,
     "latest_close_date": "2026-01-20"
   },
-  "MGRO.JK": {
-    "company_name": "PT Mahkota Group Tbk",
-    "sector": "Consumer Non-cyclicals",
-    "sub_sector": "Food & Beverage",
-    "last_close_price": 730.0,
-    "latest_close_date": "2026-01-20"
-  },
-  "MGNA.JK": {
-    "company_name": "PT Magna Investama Mandiri Tbk",
-    "sector": "Financials",
-    "sub_sector": "Holding & Investment Companies",
-    "last_close_price": 298.0,
-    "latest_close_date": "2026-01-20"
-  },
   "MGLV.JK": {
     "company_name": "PT Panca Anugrah Wisesa Tbk",
     "sector": "Consumer Cyclicals",
@@ -2855,13 +4227,6 @@
     "last_close_price": 3320.0,
     "latest_close_date": "2026-01-20"
   },
-  "MEDS.JK": {
-    "company_name": "PT Hetzer Medical Indonesia Tbk",
-    "sector": "Healthcare",
-    "sub_sector": "Healthcare Equipment & Providers",
-    "last_close_price": 85.0,
-    "latest_close_date": "2026-01-20"
-  },
   "MDRN.JK": {
     "company_name": "Modern Internasional Tbk",
     "sector": "Industrials",
@@ -2874,20 +4239,6 @@
     "sector": "Healthcare",
     "sub_sector": "Pharmaceuticals & Health Care Research",
     "last_close_price": 256.0,
-    "latest_close_date": "2026-01-20"
-  },
-  "MDKA.JK": {
-    "company_name": "PT Merdeka Copper Gold Tbk",
-    "sector": "Basic Materials",
-    "sub_sector": "Basic Materials",
-    "last_close_price": 3210.0,
-    "latest_close_date": "2026-01-20"
-  },
-  "MDIY.JK": {
-    "company_name": "PT Daya Intiguna Yasa Tbk",
-    "sector": "Consumer Cyclicals",
-    "sub_sector": "Retailing",
-    "last_close_price": 990.0,
     "latest_close_date": "2026-01-20"
   },
   "MDIA.JK": {
@@ -2953,25 +4304,11 @@
     "last_close_price": 1200.0,
     "latest_close_date": "2026-01-20"
   },
-  "MANG.JK": {
-    "company_name": "PT Manggung Polahraya Tbk",
-    "sector": "Infrastructures",
-    "sub_sector": "Heavy Constructions & Civil Engineering",
-    "last_close_price": 69.0,
-    "latest_close_date": "2026-01-20"
-  },
   "MAIN.JK": {
     "company_name": "Malindo Feedmill Tbk",
     "sector": "Consumer Non-cyclicals",
     "sub_sector": "Food & Beverage",
     "last_close_price": 890.0,
-    "latest_close_date": "2026-01-20"
-  },
-  "MAHA.JK": {
-    "company_name": "PT Mandiri Herindo Adiperkasa Tbk",
-    "sector": "Energy",
-    "sub_sector": "Oil, Gas & Coal",
-    "last_close_price": 194.0,
     "latest_close_date": "2026-01-20"
   },
   "LTLS.JK": {
@@ -2981,39 +4318,11 @@
     "last_close_price": 880.0,
     "latest_close_date": "2026-01-20"
   },
-  "LRNA.JK": {
-    "company_name": "PT Eka Sari Lorena Transport Tbk",
-    "sector": "Transportation & Logistic",
-    "sub_sector": "Transportation",
-    "last_close_price": 262.0,
-    "latest_close_date": "2026-01-20"
-  },
-  "LPPS.JK": {
-    "company_name": "PT Lenox Pasifik Investama Tbk",
-    "sector": "Financials",
-    "sub_sector": "Holding & Investment Companies",
-    "last_close_price": 115.0,
-    "latest_close_date": "2026-01-20"
-  },
   "LPPF.JK": {
     "company_name": "Matahari Department Store Tbk",
     "sector": "Consumer Cyclicals",
     "sub_sector": "Retailing",
     "last_close_price": 1855.0,
-    "latest_close_date": "2026-01-20"
-  },
-  "LPLI.JK": {
-    "company_name": "Star Pacific Tbk",
-    "sector": "Properties & Real Estate",
-    "sub_sector": "Properties & Real Estate",
-    "last_close_price": 382.0,
-    "latest_close_date": "2026-01-20"
-  },
-  "LPKR.JK": {
-    "company_name": "Lippo Karawaci Tbk",
-    "sector": "Properties & Real Estate",
-    "sub_sector": "Properties & Real Estate",
-    "last_close_price": 100.0,
     "latest_close_date": "2026-01-20"
   },
   "LPIN.JK": {
@@ -3028,13 +4337,6 @@
     "sector": "Properties & Real Estate",
     "sub_sector": "Properties & Real Estate",
     "last_close_price": 655.0,
-    "latest_close_date": "2026-01-20"
-  },
-  "LOPI.JK": {
-    "company_name": "PT Logisticsplus International Tbk",
-    "sector": "Transportation & Logistic",
-    "sub_sector": "Logistics & Deliveries",
-    "last_close_price": 159.0,
     "latest_close_date": "2026-01-20"
   },
   "LMSH.JK": {
@@ -3065,34 +4367,6 @@
     "last_close_price": 338.0,
     "latest_close_date": "2026-01-20"
   },
-  "LION.JK": {
-    "company_name": "Lion Metal Works Tbk",
-    "sector": "Industrials",
-    "sub_sector": "Industrial Services",
-    "last_close_price": 438.0,
-    "latest_close_date": "2026-01-20"
-  },
-  "LINK.JK": {
-    "company_name": "PT Link Net Tbk",
-    "sector": "Infrastructures",
-    "sub_sector": "Telecommunication",
-    "last_close_price": 3410.0,
-    "latest_close_date": "2026-01-20"
-  },
-  "LFLO.JK": {
-    "company_name": "PT Imago Mulia Persada Tbk",
-    "sector": "Consumer Cyclicals",
-    "sub_sector": "Household Goods",
-    "last_close_price": 655.0,
-    "latest_close_date": "2026-01-20"
-  },
-  "LEAD.JK": {
-    "company_name": "PT Logindo Samudramakmur Tbk",
-    "sector": "Energy",
-    "sub_sector": "Oil, Gas & Coal",
-    "last_close_price": 228.0,
-    "latest_close_date": "2026-01-20"
-  },
   "LCKM.JK": {
     "company_name": "PT LCK Global Kedaton Tbk",
     "sector": "Infrastructures",
@@ -3107,20 +4381,6 @@
     "last_close_price": 78.0,
     "latest_close_date": "2026-01-20"
   },
-  "LABS.JK": {
-    "company_name": "PT UBC Medical Indonesia Tbk",
-    "sector": "Healthcare",
-    "sub_sector": "Healthcare Equipment & Providers",
-    "last_close_price": 138.0,
-    "latest_close_date": "2026-01-20"
-  },
-  "LABA.JK": {
-    "company_name": "PT Green Power Group Tbk",
-    "sector": "Industrials",
-    "sub_sector": "Industrial Goods",
-    "last_close_price": 174.0,
-    "latest_close_date": "2026-01-20"
-  },
   "KSIX.JK": {
     "company_name": "PT Kentanix Supra International Tbk",
     "sector": "Properties & Real Estate",
@@ -3128,25 +4388,11 @@
     "last_close_price": 436.0,
     "latest_close_date": "2026-01-20"
   },
-  "KOPI.JK": {
-    "company_name": "PT Mitra Energi Persada Tbk",
-    "sector": "Energy",
-    "sub_sector": "Oil, Gas & Coal",
-    "last_close_price": 298.0,
-    "latest_close_date": "2026-01-20"
-  },
   "KOIN.JK": {
     "company_name": "Kokoh Inti Arebama Tbk",
     "sector": "Industrials",
     "sub_sector": "Industrial Goods",
     "last_close_price": 100.0,
-    "latest_close_date": "2026-01-20"
-  },
-  "KOCI.JK": {
-    "company_name": "PT Kokoh Exa Nusantara",
-    "sector": "Properties & Real Estate",
-    "sub_sector": "Properties & Real Estate",
-    "last_close_price": 260.0,
     "latest_close_date": "2026-01-20"
   },
   "KOBX.JK": {
@@ -3205,13 +4451,6 @@
     "last_close_price": 460.0,
     "latest_close_date": "2026-01-20"
   },
-  "KBLV.JK": {
-    "company_name": "First Media Tbk",
-    "sector": "Infrastructures",
-    "sub_sector": "Telecommunication",
-    "last_close_price": 184.0,
-    "latest_close_date": "2026-01-20"
-  },
   "KBAG.JK": {
     "company_name": "PT Karya Bersama Anugerah Tbk",
     "sector": "Properties & Real Estate",
@@ -3238,13 +4477,6 @@
     "sector": "Energy",
     "sub_sector": "Alternative Energy",
     "last_close_price": 52.0,
-    "latest_close_date": "2026-01-20"
-  },
-  "OPMS.JK": {
-    "company_name": "PT Optima Prima Metal Sinergi Tbk",
-    "sector": "Basic Materials",
-    "sub_sector": "Basic Materials",
-    "last_close_price": 190.0,
     "latest_close_date": "2026-01-20"
   },
   "ZYRX.JK": {
@@ -3310,13 +4542,6 @@
     "last_close_price": 228.0,
     "latest_close_date": "2026-01-20"
   },
-  "WIFI.JK": {
-    "company_name": "PT Solusi Sinergi Digital Tbk",
-    "sector": "Technology",
-    "sub_sector": "Software & IT Services",
-    "last_close_price": 3100.0,
-    "latest_close_date": "2026-01-20"
-  },
   "WIDI.JK": {
     "company_name": "PT Widiant Jaya Krenindo Tbk",
     "sector": "Industrials",
@@ -3359,20 +4584,6 @@
     "last_close_price": 204.0,
     "latest_close_date": "2026-01-20"
   },
-  "VICI.JK": {
-    "company_name": "PT Victoria Care Indonesia Tbk",
-    "sector": "Consumer Non-cyclicals",
-    "sub_sector": "Nondurable Household Products",
-    "last_close_price": 745.0,
-    "latest_close_date": "2026-01-20"
-  },
-  "VERN.JK": {
-    "company_name": "PT Verona Indah Pictures Tbk",
-    "sector": "Consumer Cyclicals",
-    "sub_sector": "Media & Entertainment",
-    "last_close_price": 131.0,
-    "latest_close_date": "2026-01-20"
-  },
   "VAST.JK": {
     "company_name": "PT Vastland Indonesia Tbk",
     "sector": "Properties & Real Estate",
@@ -3385,13 +4596,6 @@
     "sector": "Technology",
     "sub_sector": "Software & IT Services",
     "last_close_price": 204.0,
-    "latest_close_date": "2026-01-20"
-  },
-  "URBN.JK": {
-    "company_name": "PT Urban Jakarta Propertindo Tbk",
-    "sector": "Properties & Real Estate",
-    "sub_sector": "Properties & Real Estate",
-    "last_close_price": 216.0,
     "latest_close_date": "2026-01-20"
   },
   "UNVR.JK": {
@@ -3478,13 +4682,6 @@
     "last_close_price": 176.0,
     "latest_close_date": "2026-01-20"
   },
-  "TRIS.JK": {
-    "company_name": "Trisula International Tbk",
-    "sector": "Consumer Cyclicals",
-    "sub_sector": "Apparel & Luxury Goods",
-    "last_close_price": 244.0,
-    "latest_close_date": "2026-01-20"
-  },
   "TRIN.JK": {
     "company_name": "PT Perintis Triniti Properti Tbk",
     "sector": "Properties & Real Estate",
@@ -3513,13 +4710,6 @@
     "last_close_price": 560.0,
     "latest_close_date": "2026-01-20"
   },
-  "TOTO.JK": {
-    "company_name": "Surya Toto Indonesia Tbk",
-    "sector": "Industrials",
-    "sub_sector": "Industrial Goods",
-    "last_close_price": 274.0,
-    "latest_close_date": "2026-01-20"
-  },
   "TOOL.JK": {
     "company_name": "PT Rohartindo Nusantara Luas Tbk",
     "sector": "Consumer Cyclicals",
@@ -3532,13 +4722,6 @@
     "sector": "Transportation & Logistic",
     "sub_sector": "Logistics & Deliveries",
     "last_close_price": 167.0,
-    "latest_close_date": "2026-01-20"
-  },
-  "TKIM.JK": {
-    "company_name": "Pabrik Kertas Tjiwi Kimia Tbk",
-    "sector": "Basic Materials",
-    "sub_sector": "Basic Materials",
-    "last_close_price": 8050.0,
     "latest_close_date": "2026-01-20"
   },
   "TIRT.JK": {
@@ -3751,13 +4934,6 @@
     "last_close_price": 244.0,
     "latest_close_date": "2026-01-20"
   },
-  "SOSS.JK": {
-    "company_name": "PT Shield On Service Tbk",
-    "sector": "Industrials",
-    "sub_sector": "Industrial Services",
-    "last_close_price": 900.0,
-    "latest_close_date": "2026-01-20"
-  },
   "SONA.JK": {
     "company_name": "Sona Topas Tourism Industry Tbk",
     "sector": "Consumer Cyclicals",
@@ -3791,13 +4967,6 @@
     "sector": "Consumer Cyclicals",
     "sub_sector": "Consumer Services",
     "last_close_price": 384.0,
-    "latest_close_date": "2026-01-20"
-  },
-  "SMSM.JK": {
-    "company_name": "Selamat Sempurna Tbk",
-    "sector": "Consumer Cyclicals",
-    "sub_sector": "Automobiles & Components",
-    "last_close_price": 1765.0,
     "latest_close_date": "2026-01-20"
   },
   "SMRA.JK": {
@@ -3856,25 +5025,11 @@
     "last_close_price": 5675.0,
     "latest_close_date": "2026-01-20"
   },
-  "SLIS.JK": {
-    "company_name": "PT Gaya Abadi Sempurna Tbk",
-    "sector": "Consumer Cyclicals",
-    "sub_sector": "Retailing",
-    "last_close_price": 121.0,
-    "latest_close_date": "2026-01-20"
-  },
   "SKRN.JK": {
     "company_name": "PT Superkrane Mitra Utama Tbk",
     "sector": "Industrials",
     "sub_sector": "Industrial Goods",
     "last_close_price": 510.0,
-    "latest_close_date": "2026-01-20"
-  },
-  "SKBM.JK": {
-    "company_name": "Sekar Bumi Tbk",
-    "sector": "Consumer Non-cyclicals",
-    "sub_sector": "Food & Beverage",
-    "last_close_price": 610.0,
     "latest_close_date": "2026-01-20"
   },
   "SIMA.JK": {
@@ -3905,13 +5060,6 @@
     "last_close_price": 4600.0,
     "latest_close_date": "2026-01-20"
   },
-  "SGRO.JK": {
-    "company_name": "PT Sampoerna Agro Tbk",
-    "sector": "Consumer Non-cyclicals",
-    "sub_sector": "Food & Beverage",
-    "last_close_price": 7700.0,
-    "latest_close_date": "2026-01-20"
-  },
   "SGER.JK": {
     "company_name": "PT Sumber Global Energy Tbk",
     "sector": "Energy",
@@ -3924,13 +5072,6 @@
     "sector": "Financials",
     "sub_sector": "Holding & Investment Companies",
     "last_close_price": 1940.0,
-    "latest_close_date": "2026-01-20"
-  },
-  "SEMA.JK": {
-    "company_name": "PT Semacom Integrated Tbk",
-    "sector": "Energy",
-    "sub_sector": "Alternative Energy",
-    "last_close_price": 131.0,
     "latest_close_date": "2026-01-20"
   },
   "SDRA.JK": {
@@ -3952,13 +5093,6 @@
     "sector": "Consumer Cyclicals",
     "sub_sector": "Household Goods",
     "last_close_price": 177.0,
-    "latest_close_date": "2026-01-20"
-  },
-  "SCCO.JK": {
-    "company_name": "PT Supreme Cable Manufacturing & Commerce Tbk",
-    "sector": "Industrials",
-    "sub_sector": "Industrial Goods",
-    "last_close_price": 2450.0,
     "latest_close_date": "2026-01-20"
   },
   "SBMA.JK": {
@@ -3987,13 +5121,6 @@
     "sector": "Transportation & Logistic",
     "sub_sector": "Logistics & Deliveries",
     "last_close_price": 308.0,
-    "latest_close_date": "2026-01-20"
-  },
-  "SAMF.JK": {
-    "company_name": "PT Saraswanti Anugerah Makmur Tbk",
-    "sector": "Basic Materials",
-    "sub_sector": "Basic Materials",
-    "last_close_price": 332.0,
     "latest_close_date": "2026-01-20"
   },
   "SAME.JK": {
@@ -4036,13 +5163,6 @@
     "sector": "Consumer Non-cyclicals",
     "sub_sector": "Food & Beverage",
     "last_close_price": 780.0,
-    "latest_close_date": "2026-01-20"
-  },
-  "RONY.JK": {
-    "company_name": "PT Aracord Nusantara Group Tbk",
-    "sector": "Infrastructures",
-    "sub_sector": "Heavy Constructions & Civil Engineering",
-    "last_close_price": 4300.0,
     "latest_close_date": "2026-01-20"
   },
   "ROCK.JK": {
@@ -4136,13 +5256,6 @@
     "last_close_price": 254.0,
     "latest_close_date": "2026-01-20"
   },
-  "PZZA.JK": {
-    "company_name": "PT Sarimelati Kencana Tbk",
-    "sector": "Consumer Cyclicals",
-    "sub_sector": "Consumer Services",
-    "last_close_price": 226.0,
-    "latest_close_date": "2026-01-20"
-  },
   "PYFA.JK": {
     "company_name": "PT Pyridam Farma Tbk",
     "sector": "Healthcare",
@@ -4234,13 +5347,6 @@
     "last_close_price": 2470.0,
     "latest_close_date": "2026-01-20"
   },
-  "PSSI.JK": {
-    "company_name": "PT IMC Pelita Logistik Tbk",
-    "sector": "Energy",
-    "sub_sector": "Oil, Gas & Coal",
-    "last_close_price": 366.0,
-    "latest_close_date": "2026-01-20"
-  },
   "PSKT.JK": {
     "company_name": "PT Red Planet Indonesia Tbk",
     "sector": "Consumer Cyclicals",
@@ -4260,13 +5366,6 @@
     "sector": "Energy",
     "sub_sector": "Oil, Gas & Coal",
     "last_close_price": 1225.0,
-    "latest_close_date": "2026-01-20"
-  },
-  "PRIM.JK": {
-    "company_name": "PT Royal Prima Tbk",
-    "sector": "Healthcare",
-    "sub_sector": "Healthcare Equipment & Providers",
-    "last_close_price": 87.0,
     "latest_close_date": "2026-01-20"
   },
   "JRPT.JK": {
@@ -4290,60 +5389,11 @@
     "last_close_price": 21.0,
     "latest_close_date": "2026-01-20"
   },
-  "PPRI.JK": {
-    "company_name": "PT Paperocks Indonesia Tbk",
-    "sector": "Basic Materials",
-    "sub_sector": "Basic Materials",
-    "last_close_price": 332.0,
-    "latest_close_date": "2026-01-20"
-  },
   "AADI.JK": {
     "company_name": "PT Adaro Andalan Indonesia Tbk",
     "sector": "Energy",
     "sub_sector": "Oil, Gas & Coal",
     "last_close_price": 7500.0,
-    "latest_close_date": "2026-01-20"
-  },
-  "AALI.JK": {
-    "company_name": "Astra Agro Lestari Tbk",
-    "sector": "Consumer Non-cyclicals",
-    "sub_sector": "Food & Beverage",
-    "last_close_price": 7650.0,
-    "latest_close_date": "2026-01-20"
-  },
-  "ABMM.JK": {
-    "company_name": "ABM Investama Tbk",
-    "sector": "Energy",
-    "sub_sector": "Oil, Gas & Coal",
-    "last_close_price": 3000.0,
-    "latest_close_date": "2026-01-20"
-  },
-  "ACES.JK": {
-    "company_name": "PT Aspirasi Hidup Indonesia Tbk",
-    "sector": "Consumer Cyclicals",
-    "sub_sector": "Retailing",
-    "last_close_price": 418.0,
-    "latest_close_date": "2026-01-20"
-  },
-  "ACRO.JK": {
-    "company_name": "PT Samcro Hyosung Adilestari Tbk.",
-    "sector": "Consumer Cyclicals",
-    "sub_sector": "Apparel & Luxury Goods",
-    "last_close_price": 102.0,
-    "latest_close_date": "2026-01-20"
-  },
-  "ADCP.JK": {
-    "company_name": "PT Adhi Commuter Properti Tbk",
-    "sector": "Properties & Real Estate",
-    "sub_sector": "Properties & Real Estate",
-    "last_close_price": 59.0,
-    "latest_close_date": "2026-01-20"
-  },
-  "ADHI.JK": {
-    "company_name": "PT Adhi Karya (Persero) Tbk.",
-    "sector": "Infrastructures",
-    "sub_sector": "Heavy Constructions & Civil Engineering",
-    "last_close_price": 258.0,
     "latest_close_date": "2026-01-20"
   },
   "ADMF.JK": {
@@ -4353,25 +5403,11 @@
     "last_close_price": 8700.0,
     "latest_close_date": "2026-01-20"
   },
-  "AEGS.JK": {
-    "company_name": "PT Anugerah Spareparts Sejahtera Tbk.",
-    "sector": "Consumer Cyclicals",
-    "sub_sector": "Automobiles & Components",
-    "last_close_price": 77.0,
-    "latest_close_date": "2026-01-20"
-  },
   "AGII.JK": {
     "company_name": "PT Samator Indo Gas Tbk",
     "sector": "Basic Materials",
     "sub_sector": "Basic Materials",
     "last_close_price": 1635.0,
-    "latest_close_date": "2026-01-20"
-  },
-  "AGRS.JK": {
-    "company_name": "PT Bank IBK Indonesia Tbk.",
-    "sector": "Financials",
-    "sub_sector": "Banks",
-    "last_close_price": 83.0,
     "latest_close_date": "2026-01-20"
   },
   "AHAP.JK": {
@@ -4381,25 +5417,11 @@
     "last_close_price": 191.0,
     "latest_close_date": "2026-01-20"
   },
-  "AIMS.JK": {
-    "company_name": "PT Artha Mahiya Investama Tbk",
-    "sector": "Energy",
-    "sub_sector": "Oil, Gas & Coal",
-    "last_close_price": 525.0,
-    "latest_close_date": "2026-01-20"
-  },
   "AKPI.JK": {
     "company_name": "Argha Karya Prima Ind. Tbk",
     "sector": "Basic Materials",
     "sub_sector": "Basic Materials",
     "last_close_price": 565.0,
-    "latest_close_date": "2026-01-20"
-  },
-  "ALDO.JK": {
-    "company_name": "Alkindo Naratama Tbk",
-    "sector": "Basic Materials",
-    "sub_sector": "Basic Materials",
-    "last_close_price": 615.0,
     "latest_close_date": "2026-01-20"
   },
   "AMAR.JK": {
@@ -4423,34 +5445,6 @@
     "last_close_price": 7625.0,
     "latest_close_date": "2026-01-20"
   },
-  "ANTM.JK": {
-    "company_name": "Aneka Tambang Tbk.",
-    "sector": "Basic Materials",
-    "sub_sector": "Basic Materials",
-    "last_close_price": 4120.0,
-    "latest_close_date": "2026-01-20"
-  },
-  "APII.JK": {
-    "company_name": "PT Arita Prima Indonesia Tbk.",
-    "sector": "Industrials",
-    "sub_sector": "Industrial Goods",
-    "last_close_price": 208.0,
-    "latest_close_date": "2026-01-20"
-  },
-  "ARCI.JK": {
-    "company_name": "PT Archi Indonesia Tbk",
-    "sector": "Basic Materials",
-    "sub_sector": "Basic Materials",
-    "last_close_price": 2020.0,
-    "latest_close_date": "2026-01-20"
-  },
-  "AREA.JK": {
-    "company_name": "PT Dunia Virtual Online Tbk",
-    "sector": "Technology",
-    "sub_sector": "Software & IT Services",
-    "last_close_price": 515.0,
-    "latest_close_date": "2026-01-20"
-  },
   "ARKO.JK": {
     "company_name": "PT Arkora Hydro Tbk.",
     "sector": "Infrastructures",
@@ -4458,32 +5452,11 @@
     "last_close_price": 10750.0,
     "latest_close_date": "2026-01-20"
   },
-  "ARMY.JK": {
-    "company_name": "PT Armidian Karyatama Tbk",
-    "sector": "Properties & Real Estate",
-    "sub_sector": "Properties & Real Estate",
-    "last_close_price": 50.0,
-    "latest_close_date": "2026-01-20"
-  },
-  "ARTO.JK": {
-    "company_name": "PT Bank Jago Tbk.",
-    "sector": "Financials",
-    "sub_sector": "Banks",
-    "last_close_price": 1910.0,
-    "latest_close_date": "2026-01-20"
-  },
   "ASBI.JK": {
     "company_name": "Asuransi Bintang Tbk",
     "sector": "Financials",
     "sub_sector": "Insurance",
     "last_close_price": 432.0,
-    "latest_close_date": "2026-01-20"
-  },
-  "ASDM.JK": {
-    "company_name": "Asuransi Dayin Mitra Tbk",
-    "sector": "Financials",
-    "sub_sector": "Insurance",
-    "last_close_price": 695.0,
     "latest_close_date": "2026-01-20"
   },
   "ASHA.JK": {
@@ -4498,20 +5471,6 @@
     "sector": "Consumer Cyclicals",
     "sub_sector": "Retailing",
     "last_close_price": 95.0,
-    "latest_close_date": "2026-01-20"
-  },
-  "ASLI.JK": {
-    "company_name": "PT Asri Karya Lestari Tbk.",
-    "sector": "Infrastructures",
-    "sub_sector": "Heavy Constructions & Civil Engineering",
-    "last_close_price": 645.0,
-    "latest_close_date": "2026-01-20"
-  },
-  "ASMI.JK": {
-    "company_name": "PT Asuransi Maximus Graha Persada Tbk.",
-    "sector": "Financials",
-    "sub_sector": "Insurance",
-    "last_close_price": 43.0,
     "latest_close_date": "2026-01-20"
   },
   "ASPI.JK": {
@@ -4542,39 +5501,11 @@
     "last_close_price": 710.0,
     "latest_close_date": "2026-01-20"
   },
-  "ATLA.JK": {
-    "company_name": "PT Atlantis Subsea Indonesia Tbk",
-    "sector": "Energy",
-    "sub_sector": "Oil, Gas & Coal",
-    "last_close_price": 68.0,
-    "latest_close_date": "2026-01-20"
-  },
-  "AUTO.JK": {
-    "company_name": "Astra Otoparts Tbk",
-    "sector": "Consumer Cyclicals",
-    "sub_sector": "Automobiles & Components",
-    "last_close_price": 2750.0,
-    "latest_close_date": "2026-01-20"
-  },
   "AVIA.JK": {
     "company_name": "PT Avia Avian Tbk",
     "sector": "Basic Materials",
     "sub_sector": "Basic Materials",
     "last_close_price": 498.0,
-    "latest_close_date": "2026-01-20"
-  },
-  "AXIO.JK": {
-    "company_name": "PT Tera Data Indonusa Tbk",
-    "sector": "Technology",
-    "sub_sector": "Technology Hardware & Equipment",
-    "last_close_price": 134.0,
-    "latest_close_date": "2026-01-20"
-  },
-  "AYLS.JK": {
-    "company_name": "PT Agro Yasa Lestari Tbk",
-    "sector": "Basic Materials",
-    "sub_sector": "Basic Materials",
-    "last_close_price": 278.0,
     "latest_close_date": "2026-01-20"
   },
   "BAIK.JK": {
@@ -4589,13 +5520,6 @@
     "sector": "Basic Materials",
     "sub_sector": "Basic Materials",
     "last_close_price": 170.0,
-    "latest_close_date": "2026-01-20"
-  },
-  "BANK.JK": {
-    "company_name": "PT Bank Aladin Syariah Tbk",
-    "sector": "Financials",
-    "sub_sector": "Banks",
-    "last_close_price": 930.0,
     "latest_close_date": "2026-01-20"
   },
   "BAPA.JK": {
@@ -4626,20 +5550,6 @@
     "last_close_price": 51.0,
     "latest_close_date": "2026-01-20"
   },
-  "BAYU.JK": {
-    "company_name": "Bayu Buana Tbk",
-    "sector": "Consumer Cyclicals",
-    "sub_sector": "Consumer Services",
-    "last_close_price": 1380.0,
-    "latest_close_date": "2026-01-20"
-  },
-  "BBCA.JK": {
-    "company_name": "PT Bank Central Asia Tbk.",
-    "sector": "Financials",
-    "sub_sector": "Banks",
-    "last_close_price": 8000.0,
-    "latest_close_date": "2026-01-20"
-  },
   "BBHI.JK": {
     "company_name": "PT Allo Bank Indonesia Tbk",
     "sector": "Financials",
@@ -4654,25 +5564,11 @@
     "last_close_price": 940.0,
     "latest_close_date": "2026-01-20"
   },
-  "BBMD.JK": {
-    "company_name": "PT Bank Mestika Dharma Tbk.",
-    "sector": "Financials",
-    "sub_sector": "Banks",
-    "last_close_price": 2090.0,
-    "latest_close_date": "2026-01-20"
-  },
   "BBRI.JK": {
     "company_name": "PT Bank Rakyat Indonesia (Persero) Tbk",
     "sector": "Financials",
     "sub_sector": "Banks",
     "last_close_price": 3850.0,
-    "latest_close_date": "2026-01-20"
-  },
-  "BBRM.JK": {
-    "company_name": "Pelayaran Nasional Bina Buana Raya Tbk",
-    "sector": "Energy",
-    "sub_sector": "Oil, Gas & Coal",
-    "last_close_price": 244.0,
     "latest_close_date": "2026-01-20"
   },
   "BBTN.JK": {
@@ -4682,20 +5578,6 @@
     "last_close_price": 1220.0,
     "latest_close_date": "2026-01-20"
   },
-  "BBYB.JK": {
-    "company_name": "PT Bank Neo Commerce Tbk.",
-    "sector": "Financials",
-    "sub_sector": "Banks",
-    "last_close_price": 488.0,
-    "latest_close_date": "2026-01-20"
-  },
-  "BCAP.JK": {
-    "company_name": "MNC Kapital Indonesia Tbk",
-    "sector": "Financials",
-    "sub_sector": "Holding & Investment Companies",
-    "last_close_price": 64.0,
-    "latest_close_date": "2026-01-20"
-  },
   "BCIC.JK": {
     "company_name": "PT Bank JTrust Indonesia Tbk.",
     "sector": "Financials",
@@ -4703,25 +5585,11 @@
     "last_close_price": 204.0,
     "latest_close_date": "2026-01-20"
   },
-  "BDMN.JK": {
-    "company_name": "PT Bank Danamon Indonesia Tbk",
-    "sector": "Financials",
-    "sub_sector": "Banks",
-    "last_close_price": 2550.0,
-    "latest_close_date": "2026-01-20"
-  },
   "BEEF.JK": {
     "company_name": "PT Estika Tata Tiara Tbk.",
     "sector": "Consumer Non-cyclicals",
     "sub_sector": "Food & Beverage",
     "last_close_price": 428.0,
-    "latest_close_date": "2026-01-20"
-  },
-  "BEKS.JK": {
-    "company_name": "PT Bank Pembangunan Daerah Banten Tbk.",
-    "sector": "Financials",
-    "sub_sector": "Banks",
-    "last_close_price": 38.0,
     "latest_close_date": "2026-01-20"
   },
   "BEST.JK": {
@@ -4743,34 +5611,6 @@
     "sector": "Industrials",
     "sub_sector": "Multi-sector Holdings",
     "last_close_price": 49.0,
-    "latest_close_date": "2026-01-20"
-  },
-  "BIKA.JK": {
-    "company_name": "PT Binakarya Jaya Abadi Tbk.",
-    "sector": "Properties & Real Estate",
-    "sub_sector": "Properties & Real Estate",
-    "last_close_price": 55.0,
-    "latest_close_date": "2026-01-20"
-  },
-  "BINO.JK": {
-    "company_name": "PT Perma Plasindo Tbk",
-    "sector": "Industrials",
-    "sub_sector": "Industrial Services",
-    "last_close_price": 136.0,
-    "latest_close_date": "2026-01-20"
-  },
-  "BJBR.JK": {
-    "company_name": "Bank Pembangunan Daerah Jawa Barat dan Banten Tbk",
-    "sector": "Financials",
-    "sub_sector": "Banks",
-    "last_close_price": 840.0,
-    "latest_close_date": "2026-01-20"
-  },
-  "BJTM.JK": {
-    "company_name": "Bank Pembangunan Daerah Jawa Timur Tbk",
-    "sector": "Financials",
-    "sub_sector": "Banks",
-    "last_close_price": 570.0,
     "latest_close_date": "2026-01-20"
   },
   "BKSL.JK": {
@@ -4801,25 +5641,11 @@
     "last_close_price": 5225.0,
     "latest_close_date": "2026-01-20"
   },
-  "BMHS.JK": {
-    "company_name": "PT Bundamedik Tbk",
-    "sector": "Healthcare",
-    "sub_sector": "Healthcare Equipment & Providers",
-    "last_close_price": 204.0,
-    "latest_close_date": "2026-01-20"
-  },
   "BMTR.JK": {
     "company_name": "PT Global Mediacom Tbk",
     "sector": "Consumer Cyclicals",
     "sub_sector": "Media & Entertainment",
     "last_close_price": 166.0,
-    "latest_close_date": "2026-01-20"
-  },
-  "BNBA.JK": {
-    "company_name": "Bank Bumi Arta Tbk",
-    "sector": "Financials",
-    "sub_sector": "Banks",
-    "last_close_price": 1200.0,
     "latest_close_date": "2026-01-20"
   },
   "BNBR.JK": {
@@ -4829,32 +5655,11 @@
     "last_close_price": 230.0,
     "latest_close_date": "2026-01-20"
   },
-  "BNGA.JK": {
-    "company_name": "PT Bank CIMB Niaga Tbk",
-    "sector": "Financials",
-    "sub_sector": "Banks",
-    "last_close_price": 1880.0,
-    "latest_close_date": "2026-01-20"
-  },
-  "BOBA.JK": {
-    "company_name": "PT Formosa Ingredient Factory Tbk",
-    "sector": "Consumer Non-cyclicals",
-    "sub_sector": "Food & Beverage",
-    "last_close_price": 184.0,
-    "latest_close_date": "2026-01-20"
-  },
   "BOLA.JK": {
     "company_name": "PT Bali Bintang Sejahtera Tbk.",
     "sector": "Consumer Cyclicals",
     "sub_sector": "Consumer Services",
     "last_close_price": 204.0,
-    "latest_close_date": "2026-01-20"
-  },
-  "BOSS.JK": {
-    "company_name": "PT Borneo Olah Sarana Sukses Tbk.",
-    "sector": "Energy",
-    "sub_sector": "Oil, Gas & Coal",
-    "last_close_price": 50.0,
     "latest_close_date": "2026-01-20"
   },
   "BREN.JK": {
@@ -4892,13 +5697,6 @@
     "last_close_price": 3950.0,
     "latest_close_date": "2026-01-20"
   },
-  "BSWD.JK": {
-    "company_name": "Bank of India Indonesia Tbk",
-    "sector": "Financials",
-    "sub_sector": "Banks",
-    "last_close_price": 1045.0,
-    "latest_close_date": "2026-01-20"
-  },
   "BTEK.JK": {
     "company_name": "Bumi Teknokultura Unggul Tbk",
     "sector": "Consumer Non-cyclicals",
@@ -4906,39 +5704,11 @@
     "last_close_price": 29.0,
     "latest_close_date": "2026-01-20"
   },
-  "BTON.JK": {
-    "company_name": "Betonjaya Manunggal Tbk",
-    "sector": "Basic Materials",
-    "sub_sector": "Basic Materials",
-    "last_close_price": 390.0,
-    "latest_close_date": "2026-01-20"
-  },
-  "BTPN.JK": {
-    "company_name": "PT Bank SMBC Indonesia Tbk",
-    "sector": "Financials",
-    "sub_sector": "Banks",
-    "last_close_price": 2120.0,
-    "latest_close_date": "2026-01-20"
-  },
   "BTPS.JK": {
     "company_name": "PT Bank BTPN Syariah Tbk.",
     "sector": "Financials",
     "sub_sector": "Banks",
     "last_close_price": 1215.0,
-    "latest_close_date": "2026-01-20"
-  },
-  "BUAH.JK": {
-    "company_name": "PT Segar Kumala Indonesia Tbk",
-    "sector": "Consumer Non-cyclicals",
-    "sub_sector": "Food & Staples Retailing",
-    "last_close_price": 635.0,
-    "latest_close_date": "2026-01-20"
-  },
-  "BUDI.JK": {
-    "company_name": "PT Budi Starch & Sweetener Tbk.",
-    "sector": "Consumer Non-cyclicals",
-    "sub_sector": "Food & Beverage",
-    "last_close_price": 224.0,
     "latest_close_date": "2026-01-20"
   },
   "BVIC.JK": {
@@ -4955,46 +5725,11 @@
     "last_close_price": 17250.0,
     "latest_close_date": "2026-01-20"
   },
-  "CAMP.JK": {
-    "company_name": "PT Campina Ice Cream Industry Tbk.",
-    "sector": "Consumer Non-cyclicals",
-    "sub_sector": "Food & Beverage",
-    "last_close_price": 214.0,
-    "latest_close_date": "2026-01-20"
-  },
   "CARE.JK": {
     "company_name": "PT Metro Healthcare Indonesia Tbk",
     "sector": "Healthcare",
     "sub_sector": "Healthcare Equipment & Providers",
     "last_close_price": 825.0,
-    "latest_close_date": "2026-01-20"
-  },
-  "CASA.JK": {
-    "company_name": "PT Capital Financial Indonesia Tbk",
-    "sector": "Financials",
-    "sub_sector": "Holding & Investment Companies",
-    "last_close_price": 1600.0,
-    "latest_close_date": "2026-01-20"
-  },
-  "CBDK.JK": {
-    "company_name": "PT Bangun Kosambi Sukses Tbk",
-    "sector": "Properties & Real Estate",
-    "sub_sector": "Properties & Real Estate",
-    "last_close_price": 7975.0,
-    "latest_close_date": "2026-01-20"
-  },
-  "CBMF.JK": {
-    "company_name": "PT Cahaya Bintang Medan Tbk",
-    "sector": "Consumer Cyclicals",
-    "sub_sector": "Household Goods",
-    "last_close_price": 50.0,
-    "latest_close_date": "2026-01-20"
-  },
-  "CBPE.JK": {
-    "company_name": "PT Citra Buana Prasida Tbk",
-    "sector": "Properties & Real Estate",
-    "sub_sector": "Properties & Real Estate",
-    "last_close_price": 308.0,
     "latest_close_date": "2026-01-20"
   },
   "CBUT.JK": {
@@ -5011,46 +5746,11 @@
     "last_close_price": 170.0,
     "latest_close_date": "2026-01-20"
   },
-  "CFIN.JK": {
-    "company_name": "Clipan Finance Indonesia Tbk",
-    "sector": "Financials",
-    "sub_sector": "Financing Service",
-    "last_close_price": 334.0,
-    "latest_close_date": "2026-01-20"
-  },
-  "CHIP.JK": {
-    "company_name": "PT Pelita Teknologi Global Tbk",
-    "sector": "Technology",
-    "sub_sector": "Technology Hardware & Equipment",
-    "last_close_price": 1240.0,
-    "latest_close_date": "2026-01-20"
-  },
   "CINT.JK": {
     "company_name": "PT Chitose Internasional Tbk",
     "sector": "Consumer Cyclicals",
     "sub_sector": "Household Goods",
     "last_close_price": 220.0,
-    "latest_close_date": "2026-01-20"
-  },
-  "CITY.JK": {
-    "company_name": "PT Natura City Developments Tbk.",
-    "sector": "Properties & Real Estate",
-    "sub_sector": "Properties & Real Estate",
-    "last_close_price": 316.0,
-    "latest_close_date": "2026-01-20"
-  },
-  "CLAY.JK": {
-    "company_name": "PT Citra Putra Realty Tbk",
-    "sector": "Consumer Cyclicals",
-    "sub_sector": "Consumer Services",
-    "last_close_price": 2460.0,
-    "latest_close_date": "2026-01-20"
-  },
-  "CMNP.JK": {
-    "company_name": "Citra Marga Nusaphala Persada Tbk",
-    "sector": "Infrastructures",
-    "sub_sector": "Transportation Infrastructure",
-    "last_close_price": 1625.0,
     "latest_close_date": "2026-01-20"
   },
   "CMRY.JK": {
@@ -5060,25 +5760,11 @@
     "last_close_price": 5175.0,
     "latest_close_date": "2026-01-20"
   },
-  "CNTX.JK": {
-    "company_name": "PT Century Textile Industry Tbk",
-    "sector": "Consumer Cyclicals",
-    "sub_sector": "Apparel & Luxury Goods",
-    "last_close_price": 142.0,
-    "latest_close_date": "2026-01-20"
-  },
   "COCO.JK": {
     "company_name": "PT Wahana Interfood Nusantara Tbk.",
     "sector": "Consumer Non-cyclicals",
     "sub_sector": "Food & Beverage",
     "last_close_price": 474.0,
-    "latest_close_date": "2026-01-20"
-  },
-  "CPRI.JK": {
-    "company_name": "PT Capri Nusa Satu Properti Tbk.",
-    "sector": "Properties & Real Estate",
-    "sub_sector": "Properties & Real Estate",
-    "last_close_price": 50.0,
     "latest_close_date": "2026-01-20"
   },
   "CPRO.JK": {
@@ -5095,32 +5781,11 @@
     "last_close_price": 149.0,
     "latest_close_date": "2026-01-20"
   },
-  "CSAP.JK": {
-    "company_name": "Catur Sentosa Adiprana Tbk",
-    "sector": "Consumer Cyclicals",
-    "sub_sector": "Retailing",
-    "last_close_price": 318.0,
-    "latest_close_date": "2026-01-20"
-  },
-  "CSRA.JK": {
-    "company_name": "PT Cisadane Sawit Raya Tbk.",
-    "sector": "Consumer Non-cyclicals",
-    "sub_sector": "Food & Beverage",
-    "last_close_price": 920.0,
-    "latest_close_date": "2026-01-20"
-  },
   "CTBN.JK": {
     "company_name": "Citra Tubindo Tbk",
     "sector": "Basic Materials",
     "sub_sector": "Basic Materials",
     "last_close_price": 7200.0,
-    "latest_close_date": "2026-01-20"
-  },
-  "CYBR.JK": {
-    "company_name": "PT ITSEC Asia Tbk.",
-    "sector": "Technology",
-    "sub_sector": "Software & IT Services",
-    "last_close_price": 1860.0,
     "latest_close_date": "2026-01-20"
   },
   "DART.JK": {
@@ -5135,13 +5800,6 @@
     "sector": "Infrastructures",
     "sub_sector": "Telecommunication",
     "last_close_price": 5125.0,
-    "latest_close_date": "2026-01-20"
-  },
-  "DCII.JK": {
-    "company_name": "PT DCI Indonesia Tbk",
-    "sector": "Technology",
-    "sub_sector": "Software & IT Services",
-    "last_close_price": 221250.0,
     "latest_close_date": "2026-01-20"
   },
   "DEWA.JK": {
@@ -5172,13 +5830,6 @@
     "last_close_price": 278.0,
     "latest_close_date": "2026-01-20"
   },
-  "DIGI.JK": {
-    "company_name": "PT Arkadia Digital Media Tbk",
-    "sector": "Consumer Cyclicals",
-    "sub_sector": "Media & Entertainment",
-    "last_close_price": 53.0,
-    "latest_close_date": "2026-01-20"
-  },
   "DILD.JK": {
     "company_name": "Intiland Development Tbk",
     "sector": "Properties & Real Estate",
@@ -5193,13 +5844,6 @@
     "last_close_price": 930.0,
     "latest_close_date": "2026-01-20"
   },
-  "DKHH.JK": {
-    "company_name": "PT Cipta Sarana Medika Tbk",
-    "sector": "Healthcare",
-    "sub_sector": "Healthcare Equipment & Providers",
-    "last_close_price": 100.0,
-    "latest_close_date": "2026-01-20"
-  },
   "DNAR.JK": {
     "company_name": "PT Bank Oke Indonesia Tbk",
     "sector": "Financials",
@@ -5212,20 +5856,6 @@
     "sector": "Energy",
     "sub_sector": "Oil, Gas & Coal",
     "last_close_price": 350.0,
-    "latest_close_date": "2026-01-20"
-  },
-  "DOOH.JK": {
-    "company_name": "PT Era Media Sejahtera Tbk",
-    "sector": "Consumer Cyclicals",
-    "sub_sector": "Media & Entertainment",
-    "last_close_price": 280.0,
-    "latest_close_date": "2026-01-20"
-  },
-  "DOSS.JK": {
-    "company_name": "PT Global Sukses Digital Tbk",
-    "sector": "Consumer Cyclicals",
-    "sub_sector": "Leisure Goods",
-    "last_close_price": 222.0,
     "latest_close_date": "2026-01-20"
   },
   "DPUM.JK": {
@@ -5249,20 +5879,6 @@
     "last_close_price": 121.0,
     "latest_close_date": "2026-01-20"
   },
-  "DSNG.JK": {
-    "company_name": "PT Dharma Satya Nusantara Tbk",
-    "sector": "Consumer Non-cyclicals",
-    "sub_sector": "Food & Beverage",
-    "last_close_price": 1555.0,
-    "latest_close_date": "2026-01-20"
-  },
-  "DUCK.JK": {
-    "company_name": "PT Jaya Bersama Indo Tbk",
-    "sector": "Consumer Cyclicals",
-    "sub_sector": "Consumer Services",
-    "last_close_price": 176.0,
-    "latest_close_date": "2026-01-20"
-  },
   "DUTI.JK": {
     "company_name": "Duta Pertiwi Tbk",
     "sector": "Properties & Real Estate",
@@ -5275,13 +5891,6 @@
     "sector": "Healthcare",
     "sub_sector": "Pharmaceuticals & Health Care Research",
     "last_close_price": 1665.0,
-    "latest_close_date": "2026-01-20"
-  },
-  "DWGL.JK": {
-    "company_name": "PT Dwi Guna Laksana Tbk",
-    "sector": "Energy",
-    "sub_sector": "Oil, Gas & Coal",
-    "last_close_price": 326.0,
     "latest_close_date": "2026-01-20"
   },
   "DYAN.JK": {
@@ -5298,53 +5907,11 @@
     "last_close_price": 190.0,
     "latest_close_date": "2026-01-20"
   },
-  "ELIT.JK": {
-    "company_name": "PT Data Sinergitama Jaya Tbk",
-    "sector": "Technology",
-    "sub_sector": "Software & IT Services",
-    "last_close_price": 366.0,
-    "latest_close_date": "2026-01-20"
-  },
-  "EMAS.JK": {
-    "company_name": "PT Merdeka Gold Resources Tbk",
-    "sector": "Basic Materials",
-    "sub_sector": "Basic Materials",
-    "last_close_price": 6500.0,
-    "latest_close_date": "2026-01-20"
-  },
   "EMTK.JK": {
     "company_name": "Elang Mahkota Teknologi Tbk",
     "sector": "Technology",
     "sub_sector": "Software & IT Services",
     "last_close_price": 1040.0,
-    "latest_close_date": "2026-01-20"
-  },
-  "ENRG.JK": {
-    "company_name": "Energi Mega Persada Tbk",
-    "sector": "Energy",
-    "sub_sector": "Oil, Gas & Coal",
-    "last_close_price": 1535.0,
-    "latest_close_date": "2026-01-20"
-  },
-  "ENVY.JK": {
-    "company_name": "PT Envy Technologies Indonesia Tbk",
-    "sector": "Technology",
-    "sub_sector": "Software & IT Services",
-    "last_close_price": 50.0,
-    "latest_close_date": "2026-01-20"
-  },
-  "EPMT.JK": {
-    "company_name": "Enseval Putera Megatrading Tbk",
-    "sector": "Consumer Non-cyclicals",
-    "sub_sector": "Food & Staples Retailing",
-    "last_close_price": 2360.0,
-    "latest_close_date": "2026-01-20"
-  },
-  "ERAA.JK": {
-    "company_name": "Erajaya Swasembada Tbk",
-    "sector": "Consumer Cyclicals",
-    "sub_sector": "Retailing",
-    "last_close_price": 404.0,
     "latest_close_date": "2026-01-20"
   },
   "ERTX.JK": {
@@ -5354,13 +5921,6 @@
     "last_close_price": 298.0,
     "latest_close_date": "2026-01-20"
   },
-  "ESSA.JK": {
-    "company_name": "ESSA Industries Indonesia Tbk",
-    "sector": "Basic Materials",
-    "sub_sector": "Basic Materials",
-    "last_close_price": 665.0,
-    "latest_close_date": "2026-01-20"
-  },
   "ESTI.JK": {
     "company_name": "Ever Shine Textile Industry Tbk",
     "sector": "Consumer Cyclicals",
@@ -5368,25 +5928,11 @@
     "last_close_price": 244.0,
     "latest_close_date": "2026-01-20"
   },
-  "EURO.JK": {
-    "company_name": "PT Estee Gold Feet Tbk",
-    "sector": "Consumer Non-cyclicals",
-    "sub_sector": "Nondurable Household Products",
-    "last_close_price": 715.0,
-    "latest_close_date": "2026-01-20"
-  },
   "FAPA.JK": {
     "company_name": "PT FAP Agri Tbk",
     "sector": "Consumer Non-cyclicals",
     "sub_sector": "Food & Beverage",
     "last_close_price": 6275.0,
-    "latest_close_date": "2026-01-20"
-  },
-  "FASW.JK": {
-    "company_name": "Fajar Surya Wisesa Tbk",
-    "sector": "Basic Materials",
-    "sub_sector": "Basic Materials",
-    "last_close_price": 5275.0,
     "latest_close_date": "2026-01-20"
   },
   "FILM.JK": {
@@ -5403,46 +5949,11 @@
     "last_close_price": 258.0,
     "latest_close_date": "2026-01-20"
   },
-  "FISH.JK": {
-    "company_name": "FKS Multi Agro Tbk",
-    "sector": "Consumer Non-cyclicals",
-    "sub_sector": "Food & Beverage",
-    "last_close_price": 1340.0,
-    "latest_close_date": "2026-01-20"
-  },
-  "FITT.JK": {
-    "company_name": "PT Hotel Fitra International Tbk",
-    "sector": "Consumer Cyclicals",
-    "sub_sector": "Consumer Services",
-    "last_close_price": 505.0,
-    "latest_close_date": "2026-01-20"
-  },
   "FLMC.JK": {
     "company_name": "PT Falmaco Nonwoven Industri Tbk",
     "sector": "Consumer Non-cyclicals",
     "sub_sector": "Nondurable Household Products",
     "last_close_price": 173.0,
-    "latest_close_date": "2026-01-20"
-  },
-  "FOLK.JK": {
-    "company_name": "PT Multi Garam Utama Tbk",
-    "sector": "Industrials",
-    "sub_sector": "Multi-sector Holdings",
-    "last_close_price": 985.0,
-    "latest_close_date": "2026-01-20"
-  },
-  "FOOD.JK": {
-    "company_name": "PT Sentra Food Indonesia Tbk",
-    "sector": "Consumer Non-cyclicals",
-    "sub_sector": "Food & Beverage",
-    "last_close_price": 290.0,
-    "latest_close_date": "2026-01-20"
-  },
-  "FWCT.JK": {
-    "company_name": "PT Wijaya Cahaya Timber Tbk",
-    "sector": "Basic Materials",
-    "sub_sector": "Basic Materials",
-    "last_close_price": 144.0,
     "latest_close_date": "2026-01-20"
   },
   "GEMA.JK": {
@@ -5452,60 +5963,11 @@
     "last_close_price": 100.0,
     "latest_close_date": "2026-01-20"
   },
-  "GGRM.JK": {
-    "company_name": "Gudang Garam Tbk",
-    "sector": "Consumer Non-cyclicals",
-    "sub_sector": "Tobacco",
-    "last_close_price": 15750.0,
-    "latest_close_date": "2026-01-20"
-  },
-  "GJTL.JK": {
-    "company_name": "Gajah Tunggal Tbk",
-    "sector": "Consumer Cyclicals",
-    "sub_sector": "Automobiles & Components",
-    "last_close_price": 1130.0,
-    "latest_close_date": "2026-01-20"
-  },
-  "GLOB.JK": {
-    "company_name": "PT Globe Kita Terang Tbk",
-    "sector": "Consumer Cyclicals",
-    "sub_sector": "Retailing",
-    "last_close_price": 155.0,
-    "latest_close_date": "2026-01-20"
-  },
-  "GLVA.JK": {
-    "company_name": "PT Galva Technologies Tbk",
-    "sector": "Technology",
-    "sub_sector": "Technology Hardware & Equipment",
-    "last_close_price": 414.0,
-    "latest_close_date": "2026-01-20"
-  },
-  "GMFI.JK": {
-    "company_name": "PT Garuda Maintenance Facility Aero Asia Tbk",
-    "sector": "Infrastructures",
-    "sub_sector": "Transportation Infrastructure",
-    "last_close_price": 74.0,
-    "latest_close_date": "2026-01-20"
-  },
-  "GOLL.JK": {
-    "company_name": "PT Golden Plantation Tbk",
-    "sector": "Consumer Non-cyclicals",
-    "sub_sector": "Food & Beverage",
-    "last_close_price": 50.0,
-    "latest_close_date": "2026-01-20"
-  },
   "GOOD.JK": {
     "company_name": "PT Garudafood Putra Putri Jaya Tbk",
     "sector": "Consumer Non-cyclicals",
     "sub_sector": "Food & Beverage",
     "last_close_price": 356.0,
-    "latest_close_date": "2026-01-20"
-  },
-  "GOTO.JK": {
-    "company_name": "PT GoTo Gojek Tokopedia Tbk",
-    "sector": "Technology",
-    "sub_sector": "Software & IT Services",
-    "last_close_price": 66.0,
     "latest_close_date": "2026-01-20"
   },
   "GPRA.JK": {
@@ -5571,67 +6033,11 @@
     "last_close_price": 4450.0,
     "latest_close_date": "2026-01-20"
   },
-  "HITS.JK": {
-    "company_name": "Humpuss Intermoda Transportasi Tbk",
-    "sector": "Energy",
-    "sub_sector": "Oil, Gas & Coal",
-    "last_close_price": 116.0,
-    "latest_close_date": "2026-01-20"
-  },
-  "HKMU.JK": {
-    "company_name": "PT HK Metals Utama Tbk",
-    "sector": "Basic Materials",
-    "sub_sector": "Basic Materials",
-    "last_close_price": 50.0,
-    "latest_close_date": "2026-01-20"
-  },
-  "HMSP.JK": {
-    "company_name": "HM Sampoerna Tbk",
-    "sector": "Consumer Non-cyclicals",
-    "sub_sector": "Tobacco",
-    "last_close_price": 775.0,
-    "latest_close_date": "2026-01-20"
-  },
-  "HOKI.JK": {
-    "company_name": "PT Buyung Poetra Sembada Tbk",
-    "sector": "Consumer Non-cyclicals",
-    "sub_sector": "Food & Beverage",
-    "last_close_price": 81.0,
-    "latest_close_date": "2026-01-20"
-  },
-  "HOME.JK": {
-    "company_name": "Hotel Mandarine Regency Tbk",
-    "sector": "Consumer Cyclicals",
-    "sub_sector": "Consumer Services",
-    "last_close_price": 50.0,
-    "latest_close_date": "2026-01-20"
-  },
   "HOPE.JK": {
     "company_name": "PT Harapan Duta Pertiwi Tbk",
     "sector": "Industrials",
     "sub_sector": "Industrial Goods",
     "last_close_price": 356.0,
-    "latest_close_date": "2026-01-20"
-  },
-  "HOTL.JK": {
-    "company_name": "Saraswati Griya Lestari Tbk",
-    "sector": "Consumer Cyclicals",
-    "sub_sector": "Consumer Services",
-    "last_close_price": 50.0,
-    "latest_close_date": "2026-01-20"
-  },
-  "IATA.JK": {
-    "company_name": "PT MNC Energy Investments Tbk",
-    "sector": "Energy",
-    "sub_sector": "Oil, Gas & Coal",
-    "last_close_price": 132.0,
-    "latest_close_date": "2026-01-20"
-  },
-  "IBFN.JK": {
-    "company_name": "PT Intan Baru Prana Tbk",
-    "sector": "Industrials",
-    "sub_sector": "Industrial Goods",
-    "last_close_price": 121.0,
     "latest_close_date": "2026-01-20"
   },
   "IBOS.JK": {
@@ -5655,25 +6061,11 @@
     "last_close_price": 163.0,
     "latest_close_date": "2026-01-20"
   },
-  "IFSH.JK": {
-    "company_name": "PT Ifishdeco Tbk",
-    "sector": "Basic Materials",
-    "sub_sector": "Basic Materials",
-    "last_close_price": 2100.0,
-    "latest_close_date": "2026-01-20"
-  },
   "IGAR.JK": {
     "company_name": "Champion Pacific Indonesia Tbk",
     "sector": "Basic Materials",
     "sub_sector": "Basic Materials",
     "last_close_price": 515.0,
-    "latest_close_date": "2026-01-20"
-  },
-  "IIKP.JK": {
-    "company_name": "Inti Agri Resources Tbk",
-    "sector": "Consumer Cyclicals",
-    "sub_sector": "Leisure Goods",
-    "last_close_price": 50.0,
     "latest_close_date": "2026-01-20"
   },
   "IKAN.JK": {
@@ -5690,27 +6082,6 @@
     "last_close_price": 1195.0,
     "latest_close_date": "2026-01-20"
   },
-  "INAI.JK": {
-    "company_name": "Indal Aluminium Industry Tbk",
-    "sector": "Basic Materials",
-    "sub_sector": "Basic Materials",
-    "last_close_price": 186.0,
-    "latest_close_date": "2026-01-20"
-  },
-  "INCF.JK": {
-    "company_name": "PT Indo Komoditi Korpora Tbk",
-    "sector": "Basic Materials",
-    "sub_sector": "Basic Materials",
-    "last_close_price": 73.0,
-    "latest_close_date": "2026-01-20"
-  },
-  "INCI.JK": {
-    "company_name": "Intanwijaya Internasional Tbk",
-    "sector": "Basic Materials",
-    "sub_sector": "Basic Materials",
-    "last_close_price": 740.0,
-    "latest_close_date": "2026-01-20"
-  },
   "INCO.JK": {
     "company_name": "Vale Indonesia Tbk",
     "sector": "Basic Materials",
@@ -5723,13 +6094,6 @@
     "sector": "Industrials",
     "sub_sector": "Industrial Services",
     "last_close_price": 160.0,
-    "latest_close_date": "2026-01-20"
-  },
-  "INDY.JK": {
-    "company_name": "Indika Energy Tbk",
-    "sector": "Energy",
-    "sub_sector": "Oil, Gas & Coal",
-    "last_close_price": 3670.0,
     "latest_close_date": "2026-01-20"
   },
   "INET.JK": {
@@ -5781,13 +6145,6 @@
     "last_close_price": 14.0,
     "latest_close_date": "2026-01-20"
   },
-  "ISAT.JK": {
-    "company_name": "PT Indosat Tbk",
-    "sector": "Infrastructures",
-    "sub_sector": "Telecommunication",
-    "last_close_price": 2240.0,
-    "latest_close_date": "2026-01-20"
-  },
   "ISEA.JK": {
     "company_name": "PT Indo American Seafoods Tbk",
     "sector": "Consumer Non-cyclicals",
@@ -5807,13 +6164,6 @@
     "sector": "Consumer Non-cyclicals",
     "sub_sector": "Tobacco",
     "last_close_price": 388.0,
-    "latest_close_date": "2026-01-20"
-  },
-  "ITMG.JK": {
-    "company_name": "Indo Tambangraya Megah Tbk",
-    "sector": "Energy",
-    "sub_sector": "Oil, Gas & Coal",
-    "last_close_price": 22400.0,
     "latest_close_date": "2026-01-20"
   },
   "JATI.JK": {
@@ -5849,13 +6199,6 @@
     "sector": "Infrastructures",
     "sub_sector": "Transportation Infrastructure",
     "last_close_price": 3550.0,
-    "latest_close_date": "2026-01-20"
-  },
-  "JSPT.JK": {
-    "company_name": "Jakarta Setiabudi Internasional Tbk",
-    "sector": "Consumer Cyclicals",
-    "sub_sector": "Consumer Services",
-    "last_close_price": 3150.0,
     "latest_close_date": "2026-01-20"
   },
   "JTPE.JK": {
@@ -5956,25 +6299,11 @@
     "last_close_price": 181.0,
     "latest_close_date": "2026-01-20"
   },
-  "KKES.JK": {
-    "company_name": "PT Kusuma Kemindo Sentosa Tbk",
-    "sector": "Basic Materials",
-    "sub_sector": "Basic Materials",
-    "last_close_price": 40.0,
-    "latest_close_date": "2026-01-20"
-  },
   "KKGI.JK": {
     "company_name": "Resource Alam Indonesia Tbk",
     "sector": "Energy",
     "sub_sector": "Oil, Gas & Coal",
     "last_close_price": 352.0,
-    "latest_close_date": "2026-01-20"
-  },
-  "KLBF.JK": {
-    "company_name": "Kalbe Farma Tbk",
-    "sector": "Healthcare",
-    "sub_sector": "Pharmaceuticals & Health Care Research",
-    "last_close_price": 1190.0,
     "latest_close_date": "2026-01-20"
   },
   "KLIN.JK": {
@@ -5991,46 +6320,11 @@
     "last_close_price": 306.0,
     "latest_close_date": "2026-01-20"
   },
-  "KONI.JK": {
-    "company_name": "Perdana Bangun Pusaka Tbk",
-    "sector": "Industrials",
-    "sub_sector": "Industrial Services",
-    "last_close_price": 2180.0,
-    "latest_close_date": "2026-01-20"
-  },
-  "KOTA.JK": {
-    "company_name": "PT DMS Propertindo Tbk",
-    "sector": "Consumer Cyclicals",
-    "sub_sector": "Consumer Services",
-    "last_close_price": 68.0,
-    "latest_close_date": "2026-01-20"
-  },
-  "KPIG.JK": {
-    "company_name": "MNC Tourism Indonesia Tbk",
-    "sector": "Consumer Cyclicals",
-    "sub_sector": "Consumer Services",
-    "last_close_price": 284.0,
-    "latest_close_date": "2026-01-20"
-  },
-  "KRAS.JK": {
-    "company_name": "Krakatau Steel (Persero) Tbk",
-    "sector": "Basic Materials",
-    "sub_sector": "Basic Materials",
-    "last_close_price": 356.0,
-    "latest_close_date": "2026-01-20"
-  },
   "KREN.JK": {
     "company_name": "PT Quantum Clovera Investama Tbk",
     "sector": "Technology",
     "sub_sector": "Software & IT Services",
     "last_close_price": 31.0,
-    "latest_close_date": "2026-01-20"
-  },
-  "KRYA.JK": {
-    "company_name": "PT Bangun Karya Perkasa Jaya Tbk",
-    "sector": "Infrastructures",
-    "sub_sector": "Heavy Constructions & Civil Engineering",
-    "last_close_price": 145.0,
     "latest_close_date": "2026-01-20"
   },
   "KUAS.JK": {
@@ -6045,13 +6339,6 @@
     "sector": "Properties & Real Estate",
     "sub_sector": "Properties & Real Estate",
     "last_close_price": 74.0,
-    "latest_close_date": "2026-01-20"
-  },
-  "LAPD.JK": {
-    "company_name": "Leyand International Tbk",
-    "sector": "Infrastructures",
-    "sub_sector": "Utilities",
-    "last_close_price": 150.0,
     "latest_close_date": "2026-01-20"
   },
   "LCGP.JK": {
@@ -6075,13 +6362,6 @@
     "last_close_price": 50.0,
     "latest_close_date": "2026-01-20"
   },
-  "LPGI.JK": {
-    "company_name": "Lippo General Insurance Tbk",
-    "sector": "Financials",
-    "sub_sector": "Insurance",
-    "last_close_price": 695.0,
-    "latest_close_date": "2026-01-20"
-  },
   "LSIP.JK": {
     "company_name": "PP London Sumatra Indonesia Tbk",
     "sector": "Consumer Non-cyclicals",
@@ -6094,13 +6374,6 @@
     "sector": "Technology",
     "sub_sector": "Technology Hardware & Equipment",
     "last_close_price": 149.0,
-    "latest_close_date": "2026-01-20"
-  },
-  "LUCY.JK": {
-    "company_name": "PT Lima Dua Lima Tiga Tbk",
-    "sector": "Consumer Cyclicals",
-    "sub_sector": "Consumer Services",
-    "last_close_price": 835.0,
     "latest_close_date": "2026-01-20"
   },
   "MABA.JK": {
@@ -6117,13 +6390,6 @@
     "last_close_price": 50.0,
     "latest_close_date": "2026-01-20"
   },
-  "MAPA.JK": {
-    "company_name": "PT MAP Aktif Adiperkasa Tbk",
-    "sector": "Consumer Cyclicals",
-    "sub_sector": "Retailing",
-    "last_close_price": 625.0,
-    "latest_close_date": "2026-01-20"
-  },
   "MAPB.JK": {
     "company_name": "PT MAP Boga Adiperkasa Tbk",
     "sector": "Consumer Cyclicals",
@@ -6138,34 +6404,6 @@
     "last_close_price": 840.0,
     "latest_close_date": "2026-01-20"
   },
-  "MAXI.JK": {
-    "company_name": "PT Maxindo Karya Anugerah Tbk",
-    "sector": "Consumer Non-cyclicals",
-    "sub_sector": "Food & Beverage",
-    "last_close_price": 54.0,
-    "latest_close_date": "2026-01-20"
-  },
-  "MAYA.JK": {
-    "company_name": "PT Bank Mayapada Internasional Tbk",
-    "sector": "Financials",
-    "sub_sector": "Banks",
-    "last_close_price": 242.0,
-    "latest_close_date": "2026-01-20"
-  },
-  "MCAS.JK": {
-    "company_name": "PT M Cash Integrasi Tbk",
-    "sector": "Technology",
-    "sub_sector": "Software & IT Services",
-    "last_close_price": 585.0,
-    "latest_close_date": "2026-01-20"
-  },
-  "MCOR.JK": {
-    "company_name": "PT Bank China Construction Bank Indonesia Tbk",
-    "sector": "Financials",
-    "sub_sector": "Banks",
-    "last_close_price": 78.0,
-    "latest_close_date": "2026-01-20"
-  },
   "MDKI.JK": {
     "company_name": "PT Emdeki Utama Tbk",
     "sector": "Basic Materials",
@@ -6178,13 +6416,6 @@
     "sector": "Properties & Real Estate",
     "sub_sector": "Properties & Real Estate",
     "last_close_price": 68.0,
-    "latest_close_date": "2026-01-20"
-  },
-  "MEDC.JK": {
-    "company_name": "PT Medco Energi Internasional Tbk",
-    "sector": "Energy",
-    "sub_sector": "Oil, Gas & Coal",
-    "last_close_price": 1470.0,
     "latest_close_date": "2026-01-20"
   },
   "MEJA.JK": {
@@ -6208,20 +6439,6 @@
     "last_close_price": 3330.0,
     "latest_close_date": "2026-01-20"
   },
-  "META.JK": {
-    "company_name": "Nusantara Infrastructure Tbk",
-    "sector": "Infrastructures",
-    "sub_sector": "Transportation Infrastructure",
-    "last_close_price": 238.0,
-    "latest_close_date": "2026-01-20"
-  },
-  "MICE.JK": {
-    "company_name": "Multi Indocitra Tbk",
-    "sector": "Consumer Cyclicals",
-    "sub_sector": "Household Goods",
-    "last_close_price": 575.0,
-    "latest_close_date": "2026-01-20"
-  },
   "MIDI.JK": {
     "company_name": "Midi Utama Indonesia Tbk",
     "sector": "Consumer Non-cyclicals",
@@ -6234,13 +6451,6 @@
     "sector": "Healthcare",
     "sub_sector": "Healthcare Equipment & Providers",
     "last_close_price": 2370.0,
-    "latest_close_date": "2026-01-20"
-  },
-  "MINA.JK": {
-    "company_name": "PT Sanurhasta Mitra Tbk",
-    "sector": "Consumer Cyclicals",
-    "sub_sector": "Consumer Services",
-    "last_close_price": 630.0,
     "latest_close_date": "2026-01-20"
   },
   "MKNT.JK": {
@@ -6264,60 +6474,11 @@
     "last_close_price": 5650.0,
     "latest_close_date": "2026-01-20"
   },
-  "MMLP.JK": {
-    "company_name": "PT Mega Manunggal Property Tbk",
-    "sector": "Properties & Real Estate",
-    "sub_sector": "Properties & Real Estate",
-    "last_close_price": 565.0,
-    "latest_close_date": "2026-01-20"
-  },
-  "MORA.JK": {
-    "company_name": "PT Mora Telematika Indonesia Tbk",
-    "sector": "Infrastructures",
-    "sub_sector": "Telecommunication",
-    "last_close_price": 13925.0,
-    "latest_close_date": "2026-01-20"
-  },
-  "MPIX.JK": {
-    "company_name": "PT Mitra Pedagang Indonesia Tbk",
-    "sector": "Technology",
-    "sub_sector": "Software & IT Services",
-    "last_close_price": 76.0,
-    "latest_close_date": "2026-01-20"
-  },
-  "MPOW.JK": {
-    "company_name": "PT Megapower Makmur Tbk",
-    "sector": "Infrastructures",
-    "sub_sector": "Utilities",
-    "last_close_price": 134.0,
-    "latest_close_date": "2026-01-20"
-  },
-  "MPPA.JK": {
-    "company_name": "Matahari Putra Prima Tbk",
-    "sector": "Consumer Non-cyclicals",
-    "sub_sector": "Food & Staples Retailing",
-    "last_close_price": 61.0,
-    "latest_close_date": "2026-01-20"
-  },
-  "MPXL.JK": {
-    "company_name": "PT MPX Logistics International Tbk",
-    "sector": "Transportation & Logistic",
-    "sub_sector": "Logistics & Deliveries",
-    "last_close_price": 183.0,
-    "latest_close_date": "2026-01-20"
-  },
   "MSIE.JK": {
     "company_name": "PT Multisarana Intan Eduka Tbk",
     "sector": "Properties & Real Estate",
     "sub_sector": "Properties & Real Estate",
     "last_close_price": 65.0,
-    "latest_close_date": "2026-01-20"
-  },
-  "MSIN.JK": {
-    "company_name": "PT MNC Digital Entertainment Tbk",
-    "sector": "Consumer Cyclicals",
-    "sub_sector": "Media & Entertainment",
-    "last_close_price": 486.0,
     "latest_close_date": "2026-01-20"
   },
   "MTFN.JK": {
@@ -6327,46 +6488,11 @@
     "last_close_price": 50.0,
     "latest_close_date": "2026-01-20"
   },
-  "MTLA.JK": {
-    "company_name": "Metropolitan Land Tbk",
-    "sector": "Properties & Real Estate",
-    "sub_sector": "Properties & Real Estate",
-    "last_close_price": 645.0,
-    "latest_close_date": "2026-01-20"
-  },
-  "MTMH.JK": {
-    "company_name": "PT Murni Sadar Tbk",
-    "sector": "Healthcare",
-    "sub_sector": "Healthcare Equipment & Providers",
-    "last_close_price": 1190.0,
-    "latest_close_date": "2026-01-20"
-  },
   "MYOH.JK": {
     "company_name": "Samindo Resources Tbk",
     "sector": "Energy",
     "sub_sector": "Oil, Gas & Coal",
     "last_close_price": 1425.0,
-    "latest_close_date": "2026-01-20"
-  },
-  "MYOR.JK": {
-    "company_name": "Mayora Indah Tbk",
-    "sector": "Consumer Non-cyclicals",
-    "sub_sector": "Food & Beverage",
-    "last_close_price": 2150.0,
-    "latest_close_date": "2026-01-20"
-  },
-  "NAIK.JK": {
-    "company_name": "PT Adiwarna Anugerah Abadi Tbk",
-    "sector": "Industrials",
-    "sub_sector": "Industrial Services",
-    "last_close_price": 134.0,
-    "latest_close_date": "2026-01-20"
-  },
-  "NANO.JK": {
-    "company_name": "PT Nanotech Indonesia Global Tbk",
-    "sector": "Consumer Non-cyclicals",
-    "sub_sector": "Nondurable Household Products",
-    "last_close_price": 63.0,
     "latest_close_date": "2026-01-20"
   },
   "NASA.JK": {
@@ -6376,25 +6502,11 @@
     "last_close_price": 52.0,
     "latest_close_date": "2026-01-20"
   },
-  "NATO.JK": {
-    "company_name": "PT Surya Permata Andalan Tbk",
-    "sector": "Consumer Cyclicals",
-    "sub_sector": "Consumer Services",
-    "last_close_price": 775.0,
-    "latest_close_date": "2026-01-20"
-  },
   "NCKL.JK": {
     "company_name": "PT Trimegah Bangun Persada Tbk",
     "sector": "Basic Materials",
     "sub_sector": "Basic Materials",
     "last_close_price": 1450.0,
-    "latest_close_date": "2026-01-20"
-  },
-  "NELY.JK": {
-    "company_name": "Pelayaran Nelly Dwi Putri Tbk",
-    "sector": "Transportation & Logistic",
-    "sub_sector": "Logistics & Deliveries",
-    "last_close_price": 458.0,
     "latest_close_date": "2026-01-20"
   },
   "NEST.JK": {
@@ -6411,13 +6523,6 @@
     "last_close_price": 446.0,
     "latest_close_date": "2026-01-20"
   },
-  "NINE.JK": {
-    "company_name": "PT Techno9 Indonesia Tbk",
-    "sector": "Technology",
-    "sub_sector": "Technology Hardware & Equipment",
-    "last_close_price": 260.0,
-    "latest_close_date": "2026-01-20"
-  },
   "NIRO.JK": {
     "company_name": "City Retail Developments Tbk",
     "sector": "Properties & Real Estate",
@@ -6425,32 +6530,11 @@
     "last_close_price": 332.0,
     "latest_close_date": "2026-01-20"
   },
-  "NOBU.JK": {
-    "company_name": "PT Bank Nationalnobu Tbk",
-    "sector": "Financials",
-    "sub_sector": "Banks",
-    "last_close_price": 545.0,
-    "latest_close_date": "2026-01-20"
-  },
   "NPGF.JK": {
     "company_name": "PT Nusa Palapa Gemilang Tbk",
     "sector": "Basic Materials",
     "sub_sector": "Basic Materials",
     "last_close_price": 70.0,
-    "latest_close_date": "2026-01-20"
-  },
-  "NRCA.JK": {
-    "company_name": "PT Nusa Raya Cipta Tbk",
-    "sector": "Infrastructures",
-    "sub_sector": "Heavy Constructions & Civil Engineering",
-    "last_close_price": 1275.0,
-    "latest_close_date": "2026-01-20"
-  },
-  "OASA.JK": {
-    "company_name": "PT Maharaksa Biru Energi Tbk",
-    "sector": "Infrastructures",
-    "sub_sector": "Telecommunication",
-    "last_close_price": 486.0,
     "latest_close_date": "2026-01-20"
   },
   "OILS.JK": {
@@ -6467,25 +6551,11 @@
     "last_close_price": 570.0,
     "latest_close_date": "2026-01-20"
   },
-  "PADA.JK": {
-    "company_name": "PT Personel Alih Daya Tbk",
-    "sector": "Industrials",
-    "sub_sector": "Industrial Services",
-    "last_close_price": 306.0,
-    "latest_close_date": "2026-01-20"
-  },
   "PADI.JK": {
     "company_name": "Minna Padi Investama Sekuritas Tbk",
     "sector": "Financials",
     "sub_sector": "Investment Service",
     "last_close_price": 199.0,
-    "latest_close_date": "2026-01-20"
-  },
-  "PANR.JK": {
-    "company_name": "Panorama Sentrawisata Tbk",
-    "sector": "Consumer Cyclicals",
-    "sub_sector": "Consumer Services",
-    "last_close_price": 630.0,
     "latest_close_date": "2026-01-20"
   },
   "PANS.JK": {
@@ -6495,32 +6565,11 @@
     "last_close_price": 1595.0,
     "latest_close_date": "2026-01-20"
   },
-  "PART.JK": {
-    "company_name": "PT Cipta Perdana Lancar Tbk",
-    "sector": "Consumer Cyclicals",
-    "sub_sector": "Automobiles & Components",
-    "last_close_price": 113.0,
-    "latest_close_date": "2026-01-20"
-  },
-  "PBSA.JK": {
-    "company_name": "PT Paramita Bangun Sarana Tbk",
-    "sector": "Infrastructures",
-    "sub_sector": "Heavy Constructions & Civil Engineering",
-    "last_close_price": 2450.0,
-    "latest_close_date": "2026-01-20"
-  },
   "PCAR.JK": {
     "company_name": "PT Prima Cakrawala Abadi Tbk",
     "sector": "Consumer Non-cyclicals",
     "sub_sector": "Food & Staples Retailing",
     "last_close_price": 49.0,
-    "latest_close_date": "2026-01-20"
-  },
-  "PDES.JK": {
-    "company_name": "Destinasi Tirta Nusantara Tbk",
-    "sector": "Consumer Cyclicals",
-    "sub_sector": "Consumer Services",
-    "last_close_price": 565.0,
     "latest_close_date": "2026-01-20"
   },
   "PDPP.JK": {
@@ -6558,20 +6607,6 @@
     "last_close_price": 1260.0,
     "latest_close_date": "2026-01-20"
   },
-  "PGJO.JK": {
-    "company_name": "PT Bahtera Bumi Raya Tbk",
-    "sector": "Technology",
-    "sub_sector": "Software & IT Services",
-    "last_close_price": 990.0,
-    "latest_close_date": "2026-01-20"
-  },
-  "PGLI.JK": {
-    "company_name": "Pembangunan Graha Lestari Indah Tbk",
-    "sector": "Consumer Cyclicals",
-    "sub_sector": "Consumer Services",
-    "last_close_price": 282.0,
-    "latest_close_date": "2026-01-20"
-  },
   "PICO.JK": {
     "company_name": "Pelangi Indah Canindo Tbk",
     "sector": "Basic Materials",
@@ -6593,13 +6628,6 @@
     "last_close_price": 610.0,
     "latest_close_date": "2026-01-20"
   },
-  "PJHB.JK": {
-    "company_name": "PT Pelayaran Jaya Hidup Baru Tbk",
-    "sector": "Transportation & Logistic",
-    "sub_sector": "Logistics & Deliveries",
-    "last_close_price": 342.0,
-    "latest_close_date": "2026-01-20"
-  },
   "PMMP.JK": {
     "company_name": "PT Panca Mitra Multiperdana Tbk",
     "sector": "Consumer Non-cyclicals",
@@ -6614,25 +6642,11 @@
     "last_close_price": 152.0,
     "latest_close_date": "2026-01-20"
   },
-  "PNBN.JK": {
-    "company_name": "Bank Pan Indonesia Tbk",
-    "sector": "Financials",
-    "sub_sector": "Banks",
-    "last_close_price": 1115.0,
-    "latest_close_date": "2026-01-20"
-  },
   "PNBS.JK": {
     "company_name": "PT Bank Panin Dubai Syariah Tbk",
     "sector": "Financials",
     "sub_sector": "Banks",
     "last_close_price": 58.0,
-    "latest_close_date": "2026-01-20"
-  },
-  "POLA.JK": {
-    "company_name": "PT Pool Advista Finance Tbk",
-    "sector": "Financials",
-    "sub_sector": "Financing Service",
-    "last_close_price": 92.0,
     "latest_close_date": "2026-01-20"
   },
   "POLI.JK": {
@@ -6675,20 +6689,6 @@
     "sector": "Infrastructures",
     "sub_sector": "Heavy Constructions & Civil Engineering",
     "last_close_price": 214.0,
-    "latest_close_date": "2026-01-20"
-  },
-  "PRAY.JK": {
-    "company_name": "PT Famon Awal Bros Sedaya Tbk",
-    "sector": "Healthcare",
-    "sub_sector": "Healthcare Equipment & Providers",
-    "last_close_price": 855.0,
-    "latest_close_date": "2026-01-20"
-  },
-  "PSAB.JK": {
-    "company_name": "J Resources Asia Pasifik Tbk",
-    "sector": "Basic Materials",
-    "sub_sector": "Basic Materials",
-    "last_close_price": 655.0,
     "latest_close_date": "2026-01-20"
   }
 }

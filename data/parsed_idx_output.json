@@ -1,777 +1,104 @@
 [
   {
-    "holding_before": 0,
-    "holding_after": 25200000,
-    "share_percentage_before": 0.0,
-    "share_percentage_after": 0.1,
-    "share_percentage_transaction": 0.1,
-    "symbol": "ARCI.JK",
-    "company_name": "PT Archi Indonesia Tbk",
-    "holder_name": "Abed Nego",
-    "price_transaction": [
-      {
-        "type": "buy",
-        "amount_transacted": 25200000,
-        "price": 750,
-        "date": "2025-12-08"
-      }
-    ],
-    "purpose": "Investasi",
-    "price": 750.0,
-    "transaction_value": 18900000000,
-    "transaction_type": "buy",
-    "amount_transaction": 25200000,
-    "source": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_KSEI/LK-12122025-8970-00.pdf-0.pdf",
-    "tags": [
-      "investment"
-    ],
-    "holder_type": "insider",
-    "timestamp": "2025-12-12 16:32:38",
-    "split_variant": "primary"
-  },
-  {
-    "holding_before": 459890813,
-    "holding_after": 460460813,
-    "share_percentage_before": 56.0,
-    "share_percentage_after": 56.07,
-    "share_percentage_transaction": 0.07,
-    "symbol": "SAFE.JK",
-    "company_name": "Steady Safe Tbk",
-    "holder_name": "Infiniti Wahana",
-    "price_transaction": [
-      {
-        "type": "buy",
-        "amount_transacted": 170000,
-        "price": 280,
-        "date": "2025-12-10"
-      },
-      {
-        "type": "buy",
-        "amount_transacted": 400000,
-        "price": 264,
-        "date": "2025-12-10"
-      }
-    ],
-    "purpose": "Pembelian",
-    "price": 268.772,
-    "transaction_value": 153200000,
-    "transaction_type": "buy",
-    "amount_transaction": 570000,
-    "source": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_KSEI/LK-12122025-5732-00.pdf-0.pdf",
-    "tags": [
-      "investment"
-    ],
-    "holder_type": "insider",
-    "timestamp": "2025-12-12 13:35:43",
-    "split_variant": "primary"
-  },
-  {
-    "holding_before": 1306116974,
-    "holding_after": 1298016974,
-    "share_percentage_before": 20.85,
-    "share_percentage_after": 20.72,
-    "share_percentage_transaction": 0.13,
-    "symbol": "VTNY.JK",
-    "company_name": "PT Venteny Fortuna International Tbk",
-    "holder_name": "Junichiro Waide",
+    "holding_before": 15681559,
+    "holding_after": 15681059,
+    "share_percentage_before": 2.561,
+    "share_percentage_after": 2.561,
+    "share_percentage_transaction": 0.0,
+    "symbol": "AKPI.JK",
+    "company_name": "Argha Karya Prima Ind. Tbk",
+    "holder_name": "Henry Liem",
     "price_transaction": [
       {
         "type": "sell",
-        "amount_transacted": 1000000,
-        "price": 93,
-        "date": "2025-12-03"
-      },
-      {
-        "type": "sell",
-        "amount_transacted": 1000000,
-        "price": 93,
-        "date": "2025-12-04"
-      },
-      {
-        "type": "sell",
-        "amount_transacted": 1200000,
-        "price": 93,
-        "date": "2025-12-05"
-      },
-      {
-        "type": "sell",
-        "amount_transacted": 600000,
-        "price": 94,
-        "date": "2025-12-05"
-      },
-      {
-        "type": "sell",
-        "amount_transacted": 766200,
-        "price": 93,
-        "date": "2025-12-08"
-      },
-      {
-        "type": "sell",
-        "amount_transacted": 433800,
-        "price": 94,
-        "date": "2025-12-08"
-      },
-      {
-        "type": "sell",
-        "amount_transacted": 1200000,
-        "price": 94,
-        "date": "2025-12-09"
-      },
-      {
-        "type": "sell",
-        "amount_transacted": 401200,
-        "price": 94,
-        "date": "2025-12-10"
-      },
-      {
-        "type": "sell",
-        "amount_transacted": 1498800,
-        "price": 95,
-        "date": "2025-12-10"
+        "amount_transacted": 500,
+        "price": 580,
+        "date": "2025-12-17"
       }
     ],
-    "purpose": "Penyesuaian Portofolio",
-    "price": 93.695,
-    "transaction_value": 758932600,
+    "purpose": "Jual saham",
+    "price": 580.0,
+    "transaction_value": 290000,
     "transaction_type": "sell",
-    "amount_transaction": 8100000,
-    "source": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_KSEI/LK-12122025-4503-00.pdf-0.pdf",
+    "amount_transaction": 500,
+    "source": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_KSEI/LK-18122025-4309-00.pdf-0.pdf",
     "tags": [
       "divestment"
     ],
     "holder_type": "insider",
-    "timestamp": "2025-12-12 18:55:50",
+    "timestamp": "2025-12-18 10:02:06",
     "split_variant": "primary"
   },
   {
     "holding_before": 0,
-    "holding_after": 27000000,
+    "holding_after": 27993400,
     "share_percentage_before": 0.0,
-    "share_percentage_after": 0.107,
-    "share_percentage_transaction": 0.107,
-    "symbol": "ARCI.JK",
-    "company_name": "PT Archi Indonesia Tbk",
-    "holder_name": "Rudy Suhendra",
-    "price_transaction": [
-      {
-        "type": "buy",
-        "amount_transacted": 27000000,
-        "price": 750,
-        "date": "2025-12-08"
-      }
-    ],
-    "purpose": "Investasi",
-    "price": 750.0,
-    "transaction_value": 20250000000,
-    "transaction_type": "buy",
-    "amount_transaction": 27000000,
-    "source": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_KSEI/LK-12122025-4851-00.pdf-0.pdf",
-    "tags": [
-      "investment"
-    ],
-    "holder_type": "insider",
-    "timestamp": "2025-12-12 16:25:25",
-    "split_variant": "primary"
-  },
-  {
-    "holding_before": 0,
-    "holding_after": 5000000,
-    "share_percentage_before": 0.0,
-    "share_percentage_after": 0.02,
-    "share_percentage_transaction": 0.02,
-    "symbol": "ARCI.JK",
-    "company_name": "PT Archi Indonesia Tbk",
-    "holder_name": "Kenneth Ronald Kennedy Crichton",
-    "price_transaction": [
-      {
-        "type": "buy",
-        "amount_transacted": 5000000,
-        "price": 750,
-        "date": "2025-12-09"
-      }
-    ],
-    "purpose": "Investasi",
-    "price": 750.0,
-    "transaction_value": 3750000000,
-    "transaction_type": "buy",
-    "amount_transaction": 5000000,
-    "source": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_KSEI/LK-12122025-2871-00.pdf-0.pdf",
-    "tags": [
-      "investment"
-    ],
-    "holder_type": "insider",
-    "timestamp": "2025-12-12 16:51:56",
-    "split_variant": "primary"
-  },
-  {
-    "holding_before": 0,
-    "holding_after": 25200000,
-    "share_percentage_before": 0.0,
-    "share_percentage_after": 0.1,
-    "share_percentage_transaction": 0.1,
-    "symbol": "ARCI.JK",
-    "company_name": "PT Archi Indonesia Tbk",
-    "holder_name": "Rizki Indrakusuma",
-    "price_transaction": [
-      {
-        "type": "buy",
-        "amount_transacted": 25200000,
-        "price": 750,
-        "date": "2025-12-08"
-      }
-    ],
-    "purpose": "Investasi",
-    "price": 750.0,
-    "transaction_value": 18900000000,
-    "transaction_type": "buy",
-    "amount_transaction": 25200000,
-    "source": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_KSEI/LK-12122025-0987-00.pdf-0.pdf",
-    "tags": [
-      "investment"
-    ],
-    "holder_type": "insider",
-    "timestamp": "2025-12-12 16:38:20",
-    "split_variant": "primary"
-  },
-  {
-    "holding_before": 13407650470,
-    "holding_after": 13406640470,
-    "share_percentage_before": 40.22,
-    "share_percentage_after": 40.22,
-    "share_percentage_transaction": 0.0,
-    "symbol": "BYAN.JK",
-    "company_name": "Bayan Resources Tbk",
-    "holder_name": "Null",
+    "share_percentage_after": 0.29,
+    "share_percentage_transaction": 0.29,
+    "symbol": "MAXI.JK",
+    "company_name": "PT Maxindo Karya Anugerah Tbk",
+    "holder_name": "Garret Suryowijoyo Kartono",
     "price_transaction": [
       {
         "type": "sell",
-        "amount_transacted": 1010000,
-        "price": 8000,
-        "date": "2025-12-08"
-      }
-    ],
-    "purpose": "Divestasi",
-    "price": 8000.0,
-    "transaction_value": 8080000000,
-    "transaction_type": "sell",
-    "amount_transaction": 1010000,
-    "source": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_KSEI/LK-12122025-0780-00.pdf-0.pdf",
-    "tags": [
-      "divestment"
-    ],
-    "holder_type": "insider",
-    "timestamp": "2025-12-12 18:11:16",
-    "split_variant": "primary"
-  },
-  {
-    "holding_before": 13275000,
-    "holding_after": 13300000,
-    "share_percentage_before": 0.2,
-    "share_percentage_after": 0.2,
-    "share_percentage_transaction": 0.0,
-    "symbol": "HGII.JK",
-    "company_name": "PT Hero Global Investment Tbk",
-    "holder_name": "Robin Sunyoto",
-    "price_transaction": [
+        "amount_transacted": 757100,
+        "price": 54,
+        "date": "2025-11-04"
+      },
       {
         "type": "buy",
-        "amount_transacted": 25000,
-        "price": 152,
+        "amount_transacted": 35200000,
+        "price": 50,
+        "date": "2025-11-20"
+      },
+      {
+        "type": "sell",
+        "amount_transacted": 1000000,
+        "price": 53,
         "date": "2025-12-02"
-      }
-    ],
-    "purpose": "Investasi",
-    "price": 152.0,
-    "transaction_value": 3800000,
-    "transaction_type": "buy",
-    "amount_transaction": 25000,
-    "source": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_KSEI/LK-12122025-9665-00.pdf-0.pdf",
-    "tags": [
-      "investment"
-    ],
-    "holder_type": "insider",
-    "timestamp": "2025-12-12 15:56:28",
-    "split_variant": "primary"
-  },
-  {
-    "holding_before": 22020395000,
-    "holding_after": 21195395000,
-    "share_percentage_before": 40.13,
-    "share_percentage_after": 38.63,
-    "share_percentage_transaction": 1.5,
-    "symbol": "IMPC.JK",
-    "company_name": "PT Impack Pratama Industri Tbk",
-    "holder_name": "Harimas Tunggal Perkasa",
-    "price_transaction": [
-      {
-        "type": "sell",
-        "amount_transacted": 385000000,
-        "price": 2500,
-        "date": "2025-12-10"
       },
       {
         "type": "sell",
-        "amount_transacted": 440000000,
-        "price": 3000,
-        "date": "2025-12-11"
-      }
-    ],
-    "purpose": "realisasi investasi dan meningkatkan free float",
-    "price": 2766.667,
-    "transaction_value": 2282500000000,
-    "transaction_type": "sell",
-    "amount_transaction": 825000000,
-    "source": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_KSEI/LK-12122025-7213-00.pdf-0.pdf",
-    "tags": [
-      "free_float_compliance",
-      "investment"
-    ],
-    "holder_type": "insider",
-    "timestamp": "2025-12-12 15:32:24",
-    "split_variant": "primary"
-  },
-  {
-    "holding_before": 3000000,
-    "holding_after": 3100000,
-    "share_percentage_before": 0.0,
-    "share_percentage_after": 0.0,
-    "share_percentage_transaction": 0.0,
-    "symbol": "TPIA.JK",
-    "company_name": "PT Chandra Asri Pacific Tbk",
-    "holder_name": "Raymond",
-    "price_transaction": [
-      {
-        "type": "buy",
-        "amount_transacted": 100000,
-        "price": 7500,
-        "date": "2025-12-05"
-      }
-    ],
-    "purpose": "Investasi",
-    "price": 7500.0,
-    "transaction_value": 750000000,
-    "transaction_type": "buy",
-    "amount_transaction": 100000,
-    "source": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_KSEI/LK-12122025-6921-00.pdf-0.pdf",
-    "tags": [
-      "investment"
-    ],
-    "holder_type": "insider",
-    "timestamp": "2025-12-12 17:03:05",
-    "split_variant": "primary"
-  },
-  {
-    "holding_before": 771900,
-    "holding_after": 25971900,
-    "share_percentage_before": 0.003,
-    "share_percentage_after": 0.103,
-    "share_percentage_transaction": 0.1,
-    "symbol": "ARCI.JK",
-    "company_name": "PT Archi Indonesia Tbk",
-    "holder_name": "Hidayat Dwiputro Sulaksono",
-    "price_transaction": [
-      {
-        "type": "buy",
-        "amount_transacted": 25200000,
-        "price": 750,
-        "date": "2025-12-08"
-      }
-    ],
-    "purpose": "Investasi",
-    "price": 750.0,
-    "transaction_value": 18900000000,
-    "transaction_type": "buy",
-    "amount_transaction": 25200000,
-    "source": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_KSEI/LK-12122025-0590-00.pdf-0.pdf",
-    "tags": [
-      "investment"
-    ],
-    "holder_type": "insider",
-    "timestamp": "2025-12-12 14:19:09",
-    "split_variant": "primary"
-  },
-  {
-    "holding_before": 1334733600,
-    "holding_after": 1498172700,
-    "share_percentage_before": 8.009,
-    "share_percentage_after": 8.989,
-    "share_percentage_transaction": 0.98,
-    "symbol": "MAHA.JK",
-    "company_name": "PT Mandiri Herindo Adiperkasa Tbk",
-    "holder_name": "Yenny Hamidah Koean",
-    "price_transaction": [
-      {
-        "type": "others",
-        "amount_transacted": 163439100,
-        "price": 160,
-        "date": "2025-12-09"
-      }
-    ],
-    "purpose": "Investasi",
-    "price": 160.0,
-    "transaction_value": 26150256000,
-    "transaction_type": "others",
-    "amount_transaction": 163439100,
-    "source": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_KSEI/LK-12122025-6094-00.pdf-0.pdf",
-    "tags": [
-      "investment"
-    ],
-    "holder_type": "insider",
-    "timestamp": "2025-12-12 09:14:00",
-    "split_variant": "others"
-  },
-  {
-    "holding_before": 6537713000,
-    "holding_after": 6522713000,
-    "share_percentage_before": 44.35,
-    "share_percentage_after": 44.25,
-    "share_percentage_transaction": 0.1,
-    "symbol": "HILL.JK",
-    "company_name": "PT Hillcon Tbk",
-    "holder_name": "Hillcon Equity Management",
-    "price_transaction": [
-      {
-        "type": "sell",
-        "amount_transacted": 15000000,
-        "price": 160,
-        "date": "2025-12-10"
-      }
-    ],
-    "purpose": "Investasi",
-    "price": 160.0,
-    "transaction_value": 2400000000,
-    "transaction_type": "sell",
-    "amount_transaction": 15000000,
-    "source": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_KSEI/LK-12122025-6207-00.pdf-0.pdf",
-    "tags": [
-      "investment"
-    ],
-    "holder_type": "institution",
-    "timestamp": "2025-12-12 10:30:30",
-    "split_variant": "primary"
-  },
-  {
-    "holding_before": 755240483,
-    "holding_after": 751240483,
-    "share_percentage_before": 26.58,
-    "share_percentage_after": 26.44,
-    "share_percentage_transaction": 0.14,
-    "symbol": "KETR.JK",
-    "company_name": "PT Ketrosden Triasmitra Tbk",
-    "holder_name": "Gema Lintas Benua",
-    "price_transaction": [
-      {
-        "type": "sell",
-        "amount_transacted": 4000000,
-        "price": 1205,
-        "date": "2025-12-09"
-      }
-    ],
-    "purpose": "Kebutuhan kas",
-    "price": 1205.0,
-    "transaction_value": 4820000000,
-    "transaction_type": "sell",
-    "amount_transaction": 4000000,
-    "source": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_KSEI/LK-12122025-2684-00.pdf-0.pdf",
-    "tags": [
-      "divestment"
-    ],
-    "holder_type": "insider",
-    "timestamp": "2025-12-12 14:47:04",
-    "split_variant": "primary"
-  },
-  {
-    "holding_before": 0,
-    "holding_after": 20000000,
-    "share_percentage_before": 0.0,
-    "share_percentage_after": 0.079,
-    "share_percentage_transaction": 0.079,
-    "symbol": "ARCI.JK",
-    "company_name": "PT Archi Indonesia Tbk",
-    "holder_name": "Christian Emanuel David Sompie",
-    "price_transaction": [
-      {
-        "type": "buy",
-        "amount_transacted": 20000000,
-        "price": 750,
-        "date": "2025-12-09"
-      }
-    ],
-    "purpose": "Investasi",
-    "price": 750.0,
-    "transaction_value": 15000000000,
-    "transaction_type": "buy",
-    "amount_transaction": 20000000,
-    "source": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_KSEI/LK-12122025-4289-00.pdf-0.pdf",
-    "tags": [
-      "investment"
-    ],
-    "holder_type": "insider",
-    "timestamp": "2025-12-12 16:44:44",
-    "split_variant": "primary"
-  },
-  {
-    "holding_before": 459570813,
-    "holding_after": 459690813,
-    "share_percentage_before": 55.96,
-    "share_percentage_after": 55.98,
-    "share_percentage_transaction": 0.02,
-    "symbol": "SAFE.JK",
-    "company_name": "Steady Safe Tbk",
-    "holder_name": "Infiniti Wahana",
-    "price_transaction": [
-      {
-        "type": "buy",
-        "amount_transacted": 89100,
-        "price": 288,
+        "amount_transacted": 2000000,
+        "price": 53,
         "date": "2025-12-04"
       },
       {
-        "type": "buy",
-        "amount_transacted": 30900,
-        "price": 286,
-        "date": "2025-12-04"
-      }
-    ],
-    "purpose": "Pembelian",
-    "price": 287.485,
-    "transaction_value": 34498200,
-    "transaction_type": "buy",
-    "amount_transaction": 120000,
-    "source": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_KSEI/LK-12122025-5701-00.pdf-0.pdf",
-    "tags": [
-      "investment"
-    ],
-    "holder_type": "insider",
-    "timestamp": "2025-12-12 13:21:46",
-    "split_variant": "primary"
-  },
-  {
-    "holding_before": 8794995300,
-    "holding_after": 9319995300,
-    "share_percentage_before": 36.95,
-    "share_percentage_after": 39.16,
-    "share_percentage_transaction": 2.21,
-    "symbol": "NSSS.JK",
-    "company_name": "PT Nusantara Sawit Sejahtera Tbk",
-    "holder_name": "Samuel Tumbuh Bersama",
-    "price_transaction": [
-      {
-        "type": "buy",
-        "amount_transacted": 525000000,
-        "price": 500,
-        "date": "2025-12-12"
-      }
-    ],
-    "purpose": "Pembelian Saham",
-    "price": 500.0,
-    "transaction_value": 262500000000,
-    "transaction_type": "buy",
-    "amount_transaction": 525000000,
-    "source": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_KSEI/LK-12122025-2910-00.pdf-0.pdf",
-    "tags": [
-      "investment"
-    ],
-    "holder_type": "insider",
-    "timestamp": "2025-12-12 17:42:10",
-    "split_variant": "primary"
-  },
-  {
-    "holding_before": 459690813,
-    "holding_after": 459890813,
-    "share_percentage_before": 55.98,
-    "share_percentage_after": 56.0,
-    "share_percentage_transaction": 0.02,
-    "symbol": "SAFE.JK",
-    "company_name": "Steady Safe Tbk",
-    "holder_name": "Infiniti Wahana",
-    "price_transaction": [
-      {
-        "type": "buy",
-        "amount_transacted": 100000,
-        "price": 260,
+        "type": "sell",
+        "amount_transacted": 1000000,
+        "price": 54,
         "date": "2025-12-09"
       },
       {
-        "type": "buy",
-        "amount_transacted": 100000,
-        "price": 270,
+        "type": "sell",
+        "amount_transacted": 1000000,
+        "price": 55,
         "date": "2025-12-09"
-      }
-    ],
-    "purpose": "Pembelian",
-    "price": 265.0,
-    "transaction_value": 53000000,
-    "transaction_type": "buy",
-    "amount_transaction": 200000,
-    "source": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_KSEI/LK-12122025-0967-00.pdf-0.pdf",
-    "tags": [
-      "investment"
-    ],
-    "holder_type": "insider",
-    "timestamp": "2025-12-12 13:30:06",
-    "split_variant": "primary"
-  },
-  {
-    "holding_before": 765240483,
-    "holding_after": 765140483,
-    "share_percentage_before": 26.933,
-    "share_percentage_after": 26.93,
-    "share_percentage_transaction": 0.003,
-    "symbol": "KETR.JK",
-    "company_name": "PT Ketrosden Triasmitra Tbk",
-    "holder_name": "Gema Lintas Benua",
-    "price_transaction": [
-      {
-        "type": "sell",
-        "amount_transacted": 675100,
-        "price": 840,
-        "date": "2025-12-08"
       },
       {
         "type": "sell",
-        "amount_transacted": 80600,
-        "price": 835,
-        "date": "2025-12-08"
+        "amount_transacted": 1000000,
+        "price": 56,
+        "date": "2025-12-09"
       },
       {
         "type": "sell",
-        "amount_transacted": 3000000,
-        "price": 950,
-        "date": "2025-12-08"
-      },
-      {
-        "type": "sell",
-        "amount_transacted": 1874900,
-        "price": 800,
-        "date": "2025-12-08"
-      },
-      {
-        "type": "sell",
-        "amount_transacted": 64400,
-        "price": 805,
-        "date": "2025-12-08"
-      },
-      {
-        "type": "sell",
-        "amount_transacted": 3000000,
-        "price": 965,
-        "date": "2025-12-08"
-      },
-      {
-        "type": "sell",
-        "amount_transacted": 70600,
-        "price": 815,
-        "date": "2025-12-08"
-      },
-      {
-        "type": "sell",
-        "amount_transacted": 52500,
-        "price": 820,
-        "date": "2025-12-08"
-      },
-      {
-        "type": "sell",
-        "amount_transacted": 49700,
-        "price": 825,
-        "date": "2025-12-08"
-      },
-      {
-        "type": "sell",
-        "amount_transacted": 1094400,
-        "price": 830,
-        "date": "2025-12-08"
-      },
-      {
-        "type": "sell",
-        "amount_transacted": 37800,
-        "price": 810,
-        "date": "2025-12-08"
-      }
-    ],
-    "purpose": "Kebutuhan kas",
-    "price": 901.171,
-    "transaction_value": 9011708500,
-    "transaction_type": "sell",
-    "amount_transaction": 100000,
-    "source": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_KSEI/LK-12122025-5260-00.pdf-0.pdf",
-    "tags": [
-      "divestment"
-    ],
-    "holder_type": "insider",
-    "timestamp": "2025-12-12 14:20:40",
-    "split_variant": "primary"
-  },
-  {
-    "holding_before": 20232100,
-    "holding_after": 20112100,
-    "share_percentage_before": 0.304,
-    "share_percentage_after": 0.302,
-    "share_percentage_transaction": 0.002,
-    "symbol": "CYBR.JK",
-    "company_name": "PT ITSEC Asia Tbk.",
-    "holder_name": "Andri Hutama Putra",
-    "price_transaction": [
-      {
-        "type": "sell",
-        "amount_transacted": 100000,
-        "price": 1420,
-        "date": "2025-12-08"
-      },
-      {
-        "type": "sell",
-        "amount_transacted": 120000,
-        "price": 1370,
+        "amount_transacted": 449500,
+        "price": 54,
         "date": "2025-12-10"
       }
     ],
-    "purpose": "Investasi Lainnya",
-    "price": 1392.727,
-    "transaction_value": 306400000,
-    "transaction_type": "sell",
-    "amount_transaction": 120000,
-    "source": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_KSEI/LK-12122025-7728-00.pdf-0.pdf",
-    "tags": [
-      "investment"
-    ],
-    "holder_type": "insider",
-    "timestamp": "2025-12-12 17:47:28",
-    "split_variant": "primary"
-  },
-  {
-    "holding_before": 286717018,
-    "holding_after": 286817218,
-    "share_percentage_before": 47.79,
-    "share_percentage_after": 47.8,
-    "share_percentage_transaction": 0.01,
-    "symbol": "MICE.JK",
-    "company_name": "Multi Indocitra Tbk",
-    "holder_name": "Buana Graha Utama",
-    "price_transaction": [
-      {
-        "type": "buy",
-        "amount_transacted": 200,
-        "price": 600,
-        "date": "2025-12-03"
-      },
-      {
-        "type": "buy",
-        "amount_transacted": 100000,
-        "price": 600,
-        "date": "2025-12-10"
-      }
-    ],
-    "purpose": "Investasi",
-    "price": 600.0,
-    "transaction_value": 60120000,
+    "purpose": "investasi",
+    "price": 48.97,
+    "transaction_value": 1370843600,
     "transaction_type": "buy",
-    "amount_transaction": 100200,
-    "source": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_KSEI/LK-12122025-6053-00.pdf-0.pdf",
+    "amount_transaction": 27993400,
+    "source": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/From_KSEI/LK-18122025-5053-00.pdf-0.pdf",
     "tags": [
       "investment"
     ],
     "holder_type": "insider",
-    "timestamp": "2025-12-12 15:08:39",
+    "timestamp": "2025-12-18 11:28:08",
     "split_variant": "primary"
   }
 ]
