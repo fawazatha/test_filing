@@ -1,0 +1,38 @@
+name: Scrape BCA
+
+on:
+  workflow_dispatch:
+
+jobs:
+  batch_1_scrape_and_submit:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository content
+        uses: actions/checkout@v4
+      
+      - name: Install uv (Python package manager)
+        uses: astral-sh/setup-uv@v2
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install dependencies
+        run: |
+          uv sync
+          
+      - name: Set up Google Chrome & ChromeDriver
+        uses: browser-actions/setup-chrome@v1
+        with:
+          # installs the very latest Chrome snapshot (same as default)
+          chrome-version: 'latest'
+          # also installs the matching ChromeDriver binary
+          install-chromedriver: true
+
+      - name: Run scraping script for all news source
+        run: uv run bca_scrape.py
+       
+     
+
