@@ -3343,9 +3343,11 @@ dependencies = [
     { name = "rich" },
     { name = "selenium" },
     { name = "sendgrid" },
+    { name = "setuptools" },
     { name = "supabase" },
     { name = "twilio" },
     { name = "typer" },
+    { name = "undetected-chromedriver" },
     { name = "urllib3" },
     { name = "webdriver-manager" },
 ]
@@ -3385,9 +3387,11 @@ requires-dist = [
     { name = "rich", specifier = ">=13.7.1" },
     { name = "selenium", marker = "python_full_version >= '3.10'", specifier = ">=4.23.1" },
     { name = "sendgrid", specifier = ">=6.11.0" },
+    { name = "setuptools" },
     { name = "supabase", specifier = ">=2.4.0" },
     { name = "twilio" },
     { name = "typer", specifier = ">=0.12.3" },
+    { name = "undetected-chromedriver" },
     { name = "urllib3", marker = "python_full_version < '3.10'", specifier = "<2" },
     { name = "urllib3", marker = "python_full_version >= '3.10'", specifier = ">=2.5.0" },
     { name = "webdriver-manager", marker = "python_full_version >= '3.10'", specifier = ">=4.0.2" },
@@ -3422,6 +3426,15 @@ dependencies = [
 sdist = { url = "https://files.pythonhosted.org/packages/da/fa/f718b2b953f99c1f0085811598ac7e31ccbd4229a81ec2a5290be868187a/sendgrid-6.12.5.tar.gz", hash = "sha256:ea9aae30cd55c332e266bccd11185159482edfc07c149b6cd15cf08869fabdb7", size = 50310, upload-time = "2025-09-19T06:23:09.229Z" }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/bd/55/b3c3880a77082e8f7374954e0074aafafaa9bc78bdf9c8f5a92c2e7afc6a/sendgrid-6.12.5-py3-none-any.whl", hash = "sha256:96f92cc91634bf552fdb766b904bbb53968018da7ae41fdac4d1090dc0311ca8", size = 102173, upload-time = "2025-09-19T06:23:07.93Z" },
+]
+
+[[package]]
+name = "setuptools"
+version = "80.10.1"
+source = { registry = "https://pypi.org/simple" }
+sdist = { url = "https://files.pythonhosted.org/packages/86/ff/f75651350db3cf2ef767371307eb163f3cc1ac03e16fdf3ac347607f7edb/setuptools-80.10.1.tar.gz", hash = "sha256:bf2e513eb8144c3298a3bd28ab1a5edb739131ec5c22e045ff93cd7f5319703a", size = 1229650, upload-time = "2026-01-21T09:42:03.061Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/e0/76/f963c61683a39084aa575f98089253e1e852a4417cb8a3a8a422923a5246/setuptools-80.10.1-py3-none-any.whl", hash = "sha256:fc30c51cbcb8199a219c12cc9c281b5925a4978d212f84229c909636d9f6984e", size = 1099859, upload-time = "2026-01-21T09:42:00.688Z" },
 ]
 
 [[package]]
@@ -3784,6 +3797,17 @@ sdist = { url = "https://files.pythonhosted.org/packages/5e/a7/c202b344c5ca7daf3
 wheels = [
     { url = "https://files.pythonhosted.org/packages/c7/b0/003792df09decd6849a5e39c28b513c06e84436a54440380862b5aeff25d/tzdata-2025.3-py2.py3-none-any.whl", hash = "sha256:06a47e5700f3081aab02b2e513160914ff0694bce9947d6b76ebd6bf57cfc5d1", size = 348521, upload-time = "2025-12-13T17:45:33.889Z" },
 ]
+
+[[package]]
+name = "undetected-chromedriver"
+version = "3.5.5"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "requests" },
+    { name = "selenium" },
+    { name = "websockets" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/1f/98/7ab46625ce2317756e4e857fe6ac24b6378c3e8f477da26c95226ed8ccb7/undetected-chromedriver-3.5.5.tar.gz", hash = "sha256:9f945e1435005247abe17de316bcfda85b284a4177fd5f25167c78ced33b65ec", size = 65409, upload-time = "2024-02-17T17:18:36.855Z" }
 
 [[package]]
 name = "uritemplate"

@@ -22,14 +22,6 @@ jobs:
       - name: Install dependencies
         run: |
           uv sync
-          
-      - name: Set up Google Chrome & ChromeDriver
-        uses: browser-actions/setup-chrome@v1
-        with:
-          # installs the very latest Chrome snapshot (same as default)
-          chrome-version: 'latest'
-          # also installs the matching ChromeDriver binary
-          install-chromedriver: true
 
       - name: Run scraping script for all news source
         run: uv run bca_scrape.py
