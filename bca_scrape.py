@@ -254,4 +254,5 @@ def run_scrape_bca_news(num_page: int) -> list[dict[str, any]]:
 
 
 if __name__ == "__main__":
-    scrape_bca(2)
+    result = scrape_bca(2)
+    print(json.dumps(result, indent=2))
