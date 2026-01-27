@@ -1,4 +1,4 @@
-name: Scrape BCA
+name: Scrape TESTING
 
 on:
   workflow_dispatch:
@@ -32,7 +32,7 @@ jobs:
           install-chromedriver: true
           
       - name: Run scraping script for all news source
-        run: uv run bca_scrape.py
+        run: uv run .\scrape_jkt_globe.py #uv run bca_scrape.py
        
      
 
