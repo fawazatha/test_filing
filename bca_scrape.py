@@ -8,41 +8,44 @@ import random
 import subprocess
 import platform
 import logging
+import shutil  
 
 
 LOGGER = logging.getLogger(__name__)
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 
 
-def get_chrome_version():
+def get_chrome_info():
     """
-    Detects the installed Google Chrome version on Linux/GitHub Actions.
+    Detects the installed Google Chrome version AND path.
+    Returns a tuple: (major_version, executable_path)
     """
     if platform.system() == "Linux":
         try:
             for binary in ["chrome", "google-chrome", "chromium", "chromium-browser"]:
+                binary_path = shutil.which(binary)
+                if not binary_path: 
+                    continue
+                
                 try:
-                    output = subprocess.check_output([binary, "--version"], text=True)
-                    # Output example: "Chromium 146.0.7671.0"
-                    if not output: 
-                        continue
+                    output = subprocess.check_output([binary_path, "--version"], text=True)
+                    if not output: continue
                     
                     version_str = output.strip().split()[-1] 
                     major_version = int(version_str.split('.')[0])
                     
-                    LOGGER.info(f"Detected {binary} version: {major_version}")
-                    return major_version
-                except (FileNotFoundError, subprocess.CalledProcessError):
+                    LOGGER.info(f"Detected {binary} at {binary_path} (Version: {major_version})")
+                    return major_version, binary_path
+                except:
                     continue
-            
-            return None
+            return None, None
         
         except Exception as error:
             LOGGER.error(f"Could not detect Chrome version: {error}")
-            return None
+            return None, None
     
     # Windows fallback
-    return 143
+    return 143, None
 
 
 def extract_json_objects(text: str, target_key='"data":'):
@@ -134,9 +137,25 @@ def scrape_bca(page_num: int) -> list[dict[str, any]]:
     options.add_argument('--ignore-certificate-errors')
     options.add_argument('--allow-running-insecure-content')
 
-    chrome_version = get_chrome_version()
+    chrome_version, chrome_path = get_chrome_info()
+    driver_path = shutil.which("chromedriver")
 
-    driver = uc.Chrome(options=options, use_subprocess=True, version_main=chrome_version)
+    try:
+        driver = uc.Chrome(
+            options=options, 
+            use_subprocess=True, 
+            version_main=chrome_version,
+            options=options, 
+            use_subprocess=True, 
+            version_main=chrome_version,
+            browser_executable_path=chrome_path, 
+            driver_executable_path=driver_path if platform.system() == "Linux" else None
+        )
+        
+    except Exception as error:
+        LOGGER.error(f"Failed to initialize driver: {error}")
+        return []
+    
     results = []
 
     try:
