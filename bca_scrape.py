@@ -145,13 +145,10 @@ def scrape_bca(page_num: int) -> list[dict[str, any]]:
             options=options, 
             use_subprocess=True, 
             version_main=chrome_version,
-            options=options, 
-            use_subprocess=True, 
-            version_main=chrome_version,
-            browser_executable_path=chrome_path, 
+            browser_executable_path=chrome_path,
             driver_executable_path=driver_path if platform.system() == "Linux" else None
         )
-        
+
     except Exception as error:
         LOGGER.error(f"Failed to initialize driver: {error}")
         return []
