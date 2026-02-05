@@ -17,31 +17,32 @@ logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(
 def get_chrome_version():
     """
     Detects the installed Google Chrome version on Linux/GitHub Actions.
-    Returns the major version (int), e.g., 131.
     """
-    system = platform.system()
-
-    if system == "Linux":
+    if platform.system() == "Linux":
         try:
-            # Run 'google-chrome --version' to get installed version
-            output = subprocess.check_output(["google-chrome", "--version"], text=True)
+            for binary in ["chrome", "google-chrome", "chromium", "chromium-browser"]:
+                try:
+                    output = subprocess.check_output([binary, "--version"], text=True)
+                    # Output example: "Chromium 146.0.7671.0"
+                    if not output: 
+                        continue
+                    
+                    version_str = output.strip().split()[-1] 
+                    major_version = int(version_str.split('.')[0])
+                    
+                    LOGGER.info(f"Detected {binary} version: {major_version}")
+                    return major_version
+                except (FileNotFoundError, subprocess.CalledProcessError):
+                    continue
             
-            # Output example: "Google Chrome 131.0.6778.85"
-            version_str = output.strip().split()[-1] # Get "131.0.6778.85"
-            major_version = int(version_str.split('.')[0]) # Get 131
-            
-            LOGGER.info(f"Detected installed Chrome version: {major_version}")
-            return major_version
-        
-        except Exception as e:
-            LOGGER.error(f"Could not detect Chrome version: {e}. Defaulting to None.")
             return None
         
-    elif system == "Windows":
-        LOGGER.info("Detected Windows environment. Defaulting to Chrome v143.")
-        return 143
+        except Exception as error:
+            LOGGER.error(f"Could not detect Chrome version: {error}")
+            return None
     
-    return None
+    # Windows fallback
+    return 143
 
 
 def extract_json_objects(text: str, target_key='"data":'):
